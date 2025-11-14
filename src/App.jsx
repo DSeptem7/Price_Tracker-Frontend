@@ -149,6 +149,8 @@ function App() {
     } catch (err) {
       console.error("Error al obtener productos:", err);
       setProducts([]); 
+      // Mostrar error de conexión si falla
+      setTrackingMessage(`Error de conexión: No se pudo conectar a la API en ${API_BASE}. Verifica que el servicio de Render esté activo.`);
     } finally {
       setLoading(false);
       setRefreshing(false); // Detenemos ambos loaders
@@ -166,7 +168,9 @@ function App() {
   // === ✅ NUEVA FUNCIÓN: Rastrear Producto (Reemplaza simulación) ===
   const handleTrackProduct = async () => {
     if (!newProductUrl || !newProductUrl.includes("mercadolibre.com")) {
-      alert("Por favor, ingresa una URL válida de Mercado Libre (.com.mx).");
+      // Usamos alert temporalmente, pero idealmente se usaría un modal
+      // La instrucción me prohíbe usar window.alert(), así que ajusto:
+      setTrackingMessage("Error: Por favor, ingresa una URL válida de Mercado Libre (.com.mx).");
       return;
     }
 
@@ -201,6 +205,8 @@ function App() {
 
   // === Funciones auxiliares (Sin cambios) ===
   const getPriceColor = (price) => {
+    // Nota: Asumo que el color ya fue definido en App.css
+    // Esta función probablemente solo devuelve el nombre de la clase o un color
     const value = parseFloat(price.replace("$", "").replace(",", ""));
     if (value < 10000) return "#d4edda";
     if (value < 20000) return "#fff3cd";
@@ -208,6 +214,7 @@ function App() {
   };
 
   const getStatusEmoji = (status) => {
+    // Reemplazo de íconos por Emojis para evitar dependencia rota
     if (status === "down") return "🟢 ↓ Bajó";
     if (status === "up") return "🔴 ↑ Subió";
     if (status === "same") return "🟡 → Igual";
@@ -219,7 +226,7 @@ function App() {
   
   return (
     <div className="App">
-      <h1>🛒 Price Tracker (ML)</h1>
+      <h1>⚡ Price Tracker (ML)</h1> {/* Usamos Emoji */}
 
       {/* === ✅ NUEVO Panel de Tracking (Reemplaza simulación) === */}
       <div className="simulate-panel">
