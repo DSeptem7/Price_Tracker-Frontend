@@ -303,13 +303,7 @@ function App() {
                 Ver producto
                 </a>
                 <p className="timestamp">
-                {new Date(p.timestamp).toLocaleString("es-MX", {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
+                {new Date(p.timestamp).toLocaleString()}
                 </p> 
             </div>
             ))
