@@ -10,8 +10,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-// NOTA: Se ha quitado la importación de "./App.css" ya que no se puede usar en este entorno.
-// Los estilos críticos están definidos más abajo.
 
 // === Componente Modal para la Gráfica ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
@@ -28,7 +26,21 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         const url = `${apiBase}/history/${encodeURIComponent(
           productTitle
         )}`;
-        const res = await fetch(url);
+        // Implementación de reintento con backoff (Añadido para robustez)
+        let res;
+        for (let attempt = 0; attempt < 3; attempt++) {
+            res = await fetch(url);
+            if (res.ok || res.status === 404) {
+                break; // Éxito o no encontrado, salir
+            }
+            if (attempt < 2) {
+                console.warn(`Intento de historial ${attempt + 1} fallido. Reintentando...`);
+                await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+            } else {
+                // Último intento fallido
+                throw new Error(`Fallo en la conexión después de ${attempt + 1} intentos.`);
+            }
+        }
         
         if (res.status === 404) {
              setHistory([]);
@@ -233,7 +245,9 @@ function App() {
 
   // === Funciones auxiliares ===
   const getPriceColor = (price) => {
-    const value = parseFloat(price.replace("$", "").replace(",", ""));
+    // Limpieza de formato para comparación numérica
+    const value = parseFloat(price.replace("$", "").replace(",", "")); 
+    if (isNaN(value)) return "bg-gray-100"; // Manejar el caso de precio no válido
     if (value < 10000) return "bg-green-100";
     if (value < 20000) return "bg-yellow-100";
     return "bg-red-100";
@@ -251,8 +265,20 @@ function App() {
   
   return (
     <div className="min-h-screen bg-gray-50 p-4 font-sans">
+        {/*
+          FIX CRÍTICO: Se añade CSS simple para forzar un fondo claro y mejorar la legibilidad.
+          Esto soluciona el problema de la "pantalla negra" si Tailwind no está cargando.
+        */}
         <style>
             {`
+            /* FIX: Garantizar un fondo claro y un modelo de caja consistente */
+            body, html, #root {
+                background-color: #f9fafb !important; 
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
             .product-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
