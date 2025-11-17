@@ -10,10 +10,9 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import "./App.css"; 
-// Asumiendo que App.css existe y tiene los estilos que ya definimos.
+import "./App.css";
 
-// === Componente Modal para la Gráfica (ACTUALIZADO) ===
+// === Componente Modal para la Gráfica (MODIFICADO) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +22,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
       try {
         setLoading(true);
         
-        // Llama al nuevo endpoint /history/{product_title}
+        // ✅ CAMBIO CLAVE: Llama al nuevo endpoint /history/{product_title}
         const url = `${apiBase}/history/${encodeURIComponent(
           productTitle
         )}`;
@@ -38,7 +37,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
-          // Mapeamos la data de historial del objeto 'history'
+          // ✅ Mapeamos la data de historial del objeto 'history'
           const formattedData = data.history
             .map((item) => {
               const priceValue = parseFloat(item.price);
@@ -47,6 +46,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 
               return {
                 price: priceValue,
+                // Formateamos la fecha para que se vea bien en la gráfica
                 date: new Date(item.timestamp).toLocaleString("es-MX", {
                   day: "numeric",
                   month: "short",
@@ -105,6 +105,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         ) : (
           <p>
             No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
+            Sigue simulando precios para este producto.
           </p>
         )}
       </div>
@@ -119,19 +120,17 @@ function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  
-  // --- Estados para el nuevo panel de tracking ---
-  const [newProductUrl, setNewProductUrl] = useState("");
-  const [trackingMessage, setTrackingMessage] = useState(""); // Para mostrar mensajes de éxito/error
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [newPrice, setNewPrice] = useState("");
   
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
   // ✅ URL de Render
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
-  // === Obtener productos (Llama a /product_history) ===
+  // === Obtener productos (Llamando ahora a /product_history) ===
   const fetchProducts = async () => {
-    setLoading(true); // Usamos 'loading' en lugar de 'refreshing' para la carga inicial
+    setRefreshing(true);
     try {
       const res = await fetch(`${API_BASE}/product_history`); 
       const data = await res.json();
@@ -146,65 +145,48 @@ function App() {
         console.error("El backend devolvió un formato inesperado:", data);
       }
       
-    } catch (err) {
+    } catch (err)
+{
       console.error("Error al obtener productos:", err);
       setProducts([]); 
     } finally {
+      setRefreshing(false);
       setLoading(false);
-      setRefreshing(false); // Detenemos ambos loaders
     }
   };
   
   // === Cargar productos al iniciar ===
   useEffect(() => {
     fetchProducts();
-    // Ya no necesitamos el intervalo, usaremos un botón de refrescar
-    // const interval = setInterval(fetchProducts, 30000); 
-    // return () => clearInterval(interval);
-  }, []); // Se ejecuta solo una vez al cargar
+    const interval = setInterval(fetchProducts, 30000); 
+    return () => clearInterval(interval);
+  }, []);
 
-  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (Reemplaza simulación) ===
-  const handleTrackProduct = async () => {
-    if (!newProductUrl || !newProductUrl.includes("mercadolibre.com")) {
-      alert("Por favor, ingresa una URL válida de Mercado Libre (.com.mx).");
+  // === Simular cambio de precio ===
+  const simulatePriceChange = async () => {
+    if (!selectedProduct || !newPrice || isNaN(parseFloat(newPrice))) {
+      alert("Selecciona un producto y un nuevo precio válido (número).");
       return;
     }
-
-    setRefreshing(true); // Usamos 'refreshing' para indicar la carga del tracking
-    setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
-
     try {
-      // Llamamos al endpoint de scraping /products
-      const url = `${API_BASE}/products?url=${encodeURIComponent(newProductUrl)}`;
+      const url = `${API_BASE}/simulate_price?title=${encodeURIComponent(selectedProduct)}&price=${newPrice}`; 
       const res = await fetch(url);
       const result = await res.json();
-
-      if (!res.ok) {
-        // Si el servidor devuelve un error (4xx o 5xx)
-        throw new Error(result.detail || "Error desconocido al rastrear.");
-      }
-
-      console.log("Respuesta del scraping:", result);
-      setTrackingMessage(result.message); // "Scraping completado..."
-      setNewProductUrl(""); // Limpiar input
-      
-      // Refrescar la lista de productos para mostrar el nuevo item
+      console.log("Simulación:", result);
+      setNewPrice("");
+      setSelectedProduct("");
       await fetchProducts(); 
-
     } catch (err) {
-      console.error("Error al rastrear producto:", err);
-      setTrackingMessage(`Error: ${err.message}`); // Mostrar error en la UI
-    } finally {
-      setRefreshing(false); // Detener el loader
+      console.error("Error al simular precio:", err);
     }
   };
 
-  // === Funciones auxiliares (Sin cambios) ===
+  // === Funciones auxiliares ===
   const getPriceColor = (price) => {
     const value = parseFloat(price.replace("$", "").replace(",", ""));
-    if (value < 10000) return "#d4edda";
-    if (value < 20000) return "#fff3cd";
-    return "#f8d7da";
+    if (value < 10000) return "#d4edda"; // Verde claro
+    if (value < 20000) return "#fff3cd"; // Amarillo claro
+    return "#f8d7da"; // Rojo claro
   };
 
   const getStatusEmoji = (status) => {
@@ -219,29 +201,40 @@ function App() {
   
   return (
     <div className="App">
-      <h1>🛒 Price Tracker (ML)</h1>
+      <h1>🛒 Price Tracker</h1>
 
-      {/* === ✅ NUEVO Panel de Tracking (Reemplaza simulación) === */}
+      {/* === Controles de simulación === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto</h3>
-        <input
-          type="url"
-          placeholder="Pega la URL de Mercado Libre aquí"
-          value={newProductUrl}
-          onChange={(e) => setNewProductUrl(e.target.value)}
-          style={{width: "400px"}} // Estilo simple
-        />
-        <button onClick={handleTrackProduct} disabled={refreshing || !newProductUrl}>
-          {refreshing ? "Rastreando..." : "Rastrear Producto"}
-        </button>
-        <button onClick={fetchProducts} disabled={refreshing}>
-          {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
-        </button>
-        
-        {/* Mensaje de estado del tracking */}
-        {trackingMessage && (
-          <p className="tracking-message">{trackingMessage}</p>
+        <h3>🎯 Simular cambio de precio</h3>
+        {products.length > 0 ? (
+          <>
+            <select
+              value={selectedProduct}
+              onChange={(e) => setSelectedProduct(e.target.value)}
+            >
+              <option value="">Selecciona un producto...</option>
+              {products.map((p, i) => (
+                <option key={i} value={p.title}>
+                  {p.title}
+                </option>
+              ))}
+            </select>
+            <input
+              type="number"
+              placeholder="Nuevo precio (ej: 1500.50)"
+              value={newPrice}
+              onChange={(e) => setNewPrice(e.target.value)}
+            />
+            <button onClick={simulatePriceChange} disabled={!selectedProduct || !newPrice}>
+              Simular precio
+            </button>
+          </>
+        ) : (
+          <p>Usa la URL de Simulación en tu navegador para el primer producto.</p>
         )}
+        <button onClick={fetchProducts} disabled={refreshing}>
+          {refreshing ? "Actualizando..." : "🔄 Actualizar lista"}
+        </button>
       </div>
       
       {/* === Grid de productos === */}
@@ -249,7 +242,8 @@ function App() {
         {products.length === 0 ? (
             <p className="no-products-message">
                 No hay productos registrados en la base de datos.
-                <br />Usa el panel de arriba para añadir tu primer producto.
+                <br />Usa la URL: **{API_BASE}/simulate_price?title=Mi%20Producto%20X&price=10000**
+                <br/>para añadir el primer registro.
             </p>
         ) : (
             products.map((p, index) => (
