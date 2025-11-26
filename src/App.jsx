@@ -10,49 +10,10 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import "./App.css";
+import "./App.css"; 
+// Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
-/* ------------------------------------------------------------------
-   === Loader Rastreando… con puntos animados ===
------------------------------------------------------------------- */
-const Loader = () => (
-  <div style={{ textAlign: "center", marginTop: "20px" }}>
-    <span className="loading-text">
-      Rastreando<span className="dots"></span>
-    </span>
-  </div>
-);
-
-// Inyectar estilos del loader
-const loaderCSS = `
-.loading-text {
-    font-size: 18px;
-    font-weight: 700;
-    color: #444;
-    margin-top: 20px;
-}
-
-.dots::after {
-    content: '';
-    animation: dots 1.5s steps(4, end) infinite;
-}
-
-@keyframes dots {
-    0% { content: ''; }
-    25% { content: '.'; }
-    50% { content: '..'; }
-    75% { content: '...'; }
-    100% { content: ''; }
-}
-`;
-
-const loaderStyleTag = document.createElement("style");
-loaderStyleTag.innerHTML = loaderCSS;
-document.head.appendChild(loaderStyleTag);
-
-/* ------------------------------------------------------------------
-   === Componente Modal para la Gráfica
------------------------------------------------------------------- */
+// === Componente Modal para la Gráfica (ACTUALIZADO) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,23 +22,28 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     const fetchHistory = async () => {
       try {
         setLoading(true);
-
-        const url = `${apiBase}/history/${encodeURIComponent(productTitle)}`;
+        
+        // Llama al nuevo endpoint /history/{product_title}
+        const url = `${apiBase}/history/${encodeURIComponent(
+          productTitle
+        )}`;
         const res = await fetch(url);
-
+        
         if (res.status === 404) {
-          setHistory([]);
-          return;
+             setHistory([]);
+             console.log("Historial no encontrado para el producto.");
+             return;
         }
 
         const data = await res.json();
-
+        
         if (data && Array.isArray(data.history)) {
+          // Mapeamos la data de historial del objeto 'history'
           const formattedData = data.history
             .map((item) => {
               const priceValue = parseFloat(item.price);
-
-              if (isNaN(priceValue) || priceValue <= 0) return null;
+              
+              if (isNaN(priceValue) || priceValue <= 0) return null; 
 
               return {
                 price: priceValue,
@@ -89,8 +55,8 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                 }),
               };
             })
-            .filter(Boolean);
-
+            .filter(item => item !== null); 
+            
           setHistory(formattedData);
         } else {
           setHistory([]);
@@ -102,7 +68,9 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
       }
     };
 
-    if (productTitle) fetchHistory();
+    if (productTitle) {
+      fetchHistory();
+    }
   }, [productTitle, apiBase]);
 
   return (
@@ -112,17 +80,18 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
           &times;
         </button>
         <h3>Historial de Precio: {productTitle}</h3>
-
         {loading ? (
           <p>Cargando historial...</p>
-        ) : history.length > 1 ? (
+        ) : history.length > 1 ? ( 
           <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
               <LineChart data={history}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis domain={["auto", "auto"]} />
-                <Tooltip formatter={(v) => [`$${v.toFixed(2)}`, "Precio"]} />
+                <YAxis domain={["auto", "auto"]} /> 
+                <Tooltip
+                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
+                />
                 <Legend />
                 <Line
                   type="monotone"
@@ -134,74 +103,102 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
             </ResponsiveContainer>
           </div>
         ) : (
-          <p>No hay suficiente historial para mostrar una gráfica.</p>
+          <p>
+            No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
+          </p>
         )}
       </div>
     </div>
   );
 }
+// === Fin de Componente Modal ===
 
-/* ------------------------------------------------------------------
-   === Componente Principal
------------------------------------------------------------------- */
+// === Componente Principal ===
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
+  
+  // --- Estados para el nuevo panel de tracking ---
   const [newProductUrl, setNewProductUrl] = useState("");
-  const [trackingMessage, setTrackingMessage] = useState("");
+  const [trackingMessage, setTrackingMessage] = useState(""); // Para mostrar mensajes de éxito/error
+  
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
-  const API_BASE = "https://price-tracker-nov-2025.onrender.com";
-
+  // ✅ URL de Render
+  const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
+  
+  // === Obtener productos (Llama a /product_history) ===
   const fetchProducts = async () => {
-    setLoading(true);
+    setLoading(true); // Usamos 'loading' en lugar de 'refreshing' para la carga inicial
     try {
-      const res = await fetch(`${API_BASE}/product_history`);
+      const res = await fetch(`${API_BASE}/product_history`); 
       const data = await res.json();
-      setProducts(Array.isArray(data) ? data : []);
+      
+      if (Array.isArray(data)) {
+        setProducts(data);
+      } else if (data && data.message) {
+        setProducts([]);
+        console.log(data.message);
+      } else {
+        setProducts([]); 
+        console.error("El backend devolvió un formato inesperado:", data);
+      }
+      
     } catch (err) {
-      console.error("Error:", err);
-      setProducts([]);
+      console.error("Error al obtener productos:", err);
+      setProducts([]); 
     } finally {
       setLoading(false);
-      setRefreshing(false);
+      setRefreshing(false); // Detenemos ambos loaders
     }
   };
-
+  
+  // === Cargar productos al iniciar ===
   useEffect(() => {
     fetchProducts();
-  }, []);
+    // Ya no necesitamos el intervalo, usaremos un botón de refrescar
+    // const interval = setInterval(fetchProducts, 30000); 
+    // return () => clearInterval(interval);
+  }, []); // Se ejecuta solo una vez al cargar
 
+  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (Reemplaza simulación) ===
   const handleTrackProduct = async () => {
     if (!newProductUrl || !newProductUrl.includes("mercadolibre.com")) {
-      alert("Ingresa una URL válida de Mercado Libre.");
+      alert("Por favor, ingresa una URL válida de Mercado Libre (.com.mx).");
       return;
     }
 
-    setRefreshing(true);
-    setTrackingMessage("Rastreando… esto puede tardar hasta 40 segundos.");
+    setRefreshing(true); // Usamos 'refreshing' para indicar la carga del tracking
+    setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
 
     try {
-      const url = `${API_BASE}/products?url=${encodeURIComponent(
-        newProductUrl
-      )}`;
+      // Llamamos al endpoint de scraping /products
+      const url = `${API_BASE}/products?url=${encodeURIComponent(newProductUrl)}`;
       const res = await fetch(url);
       const result = await res.json();
 
-      if (!res.ok) throw new Error(result.detail || "Error desconocido");
+      if (!res.ok) {
+        // Si el servidor devuelve un error (4xx o 5xx)
+        throw new Error(result.detail || "Error desconocido al rastrear.");
+      }
 
-      setTrackingMessage(result.message);
-      setNewProductUrl("");
-      await fetchProducts();
+      console.log("Respuesta del scraping:", result);
+      setTrackingMessage(result.message); // "Scraping completado..."
+      setNewProductUrl(""); // Limpiar input
+      
+      // Refrescar la lista de productos para mostrar el nuevo item
+      await fetchProducts(); 
+
     } catch (err) {
-      setTrackingMessage(`Error: ${err.message}`);
+      console.error("Error al rastrear producto:", err);
+      setTrackingMessage(`Error: ${err.message}`); // Mostrar error en la UI
     } finally {
-      setRefreshing(false);
+      setRefreshing(false); // Detener el loader
     }
   };
 
+  // === Funciones auxiliares (Sin cambios) ===
   const getPriceColor = (price) => {
     const value = parseFloat(price.replace("$", "").replace(",", ""));
     if (value < 10000) return "#d4edda";
@@ -216,104 +213,104 @@ function App() {
     return "🆕 Nuevo";
   };
 
+  // === Renderizado principal ===
   if (loading) return <p>Cargando productos...</p>;
-
+  
   return (
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
+      {/* === ✅ NUEVO Panel de Tracking (Reemplaza simulación) === */}
       <div className="simulate-panel">
         <h3>Añadir Nuevo Producto</h3>
-
         <input
           type="url"
           placeholder="Pega la URL de Mercado Libre aquí"
           value={newProductUrl}
           onChange={(e) => setNewProductUrl(e.target.value)}
-          style={{ width: "400px" }}
+          style={{width: "400px"}} // Estilo simple
         />
-
-        <button onClick={handleTrackProduct} disabled={refreshing}>
-          Rastrear Producto
+        <button onClick={handleTrackProduct} disabled={refreshing || !newProductUrl}>
+          {refreshing ? "Rastreando..." : "Rastrear Producto"}
         </button>
-
         <button onClick={fetchProducts} disabled={refreshing}>
-          🔄 Actualizar Lista
+          {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
-
-        {/* 🔥 Loader dinámico */}
-        {refreshing && <Loader />}
-
-        {/* Mensaje de estado */}
-        {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
+        
+        {/* Mensaje de estado del tracking */}
+        {trackingMessage && (
+          <p className="tracking-message">{trackingMessage}</p>
+        )}
       </div>
-
+      
+      {/* === Grid de productos === */}
       <div className="product-grid">
         {products.length === 0 ? (
-          <p>No hay productos registrados.</p>
+            <p className="no-products-message">
+                No hay productos registrados en la base de datos.
+                <br />Usa el panel de arriba para añadir tu primer producto.
+            </p>
         ) : (
-          products.map((p, index) => (
+            products.map((p, index) => (
             <div
-              key={index}
-              className="product-card"
-              style={{ backgroundColor: getPriceColor(p.price) }}
-              onClick={() => setChartProductTitle(p.title)}
+                key={index}
+                className="product-card"
+                style={{ backgroundColor: getPriceColor(p.price) }}
+                onClick={() => setChartProductTitle(p.title)} 
             >
-              {p.alert_type === "low_historical" && (
+                {/* 🔔 ALERTA SUPERIOR */}
+                {p.alert_type === "low_historical" && (
                 <div className="alert-badge low_historical">
-                  ¡MÍNIMO HISTÓRICO! 📉
+                    ¡MÍNIMO HISTÓRICO! 📉
                 </div>
-              )}
-
-              <img src={p.image} alt={p.title} />
-              <h3>{p.title}</h3>
-
-              {p.previous_price && (
-                <p className="previous-price">
-                  Precio Anterior: <s>{p.previous_price}</s>
-                </p>
-              )}
-
-              <p className="current-price">
-                <strong>Precio: {p.price}</strong>
-              </p>
-
-              <p>
-                {getStatusEmoji(p.status)}
-                {["up", "down"].includes(p.status) && (
-                  <span className="change-text"> ({p.change_percentage})</span>
                 )}
-              </p>
+                
+                <img src={p.image} alt={p.title} />
+                <h3>{p.title}</h3>
 
-              {p.mode_price && (
-                <div className="context-box">
-                  <p>
-                    <strong>Frecuente:</strong> {p.mode_price} (visto{" "}
-                    {p.mode_price_count} veces)
-                  </p>
-                  <p>
-                    <strong>Mín. Registrado:</strong> {p.min_historical_price}
-                  </p>
-                </div>
-              )}
-
-              <a
+                {/* 💰 Bloque de Precios */}
+                {p.status !== "new" && p.previous_price && (
+                <p className="previous-price">
+                    Precio Anterior: <s>{p.previous_price}</s>
+                </p>
+                )}
+                <p className="current-price">
+                <strong>Precio: {p.price}</strong>
+                </p>
+                
+                {/* Status de Cambio */}
+                <p>
+                    {getStatusEmoji(p.status)} 
+                    {(p.status === "up" || p.status === "down") && (
+                        <span className="change-text"> ({p.change_percentage})</span>
+                    )}
+                </p>
+                
+                {/* 📊 Bloque de Contexto */}
+                {p.mode_price && (
+                    <div className="context-box">
+                        <p><strong>Frecuente:</strong> {p.mode_price} (visto {p.mode_price_count} veces)</p>
+                        <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+                    </div>
+                )}
+                
+                <a
                 href={p.url}
                 target="_blank"
                 rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-              >
+                onClick={(e) => e.stopPropagation()} 
+                >
                 Ver producto
-              </a>
-
-              <p className="timestamp">
+                </a>
+                <p className="timestamp">
                 {new Date(p.timestamp).toLocaleString()}
-              </p>
+                </p> 
             </div>
-          ))
+            ))
         )}
       </div>
-
+      
+      {/* Renderizar el Modal si hay un producto seleccionado */}
       {chartProductTitle && (
         <PriceChartModal
           productTitle={chartProductTitle}
