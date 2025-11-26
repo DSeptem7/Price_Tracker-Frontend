@@ -210,23 +210,3 @@ h1 {
   background-color: #ccc;
   cursor: not-allowed;
 }
-/* === Loader Rastreando… con puntos animados === */
-.loading-text {
-  font-size: 18px;
-  font-weight: 700;
-  color: #444;
-  margin-top: 20px;
-}
-
-.dots::after {
-  content: '';
-  animation: dots 1.5s steps(4, end) infinite;
-}
-
-@keyframes dots {
-  0% { content: ''; }
-  25% { content: '.'; }
-  50% { content: '..'; }
-  75% { content: '...'; }
-  100% { content: ''; }
-}
