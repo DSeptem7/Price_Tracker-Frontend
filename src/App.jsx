@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react"; // ✅ IMPORTAR useMemo
+import React, { useEffect, useState, useMemo } from "react"; 
 // Importar componentes de Recharts
 import {
   LineChart,
@@ -13,17 +13,19 @@ import {
 import "./App.css"; 
 // Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
-// === Componente Modal para la Gráfica (ACTUALIZADO) ===
+// ======================================================================
+// === Componente Modal para la Gráfica (CON RANGOS Y LEYENDAS) ===
+// ======================================================================
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [chartRange, setChartRange] = useState("ALL"); // ✅ Nuevo estado para el rango de tiempo
 
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         setLoading(true);
         
-        // Llama al nuevo endpoint /history/{product_title}
         const url = `${apiBase}/history/${encodeURIComponent(
           productTitle
         )}`;
@@ -31,14 +33,13 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         
         if (res.status === 404) {
              setHistory([]);
-             console.log("Historial no encontrado para el producto.");
              return;
         }
 
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
-          // Mapeamos la data de historial del objeto 'history'
+          // ✅ MODIFICACIÓN CLAVE: Mapeamos dateObj y date para la gráfica y filtrado
           const formattedData = data.history
             .map((item) => {
               const priceValue = parseFloat(item.price);
@@ -47,15 +48,15 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 
               return {
                 price: priceValue,
-                date: new Date(item.timestamp).toLocaleString("es-MX", {
+                dateObj: new Date(item.timestamp), // Para filtrar (ej. 1 mes atrás)
+                date: new Date(item.timestamp).toLocaleString("es-MX", { // Para mostrar en el Tooltip/Eje X
                   day: "numeric",
                   month: "short",
-                  hour: "2-digit",
-                  minute: "2-digit",
                 }),
               };
             })
-            .filter(item => item !== null); 
+            .filter(item => item !== null)
+            .sort((a, b) => a.dateObj - b.dateObj); // Asegurar orden cronológico
             
           setHistory(formattedData);
         } else {
@@ -73,6 +74,25 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     }
   }, [productTitle, apiBase]);
 
+
+  // ✅ LÓGICA DE FILTRADO DE DATOS POR RANGO (useMemo para eficiencia)
+  const getFilteredChartData = useMemo(() => {
+    if (history.length === 0) return [];
+    
+    const now = new Date();
+    let cutoff = new Date(0); // Por defecto: Toda la historia (1970)
+
+    if (chartRange === '1W') cutoff = new Date(now.setDate(now.getDate() - 7));
+    if (chartRange === '1M') cutoff = new Date(now.setMonth(now.getMonth() - 1));
+    if (chartRange === '6M') cutoff = new Date(now.setMonth(now.getMonth() - 6));
+    
+    // Filtramos usando el objeto de fecha real (dateObj)
+    return history.filter(h => h.dateObj >= cutoff);
+  }, [history, chartRange]); // Se recalcula si history o chartRange cambian
+
+  // === RENDERIZADO DEL MODAL ===
+  const chartData = getFilteredChartData;
+
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -80,32 +100,50 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
           &times;
         </button>
         <h3>Historial de Precio: {productTitle}</h3>
+        
         {loading ? (
           <p>Cargando historial...</p>
-        ) : history.length > 1 ? ( 
-          <div style={{ width: "100%", height: 300 }}>
-            <ResponsiveContainer>
-              <LineChart data={history}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis domain={["auto", "auto"]} /> 
-                <Tooltip
-                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
-                />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="price"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+        ) : chartData.length > 1 ? ( 
+          <>
+            {/* ✅ Controles de Rango */}
+            <div className="chart-controls">
+                <button className={chartRange === '1W' ? 'active' : ''} onClick={() => setChartRange('1W')}>1 Semana</button>
+                <button className={chartRange === '1M' ? 'active' : ''} onClick={() => setChartRange('1M')}>1 Mes</button>
+                <button className={chartRange === '6M' ? 'active' : ''} onClick={() => setChartRange('6M')}>6 Meses</button>
+                <button className={chartRange === 'ALL' ? 'active' : ''} onClick={() => setChartRange('ALL')}>Todo</button>
+            </div>
+
+            <div style={{ width: "100%", height: 300 }}>
+              <ResponsiveContainer>
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis domain={["auto", "auto"]} /> 
+                  <Tooltip
+                    formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="price"
+                    stroke="#007bff" // Color mejorado
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </>
         ) : (
-          <p>
-            No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
-          </p>
+          /* ✅ Leyenda para Producto Nuevo o sin datos */
+          <div className="new-product-msg">
+            <h3>✨ Producto Nuevo o Sin Datos</h3>
+            <p>
+                {history.length === 0 ? 
+                    "El historial no fue encontrado o la API está devolviendo datos inesperados." : 
+                    "Acabamos de empezar a rastrear este producto. Vuelve pronto para ver la gráfica de precios (se necesitan al menos 2 precios distintos)."
+                }
+            </p>
+          </div>
         )}
       </div>
     </div>
@@ -113,14 +151,13 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 }
 // === Fin de Componente Modal ===
 
-// === Componente Principal ===
+// === Componente Principal (Manteniendo tu código previo) ===
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
-  // --- Estados para el nuevo panel de tracking ---
-  // ❌ Renombramos newProductUrl a searchTerm
+  // --- Estados para el buscador y feedback ---
   const [searchTerm, setSearchTerm] = useState(""); 
   const [trackingMessage, setTrackingMessage] = useState(""); 
   
@@ -140,7 +177,6 @@ function App() {
         setProducts(data);
       } else if (data && data.message) {
         setProducts([]);
-        console.log(data.message);
       } else {
         setProducts([]); 
         console.error("El backend devolvió un formato inesperado:", data);
@@ -160,13 +196,14 @@ function App() {
     fetchProducts();
   }, []); 
 
-  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (y detecta búsqueda) ===
-  const handleTrackProduct = async () => {
-    // Detectamos si es una URL para scraping
+  // === Rastrear Producto (y detecta búsqueda) ===
+  const handleSearch = async (e) => {
+    e.preventDefault(); // ✅ Para evitar el reload de la página
+
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
     if (!isUrl) {
-        // Si no es URL, no hacemos nada. El useMemo filtrará la lista.
+        // Modo Búsqueda Interna (el useMemo lo maneja)
         return; 
     }
     
@@ -175,8 +212,7 @@ function App() {
     setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
 
     try {
-      // Llamamos al endpoint de scraping /products
-      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; // ✅ Usamos searchTerm
+      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`;
       const res = await fetch(url);
       const result = await res.json();
 
@@ -186,7 +222,7 @@ function App() {
 
       console.log("Respuesta del scraping:", result);
       setTrackingMessage(result.message); 
-      setSearchTerm(""); // Limpiar input después de scraping exitoso
+      setSearchTerm(""); 
       
       await fetchProducts(); 
 
@@ -198,10 +234,10 @@ function App() {
     }
   };
 
-  // === ✅ FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
+  // === FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim() || searchTerm.includes("http")) {
-      return products; // Muestra todo si está vacío o si es una URL (esperamos scraping)
+      return products; 
     }
 
     const lowerCaseSearch = searchTerm.toLowerCase();
@@ -234,20 +270,25 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === ✅ Panel de Tracking / Buscador Híbrido === */}
+      {/* === Panel de Tracking / Buscador Híbrido === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> {/* ✅ Texto actualizado */}
-        <input
-          type="text" // ✅ Cambiamos a type="text" para aceptar palabras
-          placeholder="Pega URL de ML o escribe para buscar aquí" // ✅ Placeholder actualizado
-          value={searchTerm} // ✅ Usamos searchTerm
-          onChange={(e) => setSearchTerm(e.target.value)} // ✅ Usamos setSearchTerm
-          style={{width: "400px"}} 
-        />
-        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> {/* ✅ Usamos handleTrackProduct */}
-          {refreshing ? "Rastreando..." : "Rastrear / Buscar"} {/* ✅ Texto actualizado */}
-        </button>
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> {/* ✅ Limpiamos el buscador al actualizar */}
+        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+        
+        {/* ✅ Usamos el formulario para que ENTER también funcione */}
+        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <input
+                type="text" 
+                placeholder="Pega URL de ML o escribe para buscar aquí" 
+                value={searchTerm} 
+                onChange={(e) => setSearchTerm(e.target.value)} 
+                style={{width: "400px"}}
+            />
+            <button type="submit" disabled={refreshing || !searchTerm}> 
+                {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
+            </button>
+        </form>
+        
+        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
           {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
         
@@ -259,7 +300,6 @@ function App() {
       
       {/* === Grid de productos === */}
       <div className="product-grid">
-        {/* ✅ Usamos filteredProducts en lugar de products */}
         {filteredProducts.length === 0 ? (
             <p className="no-products-message">
                 {searchTerm.trim() ? 
@@ -269,7 +309,6 @@ function App() {
                 <br />Usa el panel de arriba para añadir tu primer producto.
             </p>
         ) : (
-            // ✅ Usamos filteredProducts en lugar de products
             filteredProducts.map((p, index) => (
             <div
                 key={index}
