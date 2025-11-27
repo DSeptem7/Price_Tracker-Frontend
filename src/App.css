@@ -256,6 +256,11 @@ h1 {
 .close-button:hover {
   color: #333;
 }
+
+.modal-content h3 {
+  color: #333; /* Color oscuro para el título del producto */
+  margin-top: 0;
+}
 /* ====================================================================== */
 /* === 6. ESTILOS DE LA GRÁFICA INTELIGENTE (Controles y Leyenda) === */
 /* ====================================================================== */
@@ -301,3 +306,19 @@ h1 {
     font-size: 18px;
     color: #495057;
 }
+/* Dentro de la sección 6. ESTILOS DE LA GRÁFICA INTELIGENTE */
+
+.chart-controls button {
+  background: #e9ecef; /* Fondo gris muy claro para contraste */
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #495057; /* Texto oscuro para que se lea */
+  transition: all 0.2s;
+}
+
+/* El botón activo (azul) ya tiene un buen contraste */
+/* No es necesario modificar .chart-controls button.active */
