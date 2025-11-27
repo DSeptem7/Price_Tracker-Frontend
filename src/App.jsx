@@ -14,12 +14,12 @@ import "./App.css";
 // Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
 // ======================================================================
-// === Componente Modal para la Gráfica (CON RANGOS Y LEYENDAS) ===
+// === Componente Modal para la Gráfica (CON RANGOS Y USABILIDAD MEJORADA) ===
 // ======================================================================
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [chartRange, setChartRange] = useState("ALL"); // ✅ Nuevo estado para el rango de tiempo
+  const [chartRange, setChartRange] = useState("ALL"); 
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -39,7 +39,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
-          // ✅ MODIFICACIÓN CLAVE: Mapeamos dateObj y date para la gráfica y filtrado
+          // MODIFICACIÓN CLAVE: Mapeamos dateObj y date con formato detallado para el Tooltip/Eje X
           const formattedData = data.history
             .map((item) => {
               const priceValue = parseFloat(item.price);
@@ -49,9 +49,11 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
               return {
                 price: priceValue,
                 dateObj: new Date(item.timestamp), // Para filtrar (ej. 1 mes atrás)
-                date: new Date(item.timestamp).toLocaleString("es-MX", { // Para mostrar en el Tooltip/Eje X
+                date: new Date(item.timestamp).toLocaleString("es-MX", { // Para mostrar en el Eje X/Tooltip
                   day: "numeric",
                   month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
                 }),
               };
             })
@@ -75,7 +77,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
   }, [productTitle, apiBase]);
 
 
-  // ✅ LÓGICA DE FILTRADO DE DATOS POR RANGO (useMemo para eficiencia)
+  // LÓGICA DE FILTRADO DE DATOS POR RANGO (useMemo para eficiencia)
   const getFilteredChartData = useMemo(() => {
     if (history.length === 0) return [];
     
@@ -88,9 +90,8 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     
     // Filtramos usando el objeto de fecha real (dateObj)
     return history.filter(h => h.dateObj >= cutoff);
-  }, [history, chartRange]); // Se recalcula si history o chartRange cambian
+  }, [history, chartRange]); 
 
-  // === RENDERIZADO DEL MODAL ===
   const chartData = getFilteredChartData;
 
   return (
@@ -105,7 +106,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
           <p>Cargando historial...</p>
         ) : chartData.length > 1 ? ( 
           <>
-            {/* ✅ Controles de Rango */}
+            {/* Controles de Rango */}
             <div className="chart-controls">
                 <button className={chartRange === '1W' ? 'active' : ''} onClick={() => setChartRange('1W')}>1 Semana</button>
                 <button className={chartRange === '1M' ? 'active' : ''} onClick={() => setChartRange('1M')}>1 Mes</button>
@@ -117,8 +118,19 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
               <ResponsiveContainer>
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis domain={["auto", "auto"]} /> 
+                  {/* ✅ Eje X: Usabilidad mejorada con menos ticks y rotación */}
+                  <XAxis 
+                      dataKey="date" 
+                      interval="preserveStartEnd" 
+                      tickCount={6} 
+                      angle={-20} 
+                      textAnchor="end" 
+                  />
+                  {/* ✅ Eje Y: Signo de pesos ($) */}
+                  <YAxis 
+                      domain={["auto", "auto"]} 
+                      tickFormatter={(value) => `$${value.toFixed(2)}`}
+                  /> 
                   <Tooltip
                     formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
                   />
@@ -126,7 +138,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                   <Line
                     type="monotone"
                     dataKey="price"
-                    stroke="#007bff" // Color mejorado
+                    stroke="#007bff"
                     activeDot={{ r: 6 }}
                   />
                 </LineChart>
@@ -134,7 +146,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
             </div>
           </>
         ) : (
-          /* ✅ Leyenda para Producto Nuevo o sin datos */
+          /* Leyenda para Producto Nuevo o sin datos */
           <div className="new-product-msg">
             <h3>✨ Producto Nuevo o Sin Datos</h3>
             <p>
@@ -151,7 +163,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 }
 // === Fin de Componente Modal ===
 
-// === Componente Principal (Manteniendo tu código previo) ===
+// === Componente Principal ===
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -198,7 +210,7 @@ function App() {
 
   // === Rastrear Producto (y detecta búsqueda) ===
   const handleSearch = async (e) => {
-    e.preventDefault(); // ✅ Para evitar el reload de la página
+    e.preventDefault(); 
 
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
@@ -274,7 +286,6 @@ function App() {
       <div className="simulate-panel">
         <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
         
-        {/* ✅ Usamos el formulario para que ENTER también funcione */}
         <form onSubmit={handleSearch} style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <input
                 type="text" 
