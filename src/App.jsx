@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react"; // ✅ IMPORTAR useMemo
 // Importar componentes de Recharts
 import {
   LineChart,
@@ -120,8 +120,9 @@ function App() {
   const [refreshing, setRefreshing] = useState(false);
   
   // --- Estados para el nuevo panel de tracking ---
-  const [newProductUrl, setNewProductUrl] = useState("");
-  const [trackingMessage, setTrackingMessage] = useState(""); // Para mostrar mensajes de éxito/error
+  // ❌ Renombramos newProductUrl a searchTerm
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [trackingMessage, setTrackingMessage] = useState(""); 
   
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
@@ -130,7 +131,7 @@ function App() {
   
   // === Obtener productos (Llama a /product_history) ===
   const fetchProducts = async () => {
-    setLoading(true); // Usamos 'loading' en lugar de 'refreshing' para la carga inicial
+    setLoading(true); 
     try {
       const res = await fetch(`${API_BASE}/product_history`); 
       const data = await res.json();
@@ -150,53 +151,66 @@ function App() {
       setProducts([]); 
     } finally {
       setLoading(false);
-      setRefreshing(false); // Detenemos ambos loaders
+      setRefreshing(false); 
     }
   };
   
   // === Cargar productos al iniciar ===
   useEffect(() => {
     fetchProducts();
-    // Ya no necesitamos el intervalo, usaremos un botón de refrescar
-    // const interval = setInterval(fetchProducts, 30000); 
-    // return () => clearInterval(interval);
-  }, []); // Se ejecuta solo una vez al cargar
+  }, []); 
 
-  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (Reemplaza simulación) ===
+  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (y detecta búsqueda) ===
   const handleTrackProduct = async () => {
-    if (!newProductUrl || !newProductUrl.includes("mercadolibre.com")) {
-      alert("Por favor, ingresa una URL válida de Mercado Libre (.com.mx).");
-      return;
-    }
+    // Detectamos si es una URL para scraping
+    const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
-    setRefreshing(true); // Usamos 'refreshing' para indicar la carga del tracking
+    if (!isUrl) {
+        // Si no es URL, no hacemos nada. El useMemo filtrará la lista.
+        return; 
+    }
+    
+    // --- LÓGICA DE SCRAPING (solo si es URL) ---
+    setRefreshing(true); 
     setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
 
     try {
       // Llamamos al endpoint de scraping /products
-      const url = `${API_BASE}/products?url=${encodeURIComponent(newProductUrl)}`;
+      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; // ✅ Usamos searchTerm
       const res = await fetch(url);
       const result = await res.json();
 
       if (!res.ok) {
-        // Si el servidor devuelve un error (4xx o 5xx)
         throw new Error(result.detail || "Error desconocido al rastrear.");
       }
 
       console.log("Respuesta del scraping:", result);
-      setTrackingMessage(result.message); // "Scraping completado..."
-      setNewProductUrl(""); // Limpiar input
+      setTrackingMessage(result.message); 
+      setSearchTerm(""); // Limpiar input después de scraping exitoso
       
-      // Refrescar la lista de productos para mostrar el nuevo item
       await fetchProducts(); 
 
     } catch (err) {
       console.error("Error al rastrear producto:", err);
-      setTrackingMessage(`Error: ${err.message}`); // Mostrar error en la UI
+      setTrackingMessage(`Error: ${err.message}`); 
     } finally {
-      setRefreshing(false); // Detener el loader
+      setRefreshing(false); 
     }
   };
+
+  // === ✅ FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
+  const filteredProducts = useMemo(() => {
+    if (!searchTerm.trim() || searchTerm.includes("http")) {
+      return products; // Muestra todo si está vacío o si es una URL (esperamos scraping)
+    }
+
+    const lowerCaseSearch = searchTerm.toLowerCase();
+
+    return products.filter(p => 
+      p.title.toLowerCase().includes(lowerCaseSearch)
+    );
+  }, [products, searchTerm]);
+
 
   // === Funciones auxiliares (Sin cambios) ===
   const getPriceColor = (price) => {
@@ -220,20 +234,20 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === ✅ NUEVO Panel de Tracking (Reemplaza simulación) === */}
+      {/* === ✅ Panel de Tracking / Buscador Híbrido === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto</h3>
+        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> {/* ✅ Texto actualizado */}
         <input
-          type="url"
-          placeholder="Pega la URL de Mercado Libre aquí"
-          value={newProductUrl}
-          onChange={(e) => setNewProductUrl(e.target.value)}
-          style={{width: "400px"}} // Estilo simple
+          type="text" // ✅ Cambiamos a type="text" para aceptar palabras
+          placeholder="Pega URL de ML o escribe para buscar aquí" // ✅ Placeholder actualizado
+          value={searchTerm} // ✅ Usamos searchTerm
+          onChange={(e) => setSearchTerm(e.target.value)} // ✅ Usamos setSearchTerm
+          style={{width: "400px"}} 
         />
-        <button onClick={handleTrackProduct} disabled={refreshing || !newProductUrl}>
-          {refreshing ? "Rastreando..." : "Rastrear Producto"}
+        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> {/* ✅ Usamos handleTrackProduct */}
+          {refreshing ? "Rastreando..." : "Rastrear / Buscar"} {/* ✅ Texto actualizado */}
         </button>
-        <button onClick={fetchProducts} disabled={refreshing}>
+        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> {/* ✅ Limpiamos el buscador al actualizar */}
           {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
         
@@ -245,13 +259,18 @@ function App() {
       
       {/* === Grid de productos === */}
       <div className="product-grid">
-        {products.length === 0 ? (
+        {/* ✅ Usamos filteredProducts en lugar de products */}
+        {filteredProducts.length === 0 ? (
             <p className="no-products-message">
-                No hay productos registrados en la base de datos.
+                {searchTerm.trim() ? 
+                    `No se encontraron productos con el término "${searchTerm}".` : 
+                    "No hay productos registrados en la base de datos."
+                }
                 <br />Usa el panel de arriba para añadir tu primer producto.
             </p>
         ) : (
-            products.map((p, index) => (
+            // ✅ Usamos filteredProducts en lugar de products
+            filteredProducts.map((p, index) => (
             <div
                 key={index}
                 className="product-card"
@@ -323,4 +342,3 @@ function App() {
 }
 
 export default App;
-
