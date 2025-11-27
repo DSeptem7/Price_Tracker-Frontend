@@ -210,3 +210,16 @@ h1 {
   background-color: #ccc;
   cursor: not-allowed;
 }
+/* === ESTILOS MÍNIMOS PARA EL BUSCADOR HÍBRIDO (NUEVO) === */
+.simulate-panel input[type="text"] {
+  /* Asegurar que el campo de texto se vea bien y no como URL */
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.simulate-panel button {
+    /* Dar un poco más de distinción al botón de acción */
+    font-weight: 600;
+}
