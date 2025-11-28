@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react"; 
+import React, { useEffect, useState, useMemo } from "react"; // ✅ IMPORTAR useMemo
 // Importar componentes de Recharts
 import {
   LineChart,
@@ -11,40 +11,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import "./App.css"; 
-// Importamos los estilos
+// Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
-// === Componente Modal para la Gráfica (LÍNEA CONTINUA SIN PUNTOS) ===
+// === Componente Modal para la Gráfica (ACTUALIZADO) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHistory = async () => {
-      // Función de utilidad para manejar reintentos con backoff
-      const fetchWithRetry = async (url, attempts = 5) => {
-          for (let i = 0; i < attempts; i++) {
-              try {
-                  const res = await fetch(url);
-                  if (res.status === 404) {
-                      return { status: 404 }; // Manejo específico de 404
-                  }
-                  if (res.ok) {
-                      return res.json();
-                  }
-              } catch (error) {
-                  // Si no es el último intento, espera exponencialmente
-                  if (i < attempts - 1) {
-                      const delay = Math.pow(2, i) * 1000;
-                      await new Promise(resolve => setTimeout(resolve, delay));
-                      console.log(`Reintentando... intento ${i + 2}`);
-                  } else {
-                      throw error;
-                  }
-              }
-          }
-          throw new Error("Fallo al obtener historial después de varios reintentos.");
-      };
-
       try {
         setLoading(true);
         
@@ -52,15 +27,16 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         const url = `${apiBase}/history/${encodeURIComponent(
           productTitle
         )}`;
+        const res = await fetch(url);
         
-        const data = await fetchWithRetry(url);
-        
-        if (data.status === 404) {
+        if (res.status === 404) {
              setHistory([]);
              console.log("Historial no encontrado para el producto.");
              return;
         }
 
+        const data = await res.json();
+        
         if (data && Array.isArray(data.history)) {
           // Mapeamos la data de historial del objeto 'history'
           const formattedData = data.history
@@ -71,7 +47,6 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 
               return {
                 price: priceValue,
-                // Formato de fecha/hora largo: [fecha, hora]
                 date: new Date(item.timestamp).toLocaleString("es-MX", {
                   day: "numeric",
                   month: "short",
@@ -112,35 +87,23 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
             <ResponsiveContainer>
               <LineChart data={history}>
                 <CartesianGrid strokeDasharray="3 3" />
-                {/* Eje X: Agregamos rotación para manejar las etiquetas de fecha/hora largas */}
-                <XAxis 
-                    dataKey="date" 
-                    interval="preserveStartEnd"
-                    angle={-20} // Rotación de -20 grados
-                    textAnchor="end" // Alinea el texto a la derecha
-                />
-                {/* Eje Y: Agregamos el signo de pesos ($) */}
-                <YAxis 
-                    domain={["auto", "auto"]} 
-                    tickFormatter={(value) => `$${value.toFixed(0)}`} // Formatea el tick
-                /> 
+                <XAxis dataKey="date" />
+                <YAxis domain={["auto", "auto"]} /> 
                 <Tooltip
-                  // Muestra el precio formateado con dos decimales y el signo de pesos
-                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} 
+                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
                 />
                 <Legend />
                 <Line
                   type="monotone"
                   dataKey="price"
-                  stroke="#007bff" // Color de la línea
-                  dot={false} // <-- ELIMINA LOS PUNTOS EN LA LÍNEA
-                  activeDot={false} // <-- ELIMINA EL PUNTO QUE APARECE AL HACER HOVER
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          <p className="new-product-msg">
+          <p>
             No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
           </p>
         )}
@@ -157,40 +120,21 @@ function App() {
   const [refreshing, setRefreshing] = useState(false);
   
   // --- Estados para el nuevo panel de tracking ---
+  // ❌ Renombramos newProductUrl a searchTerm
   const [searchTerm, setSearchTerm] = useState(""); 
   const [trackingMessage, setTrackingMessage] = useState(""); 
   
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
-  // URL de Render
+  // ✅ URL de Render
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
-  // Función para manejar reintentos con backoff
-  const fetchWithRetry = async (url, attempts = 5) => {
-      for (let i = 0; i < attempts; i++) {
-          try {
-              const res = await fetch(url);
-              if (res.ok) {
-                  return res.json();
-              }
-          } catch (error) {
-              if (i < attempts - 1) {
-                  const delay = Math.pow(2, i) * 1000;
-                  await new Promise(resolve => setTimeout(resolve, delay));
-                  console.log(`Reintentando... intento ${i + 2}`);
-              } else {
-                  throw error;
-              }
-          }
-      }
-      throw new Error("Fallo al obtener productos después de varios reintentos.");
-  };
-
   // === Obtener productos (Llama a /product_history) ===
   const fetchProducts = async () => {
     setLoading(true); 
     try {
-      const data = await fetchWithRetry(`${API_BASE}/product_history`); 
+      const res = await fetch(`${API_BASE}/product_history`); 
+      const data = await res.json();
       
       if (Array.isArray(data)) {
         setProducts(data);
@@ -216,13 +160,13 @@ function App() {
     fetchProducts();
   }, []); 
 
-  // === Rastrear Producto (y detecta búsqueda) ===
+  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (y detecta búsqueda) ===
   const handleTrackProduct = async () => {
     // Detectamos si es una URL para scraping
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
     if (!isUrl) {
-        // Si no es URL, no hacemos nada. El useMemo filtrará la lista para buscar.
+        // Si no es URL, no hacemos nada. El useMemo filtrará la lista.
         return; 
     }
     
@@ -232,8 +176,7 @@ function App() {
 
     try {
       // Llamamos al endpoint de scraping /products
-      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; 
-      
+      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; // ✅ Usamos searchTerm
       const res = await fetch(url);
       const result = await res.json();
 
@@ -255,7 +198,7 @@ function App() {
     }
   };
 
-  // === FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
+  // === ✅ FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim() || searchTerm.includes("http")) {
       return products; // Muestra todo si está vacío o si es una URL (esperamos scraping)
@@ -271,10 +214,9 @@ function App() {
   // === Funciones auxiliares (Sin cambios) ===
   const getPriceColor = (price) => {
     const value = parseFloat(price.replace("$", "").replace(",", ""));
-    // Estos colores son para el fondo de la tarjeta
-    if (value < 10000) return "#d4edda"; // Verde claro (bajo)
-    if (value < 20000) return "#fff3cd"; // Amarillo claro (medio)
-    return "#f8d7da"; // Rojo claro (alto)
+    if (value < 10000) return "#d4edda";
+    if (value < 20000) return "#fff3cd";
+    return "#f8d7da";
   };
 
   const getStatusEmoji = (status) => {
@@ -291,26 +233,20 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === Panel de Tracking / Buscador Híbrido === */}
+      {/* === ✅ Panel de Tracking / Buscador Híbrido === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> 
-        
-        {/* Contenedor del input y botón de rastreo/búsqueda */}
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <input
-              type="text" 
-              placeholder="Pega URL de ML o escribe para buscar aquí" 
-              value={searchTerm} 
-              onChange={(e) => setSearchTerm(e.target.value)} 
-              style={{width: "400px"}} 
-            />
-            <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> 
-              {refreshing ? "Rastreando..." : "Rastrear / Buscar"} 
-            </button>
-        </div>
-        
-        {/* Botón de Actualizar Lista (limpia solo la búsqueda local) */}
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> 
+        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> {/* ✅ Texto actualizado */}
+        <input
+          type="text" // ✅ Cambiamos a type="text" para aceptar palabras
+          placeholder="Pega URL de ML o escribe para buscar aquí" // ✅ Placeholder actualizado
+          value={searchTerm} // ✅ Usamos searchTerm
+          onChange={(e) => setSearchTerm(e.target.value)} // ✅ Usamos setSearchTerm
+          style={{width: "400px"}} 
+        />
+        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> {/* ✅ Usamos handleTrackProduct */}
+          {refreshing ? "Rastreando..." : "Rastrear / Buscar"} {/* ✅ Texto actualizado */}
+        </button>
+        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> {/* ✅ Limpiamos el buscador al actualizar */}
           {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
         
@@ -322,6 +258,7 @@ function App() {
       
       {/* === Grid de productos === */}
       <div className="product-grid">
+        {/* ✅ Usamos filteredProducts en lugar de products */}
         {filteredProducts.length === 0 ? (
             <p className="no-products-message">
                 {searchTerm.trim() ? 
@@ -331,12 +268,11 @@ function App() {
                 <br />Usa el panel de arriba para añadir tu primer producto.
             </p>
         ) : (
-            // Usamos filteredProducts
+            // ✅ Usamos filteredProducts en lugar de products
             filteredProducts.map((p, index) => (
             <div
                 key={index}
                 className="product-card"
-                // El color de fondo se usa para dar un indicativo rápido del precio
                 style={{ backgroundColor: getPriceColor(p.price) }}
                 onClick={() => setChartProductTitle(p.title)} 
             >
@@ -347,10 +283,7 @@ function App() {
                 </div>
                 )}
                 
-                <img src={p.image} alt={p.title} 
-                     // Fallback por si la URL de imagen es inválida
-                     onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/200x220/888/fff?text=No+Img"; }}
-                />
+                <img src={p.image} alt={p.title} />
                 <h3>{p.title}</h3>
 
                 {/* 💰 Bloque de Precios */}
@@ -383,7 +316,6 @@ function App() {
                 href={p.url}
                 target="_blank"
                 rel="noreferrer"
-                // Evita que el clic en el enlace abra el modal
                 onClick={(e) => e.stopPropagation()} 
                 >
                 Ver producto
