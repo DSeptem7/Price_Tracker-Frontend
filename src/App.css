@@ -1,255 +1,301 @@
-/* ====================================================================== */
-/* === 1. ESTILOS BASE Y CONTENEDOR PRINCIPAL (.App) === */
-/* ====================================================================== */
+/* ====================================================================== /
+/ === 1. ESTILOS BASE Y CONTENEDOR PRINCIPAL (.App) === /
+/ ====================================================================== /
 .App {
-  font-family: sans-serif;
-  text-align: center;
-  padding: 20px;
-  background-color: #f4f7f9; /* Fondo gris claro */
+font-family: 'Inter', sans-serif; / Usamos Inter como estándar /
+text-align: center;
+padding: 20px;
+background-color: #f4f7f9; / Fondo gris claro */
 }
 
 h1 {
-  color: #333;
-  margin-bottom: 30px;
+color: #333;
+margin-bottom: 30px;
 }
 
-/* ====================================================================== */
-/* === 2. ESTILOS DEL PANEL DE BÚSQUEDA Y RASTREO (.simulate-panel) === */
-/* (Contiene el Buscador Híbrido y Botones) */
-/* ====================================================================== */
+/* ====================================================================== /
+/ === 2. ESTILOS DEL PANEL DE BÚSQUEDA Y RASTREO (.simulate-panel) === /
+/ (Contiene el Buscador Híbrido y Botones) /
+/ ====================================================================== */
 .simulate-panel {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 30px;
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+background-color: #fff;
+border: 1px solid #ddd;
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 30px;
+display: flex;
+gap: 15px;
+align-items: center;
+justify-content: center;
+flex-wrap: wrap;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .simulate-panel h3 {
-  margin: 0;
-  font-size: 18px;
-  flex-basis: 100%; /* Ocupa todo el ancho */
-  text-align: center;
+margin: 0;
+font-size: 18px;
+flex-basis: 100%; /* Ocupa todo el ancho */
+text-align: center;
 }
 
 /* Estilos de inputs, selects y botones en general dentro del panel */
-.simulate-panel select, 
-.simulate-panel input, 
+.simulate-panel select,
+.simulate-panel input,
 .simulate-panel button {
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+padding: 10px 15px;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 14px;
 }
 
-/* Estilo específico para el input del buscador (que ahora es type="text") */
+/* Estilo específico para el input del buscador (que ahora es type="text") /
 .simulate-panel input[type="text"] {
-  width: 400px; /* Ancho específico definido en App.jsx */
+width: 400px; / Ancho específico definido en App.jsx */
 }
 
 .simulate-panel select {
-  max-width: 300px;
+max-width: 300px;
 }
 
 /* Estilo del botón principal */
 .simulate-panel button {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-weight: 600; /* ✅ Mejora para el buscador híbrido */
+background-color: #007bff;
+color: white;
+border-color: #007bff;
+cursor: pointer;
+transition: background-color 0.2s ease;
+font-weight: 600;
 }
 
 .simulate-panel button:hover {
-  background-color: #0056b3;
+background-color: #0056b3;
 }
 
 .simulate-panel button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+background-color: #ccc;
+cursor: not-allowed;
 }
 
-/* ====================================================================== */
-/* === 3. ESTILOS DE LA GRILLA Y LAS TARJETAS DE PRODUCTO (.product-grid) === */
-/* ====================================================================== */
+/* Mensaje de estado del tracking */
+.tracking-message {
+margin: 10px 0 0;
+padding: 8px 15px;
+border-radius: 6px;
+background-color: #e9ecef;
+color: #343a40;
+flex-basis: 100%;
+text-align: center;
+}
+
+/* ====================================================================== /
+/ === 3. ESTILOS DE LA GRILLA Y LAS TARJETAS DE PRODUCTO (.product-grid) === /
+/ ====================================================================== */
 .product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  padding: 20px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 25px;
+padding: 20px;
 }
 
 /* Estilos de la Tarjeta de Producto */
 .product-card {
-  border: none;
-  border-radius: 16px;
-  padding: 15px;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative; 
-  cursor: pointer;
+border: none;
+border-radius: 16px;
+padding: 15px;
+background: white;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+transition: transform 0.25s ease, box-shadow 0.25s ease;
+display: flex;
+flex-direction: column;
+align-items: center;
+position: relative;
+cursor: pointer;
 }
 
 .product-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+transform: translateY(-5px) scale(1.02);
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .product-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: contain;
-  border-radius: 12px;
-  margin-bottom: 12px;
+width: 100%;
+height: 220px;
+object-fit: contain;
+border-radius: 12px;
+margin-bottom: 12px;
 }
 
 .product-card h3 {
-  font-size: 16px;
-  color: #111;
-  font-weight: 600;
-  margin: 8px 0;
-  text-align: center;
+font-size: 16px;
+color: #111;
+font-weight: 600;
+margin: 8px 0;
+text-align: center;
 }
 
 .product-card p {
-  margin: 4px 0;
-  color: #333;
+margin: 4px 0;
+color: #333;
 }
 
 .product-card a {
-  display: inline-block;
-  margin-top: 10px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+display: inline-block;
+margin-top: 10px;
+background-color: #007bff;
+color: white;
+text-decoration: none;
+padding: 8px 14px;
+border-radius: 8px;
+transition: background-color 0.3s ease;
 }
 
 .product-card a:hover {
-  background-color: #0056b3;
+background-color: #0056b3;
 }
 
 .timestamp {
-  font-size: 12px;
-  color: #666;
-  margin-top: 6px;
+font-size: 12px;
+color: #666;
+margin-top: 6px;
 }
 
-/* ====================================================================== */
-/* === 4. ESTILOS DE PRECIOS Y ESTADO (EMOJIS) === */
-/* ====================================================================== */
+/* Mensaje cuando no hay productos */
+.no-products-message {
+grid-column: 1 / -1;
+padding: 50px;
+font-size: 1.2em;
+color: #6c757d;
+background-color: white;
+border-radius: 12px;
+border: 2px dashed #ced4da;
+}
+
+/* ====================================================================== /
+/ === 4. ESTILOS DE PRECIOS Y ESTADO (EMOJIS) === /
+/ ====================================================================== */
 .previous-price {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 0;
+font-size: 14px;
+color: #888;
+margin-bottom: 0;
 }
 
 .current-price {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 2px !important;
+font-size: 18px;
+font-weight: bold;
+margin-top: 2px !important;
 }
 
 .change-text {
-    font-weight: bold;
-    margin-left: 5px;
+font-weight: bold;
+margin-left: 5px;
 }
 
 /* Bloque de Contexto (Min/Moda de Precios) */
 .context-box {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 8px;
-  margin-top: 10px;
-  width: 90%;
-  font-size: 13px;
-  text-align: left;
+background-color: #f8f9fa;
+border: 1px solid #e9ecef;
+border-radius: 8px;
+padding: 8px;
+margin-top: 10px;
+width: 90%;
+font-size: 13px;
+text-align: left;
 }
 
 .context-box p {
-  margin: 2px 0;
-  color: #495057;
+margin: 2px 0;
+color: #495057;
 }
 
 /* Alerta Superior (MÍNIMO HISTÓRICO) */
 .alert-badge {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: pulse 1.5s infinite; 
-    z-index: 10;
+position: absolute;
+top: -10px;
+left: 50%;
+transform: translateX(-50%);
+color: white;
+padding: 5px 10px;
+border-radius: 8px;
+font-size: 14px;
+font-weight: 700;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+animation: pulse 1.5s infinite;
+z-index: 10;
 }
 
 .alert-badge.low_historical {
-    background-color: #28a745; /* Verde fuerte para mínimo histórico */
+background-color: #28a745; /* Verde fuerte para mínimo histórico */
 }
 
 @keyframes pulse {
-    0% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.05); }
-    100% { transform: translateX(-50%) scale(1); }
+0% { transform: translateX(-50%) scale(1); }
+50% { transform: translateX(-50%) scale(1.05); }
+100% { transform: translateX(-50%) scale(1); }
 }
 
-/* ====================================================================== */
-/* === 5. ESTILOS DEL MODAL DE LA GRÁFICA === */
-/* ====================================================================== */
+/* Colores de fondo de tarjeta (se usan en App.jsx) /
+.product-card[style="d4edda"] { /* Precio bajo /
+border-left: 5px solid #28a745;
+}
+.product-card[style="fff3cd"] { /* Precio medio /
+border-left: 5px solid #ffc107;
+}
+.product-card[style="f8d7da"] { /* Precio alto */
+border-left: 5px solid #dc3545;
+}
+
+/* ====================================================================== /
+/ === 5. ESTILOS DEL MODAL DE LA GRÁFICA === /
+/ ====================================================================== */
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.6);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 700px;
-  z-index: 1001;
-  position: relative;
+background-color: white;
+padding: 25px;
+border-radius: 12px;
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+width: 90%;
+max-width: 800px; /* Aumentamos un poco el ancho del modal */
+z-index: 1001;
+position: relative;
 }
 
 .close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  font-weight: bold;
-  color: #888;
-  cursor: pointer;
+position: absolute;
+top: 10px;
+right: 15px;
+background: none;
+border: none;
+font-size: 24px;
+font-weight: bold;
+color: #888;
+cursor: pointer;
 }
 
 .close-button:hover {
-  color: #333;
+color: #333;
+}
+
+.modal-content h3 {
+color: #007bff;
+margin-bottom: 20px;
+}
+
+.new-product-msg {
+padding: 20px;
+border: 1px dashed #ffc107;
+border-radius: 8px;
+background-color: #fff3cd;
+color: #664d03;
 }
