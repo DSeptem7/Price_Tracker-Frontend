@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import "./App.css"; 
-// Asumiendo que App.css existe y tiene los estilos que ya definimos.
+// Importamos los estilos
 
 // === Componente Modal para la Gráfica (LÍNEA CONTINUA SIN PUNTOS) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
@@ -20,6 +20,31 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 
   useEffect(() => {
     const fetchHistory = async () => {
+      // Función de utilidad para manejar reintentos con backoff
+      const fetchWithRetry = async (url, attempts = 5) => {
+          for (let i = 0; i < attempts; i++) {
+              try {
+                  const res = await fetch(url);
+                  if (res.status === 404) {
+                      return { status: 404 }; // Manejo específico de 404
+                  }
+                  if (res.ok) {
+                      return res.json();
+                  }
+              } catch (error) {
+                  // Si no es el último intento, espera exponencialmente
+                  if (i < attempts - 1) {
+                      const delay = Math.pow(2, i) * 1000;
+                      await new Promise(resolve => setTimeout(resolve, delay));
+                      console.log(`Reintentando... intento ${i + 2}`);
+                  } else {
+                      throw error;
+                  }
+              }
+          }
+          throw new Error("Fallo al obtener historial después de varios reintentos.");
+      };
+
       try {
         setLoading(true);
         
@@ -27,16 +52,15 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         const url = `${apiBase}/history/${encodeURIComponent(
           productTitle
         )}`;
-        const res = await fetch(url);
         
-        if (res.status === 404) {
+        const data = await fetchWithRetry(url);
+        
+        if (data.status === 404) {
              setHistory([]);
              console.log("Historial no encontrado para el producto.");
              return;
         }
 
-        const data = await res.json();
-        
         if (data && Array.isArray(data.history)) {
           // Mapeamos la data de historial del objeto 'history'
           const formattedData = data.history
@@ -108,7 +132,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                 <Line
                   type="monotone"
                   dataKey="price"
-                  stroke="#007bff" // Cambié el color para que combine con el estilo principal
+                  stroke="#007bff" // Color de la línea
                   dot={false} // <-- ELIMINA LOS PUNTOS EN LA LÍNEA
                   activeDot={false} // <-- ELIMINA EL PUNTO QUE APARECE AL HACER HOVER
                 />
@@ -141,12 +165,32 @@ function App() {
   // URL de Render
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
+  // Función para manejar reintentos con backoff
+  const fetchWithRetry = async (url, attempts = 5) => {
+      for (let i = 0; i < attempts; i++) {
+          try {
+              const res = await fetch(url);
+              if (res.ok) {
+                  return res.json();
+              }
+          } catch (error) {
+              if (i < attempts - 1) {
+                  const delay = Math.pow(2, i) * 1000;
+                  await new Promise(resolve => setTimeout(resolve, delay));
+                  console.log(`Reintentando... intento ${i + 2}`);
+              } else {
+                  throw error;
+              }
+          }
+      }
+      throw new Error("Fallo al obtener productos después de varios reintentos.");
+  };
+
   // === Obtener productos (Llama a /product_history) ===
   const fetchProducts = async () => {
     setLoading(true); 
     try {
-      const res = await fetch(`${API_BASE}/product_history`); 
-      const data = await res.json();
+      const data = await fetchWithRetry(`${API_BASE}/product_history`); 
       
       if (Array.isArray(data)) {
         setProducts(data);
@@ -178,7 +222,7 @@ function App() {
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
     if (!isUrl) {
-        // Si no es URL, no hacemos nada. El useMemo filtrará la lista.
+        // Si no es URL, no hacemos nada. El useMemo filtrará la lista para buscar.
         return; 
     }
     
@@ -189,6 +233,7 @@ function App() {
     try {
       // Llamamos al endpoint de scraping /products
       const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; 
+      
       const res = await fetch(url);
       const result = await res.json();
 
@@ -226,9 +271,10 @@ function App() {
   // === Funciones auxiliares (Sin cambios) ===
   const getPriceColor = (price) => {
     const value = parseFloat(price.replace("$", "").replace(",", ""));
-    if (value < 10000) return "#d4edda";
-    if (value < 20000) return "#fff3cd";
-    return "#f8d7da";
+    // Estos colores son para el fondo de la tarjeta
+    if (value < 10000) return "#d4edda"; // Verde claro (bajo)
+    if (value < 20000) return "#fff3cd"; // Amarillo claro (medio)
+    return "#f8d7da"; // Rojo claro (alto)
   };
 
   const getStatusEmoji = (status) => {
@@ -249,7 +295,7 @@ function App() {
       <div className="simulate-panel">
         <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> 
         
-        {/* Usamos un div con flexbox para que los elementos estén juntos */}
+        {/* Contenedor del input y botón de rastreo/búsqueda */}
         <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <input
               type="text" 
@@ -263,6 +309,7 @@ function App() {
             </button>
         </div>
         
+        {/* Botón de Actualizar Lista (limpia solo la búsqueda local) */}
         <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> 
           {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
@@ -289,6 +336,7 @@ function App() {
             <div
                 key={index}
                 className="product-card"
+                // El color de fondo se usa para dar un indicativo rápido del precio
                 style={{ backgroundColor: getPriceColor(p.price) }}
                 onClick={() => setChartProductTitle(p.title)} 
             >
@@ -299,7 +347,10 @@ function App() {
                 </div>
                 )}
                 
-                <img src={p.image} alt={p.title} />
+                <img src={p.image} alt={p.title} 
+                     // Fallback por si la URL de imagen es inválida
+                     onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/200x220/888/fff?text=No+Img"; }}
+                />
                 <h3>{p.title}</h3>
 
                 {/* 💰 Bloque de Precios */}
@@ -332,6 +383,7 @@ function App() {
                 href={p.url}
                 target="_blank"
                 rel="noreferrer"
+                // Evita que el clic en el enlace abra el modal
                 onClick={(e) => e.stopPropagation()} 
                 >
                 Ver producto
