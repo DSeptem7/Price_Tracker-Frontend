@@ -227,7 +227,8 @@ background-color: #28a745;
 }
 
 /* Estilos adicionales para visualización de color de precio /
-.product-card[style="d4edda"] { /* Precio bajo (verde) /
+/ Nota: Usamos = para asegurar que coincida con el atributo de estilo dinámico de React /
+.product-card[style="d4edda"] { / Precio bajo (verde) /
 border-left: 5px solid #28a745;
 }
 .product-card[style="fff3cd"] { /* Precio medio (amarillo) /
