@@ -13,7 +13,7 @@ import {
 import "./App.css"; 
 // Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
-// === Componente Modal para la Gráfica (ACTUALIZADO) ===
+// === Componente Modal para la Gráfica (MODIFICADO) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
       try {
         setLoading(true);
         
-        // Llama al nuevo endpoint /history/{product_title}
+        // Llama al endpoint /history/{product_title}
         const url = `${apiBase}/history/${encodeURIComponent(
           productTitle
         )}`;
@@ -38,7 +38,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
-          // Mapeamos la data de historial del objeto 'history'
+          // Mapeamos la data de historial
           const formattedData = data.history
             .map((item) => {
               const priceValue = parseFloat(item.price);
@@ -93,11 +93,13 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                   formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
                 />
                 <Legend />
+                {/* 👇 AQUÍ ESTÁ EL CAMBIO 👇 */}
                 <Line
                   type="monotone"
                   dataKey="price"
                   stroke="#8884d8"
-                  activeDot={{ r: 8 }}
+                  dot={false}  /* 🟢 Esto elimina los puntos en la línea */
+                  activeDot={{ r: 8 }} /* Mantiene el punto grande solo al pasar el mouse */
                 />
               </LineChart>
             </ResponsiveContainer>
