@@ -76,6 +76,38 @@ h1 {
   cursor: not-allowed;
 }
 
+/* Modificamos el .simulate-panel para que sea un flex-container vertical */
+.simulate-panel {
+  /* Mantén los estilos de fondo y margen */
+  display: flex; /* Mantenemos flex, pero los hijos principales (las rows) serán las filas */
+  flex-direction: column; /* Apilamos las filas verticalmente */
+  gap: 15px; /* Separación entre las filas */
+  align-items: center; /* Centra las filas */
+}
+
+/* NUEVOS ESTILOS PARA LAS FILAS */
+.control-row,
+.filter-row {
+  display: flex;
+  gap: 15px; /* Espacio entre los elementos de la fila */
+  align-items: center;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  width: 100%; /* Ocupan todo el ancho del panel */
+}
+
+/* Estilo para el Input en la fila de control */
+.control-row input[type="text"] {
+  flex-grow: 1; /* Permite que el input crezca para ocupar el espacio */
+  max-width: 450px; /* Limita el ancho máximo para que no sea enorme */
+}
+
+/* Estilo para la etiqueta de Filtros */
+.filter-label {
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap; /* Evita que el texto se rompa */
+}
+
 /* ====================================================================== */
 /* === 3. ESTILOS DE LA GRILLA Y LAS TARJETAS DE PRODUCTO (.product-grid) === */
 /* ====================================================================== */
