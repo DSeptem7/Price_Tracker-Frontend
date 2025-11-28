@@ -264,19 +264,34 @@ function App() {
       <h1>🛒 Price Tracker (ML)</h1>
 
       {/* === Panel de Tracking / Buscador Híbrido + Filtros === */}
-      <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
-        
-        {/* Input Principal */}
+      // CÓDIGO ACTUALIZADO EN App.jsx
+// ...
+<div className="simulate-panel">
+    <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+    
+    {/* PRIMERA FILA: Búsqueda y Acciones */}
+    <div className="control-row"> 
         <input
-          type="text"
-          placeholder="Pega URL de ML o escribe para buscar aquí"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{width: "350px"}} 
+            type="text"
+            placeholder="Pega URL de ML o escribe para buscar aquí"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            // Eliminamos el style width de aquí para que el CSS maneje el ancho.
         />
+        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+            {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
+        </button>
+        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+            {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
+        </button>
+    </div>
 
-        {/* ✅ NUEVO: Selector de Ordenamiento */}
+    {/* ✅ NUEVA FILA: Filtros y Ordenamiento */}
+    <div className="filter-row">
+        {/* Leyenda de Filtros */}
+        <span className="filter-label">Filtros y Ordenamiento:</span> 
+        
+        {/* Selector de Ordenamiento */}
         <select 
             value={sortOption} 
             onChange={(e) => setSortOption(e.target.value)}
@@ -288,7 +303,7 @@ function App() {
             <option value="price_desc">💰 Precio: Mayor a Menor</option>
         </select>
 
-        {/* ✅ NUEVO: Selector de Filtros */}
+        {/* Selector de Filtros */}
         <select 
             value={filterOption} 
             onChange={(e) => setFilterOption(e.target.value)}
@@ -298,19 +313,14 @@ function App() {
             <option value="historical_low">🏆 Mínimo Histórico</option>
             <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
         </select>
-
-        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-          {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
-        </button>
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-          {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
-        </button>
-        
-        {/* Mensaje de estado del tracking */}
-        {trackingMessage && (
-          <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
-        )}
-      </div>
+    </div>
+    
+    {/* Mensaje de estado del tracking */}
+    {trackingMessage && (
+      <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
+    )}
+</div>
+// ...
       
       {/* === Grid de productos === */}
       <div className="product-grid">
