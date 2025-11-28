@@ -115,20 +115,24 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 }
 // === Fin de Componente Modal ===
 
-// === Componente Principal ===
+// === Componente Principal (COMPLETO CON FILTROS Y ORDENAMIENTO) ===
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
-  // --- Estados para el nuevo panel de tracking ---
-  // ❌ Renombramos newProductUrl a searchTerm
+  // --- Estados para el panel de tracking ---
   const [searchTerm, setSearchTerm] = useState(""); 
   const [trackingMessage, setTrackingMessage] = useState(""); 
   
+  // --- Estados para el Modal ---
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
-  // ✅ URL de Render
+  // ✅ NUEVOS ESTADOS: Filtros y Ordenamiento
+  const [sortOption, setSortOption] = useState("date_desc"); // Por defecto: Más recientes
+  const [filterOption, setFilterOption] = useState("all");   // Por defecto: Ver todos
+
+  // URL de Render
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
   // === Obtener productos (Llama a /product_history) ===
@@ -162,23 +166,27 @@ function App() {
     fetchProducts();
   }, []); 
 
-  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (y detecta búsqueda) ===
+  // === Función auxiliar para limpiar precios (Convierte "$1,200.00" a número) ===
+  const parsePrice = (priceStr) => {
+    if (!priceStr) return 0;
+    // Elimina todo lo que no sea número o punto decimal
+    return parseFloat(priceStr.toString().replace(/[^0-9.]/g, ""));
+  };
+
+  // === Rastrear Producto (Lógica Híbrida Original) ===
   const handleTrackProduct = async () => {
     // Detectamos si es una URL para scraping
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
     if (!isUrl) {
-        // Si no es URL, no hacemos nada. El useMemo filtrará la lista.
-        return; 
+        return; // Si no es URL, el useMemo se encarga de filtrar localmente.
     }
     
-    // --- LÓGICA DE SCRAPING (solo si es URL) ---
     setRefreshing(true); 
     setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
 
     try {
-      // Llamamos al endpoint de scraping /products
-      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; // ✅ Usamos searchTerm
+      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`;
       const res = await fetch(url);
       const result = await res.json();
 
@@ -200,20 +208,44 @@ function App() {
     }
   };
 
-  // === ✅ FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
-  const filteredProducts = useMemo(() => {
-    if (!searchTerm.trim() || searchTerm.includes("http")) {
-      return products; // Muestra todo si está vacío o si es una URL (esperamos scraping)
+  // === ✅ LÓGICA DE FILTRADO Y ORDENAMIENTO (Reemplaza al anterior filteredProducts) ===
+  const processedProducts = useMemo(() => {
+    // 1. Empezamos con todos los productos
+    let result = [...products];
+
+    // 2. Filtro de Búsqueda (Texto) - Respetando tu lógica híbrida
+    // Si hay texto y NO es una URL, filtramos por nombre.
+    if (searchTerm && !searchTerm.includes("http")) {
+      const lowerSearch = searchTerm.toLowerCase();
+      result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
     }
 
-    const lowerCaseSearch = searchTerm.toLowerCase();
+    // 3. Filtro por Categoría/Estado (Dropdown)
+    if (filterOption === "historical_low") {
+      result = result.filter(p => p.alert_type === "low_historical");
+    } else if (filterOption === "price_drop") {
+      result = result.filter(p => p.status === "down");
+    }
 
-    return products.filter(p => 
-      p.title.toLowerCase().includes(lowerCaseSearch)
-    );
-  }, [products, searchTerm]);
+    // 4. Ordenamiento (Dropdown)
+    result.sort((a, b) => {
+      switch (sortOption) {
+        case "price_asc": // Precio: Menor a Mayor
+          return parsePrice(a.price) - parsePrice(b.price);
+        case "price_desc": // Precio: Mayor a Menor
+          return parsePrice(b.price) - parsePrice(a.price);
+        case "date_asc": // Fecha: Más antigua primero
+          return new Date(a.timestamp) - new Date(b.timestamp);
+        case "date_desc": // Fecha: Más reciente primero
+        default:
+          return new Date(b.timestamp) - new Date(a.timestamp);
+      }
+    });
 
-  // === Funciones auxiliares (Sin cambios) ===
+    return result;
+  }, [products, searchTerm, sortOption, filterOption]);
+
+  // === Funciones auxiliares de estilo (ORIGINALES) ===
   const getPriceColor = (price) => {
     const value = parseFloat(price.replace("$", "").replace(",", ""));
     if (value < 10000) return "#d4edda";
@@ -235,43 +267,68 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === ✅ Panel de Tracking / Buscador Híbrido === */}
+      {/* === Panel de Tracking / Buscador Híbrido === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> {/* ✅ Texto actualizado */}
+        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+        
+        {/* Input Principal */}
         <input
-          type="text" // ✅ Cambiamos a type="text" para aceptar palabras
-          placeholder="Pega URL de ML o escribe para buscar aquí" // ✅ Placeholder actualizado
-          value={searchTerm} // ✅ Usamos searchTerm
-          onChange={(e) => setSearchTerm(e.target.value)} // ✅ Usamos setSearchTerm
-          style={{width: "400px"}} 
+          type="text"
+          placeholder="Pega URL de ML o escribe para buscar aquí"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{width: "350px"}} // Reduje ligeramente el ancho para que quepan los filtros
         />
-        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> {/* ✅ Usamos handleTrackProduct */}
-          {refreshing ? "Rastreando..." : "Rastrear / Buscar"} {/* ✅ Texto actualizado */}
+
+        {/* ✅ NUEVO: Selector de Ordenamiento */}
+        <select 
+            value={sortOption} 
+            onChange={(e) => setSortOption(e.target.value)}
+            style={{cursor: "pointer"}}
+        >
+            <option value="date_desc">📅 Fecha: Reciente</option>
+            <option value="date_asc">📅 Fecha: Antiguo</option>
+            <option value="price_asc">💰 Precio: Menor a Mayor</option>
+            <option value="price_desc">💰 Precio: Mayor a Menor</option>
+        </select>
+
+        {/* ✅ NUEVO: Selector de Filtros */}
+        <select 
+            value={filterOption} 
+            onChange={(e) => setFilterOption(e.target.value)}
+            style={{cursor: "pointer"}}
+        >
+            <option value="all">👁️ Ver Todos</option>
+            <option value="historical_low">🏆 Mínimo Histórico</option>
+            <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
+        </select>
+
+        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+          {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
         </button>
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> {/* ✅ Limpiamos el buscador al actualizar */}
+        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
           {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
         
         {/* Mensaje de estado del tracking */}
         {trackingMessage && (
-          <p className="tracking-message">{trackingMessage}</p>
+          <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
         )}
       </div>
       
       {/* === Grid de productos === */}
       <div className="product-grid">
-        {/* ✅ Usamos filteredProducts en lugar de products */}
-        {filteredProducts.length === 0 ? (
+        {/* ✅ Usamos processedProducts para renderizar */}
+        {processedProducts.length === 0 ? (
             <p className="no-products-message">
-                {searchTerm.trim() ? 
+                {searchTerm.trim() && !searchTerm.includes("http") ? 
                     `No se encontraron productos con el término "${searchTerm}".` : 
-                    "No hay productos registrados en la base de datos."
+                    "No hay productos que coincidan con los filtros seleccionados."
                 }
-                <br />Usa el panel de arriba para añadir tu primer producto.
+                <br />Intenta cambiar los filtros o añadir un nuevo producto con su URL.
             </p>
         ) : (
-            // ✅ Usamos filteredProducts en lugar de products
-            filteredProducts.map((p, index) => (
+            processedProducts.map((p, index) => (
             <div
                 key={index}
                 className="product-card"
@@ -341,5 +398,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
