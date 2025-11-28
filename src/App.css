@@ -320,5 +320,21 @@ h1 {
   transition: all 0.2s;
 }
 
+/* Estilo para el botón secundario (el de alternar fecha/hora) */
+.chart-controls button.secondary {
+  background: #f1f3f5;
+  color: #495057;
+  border: 1px solid #ced4da; /* Borde sutil para distinguirlo */
+  font-weight: 500;
+}
+
+/* Estilo para el botón secundario ACTIVO */
+.chart-controls button.secondary.active {
+  background: #495057; /* Fondo oscuro */
+  color: white;
+  border-color: #495057;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* El botón activo (azul) ya tiene un buen contraste */
 /* No es necesario modificar .chart-controls button.active */
