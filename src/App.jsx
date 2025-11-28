@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react"; // ✅ IMPORTAR useMemo
+import React, { useEffect, useState, useMemo } from "react"; 
 // Importar componentes de Recharts
 import {
   LineChart,
@@ -11,9 +11,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import "./App.css"; 
-// Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
-// === Componente Modal para la Gráfica (MODIFICADO) ===
+// === Componente Modal para la Gráfica (CON GRÁFICA LIMPIA) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,13 +92,12 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                   formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
                 />
                 <Legend />
-                {/* 👇 AQUÍ ESTÁ EL CAMBIO 👇 */}
                 <Line
                   type="monotone"
                   dataKey="price"
                   stroke="#8884d8"
-                  dot={false}  /* 🟢 Esto elimina los puntos en la línea */
-                  activeDot={{ r: 8 }} /* Mantiene el punto grande solo al pasar el mouse */
+                  dot={false}
+                  activeDot={false} // ✅ Eliminamos el dot activo para una gráfica totalmente limpia
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -115,7 +113,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 }
 // === Fin de Componente Modal ===
 
-// === Componente Principal (COMPLETO CON FILTROS Y ORDENAMIENTO) ===
+// === Componente Principal ===
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -125,12 +123,11 @@ function App() {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [trackingMessage, setTrackingMessage] = useState(""); 
   
-  // --- Estados para el Modal ---
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
   // ✅ NUEVOS ESTADOS: Filtros y Ordenamiento
-  const [sortOption, setSortOption] = useState("date_desc"); // Por defecto: Más recientes
-  const [filterOption, setFilterOption] = useState("all");   // Por defecto: Ver todos
+  const [sortOption, setSortOption] = useState("date_desc");
+  const [filterOption, setFilterOption] = useState("all"); 
 
   // URL de Render
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
@@ -166,7 +163,7 @@ function App() {
     fetchProducts();
   }, []); 
 
-  // === Función auxiliar para limpiar precios (Convierte "$1,200.00" a número) ===
+  // ✅ NUEVO: Función auxiliar para limpiar precios (Convierte "$1,200.00" a número)
   const parsePrice = (priceStr) => {
     if (!priceStr) return 0;
     // Elimina todo lo que no sea número o punto decimal
@@ -179,7 +176,7 @@ function App() {
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
 
     if (!isUrl) {
-        return; // Si no es URL, el useMemo se encarga de filtrar localmente.
+        return; 
     }
     
     setRefreshing(true); 
@@ -196,7 +193,7 @@ function App() {
 
       console.log("Respuesta del scraping:", result);
       setTrackingMessage(result.message); 
-      setSearchTerm(""); // Limpiar input después de scraping exitoso
+      setSearchTerm("");
       
       await fetchProducts(); 
 
@@ -208,13 +205,12 @@ function App() {
     }
   };
 
-  // === ✅ LÓGICA DE FILTRADO Y ORDENAMIENTO (Reemplaza al anterior filteredProducts) ===
+  // === ✅ LÓGICA DE FILTRADO Y ORDENAMIENTO (processedProducts) ===
   const processedProducts = useMemo(() => {
     // 1. Empezamos con todos los productos
     let result = [...products];
 
-    // 2. Filtro de Búsqueda (Texto) - Respetando tu lógica híbrida
-    // Si hay texto y NO es una URL, filtramos por nombre.
+    // 2. Filtro de Búsqueda (Texto) - Si hay texto y NO es una URL, filtramos por nombre.
     if (searchTerm && !searchTerm.includes("http")) {
       const lowerSearch = searchTerm.toLowerCase();
       result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
@@ -230,13 +226,13 @@ function App() {
     // 4. Ordenamiento (Dropdown)
     result.sort((a, b) => {
       switch (sortOption) {
-        case "price_asc": // Precio: Menor a Mayor
+        case "price_asc":
           return parsePrice(a.price) - parsePrice(b.price);
-        case "price_desc": // Precio: Mayor a Menor
+        case "price_desc":
           return parsePrice(b.price) - parsePrice(a.price);
-        case "date_asc": // Fecha: Más antigua primero
+        case "date_asc":
           return new Date(a.timestamp) - new Date(b.timestamp);
-        case "date_desc": // Fecha: Más reciente primero
+        case "date_desc":
         default:
           return new Date(b.timestamp) - new Date(a.timestamp);
       }
@@ -267,7 +263,7 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === Panel de Tracking / Buscador Híbrido === */}
+      {/* === Panel de Tracking / Buscador Híbrido + Filtros === */}
       <div className="simulate-panel">
         <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
         
@@ -277,7 +273,7 @@ function App() {
           placeholder="Pega URL de ML o escribe para buscar aquí"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{width: "350px"}} // Reduje ligeramente el ancho para que quepan los filtros
+          style={{width: "350px"}} 
         />
 
         {/* ✅ NUEVO: Selector de Ordenamiento */}
@@ -398,3 +394,5 @@ function App() {
     </div>
   );
 }
+
+export default App;
