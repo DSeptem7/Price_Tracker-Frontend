@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react"; // ✅ IMPORTAR useMemo
+import React, { useEffect, useState, useMemo } from "react"; 
 // Importar componentes de Recharts
 import {
   LineChart,
@@ -13,7 +13,7 @@ import {
 import "./App.css"; 
 // Asumiendo que App.css existe y tiene los estilos que ya definimos.
 
-// === Componente Modal para la Gráfica (ACTUALIZADO) ===
+// === Componente Modal para la Gráfica (LÍNEA CONTINUA SIN PUNTOS) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +47,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
 
               return {
                 price: priceValue,
+                // Formato de fecha/hora largo: [fecha, hora]
                 date: new Date(item.timestamp).toLocaleString("es-MX", {
                   day: "numeric",
                   month: "short",
@@ -87,23 +88,35 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
             <ResponsiveContainer>
               <LineChart data={history}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis domain={["auto", "auto"]} /> 
+                {/* Eje X: Agregamos rotación para manejar las etiquetas de fecha/hora largas */}
+                <XAxis 
+                    dataKey="date" 
+                    interval="preserveStartEnd"
+                    angle={-20} // Rotación de -20 grados
+                    textAnchor="end" // Alinea el texto a la derecha
+                />
+                {/* Eje Y: Agregamos el signo de pesos ($) */}
+                <YAxis 
+                    domain={["auto", "auto"]} 
+                    tickFormatter={(value) => `$${value.toFixed(0)}`} // Formatea el tick
+                /> 
                 <Tooltip
-                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
+                  // Muestra el precio formateado con dos decimales y el signo de pesos
+                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} 
                 />
                 <Legend />
                 <Line
                   type="monotone"
                   dataKey="price"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
+                  stroke="#007bff" // Cambié el color para que combine con el estilo principal
+                  dot={false} // <-- ELIMINA LOS PUNTOS EN LA LÍNEA
+                  activeDot={false} // <-- ELIMINA EL PUNTO QUE APARECE AL HACER HOVER
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          <p>
+          <p className="new-product-msg">
             No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
           </p>
         )}
@@ -120,13 +133,12 @@ function App() {
   const [refreshing, setRefreshing] = useState(false);
   
   // --- Estados para el nuevo panel de tracking ---
-  // ❌ Renombramos newProductUrl a searchTerm
   const [searchTerm, setSearchTerm] = useState(""); 
   const [trackingMessage, setTrackingMessage] = useState(""); 
   
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
-  // ✅ URL de Render
+  // URL de Render
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
   // === Obtener productos (Llama a /product_history) ===
@@ -160,7 +172,7 @@ function App() {
     fetchProducts();
   }, []); 
 
-  // === ✅ NUEVA FUNCIÓN: Rastrear Producto (y detecta búsqueda) ===
+  // === Rastrear Producto (y detecta búsqueda) ===
   const handleTrackProduct = async () => {
     // Detectamos si es una URL para scraping
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
@@ -176,7 +188,7 @@ function App() {
 
     try {
       // Llamamos al endpoint de scraping /products
-      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; // ✅ Usamos searchTerm
+      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`; 
       const res = await fetch(url);
       const result = await res.json();
 
@@ -198,7 +210,7 @@ function App() {
     }
   };
 
-  // === ✅ FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
+  // === FILTRO INTERNO: Filtra productos mostrados por el término de búsqueda ===
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim() || searchTerm.includes("http")) {
       return products; // Muestra todo si está vacío o si es una URL (esperamos scraping)
@@ -233,20 +245,25 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === ✅ Panel de Tracking / Buscador Híbrido === */}
+      {/* === Panel de Tracking / Buscador Híbrido === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> {/* ✅ Texto actualizado */}
-        <input
-          type="text" // ✅ Cambiamos a type="text" para aceptar palabras
-          placeholder="Pega URL de ML o escribe para buscar aquí" // ✅ Placeholder actualizado
-          value={searchTerm} // ✅ Usamos searchTerm
-          onChange={(e) => setSearchTerm(e.target.value)} // ✅ Usamos setSearchTerm
-          style={{width: "400px"}} 
-        />
-        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> {/* ✅ Usamos handleTrackProduct */}
-          {refreshing ? "Rastreando..." : "Rastrear / Buscar"} {/* ✅ Texto actualizado */}
-        </button>
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> {/* ✅ Limpiamos el buscador al actualizar */}
+        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3> 
+        
+        {/* Usamos un div con flexbox para que los elementos estén juntos */}
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <input
+              type="text" 
+              placeholder="Pega URL de ML o escribe para buscar aquí" 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)} 
+              style={{width: "400px"}} 
+            />
+            <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}> 
+              {refreshing ? "Rastreando..." : "Rastrear / Buscar"} 
+            </button>
+        </div>
+        
+        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}> 
           {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
         </button>
         
@@ -258,7 +275,6 @@ function App() {
       
       {/* === Grid de productos === */}
       <div className="product-grid">
-        {/* ✅ Usamos filteredProducts en lugar de products */}
         {filteredProducts.length === 0 ? (
             <p className="no-products-message">
                 {searchTerm.trim() ? 
@@ -268,7 +284,7 @@ function App() {
                 <br />Usa el panel de arriba para añadir tu primer producto.
             </p>
         ) : (
-            // ✅ Usamos filteredProducts en lugar de products
+            // Usamos filteredProducts
             filteredProducts.map((p, index) => (
             <div
                 key={index}
