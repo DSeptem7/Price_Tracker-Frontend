@@ -76,7 +76,6 @@ h1 {
   cursor: not-allowed;
 }
 
-
 /* ====================================================================== */
 /* === 3. ESTILOS DE LA GRILLA Y LAS TARJETAS DE PRODUCTO (.product-grid) === */
 /* ====================================================================== */
@@ -149,7 +148,6 @@ h1 {
   margin-top: 6px;
 }
 
-
 /* ====================================================================== */
 /* === 4. ESTILOS DE PRECIOS Y ESTADO (EMOJIS) === */
 /* ====================================================================== */
@@ -213,7 +211,6 @@ h1 {
     100% { transform: translateX(-50%) scale(1); }
 }
 
-
 /* ====================================================================== */
 /* === 5. ESTILOS DEL MODAL DE LA GRÁFICA === */
 /* ====================================================================== */
@@ -256,85 +253,3 @@ h1 {
 .close-button:hover {
   color: #333;
 }
-
-.modal-content h3 {
-  color: #333; /* Color oscuro para el título del producto */
-  margin-top: 0;
-}
-/* ====================================================================== */
-/* === 6. ESTILOS DE LA GRÁFICA INTELIGENTE (Controles y Leyenda) === */
-/* ====================================================================== */
-
-/* Contenedor de los botones de rango */
-.chart-controls {
-  display: flex;
-  justify-content: flex-end; /* Alinear a la derecha */
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.chart-controls button {
-  background: #f1f3f5;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-/* Estilo para el botón activo (rango seleccionado) */
-.chart-controls button.active {
-  background: #007bff; /* Color primario del tema */
-  color: white;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
-}
-
-/* Estilo para la leyenda de producto nuevo/sin datos */
-.new-product-msg {
-  text-align: center;
-  padding: 40px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 2px dashed #ddd;
-  color: #666;
-  margin-top: 20px;
-}
-.new-product-msg h3 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #495057;
-}
-/* Dentro de la sección 6. ESTILOS DE LA GRÁFICA INTELIGENTE */
-
-.chart-controls button {
-  background: #e9ecef; /* Fondo gris muy claro para contraste */
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  color: #495057; /* Texto oscuro para que se lea */
-  transition: all 0.2s;
-}
-
-/* Estilo para el botón secundario (el de alternar fecha/hora) */
-.chart-controls button.secondary {
-  background: #f1f3f5;
-  color: #495057;
-  border: 1px solid #ced4da; /* Borde sutil para distinguirlo */
-  font-weight: 500;
-}
-
-/* Estilo para el botón secundario ACTIVO */
-.chart-controls button.secondary.active {
-  background: #495057; /* Fondo oscuro */
-  color: white;
-  border-color: #495057;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* El botón activo (azul) ya tiene un buen contraste */
-/* No es necesario modificar .chart-controls button.active */
