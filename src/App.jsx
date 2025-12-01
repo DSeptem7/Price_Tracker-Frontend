@@ -114,7 +114,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
             </ResponsiveContainer>
           </div>
         ) : (
-          <p>
+          <p style={{ color: '#333' }}>
             No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
           </p>
         )}
