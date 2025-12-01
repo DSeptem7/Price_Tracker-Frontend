@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import "./App.css"; 
 
-// === Componente Modal para la Gráfica (CON GRÁFICA LIMPIA) ===
+// === Componente Modal para la Gráfica (CON SOLUCIÓN DE DOBLE CODIFICACIÓN) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,9 +22,13 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
       try {
         setLoading(true);
         
+        // 🟢 SOLUCIÓN AL ERROR 404: Doble codificación para la barra inclinada (/)
+        // Esto evita que el backend la interprete como un separador de ruta.
+        const safeProductTitle = productTitle.replace(/\//g, '%2F');
+
         // Llama al endpoint /history/{product_title}
         const url = `${apiBase}/history/${encodeURIComponent(
-          productTitle
+          safeProductTitle // Usamos el título seguro
         )}`;
         const res = await fetch(url);
         
@@ -97,7 +101,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                   dataKey="price"
                   stroke="#8884d8"
                   dot={false}
-                  activeDot={false} // ✅ Eliminamos el dot activo para una gráfica totalmente limpia
+                  activeDot={false} // Gráfica limpia
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -263,64 +267,60 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === Panel de Tracking / Buscador Híbrido + Filtros === */}
-      // CÓDIGO ACTUALIZADO EN App.jsx
-// ...
-<div className="simulate-panel">
-    <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
-    
-    {/* PRIMERA FILA: Búsqueda y Acciones */}
-    <div className="control-row"> 
-        <input
-            type="text"
-            placeholder="Pega URL de ML o escribe para buscar aquí"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            // Eliminamos el style width de aquí para que el CSS maneje el ancho.
-        />
-        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-            {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
-        </button>
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-            {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
-        </button>
-    </div>
+      {/* === Panel de Tracking / Buscador Híbrido + Filtros (Reestructurado) === */}
+      <div className="simulate-panel">
+          <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+          
+          {/* PRIMERA FILA: Búsqueda y Acciones */}
+          <div className="control-row"> 
+              <input
+                  type="text"
+                  placeholder="Pega URL de ML o escribe para buscar aquí"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                  {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
+              </button>
+              <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+                  {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
+              </button>
+          </div>
 
-    {/* ✅ NUEVA FILA: Filtros y Ordenamiento */}
-    <div className="filter-row">
-        {/* Leyenda de Filtros */}
-        <span className="filter-label">Filtros y Ordenamiento:</span> 
-        
-        {/* Selector de Ordenamiento */}
-        <select 
-            value={sortOption} 
-            onChange={(e) => setSortOption(e.target.value)}
-            style={{cursor: "pointer"}}
-        >
-            <option value="date_desc">📅 Fecha: Reciente</option>
-            <option value="date_asc">📅 Fecha: Antiguo</option>
-            <option value="price_asc">💰 Precio: Menor a Mayor</option>
-            <option value="price_desc">💰 Precio: Mayor a Menor</option>
-        </select>
+          {/* ✅ SEGUNDA FILA: Filtros y Ordenamiento */}
+          <div className="filter-row">
+              {/* Leyenda de Filtros */}
+              <span className="filter-label">Filtros y Ordenamiento:</span> 
+              
+              {/* Selector de Ordenamiento */}
+              <select 
+                  value={sortOption} 
+                  onChange={(e) => setSortOption(e.target.value)}
+                  style={{cursor: "pointer"}}
+              >
+                  <option value="date_desc">📅 Fecha: Reciente</option>
+                  <option value="date_asc">📅 Fecha: Antiguo</option>
+                  <option value="price_asc">💰 Precio: Menor a Mayor</option>
+                  <option value="price_desc">💰 Precio: Mayor a Menor</option>
+              </select>
 
-        {/* Selector de Filtros */}
-        <select 
-            value={filterOption} 
-            onChange={(e) => setFilterOption(e.target.value)}
-            style={{cursor: "pointer"}}
-        >
-            <option value="all">👁️ Ver Todos</option>
-            <option value="historical_low">🏆 Mínimo Histórico</option>
-            <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
-        </select>
-    </div>
-    
-    {/* Mensaje de estado del tracking */}
-    {trackingMessage && (
-      <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
-    )}
-</div>
-// ...
+              {/* Selector de Filtros */}
+              <select 
+                  value={filterOption} 
+                  onChange={(e) => setFilterOption(e.target.value)}
+                  style={{cursor: "pointer"}}
+              >
+                  <option value="all">👁️ Ver Todos</option>
+                  <option value="historical_low">🏆 Mínimo Histórico</option>
+                  <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
+              </select>
+          </div>
+          
+          {/* Mensaje de estado del tracking */}
+          {trackingMessage && (
+            <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
+          )}
+      </div>
       
       {/* === Grid de productos === */}
       <div className="product-grid">
