@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import "./App.css"; 
 
-// === Componente Modal para la Gráfica (CON SOLUCIÓN DE DOBLE CODIFICACIÓN) ===
+// === Componente Modal para la Gráfica (VERSIÓN CON MÁXIMA SANITIZACIÓN) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,23 +21,29 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     const fetchHistory = async () => {
       try {
         setLoading(true);
-        
-        // 🟢 SOLUCIÓN AL ERROR 404: Doble codificación para la barra inclinada (/)
-        // Esto evita que el backend la interprete como un separador de ruta.
-        const safeProductTitle = productTitle.replace(/\//g, '%2F');
+
+        // 🛑 MÁXIMA SANITIZACIÓN: Creamos una clave segura sin barras, espacios dobles, o signos especiales.
+        // Esto es un intento de imitar cómo el backend podría haber "limpiado" la clave para la DB.
+        // Reemplazamos barras ('/') y '+' por un guion bajo ('_') para que no rompan la ruta ni la coincidencia.
+        const safeKeyTitle = productTitle
+            .trim()
+            .replace(/\s+/g, ' ') // Quita espacios dobles
+            .replace(/[/\+]/g, '_'); // Reemplaza '/' y '+' por '_'
 
         // Llama al endpoint /history/{product_title}
+        // Usamos la clave segura para la ruta
         const url = `${apiBase}/history/${encodeURIComponent(
-          safeProductTitle // Usamos el título seguro
+          safeKeyTitle
         )}`;
+        
         const res = await fetch(url);
         
         if (res.status === 404) {
              setHistory([]);
-             console.log("Historial no encontrado para el producto.");
+             console.log(`Historial no encontrado para el producto. Clave enviada: ${safeKeyTitle}.`);
              return;
         }
-
+        
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
@@ -77,6 +83,7 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
   }, [productTitle, apiBase]);
 
   return (
+// ... (El JSX es idéntico a tu versión anterior)
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>
