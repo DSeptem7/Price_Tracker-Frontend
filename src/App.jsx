@@ -89,9 +89,9 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         <button className="close-button" onClick={onClose}>
           &times;
         </button>
-        <h3>Historial de Precio: {productTitle}</h3>
+        <h3 style={{ color: '#333' }}>Historial de Precio: {productTitle}</h3>
         {loading ? (
-          <p>Cargando historial...</p>
+          <p style={{ color: '#333' }}>Cargando historial...</p>
         ) : history.length > 1 ? ( 
           <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
