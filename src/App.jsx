@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import "./App.css"; 
 
-// === Componente Modal para la Gráfica (CON GRÁFICA LIMPIA) ===
+// === Componente Modal para la Gráfica (VERSIÓN CON MÁXIMA SANITIZACIÓN) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,19 +21,29 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     const fetchHistory = async () => {
       try {
         setLoading(true);
-        
+
+        // 🛑 MÁXIMA SANITIZACIÓN: Creamos una clave segura sin barras, espacios dobles, o signos especiales.
+        // Esto es un intento de imitar cómo el backend podría haber "limpiado" la clave para la DB.
+        // Reemplazamos barras ('/') y '+' por un guion bajo ('_') para que no rompan la ruta ni la coincidencia.
+        const safeKeyTitle = productTitle
+            .trim()
+            .replace(/\s+/g, ' ') // Quita espacios dobles
+            .replace(/[/\+]/g, '_'); // Reemplaza '/' y '+' por '_'
+
         // Llama al endpoint /history/{product_title}
+        // Usamos la clave segura para la ruta
         const url = `${apiBase}/history/${encodeURIComponent(
-          productTitle
+          safeKeyTitle
         )}`;
+        
         const res = await fetch(url);
         
         if (res.status === 404) {
              setHistory([]);
-             console.log("Historial no encontrado para el producto.");
+             console.log(`Historial no encontrado para el producto. Clave enviada: ${safeKeyTitle}.`);
              return;
         }
-
+        
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
@@ -73,14 +83,15 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
   }, [productTitle, apiBase]);
 
   return (
+// ... (El JSX es idéntico a tu versión anterior)
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>
           &times;
         </button>
-        <h3>Historial de Precio: {productTitle}</h3>
+        <h3 style={{ color: '#333' }}>Historial de Precio: {productTitle}</h3>
         {loading ? (
-          <p>Cargando historial...</p>
+          <p style={{ color: '#333' }}>Cargando historial...</p>
         ) : history.length > 1 ? ( 
           <div style={{ width: "100%", height: 300 }}>
             <ResponsiveContainer>
@@ -97,13 +108,13 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                   dataKey="price"
                   stroke="#8884d8"
                   dot={false}
-                  activeDot={false} // ✅ Eliminamos el dot activo para una gráfica totalmente limpia
+                  activeDot={false} // Gráfica limpia
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          <p>
+          <p style={{ color: '#333' }}>
             No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
           </p>
         )}
@@ -263,53 +274,59 @@ function App() {
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === Panel de Tracking / Buscador Híbrido + Filtros === */}
+      {/* === Panel de Tracking / Buscador Híbrido + Filtros (Reestructurado) === */}
       <div className="simulate-panel">
-        <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
-        
-        {/* Input Principal */}
-        <input
-          type="text"
-          placeholder="Pega URL de ML o escribe para buscar aquí"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{width: "350px"}} 
-        />
+          <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+          
+          {/* PRIMERA FILA: Búsqueda y Acciones */}
+          <div className="control-row"> 
+              <input
+                  type="text"
+                  placeholder="Pega URL de ML o escribe para buscar aquí"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                  {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
+              </button>
+              <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+                  {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
+              </button>
+          </div>
 
-        {/* ✅ NUEVO: Selector de Ordenamiento */}
-        <select 
-            value={sortOption} 
-            onChange={(e) => setSortOption(e.target.value)}
-            style={{cursor: "pointer"}}
-        >
-            <option value="date_desc">📅 Fecha: Reciente</option>
-            <option value="date_asc">📅 Fecha: Antiguo</option>
-            <option value="price_asc">💰 Precio: Menor a Mayor</option>
-            <option value="price_desc">💰 Precio: Mayor a Menor</option>
-        </select>
+          {/* ✅ SEGUNDA FILA: Filtros y Ordenamiento */}
+          <div className="filter-row">
+              {/* Leyenda de Filtros */}
+              <span className="filter-label">Filtros y Ordenamiento:</span> 
+              
+              {/* Selector de Ordenamiento */}
+              <select 
+                  value={sortOption} 
+                  onChange={(e) => setSortOption(e.target.value)}
+                  style={{cursor: "pointer"}}
+              >
+                  <option value="date_desc">📅 Fecha: Reciente</option>
+                  <option value="date_asc">📅 Fecha: Antiguo</option>
+                  <option value="price_asc">💰 Precio: Menor a Mayor</option>
+                  <option value="price_desc">💰 Precio: Mayor a Menor</option>
+              </select>
 
-        {/* ✅ NUEVO: Selector de Filtros */}
-        <select 
-            value={filterOption} 
-            onChange={(e) => setFilterOption(e.target.value)}
-            style={{cursor: "pointer"}}
-        >
-            <option value="all">👁️ Ver Todos</option>
-            <option value="historical_low">🏆 Mínimo Histórico</option>
-            <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
-        </select>
-
-        <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-          {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
-        </button>
-        <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-          {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
-        </button>
-        
-        {/* Mensaje de estado del tracking */}
-        {trackingMessage && (
-          <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
-        )}
+              {/* Selector de Filtros */}
+              <select 
+                  value={filterOption} 
+                  onChange={(e) => setFilterOption(e.target.value)}
+                  style={{cursor: "pointer"}}
+              >
+                  <option value="all">👁️ Ver Todos</option>
+                  <option value="historical_low">🏆 Mínimo Histórico</option>
+                  <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
+              </select>
+          </div>
+          
+          {/* Mensaje de estado del tracking */}
+          {trackingMessage && (
+            <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
+          )}
       </div>
       
       {/* === Grid de productos === */}
