@@ -270,7 +270,15 @@ function App() {
     return "🆕 Nuevo";
   };
 
-  if (loading) return <p>Cargando productos...</p>;
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="spinner"></div>
+        <p>Consultando catálogo...</p>
+        <span>Esto solo tardará un momento</span>
+      </div>
+    );
+  }
   
   return (
     <div className="App">
