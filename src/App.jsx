@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from "react"; 
-// Importar componentes de Recharts
 import {
   LineChart,
   Line,
@@ -32,7 +31,6 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
         
         if (res.status === 404) {
              setHistory([]);
-             console.log(`Historial no encontrado. Clave: ${safeKeyTitle}.`);
              return;
         }
 
@@ -108,8 +106,9 @@ function App() {
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available"); 
 
-  // 🟢 NUEVO ESTADO: Paginación
-  const [visibleCount, setVisibleCount] = useState(20);
+  // 🟢 ESTADO PARA PAGINACIÓN
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20; // 20 productos por página
 
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
@@ -210,11 +209,51 @@ function App() {
     return result;
   }, [products, searchTerm, sortOption, filterOption]);
 
-  // 🟢 EFECTO: Reiniciar paginación al cambiar filtros
+  // 🟢 Reiniciar a página 1 cuando cambian los filtros
   useEffect(() => {
-    setVisibleCount(20);
+    setCurrentPage(1);
   }, [searchTerm, filterOption, sortOption]);
 
+  // 🟢 Calcular Paginación
+  const totalItems = processedProducts.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  
+  // Obtener productos de la página actual
+  const currentProducts = processedProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    // Scroll suave al inicio de la lista
+    window.scrollTo({ top: 100, behavior: 'smooth' });
+  };
+
+  // 🟢 ALGORITMO DE PAGINACIÓN (Números dinámicos)
+  const getPaginationGroup = () => {
+    let start = Math.floor((currentPage - 1) / 5) * 5;
+    
+    // Si hay pocas páginas (menos de 7), mostrar todas
+    if (totalPages <= 7) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // Caso 1: Estamos al principio (ej: 1, 2, 3, 4, 5 ... 120)
+    if (currentPage <= 4) {
+        return [1, 2, 3, 4, 5, "...", totalPages];
+    }
+
+    // Caso 2: Estamos al final (ej: 1 ... 116, 117, 118, 119, 120)
+    if (currentPage >= totalPages - 3) {
+        return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    // Caso 3: Estamos en medio (ej: 1 ... 48, 49, 50, 51, 52 ... 120)
+    return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
+  };
+
+  // --- Funciones de Estilo ---
   const getPriceColor = (price) => {
     const value = parsePrice(price);
     if (value === 0) return "#e9ecef"; 
@@ -230,14 +269,6 @@ function App() {
     if (status === "same") return "🟡 → Igual";
     return "🆕 Nuevo";
   };
-
-  // 🟢 FUNCIÓN PARA EL BOTÓN VER MÁS
-  const handleShowMore = () => {
-    setVisibleCount((prevCount) => prevCount + 20);
-  };
-
-  // 🟢 DEFINIR PRODUCTOS VISIBLES
-  const visibleProducts = processedProducts.slice(0, visibleCount);
 
   if (loading) return <p>Cargando productos...</p>;
   
@@ -287,16 +318,44 @@ function App() {
           )}
       </div>
       
+      {/* 🟢 CONTROLES DE PAGINACIÓN SUPERIOR (Opcional, útil si la lista es muy larga) */}
+      {totalPages > 1 && (
+         <div className="pagination-container">
+            <button 
+                onClick={() => handlePageChange(currentPage - 1)} 
+                disabled={currentPage === 1}
+                className="pagination-arrow"
+            >
+                ‹
+            </button>
+            {getPaginationGroup().map((item, index) => (
+                <button
+                    key={index}
+                    onClick={() => typeof item === 'number' ? handlePageChange(item) : null}
+                    className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`}
+                    disabled={item === '...'}
+                >
+                    {item}
+                </button>
+            ))}
+            <button 
+                onClick={() => handlePageChange(currentPage + 1)} 
+                disabled={currentPage === totalPages}
+                className="pagination-arrow"
+            >
+                ›
+            </button>
+         </div>
+      )}
+
       <div className="product-grid">
-        {visibleProducts.length === 0 ? (
+        {currentProducts.length === 0 ? (
             <p className="no-products-message">
                 No se encontraron productos con estos criterios.
             </p>
         ) : (
-            // 🟢 USAMOS visibleProducts en lugar de processedProducts
-            visibleProducts.map((p, index) => {
+            currentProducts.map((p, index) => {
                 const outOfStock = isOutOfStock(p);
-
                 return (
                 <div
                     key={index}
@@ -308,76 +367,50 @@ function App() {
                     }}
                     onClick={() => setChartProductTitle(p.title)} 
                 >
-                    {outOfStock && (
-                        <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>
-                            🚫 SIN STOCK
-                        </div>
-                    )}
-
-                    {!outOfStock && p.alert_type === "low_historical" && (
-                    <div className="alert-badge low_historical">
-                        ¡MÍNIMO HISTÓRICO! 📉
-                    </div>
-                    )}
+                    {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
+                    {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
                     
                     <img src={p.image} alt={p.title} />
-                    <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>
-                        {p.title}
-                    </h3>
-
-                    {!outOfStock && p.status !== "new" && p.previous_price && (
-                    <p className="previous-price">
-                        Precio Anterior: <s>{p.previous_price}</s>
-                    </p>
-                    )}
-
-                    <p className="current-price">
-                        <strong>{outOfStock ? "No disponible" : p.price}</strong>
-                    </p>
-                    
-                    <p>
-                        {getStatusEmoji(p.status, p)} 
-                        {!outOfStock && (p.status === "up" || p.status === "down") && (
-                            <span className="change-text"> ({p.change_percentage})</span>
-                        )}
-                    </p>
-                    
-                    {!outOfStock && p.mode_price && (
-                        <div className="context-box">
-                            <p><strong>Frecuente:</strong> {p.mode_price}</p>
-                            <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-                        </div>
-                    )}
-                    
-                    <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                       {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
-                    </a>
-                    <p className="timestamp">
-                    {new Date(p.timestamp).toLocaleString()}
-                    </p> 
+                    <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
+                    {!outOfStock && p.status !== "new" && p.previous_price && <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>}
+                    <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+                    <p>{getStatusEmoji(p.status, p)} {!outOfStock && (p.status === "up" || p.status === "down") && <span className="change-text"> ({p.change_percentage})</span>}</p>
+                    {!outOfStock && p.mode_price && <div className="context-box"><p><strong>Frecuente:</strong> {p.mode_price}</p><p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p></div>}
+                    <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}</a>
+                    <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
                 </div>
             )})
         )}
       </div>
 
-      {/* 🟢 BOTÓN VER MÁS: Se muestra solo si hay más elementos que mostrar */}
-      {processedProducts.length > visibleCount && (
-        <div style={{ textAlign: "center", margin: "20px 0" }}>
-          <button 
-            onClick={handleShowMore}
-            style={{
-              padding: "10px 20px",
-              fontSize: "16px",
-              cursor: "pointer",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "5px"
-            }}
-          >
-            ⬇️ Ver más productos ({processedProducts.length - visibleCount} restantes)
-          </button>
-        </div>
+      {/* 🟢 CONTROLES DE PAGINACIÓN INFERIOR */}
+      {totalPages > 1 && (
+         <div className="pagination-container" style={{ marginTop: '30px', marginBottom: '50px' }}>
+            <button 
+                onClick={() => handlePageChange(currentPage - 1)} 
+                disabled={currentPage === 1}
+                className="pagination-arrow"
+            >
+                ‹
+            </button>
+            {getPaginationGroup().map((item, index) => (
+                <button
+                    key={index}
+                    onClick={() => typeof item === 'number' ? handlePageChange(item) : null}
+                    className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`}
+                    disabled={item === '...'}
+                >
+                    {item}
+                </button>
+            ))}
+            <button 
+                onClick={() => handlePageChange(currentPage + 1)} 
+                disabled={currentPage === totalPages}
+                className="pagination-arrow"
+            >
+                ›
+            </button>
+         </div>
       )}
       
       {chartProductTitle && (
