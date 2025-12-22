@@ -174,7 +174,7 @@ h1 {
   padding: 8px 12px;
   margin: 8px 0;
   font-size: 12px; /* Legible pero compacto */
-  text-align: left;
+  text-align: middle;
 }
 
 .context-box p {
