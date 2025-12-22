@@ -343,46 +343,51 @@ h1 {
 /* ====================================================================== */
 /* === 7. Pantalla de carga completa === */
 /* ====================================================================== */
-/* Pantalla de carga completa */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #f4f7f6; /* El mismo fondo que pusimos en index.css */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+/* === ESTILOS SKELETON SCREEN === */
+
+.skeleton-card {
+  background-color: #fff !important; /* Fondo blanco para el esqueleto */
+  border: 1px solid #eee;
+  cursor: default;
+  overflow: hidden;
+  position: relative;
 }
 
-/* El círculo que gira */
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #ddd;
-  border-top: 5px solid #007bff; /* Color azul */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+/* La animación del brillo pasando */
+.skeleton-img, .skeleton-title, .skeleton-text {
+  background: #ececec;
+  background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-.loading-screen p {
-  font-size: 1.2rem;
-  color: #333;
-  margin: 0;
-  font-weight: 500;
+/* Espacios simulados en la tarjeta */
+.skeleton-img {
+  width: 100%;
+  height: 180px; /* Misma altura que tus imágenes reales */
+  margin-bottom: 15px;
+  border-radius: 8px;
 }
 
-.loading-screen span {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
+.skeleton-title {
+  height: 20px;
+  width: 80%;
+  margin: 0 auto 15px auto;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 15px;
+  width: 60%;
+  margin: 0 auto 10px auto;
+  border-radius: 4px;
+}
+
+.skeleton-text.short {
+  width: 40%;
 }
