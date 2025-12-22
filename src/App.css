@@ -2,20 +2,21 @@
 /* === 1. ESTILOS BASE Y CONTENEDOR PRINCIPAL (.App) === */
 /* ====================================================================== */
 .App {
-  font-family: sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   padding: 20px;
   background-color: #f4f7f9; /* Fondo gris claro */
+  min-height: 100vh;
 }
 
 h1 {
   color: #333;
   margin-bottom: 30px;
+  font-weight: 700;
 }
 
 /* ====================================================================== */
 /* === 2. ESTILOS DEL PANEL DE BÚSQUEDA Y RASTREO (.simulate-panel) === */
-/* (Contiene el Buscador Híbrido y Botones) */
 /* ====================================================================== */
 .simulate-panel {
   background-color: #fff;
@@ -24,21 +25,27 @@ h1 {
   padding: 20px;
   margin-bottom: 30px;
   display: flex;
+  flex-direction: column; /* Apilamos las filas verticalmente */
   gap: 15px;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .simulate-panel h3 {
   margin: 0;
   font-size: 18px;
-  flex-basis: 100%; /* Ocupa todo el ancho */
   text-align: center;
 }
 
-/* Estilos de inputs, selects y botones en general dentro del panel */
+.control-row, .filter-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .simulate-panel select, 
 .simulate-panel input, 
 .simulate-panel button {
@@ -48,27 +55,23 @@ h1 {
   font-size: 14px;
 }
 
-/* Estilo específico para el input del buscador (que ahora es type="text") */
-.simulate-panel input[type="text"] {
-  width: 400px; /* Ancho específico definido en App.jsx */
+.control-row input[type="text"] {
+  flex-grow: 1;
+  max-width: 450px;
 }
 
-.simulate-panel select {
-  max-width: 300px;
-}
-
-/* Estilo del botón principal */
 .simulate-panel button {
   background-color: #007bff;
   color: white;
-  border-color: #007bff;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-weight: 600; /* ✅ Mejora para el buscador híbrido */
+  transition: all 0.2s ease;
+  font-weight: 600;
 }
 
 .simulate-panel button:hover {
   background-color: #0056b3;
+  transform: translateY(-1px);
 }
 
 .simulate-panel button:disabled {
@@ -76,36 +79,9 @@ h1 {
   cursor: not-allowed;
 }
 
-/* Modificamos el .simulate-panel para que sea un flex-container vertical */
-.simulate-panel {
-  /* Mantén los estilos de fondo y margen */
-  display: flex; /* Mantenemos flex, pero los hijos principales (las rows) serán las filas */
-  flex-direction: column; /* Apilamos las filas verticalmente */
-  gap: 15px; /* Separación entre las filas */
-  align-items: center; /* Centra las filas */
-}
-
-/* NUEVOS ESTILOS PARA LAS FILAS */
-.control-row,
-.filter-row {
-  display: flex;
-  gap: 15px; /* Espacio entre los elementos de la fila */
-  align-items: center;
-  justify-content: center; /* Centra el contenido horizontalmente */
-  width: 100%; /* Ocupan todo el ancho del panel */
-}
-
-/* Estilo para el Input en la fila de control */
-.control-row input[type="text"] {
-  flex-grow: 1; /* Permite que el input crezca para ocupar el espacio */
-  max-width: 450px; /* Limita el ancho máximo para que no sea enorme */
-}
-
-/* Estilo para la etiqueta de Filtros */
 .filter-label {
     font-weight: 600;
     color: #495057;
-    white-space: nowrap; /* Evita que el texto se rompa */
 }
 
 /* ====================================================================== */
@@ -118,129 +94,124 @@ h1 {
   padding: 20px;
 }
 
-/* Estilos de la Tarjeta de Producto */
+/* ✨ EFECTO GLASSMORPHISM INTEGRADO ✨ */
 .product-card {
-  border: none;
-  border-radius: 16px;
-  padding: 15px;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* Fondo con transparencia y desenfoque */
+  background: rgba(255, 255, 255, 0.7); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* Borde sutil para resaltar el cristal */
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px; /* Bordes más suaves */
+  padding: 20px;
+  
+  /* Sombra de profundidad */
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+  
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative; 
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .product-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-10px); /* Elevación más pronunciada */
+  background: rgba(255, 255, 255, 0.95); /* Se vuelve más sólida al hover */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
   width: 100%;
-  height: 220px;
+  height: 200px;
   object-fit: contain;
   border-radius: 12px;
   margin-bottom: 12px;
+  background: white; /* Asegura fondo limpio para la imagen */
+  padding: 5px;
 }
 
 .product-card h3 {
   font-size: 16px;
   color: #111;
   font-weight: 600;
-  margin: 8px 0;
+  margin: 12px 0;
   text-align: center;
-}
-
-.product-card p {
-  margin: 4px 0;
-  color: #333;
+  line-height: 1.4;
 }
 
 .product-card a {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: auto; /* Empuja el botón al final */
   background-color: #007bff;
   color: white;
   text-decoration: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .product-card a:hover {
   background-color: #0056b3;
-}
-
-.timestamp {
-  font-size: 12px;
-  color: #666;
-  margin-top: 6px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 /* ====================================================================== */
 /* === 4. ESTILOS DE PRECIOS Y ESTADO (EMOJIS) === */
 /* ====================================================================== */
 .previous-price {
-  font-size: 14px;
+  font-size: 13px;
   color: #888;
   margin-bottom: 0;
 }
 
 .current-price {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 2px !important;
+  font-size: 22px; /* Precio más grande */
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-top: 4px !important;
 }
 
-.change-text {
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-/* Bloque de Contexto (Min/Moda de Precios) */
+/* Bloque de Contexto con estilo de cristal */
 .context-box {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 8px;
-  margin-top: 10px;
-  width: 90%;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 15px 0;
+  width: 100%;
+  box-sizing: border-box;
   font-size: 13px;
   text-align: left;
 }
 
-.context-box p {
-  margin: 2px 0;
-  color: #495057;
-}
-
-/* Alerta Superior (MÍNIMO HISTÓRICO) */
+/* Badge estilizado */
 .alert-badge {
     position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 12px;
+    right: 12px; /* Movido a la esquina superior derecha */
     color: white;
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: pulse 1.5s infinite; 
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 10;
+    animation: pulse 2s infinite; 
 }
 
 .alert-badge.low_historical {
-    background-color: #28a745; /* Verde fuerte para mínimo histórico */
+    background: linear-gradient(135deg, #28a745, #218838);
 }
 
 @keyframes pulse {
-    0% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.05); }
-    100% { transform: translateX(-50%) scale(1); }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 /* ====================================================================== */
@@ -252,7 +223,8 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -261,29 +233,12 @@ h1 {
 
 .modal-content {
   background-color: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
   width: 90%;
-  max-width: 700px;
-  z-index: 1001;
+  max-width: 750px;
   position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  font-weight: bold;
-  color: #888;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: #333;
 }
 
 /* ====================================================================== */
@@ -293,69 +248,39 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin: 30px 0;
 }
 
 .pagination-number, .pagination-arrow {
-  padding: 8px 12px;
+  padding: 10px 16px;
   border: 1px solid #ddd;
   background-color: white;
   color: #333;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-weight: 600;
   transition: all 0.2s;
-}
-
-.pagination-number:hover:not(.dots), .pagination-arrow:hover:not(:disabled) {
-  background-color: #f0f0f0;
-  border-color: #ccc;
 }
 
 .pagination-number.active {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
-  font-weight: bold;
-}
-
-.pagination-number.dots {
-  border: none;
-  background: transparent;
-  cursor: default;
-  font-weight: bold;
-  padding: 8px 4px;
-}
-
-.pagination-arrow {
-  font-size: 18px;
-  line-height: 1;
-  padding: 6px 10px;
-}
-
-.pagination-arrow:disabled {
-  color: #ccc;
-  cursor: not-allowed;
-  background-color: #fafafa;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
 }
 
 /* ====================================================================== */
-/* === 7. Pantalla de carga completa === */
+/* === 7. SKELETON SCREEN === */
 /* ====================================================================== */
-/* === ESTILOS SKELETON SCREEN === */
-
 .skeleton-card {
-  background-color: #fff !important; /* Fondo blanco para el esqueleto */
-  border: 1px solid #eee;
-  cursor: default;
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
   overflow: hidden;
-  position: relative;
 }
 
-/* La animación del brillo pasando */
 .skeleton-img, .skeleton-title, .skeleton-text {
-  background: #ececec;
   background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
@@ -366,28 +291,6 @@ h1 {
   100% { background-position: -200% 0; }
 }
 
-/* Espacios simulados en la tarjeta */
-.skeleton-img {
-  width: 100%;
-  height: 180px; /* Misma altura que tus imágenes reales */
-  margin-bottom: 15px;
-  border-radius: 8px;
-}
-
-.skeleton-title {
-  height: 20px;
-  width: 80%;
-  margin: 0 auto 15px auto;
-  border-radius: 4px;
-}
-
-.skeleton-text {
-  height: 15px;
-  width: 60%;
-  margin: 0 auto 10px auto;
-  border-radius: 4px;
-}
-
-.skeleton-text.short {
-  width: 40%;
-}
+.skeleton-img { width: 100%; height: 200px; margin-bottom: 15px; border-radius: 12px; }
+.skeleton-title { height: 20px; width: 80%; margin-bottom: 15px; border-radius: 4px; }
+.skeleton-text { height: 15px; width: 60%; margin-bottom: 10px; border-radius: 4px; }
