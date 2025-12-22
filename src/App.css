@@ -170,15 +170,29 @@ h1 {
 .context-box {
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  padding: 8px 12px;
-  margin: 8px 0;
-  font-size: 12px; /* Legible pero compacto */
-  text-align: middle;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 13px;
+  text-align: center; /* Mantengo tu preferencia de centrado */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.context-box p {
-  margin: 2px 0;
+.context-box p strong {
+  color: #111;
+}
+
+.context-box p:last-child {
+  background-color: #ffffff; /* Un pequeño fondo blanco tipo cápsula */
+  border-radius: 6px;
+  padding: 4px 8px;
+  display: inline-block;
+  margin: 0 auto;
+  border: 1px dashed #28a745; /* Borde punteado verde muy sutil */
+  color: #1e7e34; /* Texto en verde oscuro para asociarlo con ahorro */
+  font-weight: 600;
 }
 
 /* 🟢 ARREGLO DEL BADGE: Mínimo Histórico y Sin Stock */
