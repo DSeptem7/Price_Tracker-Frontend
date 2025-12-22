@@ -2,10 +2,13 @@
 /* === 1. ESTILOS BASE Y CONTENEDOR PRINCIPAL (.App) === */
 /* ====================================================================== */
 .App {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   text-align: center;
   padding: 20px;
-  background-color: #f4f7f9; /* Fondo gris claro */
+  background-color: #f4f7f9;
+  /* --- NUEVO: Centrado de la página --- */
+  max-width: 1400px; /* Evita que se estire demasiado */
+  margin: 0 auto;    /* Centra el bloque en la pantalla */
   min-height: 100vh;
 }
 
@@ -89,9 +92,10 @@ h1 {
 /* ====================================================================== */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-  gap: 20px;
-  padding: 15px;
+  /* Ajustado a 210px para que entren 5-6 en pantallas grandes */
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); 
+  gap: 15px;
+  padding: 20px 0;
 }
 
 .product-card {
@@ -100,14 +104,14 @@ h1 {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px; 
-  padding: 16px; /* Restaurado para dar aire a la letra grande */
+  padding: 16px; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   position: relative; 
   cursor: pointer;
   transition: all 0.3s ease;
-  overflow: visible; /* CRITICO: Permite que el badge flote afuera */
+  overflow: visible; 
 }
 
 .product-card:hover {
@@ -126,7 +130,7 @@ h1 {
 }
 
 .product-card h3 {
-  font-size: 16px; /* Letra grande y legible restaurada */
+  font-size: 16px; 
   color: #1a1a1a;
   margin: 5px 0;
   text-align: center;
@@ -145,9 +149,42 @@ h1 {
   font-weight: 600;
   border-radius: 8px;
   background-color: #007bff;
-  color: white !important; /* Asegura visibilidad */
+  color: white !important; 
   text-decoration: none;
   text-align: center;
+}
+
+/* 📱 AJUSTES ESPECÍFICOS PARA CELULARES (RESPONSIVE) */
+@media (max-width: 600px) {
+  .product-grid {
+    /* 2 columnas exactas en móvil para que no se vea desordenado */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .product-card {
+    padding: 10px; /* Reducimos espacio interno para ganar espacio */
+  }
+
+  .product-card img {
+    height: 120px; /* Foto más pequeña para que quepa todo */
+  }
+
+  .product-card h3 {
+    font-size: 14px; /* Un poco más pequeña solo en celular */
+    height: 35px;
+  }
+
+  .current-price {
+    font-size: 18px !important; /* Aseguramos que el precio sea legible */
+  }
+
+  /* Bajamos un poco el tamaño del badge en móvil para que no tape todo */
+  .alert-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
 }
 
 /* ====================================================================== */
