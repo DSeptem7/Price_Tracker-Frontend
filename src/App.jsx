@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import "./App.css"; 
 
-// === Componente Modal para la Gráfica (VERSIÓN CON MÁXIMA SANITIZACIÓN) ===
+// === Componente Modal para la Gráfica (INTACTO) ===
 function PriceChartModal({ productTitle, onClose, apiBase }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,50 +22,35 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
       try {
         setLoading(true);
 
-        // 🛑 MÁXIMA SANITIZACIÓN: Creamos una clave segura sin barras, espacios dobles, o signos especiales.
-        // Esto es un intento de imitar cómo el backend podría haber "limpiado" la clave para la DB.
-        // Reemplazamos barras ('/') y '+' por un guion bajo ('_') para que no rompan la ruta ni la coincidencia.
         const safeKeyTitle = productTitle
             .trim()
-            .replace(/\s+/g, ' ') // Quita espacios dobles
-            .replace(/[/\+]/g, '_'); // Reemplaza '/' y '+' por '_'
+            .replace(/\s+/g, ' ') 
+            .replace(/[/\+]/g, '_'); 
 
-        // Llama al endpoint /history/{product_title}
-        // Usamos la clave segura para la ruta
-        const url = `${apiBase}/history/${encodeURIComponent(
-          safeKeyTitle
-        )}`;
-        
+        const url = `${apiBase}/history/${encodeURIComponent(safeKeyTitle)}`;
         const res = await fetch(url);
         
         if (res.status === 404) {
              setHistory([]);
-             console.log(`Historial no encontrado para el producto. Clave enviada: ${safeKeyTitle}.`);
+             console.log(`Historial no encontrado. Clave: ${safeKeyTitle}.`);
              return;
         }
-        
+
         const data = await res.json();
         
         if (data && Array.isArray(data.history)) {
-          // Mapeamos la data de historial
           const formattedData = data.history
             .map((item) => {
               const priceValue = parseFloat(item.price);
-              
               if (isNaN(priceValue) || priceValue <= 0) return null; 
-
               return {
                 price: priceValue,
                 date: new Date(item.timestamp).toLocaleString("es-MX", {
-                  day: "numeric",
-                  month: "short",
-                  hour: "2-digit",
-                  minute: "2-digit",
+                  day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
                 }),
               };
             })
             .filter(item => item !== null); 
-            
           setHistory(formattedData);
         } else {
           setHistory([]);
@@ -77,18 +62,13 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
       }
     };
 
-    if (productTitle) {
-      fetchHistory();
-    }
+    if (productTitle) { fetchHistory(); }
   }, [productTitle, apiBase]);
 
   return (
-// ... (El JSX es idéntico a tu versión anterior)
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>
-          &times;
-        </button>
+        <button className="close-button" onClick={onClose}>&times;</button>
         <h3 style={{ color: '#333' }}>Historial de Precio: {productTitle}</h3>
         {loading ? (
           <p style={{ color: '#333' }}>Cargando historial...</p>
@@ -99,17 +79,9 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis domain={["auto", "auto"]} /> 
-                <Tooltip
-                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]}
-                />
+                <Tooltip formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} />
                 <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="price"
-                  stroke="#8884d8"
-                  dot={false}
-                  activeDot={false} // Gráfica limpia
-                />
+                <Line type="monotone" dataKey="price" stroke="#8884d8" dot={false} activeDot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -122,7 +94,6 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     </div>
   );
 }
-// === Fin de Componente Modal ===
 
 // === Componente Principal ===
 function App() {
@@ -130,20 +101,18 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
-  // --- Estados para el panel de tracking ---
   const [searchTerm, setSearchTerm] = useState(""); 
   const [trackingMessage, setTrackingMessage] = useState(""); 
-  
   const [chartProductTitle, setChartProductTitle] = useState(null);
 
-  // ✅ NUEVOS ESTADOS: Filtros y Ordenamiento
   const [sortOption, setSortOption] = useState("date_desc");
-  const [filterOption, setFilterOption] = useState("all"); 
+  const [filterOption, setFilterOption] = useState("available"); 
 
-  // URL de Render
+  // 🟢 NUEVO ESTADO: Paginación
+  const [visibleCount, setVisibleCount] = useState(20);
+
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
-  // === Obtener productos (Llama a /product_history) ===
   const fetchProducts = async () => {
     setLoading(true); 
     try {
@@ -152,16 +121,11 @@ function App() {
       
       if (Array.isArray(data)) {
         setProducts(data);
-      } else if (data && data.message) {
-        setProducts([]);
-        console.log(data.message);
       } else {
         setProducts([]); 
-        console.error("El backend devolvió un formato inesperado:", data);
       }
-      
     } catch (err) {
-      console.error("Error al obtener productos:", err);
+      console.error("Error:", err);
       setProducts([]); 
     } finally {
       setLoading(false);
@@ -169,26 +133,21 @@ function App() {
     }
   };
   
-  // === Cargar productos al iniciar ===
-  useEffect(() => {
-    fetchProducts();
-  }, []); 
+  useEffect(() => { fetchProducts(); }, []); 
 
-  // ✅ NUEVO: Función auxiliar para limpiar precios (Convierte "$1,200.00" a número)
   const parsePrice = (priceStr) => {
     if (!priceStr) return 0;
-    // Elimina todo lo que no sea número o punto decimal
     return parseFloat(priceStr.toString().replace(/[^0-9.]/g, ""));
   };
 
-  // === Rastrear Producto (Lógica Híbrida Original) ===
-  const handleTrackProduct = async () => {
-    // Detectamos si es una URL para scraping
-    const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
+  const isOutOfStock = (p) => {
+      const priceNum = parsePrice(p.price);
+      return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
+  };
 
-    if (!isUrl) {
-        return; 
-    }
+  const handleTrackProduct = async () => {
+    const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
+    if (!isUrl) return; 
     
     setRefreshing(true); 
     setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
@@ -198,87 +157,97 @@ function App() {
       const res = await fetch(url);
       const result = await res.json();
 
-      if (!res.ok) {
-        throw new Error(result.detail || "Error desconocido al rastrear.");
-      }
+      if (!res.ok) throw new Error(result.detail || "Error desconocido.");
 
-      console.log("Respuesta del scraping:", result);
       setTrackingMessage(result.message); 
       setSearchTerm("");
-      
       await fetchProducts(); 
 
     } catch (err) {
-      console.error("Error al rastrear producto:", err);
       setTrackingMessage(`Error: ${err.message}`); 
     } finally {
       setRefreshing(false); 
     }
   };
 
-  // === ✅ LÓGICA DE FILTRADO Y ORDENAMIENTO (processedProducts) ===
+  // === LÓGICA DE FILTRADO Y ORDENAMIENTO ===
   const processedProducts = useMemo(() => {
-    // 1. Empezamos con todos los productos
     let result = [...products];
 
-    // 2. Filtro de Búsqueda (Texto) - Si hay texto y NO es una URL, filtramos por nombre.
+    // 1. Filtros
     if (searchTerm && !searchTerm.includes("http")) {
       const lowerSearch = searchTerm.toLowerCase();
       result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
     }
 
-    // 3. Filtro por Categoría/Estado (Dropdown)
+    // 2. Estado
     if (filterOption === "historical_low") {
-      result = result.filter(p => p.alert_type === "low_historical");
+      result = result.filter(p => p.alert_type === "low_historical" && !isOutOfStock(p));
     } else if (filterOption === "price_drop") {
-      result = result.filter(p => p.status === "down");
+      result = result.filter(p => p.status === "down" && !isOutOfStock(p));
+    } else if (filterOption === "available") {
+      result = result.filter(p => !isOutOfStock(p));
+    } else if (filterOption === "out_of_stock") {
+      result = result.filter(p => isOutOfStock(p));
     }
 
-    // 4. Ordenamiento (Dropdown)
+    // 3. Ordenamiento
     result.sort((a, b) => {
+      if (filterOption === "all") {
+          const aStock = isOutOfStock(a);
+          const bStock = isOutOfStock(b);
+          if (aStock && !bStock) return 1;
+          if (!aStock && bStock) return -1;
+      }
       switch (sortOption) {
-        case "price_asc":
-          return parsePrice(a.price) - parsePrice(b.price);
-        case "price_desc":
-          return parsePrice(b.price) - parsePrice(a.price);
-        case "date_asc":
-          return new Date(a.timestamp) - new Date(b.timestamp);
-        case "date_desc":
-        default:
-          return new Date(b.timestamp) - new Date(a.timestamp);
+        case "price_asc": return parsePrice(a.price) - parsePrice(b.price);
+        case "price_desc": return parsePrice(b.price) - parsePrice(a.price);
+        case "date_asc": return new Date(a.timestamp) - new Date(b.timestamp);
+        case "date_desc": default: return new Date(b.timestamp) - new Date(a.timestamp);
       }
     });
 
     return result;
   }, [products, searchTerm, sortOption, filterOption]);
 
-  // === Funciones auxiliares de estilo (ORIGINALES) ===
+  // 🟢 EFECTO: Reiniciar paginación al cambiar filtros
+  useEffect(() => {
+    setVisibleCount(20);
+  }, [searchTerm, filterOption, sortOption]);
+
   const getPriceColor = (price) => {
-    const value = parseFloat(price.replace("$", "").replace(",", ""));
+    const value = parsePrice(price);
+    if (value === 0) return "#e9ecef"; 
     if (value < 10000) return "#d4edda";
     if (value < 20000) return "#fff3cd";
     return "#f8d7da";
   };
 
-  const getStatusEmoji = (status) => {
+  const getStatusEmoji = (status, product) => {
+    if (isOutOfStock(product)) return "🚫 Agotado";
     if (status === "down") return "🟢 ↓ Bajó";
     if (status === "up") return "🔴 ↑ Subió";
     if (status === "same") return "🟡 → Igual";
     return "🆕 Nuevo";
   };
 
-  // === Renderizado principal ===
+  // 🟢 FUNCIÓN PARA EL BOTÓN VER MÁS
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 20);
+  };
+
+  // 🟢 DEFINIR PRODUCTOS VISIBLES
+  const visibleProducts = processedProducts.slice(0, visibleCount);
+
   if (loading) return <p>Cargando productos...</p>;
   
   return (
     <div className="App">
       <h1>🛒 Price Tracker (ML)</h1>
 
-      {/* === Panel de Tracking / Buscador Híbrido + Filtros (Reestructurado) === */}
       <div className="simulate-panel">
           <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
           
-          {/* PRIMERA FILA: Búsqueda y Acciones */}
           <div className="control-row"> 
               <input
                   type="text"
@@ -294,113 +263,123 @@ function App() {
               </button>
           </div>
 
-          {/* ✅ SEGUNDA FILA: Filtros y Ordenamiento */}
           <div className="filter-row">
-              {/* Leyenda de Filtros */}
               <span className="filter-label">Filtros y Ordenamiento:</span> 
               
-              {/* Selector de Ordenamiento */}
-              <select 
-                  value={sortOption} 
-                  onChange={(e) => setSortOption(e.target.value)}
-                  style={{cursor: "pointer"}}
-              >
+              <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} style={{cursor: "pointer"}}>
                   <option value="date_desc">📅 Fecha: Reciente</option>
                   <option value="date_asc">📅 Fecha: Antiguo</option>
                   <option value="price_asc">💰 Precio: Menor a Mayor</option>
                   <option value="price_desc">💰 Precio: Mayor a Menor</option>
               </select>
 
-              {/* Selector de Filtros */}
-              <select 
-                  value={filterOption} 
-                  onChange={(e) => setFilterOption(e.target.value)}
-                  style={{cursor: "pointer"}}
-              >
+              <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)} style={{cursor: "pointer"}}>
+                  <option value="available">✅ Solo Disponibles (Recomendado)</option>
                   <option value="all">👁️ Ver Todos</option>
+                  <option value="out_of_stock">🚫 Ver Solo Agotados</option>
                   <option value="historical_low">🏆 Mínimo Histórico</option>
                   <option value="price_drop">📉 Solo Ofertas (Bajó)</option>
               </select>
           </div>
           
-          {/* Mensaje de estado del tracking */}
           {trackingMessage && (
             <p className="tracking-message" style={{width: "100%"}}>{trackingMessage}</p>
           )}
       </div>
       
-      {/* === Grid de productos === */}
       <div className="product-grid">
-        {/* ✅ Usamos processedProducts para renderizar */}
-        {processedProducts.length === 0 ? (
+        {visibleProducts.length === 0 ? (
             <p className="no-products-message">
-                {searchTerm.trim() && !searchTerm.includes("http") ? 
-                    `No se encontraron productos con el término "${searchTerm}".` : 
-                    "No hay productos que coincidan con los filtros seleccionados."
-                }
-                <br />Intenta cambiar los filtros o añadir un nuevo producto con su URL.
+                No se encontraron productos con estos criterios.
             </p>
         ) : (
-            processedProducts.map((p, index) => (
-            <div
-                key={index}
-                className="product-card"
-                style={{ backgroundColor: getPriceColor(p.price) }}
-                onClick={() => setChartProductTitle(p.title)} 
-            >
-                {/* 🔔 ALERTA SUPERIOR */}
-                {p.alert_type === "low_historical" && (
-                <div className="alert-badge low_historical">
-                    ¡MÍNIMO HISTÓRICO! 📉
-                </div>
-                )}
-                
-                <img src={p.image} alt={p.title} />
-                <h3>{p.title}</h3>
+            // 🟢 USAMOS visibleProducts en lugar de processedProducts
+            visibleProducts.map((p, index) => {
+                const outOfStock = isOutOfStock(p);
 
-                {/* 💰 Bloque de Precios */}
-                {p.status !== "new" && p.previous_price && (
-                <p className="previous-price">
-                    Precio Anterior: <s>{p.previous_price}</s>
-                </p>
-                )}
-                <p className="current-price">
-                <strong>Precio: {p.price}</strong>
-                </p>
-                
-                {/* Status de Cambio */}
-                <p>
-                    {getStatusEmoji(p.status)} 
-                    {(p.status === "up" || p.status === "down") && (
-                        <span className="change-text"> ({p.change_percentage})</span>
-                    )}
-                </p>
-                
-                {/* 📊 Bloque de Contexto */}
-                {p.mode_price && (
-                    <div className="context-box">
-                        <p><strong>Frecuente:</strong> {p.mode_price} (visto {p.mode_price_count} veces)</p>
-                        <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-                    </div>
-                )}
-                
-                <a
-                href={p.url}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()} 
+                return (
+                <div
+                    key={index}
+                    className="product-card"
+                    style={{ 
+                        backgroundColor: outOfStock ? "#f1f1f1" : getPriceColor(p.price),
+                        opacity: outOfStock ? 0.7 : 1, 
+                        filter: outOfStock ? "grayscale(100%)" : "none"
+                    }}
+                    onClick={() => setChartProductTitle(p.title)} 
                 >
-                Ver producto
-                </a>
-                <p className="timestamp">
-                {new Date(p.timestamp).toLocaleString()}
-                </p> 
-            </div>
-            ))
+                    {outOfStock && (
+                        <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>
+                            🚫 SIN STOCK
+                        </div>
+                    )}
+
+                    {!outOfStock && p.alert_type === "low_historical" && (
+                    <div className="alert-badge low_historical">
+                        ¡MÍNIMO HISTÓRICO! 📉
+                    </div>
+                    )}
+                    
+                    <img src={p.image} alt={p.title} />
+                    <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>
+                        {p.title}
+                    </h3>
+
+                    {!outOfStock && p.status !== "new" && p.previous_price && (
+                    <p className="previous-price">
+                        Precio Anterior: <s>{p.previous_price}</s>
+                    </p>
+                    )}
+
+                    <p className="current-price">
+                        <strong>{outOfStock ? "No disponible" : p.price}</strong>
+                    </p>
+                    
+                    <p>
+                        {getStatusEmoji(p.status, p)} 
+                        {!outOfStock && (p.status === "up" || p.status === "down") && (
+                            <span className="change-text"> ({p.change_percentage})</span>
+                        )}
+                    </p>
+                    
+                    {!outOfStock && p.mode_price && (
+                        <div className="context-box">
+                            <p><strong>Frecuente:</strong> {p.mode_price}</p>
+                            <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+                        </div>
+                    )}
+                    
+                    <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+                       {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
+                    </a>
+                    <p className="timestamp">
+                    {new Date(p.timestamp).toLocaleString()}
+                    </p> 
+                </div>
+            )})
         )}
       </div>
+
+      {/* 🟢 BOTÓN VER MÁS: Se muestra solo si hay más elementos que mostrar */}
+      {processedProducts.length > visibleCount && (
+        <div style={{ textAlign: "center", margin: "20px 0" }}>
+          <button 
+            onClick={handleShowMore}
+            style={{
+              padding: "10px 20px",
+              fontSize: "16px",
+              cursor: "pointer",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "5px"
+            }}
+          >
+            ⬇️ Ver más productos ({processedProducts.length - visibleCount} restantes)
+          </button>
+        </div>
+      )}
       
-      {/* Renderizar el Modal si hay un producto seleccionado */}
       {chartProductTitle && (
         <PriceChartModal
           productTitle={chartProductTitle}
