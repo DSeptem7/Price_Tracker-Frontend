@@ -285,3 +285,55 @@ h1 {
 .close-button:hover {
   color: #333;
 }
+
+/* PAGINACIÓN */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.pagination-number, .pagination-arrow {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.pagination-number:hover:not(.dots), .pagination-arrow:hover:not(:disabled) {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.pagination-number.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  font-weight: bold;
+}
+
+.pagination-number.dots {
+  border: none;
+  background: transparent;
+  cursor: default;
+  font-weight: bold;
+  padding: 8px 4px;
+}
+
+.pagination-arrow {
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 10px;
+}
+
+.pagination-arrow:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: #fafafa;
+}
