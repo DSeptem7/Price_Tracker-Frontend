@@ -351,7 +351,7 @@ function App() {
 <div className="product-grid">
   {loading ? (
     // 🟢 ESTO SE MUESTRA MIENTRAS CARGA (8 tarjetas de esqueleto)
-    Array.from({ length: 8 }).map((_, index) => (
+    Array.from({ length: 16 }).map((_, index) => (
       <div key={index} className="product-card skeleton-card">
         <div className="skeleton-img"></div>
         <div className="skeleton-title"></div>
