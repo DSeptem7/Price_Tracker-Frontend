@@ -344,45 +344,50 @@ h1 {
 /* === 7. Pantalla de carga completa === */
 /* ====================================================================== */
 /* Pantalla de carga completa */
-.loading-screen {
-  position: fixed;
+/* El fondo que cubre toda la pantalla */
+.loading-overlay {
+  position: fixed; /* Se queda fijo sobre todo */
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #f4f7f6; /* El mismo fondo que pusimos en index.css */
+  width: 100vw; /* Ancho total de la ventana */
+  height: 100vh; /* Alto total de la ventana */
+  background-color: #f4f7f6; /* Coincide con el fondo de tu app */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  z-index: 9999; /* Asegura que esté encima de cualquier cosa */
 }
 
-/* El círculo que gira */
+.spinner-content {
+    text-align: center;
+    color: #333;
+}
+
+/* El círculo animado */
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #ddd;
-  border-top: 5px solid #007bff; /* Color azul */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 25px auto; /* Centrado horizontal y margen abajo */
+  border: 6px solid #e0e0e0; /* Color gris claro de base */
+  border-top: 6px solid #007bff; /* El color azul que gira */
+  border-radius: 50%; /* Lo hace circular */
+  animation: spin 1s linear infinite; /* La magia de la animación */
 }
 
+/* Definición de la animación de giro */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-.loading-screen p {
-  font-size: 1.2rem;
-  color: #333;
-  margin: 0;
-  font-weight: 500;
+/* Estilos para los textos del cargador */
+.spinner-content h2 {
+    margin: 0 0 10px 0;
+    font-weight: 600;
 }
 
-.loading-screen span {
-  font-size: 0.9rem;
-  color: #888;
-  margin-top: 10px;
+.spinner-content p {
+    color: #666;
+    margin: 0;
+    font-size: 0.95rem;
 }
