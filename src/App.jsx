@@ -271,15 +271,6 @@ function App() {
   };
 
   // === Renderizado de Carga (Spinner Animado) ===
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner"></div>
-        <p>Consultando catálogo...</p>
-        <span>Esto solo tardará un momento</span>
-      </div>
-    );
-  }
   
   return (
     <div className="App">
@@ -357,40 +348,45 @@ function App() {
          </div>
       )}
 
-      <div className="product-grid">
-        {currentProducts.length === 0 ? (
-            <p className="no-products-message">
-                No se encontraron productos con estos criterios.
-            </p>
-        ) : (
-            currentProducts.map((p, index) => {
-                const outOfStock = isOutOfStock(p);
-                return (
-                <div
-                    key={index}
-                    className="product-card"
-                    style={{ 
-                        backgroundColor: outOfStock ? "#f1f1f1" : getPriceColor(p.price),
-                        opacity: outOfStock ? 0.7 : 1, 
-                        filter: outOfStock ? "grayscale(100%)" : "none"
-                    }}
-                    onClick={() => setChartProductTitle(p.title)} 
-                >
-                    {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
-                    {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
-                    
-                    <img src={p.image} alt={p.title} />
-                    <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
-                    {!outOfStock && p.status !== "new" && p.previous_price && <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>}
-                    <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
-                    <p>{getStatusEmoji(p.status, p)} {!outOfStock && (p.status === "up" || p.status === "down") && <span className="change-text"> ({p.change_percentage})</span>}</p>
-                    {!outOfStock && p.mode_price && <div className="context-box"><p><strong>Frecuente:</strong> {p.mode_price}</p><p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p></div>}
-                    <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}</a>
-                    <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
-                </div>
-            )})
-        )}
+<div className="product-grid">
+  {loading ? (
+    // 🟢 ESTO SE MUESTRA MIENTRAS CARGA (8 tarjetas de esqueleto)
+    Array.from({ length: 8 }).map((_, index) => (
+      <div key={index} className="product-card skeleton-card">
+        <div className="skeleton-img"></div>
+        <div className="skeleton-title"></div>
+        <div className="skeleton-text"></div>
+        <div className="skeleton-text short"></div>
       </div>
+    ))
+  ) : currentProducts.length === 0 ? (
+    <p className="no-products-message">
+      No se encontraron productos con estos criterios.
+    </p>
+  ) : (
+    // 🟢 ESTO ES TU RENDERIZADO NORMAL DE PRODUCTOS
+    currentProducts.map((p, index) => {
+      const outOfStock = isOutOfStock(p);
+      return (
+        <div
+          key={index}
+          className="product-card"
+          style={{ 
+              backgroundColor: outOfStock ? "#f1f1f1" : getPriceColor(p.price),
+              opacity: outOfStock ? 0.7 : 1, 
+              filter: outOfStock ? "grayscale(100%)" : "none"
+          }}
+          onClick={() => setChartProductTitle(p.title)} 
+        >
+          {/* ... resto de tu código de la tarjeta (imagen, título, etc.) ... */}
+          <img src={p.image} alt={p.title} />
+          <h3>{p.title}</h3>
+          {/* ... etc ... */}
+        </div>
+      )
+    })
+  )}
+</div>
 
       {/* 🟢 CONTROLES DE PAGINACIÓN INFERIOR */}
       {totalPages > 1 && (
