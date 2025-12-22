@@ -273,12 +273,10 @@ function App() {
   // === Renderizado de Carga (Spinner Animado) ===
   if (loading) {
     return (
-      <div className="loading-overlay">
-        <div className="spinner-content">
-          <div className="spinner"></div>
-          <h2>Cargando catálogo...</h2>
-          <p>Esto puede tomar unos segundos si el servidor se está despertando.</p>
-        </div>
+      <div className="loading-screen">
+        <div className="spinner"></div>
+        <p>Consultando catálogo...</p>
+        <span>Esto solo tardará un momento</span>
       </div>
     );
   }
