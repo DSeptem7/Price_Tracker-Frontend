@@ -90,8 +90,8 @@ h1 {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-  gap: 20px;
-  padding: 15px;
+  gap: 15px; /* Reducido de 25px a 15px */
+  padding: 10px;
 }
 
 .product-card {
@@ -100,48 +100,48 @@ h1 {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px; 
-  padding: 16px; /* Espacio interno equilibrado */
+  padding: 12px; /* Reducido para compactar */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   position: relative; 
   cursor: pointer;
   transition: all 0.3s ease;
-  overflow: visible; /* Importante para que el badge no se corte */
+  overflow: visible;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
   width: 100%;
-  height: 160px; /* Tamaño medio para no alargar */
+  height: 140px; /* Reducido un poco más para ahorrar espacio vertical */
   object-fit: contain;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px; /* Casi sin espacio debajo de la foto */
   background: white;
 }
 
 .product-card h3 {
-  font-size: 16px; /* Letra legible */
+  font-size: 15px; 
   color: #1a1a1a;
-  margin: 8px 0;
+  margin: 5px 0; /* Margen mínimo */
   text-align: center;
-  /* Mantenemos el corte a 2 líneas para uniformidad */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
-  min-height: 40px; 
+  min-height: 36px; /* Ajustado al tamaño de fuente */
+  line-height: 1.2;
 }
 
 .product-card a {
-  margin-top: 12px;
-  padding: 8px 16px;
-  font-size: 14px;
+  margin-top: 8px; /* Pegado al resto del contenido */
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 8px;
   background-color: #007bff;
@@ -154,84 +154,60 @@ h1 {
 /* === 4. ESTILOS DE PRECIOS Y ESTADO (EMOJIS) === */
 /* ====================================================================== */
 
-/* Contenedor de precios para que no ocupen tanto espacio vertical */
+.previous-price {
+  font-size: 12px;
+  color: #888;
+  margin: 0 !important; /* Eliminamos cualquier margen */
+}
+
 .current-price {
-  font-size: 20px; /* Tamaño claro y destacado */
+  font-size: 19px; 
   font-weight: 800;
   color: #111;
-  margin: 4px 0 !important;
+  margin: -2px 0 2px 0 !important; /* Margen negativo para subirlo un poco */
 }
 
-.previous-price {
-  font-size: 13px;
-  color: #777;
-}
-
+/* Compactamos el cuadro de contexto eliminando espacios internos */
 .context-box {
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
-  padding: 10px;
-  margin: 10px 0;
-  font-size: 13px;
-  text-align: center; /* Mantengo tu preferencia de centrado */
+  border-radius: 10px;
+  padding: 6px; /* Padding interno mínimo */
+  margin: 4px 0; /* Margen externo mínimo */
+  font-size: 12px;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px; /* Espacio mínimo entre líneas internas */
 }
 
-.context-box p strong {
-  color: #111;
-}
-
+/* La cápsula del mínimo registrado más ajustada */
 .context-box p:last-child {
-  background-color: #ffffff; /* Un pequeño fondo blanco tipo cápsula */
-  border-radius: 6px;
-  padding: 4px 8px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 2px 6px;
   display: inline-block;
-  margin: 0 auto;
-  border: 1px dashed #28a745; /* Borde punteado verde muy sutil */
-  color: #1e7e34; /* Texto en verde oscuro para asociarlo con ahorro */
+  margin: 2px auto 0 auto;
+  border: 1px dashed #28a745;
+  color: #1e7e34;
   font-weight: 600;
-}
-
-/* 🟢 ARREGLO DEL BADGE: Mínimo Histórico y Sin Stock */
-.alert-badge {
-    position: absolute;
-    top: -12px; /* Flota un poco arriba de la tarjeta */
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    padding: 6px 14px;
-    border-radius: 25px;
-    font-size: 12px;
-    font-weight: 800;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 20;
-    animation: pulse-badge 2s infinite;
-}
-
-/* Colores específicos para cada badge */
-.alert-badge.low_historical {
-    background: linear-gradient(135deg, #28a745, #1e7e34); /* Verde vibrante */
-}
-
-/* Estilo para el badge de Sin Stock si no tiene clase específica */
-.alert-badge:not(.low_historical) {
-    background: #6c757d; 
-}
-
-@keyframes pulse-badge {
-    0% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.08); }
-    100% { transform: translateX(-50%) scale(1); }
+  font-size: 11px;
 }
 
 .timestamp {
-  font-size: 11px;
-  color: #888;
-  margin-top: 8px;
+  font-size: 10px;
+  color: #999;
+  margin-top: 4px; /* Pegado al final */
+}
+
+/* Ajuste fino del badge para que no flote demasiado alto */
+.alert-badge {
+    position: absolute;
+    top: -10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 12px;
+    font-size: 11px;
 }
 
 /* ====================================================================== */
