@@ -90,8 +90,8 @@ h1 {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-  gap: 15px; /* Reducido de 25px a 15px */
-  padding: 10px;
+  gap: 20px;
+  padding: 15px;
 }
 
 .product-card {
@@ -100,52 +100,52 @@ h1 {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px; 
-  padding: 12px; /* Reducido para compactar */
+  padding: 16px; /* Restaurado para dar aire a la letra grande */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   position: relative; 
   cursor: pointer;
   transition: all 0.3s ease;
-  overflow: visible;
+  overflow: visible; /* CRITICO: Permite que el badge flote afuera */
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
   width: 100%;
-  height: 140px; /* Reducido un poco más para ahorrar espacio vertical */
+  height: 150px; 
   object-fit: contain;
   border-radius: 10px;
-  margin-bottom: 5px; /* Casi sin espacio debajo de la foto */
+  margin-bottom: 8px;
   background: white;
 }
 
 .product-card h3 {
-  font-size: 15px; 
+  font-size: 16px; /* Letra grande y legible restaurada */
   color: #1a1a1a;
-  margin: 5px 0; /* Margen mínimo */
+  margin: 5px 0;
   text-align: center;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
-  min-height: 36px; /* Ajustado al tamaño de fuente */
-  line-height: 1.2;
+  height: 40px; 
+  line-height: 1.3;
 }
 
 .product-card a {
-  margin-top: 8px; /* Pegado al resto del contenido */
-  padding: 6px 14px;
-  font-size: 13px;
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 8px;
   background-color: #007bff;
-  color: white;
+  color: white !important; /* Asegura visibilidad */
   text-decoration: none;
   text-align: center;
 }
@@ -155,59 +155,82 @@ h1 {
 /* ====================================================================== */
 
 .previous-price {
-  font-size: 12px;
-  color: #888;
-  margin: 0 !important; /* Eliminamos cualquier margen */
+  font-size: 13px; /* Legible */
+  color: #777;
+  margin: 0 !important;
 }
 
 .current-price {
-  font-size: 19px; 
+  font-size: 21px; /* Precio destacado y grande */
   font-weight: 800;
   color: #111;
-  margin: -2px 0 2px 0 !important; /* Margen negativo para subirlo un poco */
+  margin: 2px 0 !important;
 }
 
-/* Compactamos el cuadro de contexto eliminando espacios internos */
 .context-box {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 10px;
-  padding: 6px; /* Padding interno mínimo */
-  margin: 4px 0; /* Margen externo mínimo */
-  font-size: 12px;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 13px; /* Tamaño estándar de lectura */
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 2px; /* Espacio mínimo entre líneas internas */
+  gap: 4px;
 }
 
-/* La cápsula del mínimo registrado más ajustada */
+/* LA CÁPSULA DEL MÍNIMO (Énfasis sin romper diseño) */
 .context-box p:last-child {
   background-color: #ffffff;
-  border-radius: 5px;
-  padding: 2px 6px;
+  border-radius: 6px;
+  padding: 3px 10px;
   display: inline-block;
   margin: 2px auto 0 auto;
   border: 1px dashed #28a745;
   color: #1e7e34;
-  font-weight: 600;
-  font-size: 11px;
+  font-weight: 700;
+}
+
+/* 🟢 RESTAURACIÓN TOTAL DEL BADGE (Mínimo Histórico) */
+.alert-badge {
+    position: absolute;
+    top: -12px; /* Flota arriba */
+    left: 50%;
+    transform: translateX(-50%);
+    display: block !important; /* Fuerza su aparición */
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    color: white !important;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 50;
+    animation: pulse-badge 2s infinite;
+}
+
+/* Aplicar color al badge verde */
+.alert-badge.low_historical {
+    background: #28a745 !important; /* Verde sólido para evitar fallos de renderizado */
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+}
+
+/* Badge para Agotados */
+.alert-badge:not(.low_historical) {
+    background: #6c757d !important;
+}
+
+@keyframes pulse-badge {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.06); }
+    100% { transform: translateX(-50%) scale(1); }
 }
 
 .timestamp {
-  font-size: 10px;
-  color: #999;
-  margin-top: 4px; /* Pegado al final */
-}
-
-/* Ajuste fino del badge para que no flote demasiado alto */
-.alert-badge {
-    position: absolute;
-    top: -10px; 
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 12px;
-    font-size: 11px;
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
 }
 
 /* ====================================================================== */
