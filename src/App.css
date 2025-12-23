@@ -244,6 +244,45 @@
   }
 }
 
+/* --- ENCABEZADO DE TIENDA --- */
+.store-header {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 6px 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  border-radius: 16px 16px 0 0; /* Coincide con el radio de la tarjeta */
+  margin: -16px -16px 15px -16px; /* Ajuste para pegar a los bordes */
+  color: white;
+}
+
+/* Colores por tienda (Seguro legalmente) */
+.store-ml { background: #2d3277; } /* Azul oscuro elegante */
+.store-amazon { background: #232f3e; } /* El color carbón de Amazon */
+.store-default { background: #475569; }
+
+/* --- ETIQUETA DE DESCUENTO (ESTILO STEAM) --- */
+.discount-tag {
+  position: absolute;
+  top: 55px; /* Aparece cerca de la imagen */
+  left: 10px;
+  background: #5cce14; /* Verde brillante de descuento */
+  background: linear-gradient(90deg, #5cce14 0%, #46a00e 100%);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 800;
+  font-size: 13px;
+  z-index: 5;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Ajuste adicional para que la imagen no suba demasiado */
+.product-card img {
+  margin-top: 5px;
+}
+
 /* ====================================================================== */
 /* === 4. PRECIOS Y BADGES === */
 /* ====================================================================== */
