@@ -216,129 +216,142 @@ function App() {
 
   return (
     <div className="App">
-      <h1>🛒 Price Tracker (ML)</h1>
-
-      <div className="simulate-panel">
-          <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
-          <div className="control-row"> 
-              <input
-                  type="text"
-                  placeholder="Pega URL de ML o escribe para buscar aquí"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-                  {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
-              </button>
-              <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-                  {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
-              </button>
+      {/* === NUEVA NAVBAR === */}
+      <nav className="navbar">
+        <div className="navbar-content">
+          <span className="logo">🛒 Price Tracker (ML)</span>
+          <div className="nav-links">
+            {/* Aquí podrías añadir botones en el futuro */}
+            <span className="product-count">
+              {processedProducts.length} Productos
+            </span>
           </div>
+        </div>
+      </nav>
 
-          <div className="filter-row">
-              <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                  <option value="date_desc">📅 Fecha: Reciente</option>
-                  <option value="date_asc">📅 Fecha: Antiguo</option>
-                  <option value="price_asc">💰 Precio: Menor a Mayor</option>
-                  <option value="price_desc">💰 Precio: Mayor a Menor</option>
-              </select>
+      {/* === CONTENEDOR PRINCIPAL === */}
+      <main className="main-content">
+        
+        <div className="simulate-panel">
+            <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+            <div className="control-row"> 
+                <input
+                    type="text"
+                    placeholder="Pega URL de ML o escribe para buscar aquí"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                    {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
+                </button>
+                <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+                    {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
+                </button>
+            </div>
 
-              <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
-                  <option value="available">✅ Solo Disponibles</option>
-                  <option value="all">👁️ Ver Todos</option>
-                  <option value="out_of_stock">🚫 Ver Solo Agotados</option>
-                  <option value="historical_low">🏆 Mínimo Histórico</option>
-                  <option value="price_drop">📉 Solo Ofertas</option>
-              </select>
-          </div>
-          {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
-      </div>
-      
-      {/* Paginación Superior */}
-      {totalPages > 1 && !loading && (
-         <div className="pagination-container">
-            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
-            {getPaginationGroup().map((item, i) => (
-                <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
-            ))}
-            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
-         </div>
-      )}
+            <div className="filter-row">
+                <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                    <option value="date_desc">📅 Fecha: Reciente</option>
+                    <option value="date_asc">📅 Fecha: Antiguo</option>
+                    <option value="price_asc">💰 Precio: Menor a Mayor</option>
+                    <option value="price_desc">💰 Precio: Mayor a Menor</option>
+                </select>
 
-      <div className="product-grid">
-        {loading ? (
-            // 🦴 SKELETON SCREEN (Mientras carga)
-            Array.from({ length: 18 }).map((_, index) => (
-              <div key={index} className="product-card skeleton-card">
-                <div className="skeleton-img"></div>
-                <div className="skeleton-title"></div>
-                <div className="skeleton-text"></div>
-                <div className="skeleton-text short"></div>
-              </div>
-            ))
-        ) : currentProducts.length === 0 ? (
-            <p className="no-products-message">No se encontraron productos.</p>
-        ) : (
-            // 🛍️ TARJETAS REALES (Cuando ya cargó)
-            currentProducts.map((p, index) => {
-                const outOfStock = isOutOfStock(p);
-                return (
-                <div
-                    key={index}
-                    className="product-card"
-                    style={{ 
-                        backgroundColor: outOfStock ? "#f1f1f1" : getPriceColor(p.price),
-                        opacity: outOfStock ? 0.7 : 1, 
-                        filter: outOfStock ? "grayscale(100%)" : "none"
-                    }}
-                    onClick={() => setChartProductTitle(p.title)} 
-                >
-                    {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
-                    {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
-                    
-                    <img src={p.image} alt={p.title} />
-                    <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
-
-                    {!outOfStock && p.status !== "new" && p.previous_price && (
-                        <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>
-                    )}
-
-                    <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
-                    
-                    <p>
-                        {getStatusEmoji(p.status, p)} 
-                        {!outOfStock && (p.status === "up" || p.status === "down") && (
-                            <span className="change-text"> ({p.change_percentage})</span>
-                        )}
-                    </p>
-                    
-                    {!outOfStock && p.mode_price && (
-                        <div className="context-box">
-                            <p><strong>Frecuente:</strong> {p.mode_price}</p>
-                            <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-                        </div>
-                    )}
-                    
-                    <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                       {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
-                    </a>
-                    <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
-                </div>
-            )})
+                <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                    <option value="available">✅ Solo Disponibles</option>
+                    <option value="all">👁️ Ver Todos</option>
+                    <option value="out_of_stock">🚫 Ver Solo Agotados</option>
+                    <option value="historical_low">🏆 Mínimo Histórico</option>
+                    <option value="price_drop">📉 Solo Ofertas</option>
+                </select>
+            </div>
+            {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
+        </div>
+        
+        {/* Paginación Superior */}
+        {totalPages > 1 && !loading && (
+           <div className="pagination-container">
+              <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
+              {getPaginationGroup().map((item, i) => (
+                  <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
+              ))}
+              <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
+           </div>
         )}
-      </div>
 
-      {/* Paginación Inferior */}
-      {totalPages > 1 && !loading && (
-         <div className="pagination-container" style={{marginTop: '30px', marginBottom: '50px'}}>
-            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
-            {getPaginationGroup().map((item, i) => (
-                <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
-            ))}
-            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
-         </div>
-      )}
-      
+        <div className="product-grid">
+          {loading ? (
+              Array.from({ length: 18 }).map((_, index) => (
+                <div key={index} className="product-card skeleton-card">
+                  <div className="skeleton-img"></div>
+                  <div className="skeleton-title"></div>
+                  <div className="skeleton-text"></div>
+                  <div className="skeleton-text short"></div>
+                </div>
+              ))
+          ) : currentProducts.length === 0 ? (
+              <p className="no-products-message">No se encontraron productos.</p>
+          ) : (
+              currentProducts.map((p, index) => {
+                  const outOfStock = isOutOfStock(p);
+                  return (
+                  <div
+                      key={index}
+                      className="product-card"
+                      style={{ 
+                          /* Eliminamos el estilo en línea de fondo para que mande el CSS del Glassmorphism */
+                          opacity: outOfStock ? 0.7 : 1, 
+                          filter: outOfStock ? "grayscale(100%)" : "none"
+                      }}
+                      onClick={() => setChartProductTitle(p.title)} 
+                  >
+                      {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
+                      {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
+                      
+                      <img src={p.image} alt={p.title} />
+                      <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
+
+                      {!outOfStock && p.status !== "new" && p.previous_price && (
+                          <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>
+                      )}
+
+                      <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+                      
+                      <p>
+                          {getStatusEmoji(p.status, p)} 
+                          {!outOfStock && (p.status === "up" || p.status === "down") && (
+                              <span className="change-text"> ({p.change_percentage})</span>
+                          )}
+                      </p>
+                      
+                      {!outOfStock && p.mode_price && (
+                          <div className="context-box">
+                              <p><strong>Frecuente:</strong> {p.mode_price}</p>
+                              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+                          </div>
+                      )}
+                      
+                      <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+                         {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
+                      </a>
+                      <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
+                  </div>
+              )})
+          )}
+        </div>
+
+        {/* Paginación Inferior */}
+        {totalPages > 1 && !loading && (
+           <div className="pagination-container" style={{marginTop: '30px', marginBottom: '50px'}}>
+              <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
+              {getPaginationGroup().map((item, i) => (
+                  <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
+              ))}
+              <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
+           </div>
+        )}
+      </main>
+
       {chartProductTitle && (
         <PriceChartModal
           productTitle={chartProductTitle}
