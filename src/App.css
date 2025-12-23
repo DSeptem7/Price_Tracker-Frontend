@@ -348,7 +348,7 @@ h1 {
 
 /* Contenedor de la grilla durante la carga para reservar espacio de paginación */
 .product-grid:has(.skeleton-card) {
-  margin-bottom: 150px; /* Este espacio "reserva" el lugar donde aparecerán los números de página */
+  margin-bottom: 200px; /* Este espacio "reserva" el lugar donde aparecerán los números de página */
 }
 
 .skeleton-img {
