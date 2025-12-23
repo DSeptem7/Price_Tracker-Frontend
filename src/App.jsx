@@ -354,18 +354,14 @@ function App() {
                       {!outOfStock && (
                         <>
                           {p.status === "down" && (
-                            <span className="percentage-tag down">
-                              ↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%
-                            </span>
+                            <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
                           )}
                           {p.status === "up" && (
-                            <span className="percentage-tag up">
-                              ↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%
-                            </span>
+                            <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
                           )}
                           
-                          {/* Muestra "Sin cambios" si es stable/equal o viene vacío/null */}
-                          {(p.status === "equal" || p.status === "stable" || !p.status || p.status === "") && p.status !== "new" && (
+                          {/* Esta lógica atrapará "equal", "same", o si el status viene vacío pero NO es un producto nuevo */}
+                          {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status) && p.status !== "new" && (
                             <span className="status-stable">Sin cambios</span>
                           )}
                           
