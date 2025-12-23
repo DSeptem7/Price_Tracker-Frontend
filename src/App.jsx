@@ -285,66 +285,85 @@ function App() {
            </div>
         )}
 
-        <div className="product-grid">
-          {loading ? (
-              Array.from({ length: 18 }).map((_, index) => (
-                <div key={index} className="product-card skeleton-card">
-                  <div className="skeleton-img"></div>
-                  <div className="skeleton-title"></div>
-                  <div className="skeleton-text"></div>
-                  <div className="skeleton-text short"></div>
-                </div>
-              ))
-          ) : currentProducts.length === 0 ? (
-              <p className="no-products-message">No se encontraron productos.</p>
-          ) : (
-              currentProducts.map((p, index) => {
-                  const outOfStock = isOutOfStock(p);
-                  return (
-                  <div
-                      key={index}
-                      className="product-card"
-                      style={{ 
-                          /* Eliminamos el estilo en línea de fondo para que mande el CSS del Glassmorphism */
-                          opacity: outOfStock ? 0.7 : 1, 
-                          filter: outOfStock ? "grayscale(100%)" : "none"
-                      }}
-                      onClick={() => setChartProductTitle(p.title)} 
-                  >
-                      {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
-                      {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
-                      
-                      <img src={p.image} alt={p.title} />
-                      <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
+<div className="product-grid">
+  {loading ? (
+    Array.from({ length: 18 }).map((_, index) => (
+      <div key={index} className="product-card skeleton-card">
+        <div className="skeleton-img"></div>
+        <div className="skeleton-title"></div>
+        <div className="skeleton-text"></div>
+        <div className="skeleton-text short"></div>
+      </div>
+    ))
+  ) : currentProducts.length === 0 ? (
+    <p className="no-products-message">No se encontraron productos.</p>
+  ) : (
+    currentProducts.map((p, index) => {
+      const outOfStock = isOutOfStock(p);
+      
+      // Lógica para identificar la tienda
+      const isML = p.url.includes("mercadolibre");
+      const isAmazon = p.url.includes("amazon");
+      const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
+      const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
 
-                      {!outOfStock && p.status !== "new" && p.previous_price && (
-                          <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>
-                      )}
+      return (
+        <div
+          key={index}
+          className="product-card"
+          style={{ 
+            opacity: outOfStock ? 0.7 : 1, 
+            filter: outOfStock ? "grayscale(100%)" : "none"
+          }}
+          onClick={() => setChartProductTitle(p.title)} 
+        >
+          {/* 1. ENCABEZADO DE TIENDA ESTILO STEAM */}
+          <div className={`store-header ${storeClass}`}>
+            {storeName}
+          </div>
 
-                      <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
-                      
-                      <p>
-                          {getStatusEmoji(p.status, p)} 
-                          {!outOfStock && (p.status === "up" || p.status === "down") && (
-                              <span className="change-text"> ({p.change_percentage})</span>
-                          )}
-                      </p>
-                      
-                      {!outOfStock && p.mode_price && (
-                          <div className="context-box">
-                              <p><strong>Frecuente:</strong> {p.mode_price}</p>
-                              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-                          </div>
-                      )}
-                      
-                      <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                         {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
-                      </a>
-                      <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
-                  </div>
-              )})
+          {/* 2. BADGE DE PORCENTAJE (Solo si bajó de precio) */}
+          {!outOfStock && p.status === "down" && p.change_percentage && (
+            <div className="discount-tag">
+              {p.change_percentage}
+            </div>
           )}
+
+          {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
+          {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
+          
+          <img src={p.image} alt={p.title} />
+          <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
+
+          {!outOfStock && p.status !== "new" && p.previous_price && (
+            <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>
+          )}
+
+          <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+          
+          <p>
+            {getStatusEmoji(p.status, p)} 
+            {!outOfStock && (p.status === "up" || p.status === "down") && (
+              <span className="change-text"> ({p.change_percentage})</span>
+            )}
+          </p>
+          
+          {!outOfStock && p.mode_price && (
+            <div className="context-box">
+              <p><strong>Frecuente:</strong> {p.mode_price}</p>
+              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+            </div>
+          )}
+          
+          <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+             {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
+          </a>
+          <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
         </div>
+      )
+    })
+  )}
+</div>
 
         {/* Paginación Inferior */}
         {totalPages > 1 && !loading && (
