@@ -348,13 +348,27 @@ function App() {
           
           {/* 3. FILA DE ESTADO (Emoji + Etiqueta de Porcentaje en lugar de paréntesis) */}
           <div className="status-row">
-            {getStatusEmoji(p.status, p)} 
-            {!outOfStock && (p.status === "up" || p.status === "down") && (
-              <span className={`percentage-tag ${p.status}`}>
-                {p.change_percentage.replace(/[()]/g, '')} 
-              </span>
-            )}
-          </div>
+  {!outOfStock && (
+    <>
+      {p.status === "down" && (
+        <span className="percentage-tag down">
+          -{p.change_percentage.replace(/[()%-]/g, '')}%
+        </span>
+      )}
+      {p.status === "up" && (
+        <span className="percentage-tag up">
+          +{p.change_percentage.replace(/[()%-]/g, '')}%
+        </span>
+      )}
+      {p.status === "equal" && (
+        <span className="status-stable">Precio estable</span>
+      )}
+      {p.status === "new" && (
+        <span className="status-new">Nuevo producto</span>
+      )}
+    </>
+  )}
+</div>
           
           {!outOfStock && p.mode_price && (
             <div className="context-box">
