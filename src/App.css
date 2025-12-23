@@ -115,14 +115,14 @@
 }
 
 /* ====================================================================== */
-/* === 2. PANEL DE BÚSQUEDA Y FILTROS === */
+/* === 2. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO) === */
 /* ====================================================================== */
 .simulate-panel {
   background-color: #fff;
   border: 1px solid rgba(0,0,0,0.05);
   border-radius: 16px;
   padding: 24px;
-  margin-bottom: 40px;
+  margin-bottom: 30px; /* Reducido un poco para ganar espacio */
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -136,11 +136,21 @@
   font-weight: 700;
 }
 
+/* Filas base */
 .control-row, .filter-row {
   display: flex;
   gap: 12px;
   width: 100%;
+}
+
+/* Fila de controles (Input y botones) */
+.control-row {
   justify-content: center;
+}
+
+/* Fila de filtros (Selects) */
+.filter-row {
+  justify-content: space-between; /* Los separa equitativamente */
 }
 
 .simulate-panel input, .simulate-panel select {
@@ -150,6 +160,7 @@
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
+  background-color: #fff;
 }
 
 .simulate-panel input:focus {
@@ -187,11 +198,14 @@
   background-color: #0056b3;
 }
 
+/* Ajuste de los selectores */
 .select-wrapper { 
   display: flex; 
   flex-direction: column; 
   align-items: flex-start; 
   gap: 4px; 
+  flex: 1; /* Esto obliga a que ambos selectores ocupen el mismo ancho (50/50) */
+  min-width: 0; /* Evita desbordamientos */
 }
 
 .select-wrapper label { 
@@ -200,6 +214,38 @@
   color: #94a3b8; 
   font-weight: 800; 
   margin-left: 4px; 
+}
+
+.select-wrapper select {
+  width: 100%; /* El select llena su mitad del contenedor */
+}
+
+/* 📱 AJUSTES ESPECÍFICOS PARA MÓVIL */
+@media (max-width: 600px) {
+  .simulate-panel {
+    padding: 16px; /* Menos espacio interno en móvil */
+    gap: 15px;
+  }
+
+  .control-row {
+    flex-direction: column; /* Input y botones arriba/abajo */
+  }
+
+  /* FORZAMOS que los FILTROS se queden en una sola fila horizontal */
+  .filter-row {
+    flex-direction: row !important; 
+    gap: 8px; /* Espacio más pequeño entre selectores */
+  }
+
+  .simulate-panel input, .simulate-panel select {
+    padding: 10px; /* Reducimos el padding para que no se vea tosco */
+    font-size: 13px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
 /* ====================================================================== */
