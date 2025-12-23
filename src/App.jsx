@@ -251,7 +251,7 @@ function App() {
             <span className="stat-icon">💰</span>
             <div className="stat-info">
               <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
-              <span className="stat-label">Ahorro total hoy</span>
+              <span className="stat-label">Ahorro total de hoy</span>
             </div>
           </div>
           <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)} style={{cursor: 'pointer'}}>
