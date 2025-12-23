@@ -244,44 +244,64 @@
   }
 }
 
-/* --- ENCABEZADO DE TIENDA --- */
+/* --- HEADER DE TIENDA --- */
 .store-header {
   font-size: 10px;
   font-weight: 800;
-  padding: 6px 0;
+  padding: 7px 0;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
-  border-radius: 16px 16px 0 0; /* Coincide con el radio de la tarjeta */
-  margin: -16px -16px 15px -16px; /* Ajuste para pegar a los bordes */
-  color: white;
+  letter-spacing: 1px;
+  border-radius: 16px 16px 0 0;
+  margin: -16px -16px 12px -16px; /* Lo pega a los bordes */
 }
 
-/* Colores por tienda (Seguro legalmente) */
-.store-ml { background: #2d3277; } /* Azul oscuro elegante */
-.store-amazon { background: #232f3e; } /* El color carbón de Amazon */
-.store-default { background: #475569; }
+.store-ml { background-color: #FFE600; color: #333; } /* Amarillo ML oficial */
+.store-amazon { background-color: #232f3e; color: white; }
+.store-default { background-color: #475569; color: white; }
 
-/* --- ETIQUETA DE DESCUENTO (ESTILO STEAM) --- */
-.discount-tag {
+/* --- CONTENEDOR DE IMAGEN --- */
+.image-container {
+  position: relative; /* Permite que el badge flote encima */
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* --- BADGES FLOTANTES (Mínimo / Stock) --- */
+.alert-badge {
   position: absolute;
-  top: 55px; /* Aparece cerca de la imagen */
-  left: 10px;
-  background: #5cce14; /* Verde brillante de descuento */
-  background: linear-gradient(90deg, #5cce14 0%, #46a00e 100%);
-  color: #fff;
-  padding: 4px 8px;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 12px;
   border-radius: 4px;
-  font-weight: 800;
-  font-size: 13px;
+  font-size: 10px;
+  font-weight: 900;
   z-index: 5;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-/* Ajuste adicional para que la imagen no suba demasiado */
-.product-card img {
-  margin-top: 5px;
+.stock-badge { background-color: #6c757d; color: white; }
+
+/* --- ETIQUETA DE PORCENTAJE --- */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 4px 0;
 }
+
+.percentage-tag {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.percentage-tag.down { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.percentage-tag.up { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 
 /* ====================================================================== */
 /* === 4. PRECIOS Y BADGES === */
