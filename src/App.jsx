@@ -243,8 +243,8 @@ function App() {
           <div className="stat-card">
             <div className="stat-indicator down"></div>
             <div className="stat-info">
-              <span className="stat-label">Oportunidades</span>
-              <span className="stat-value">{stats.dropCount} Bajadas</span>
+              <span className="stat-label">Productos en descuento</span>
+              <span className="stat-value">{stats.dropCount} Precios bajos</span>
             </div>
           </div>
           
@@ -258,7 +258,7 @@ function App() {
 
           <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
             <div className="stat-info">
-              <span className="stat-label">Rendimiento Máximo</span>
+              <span className="stat-label">Producto con mayor descuento</span>
               <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
             </div>
           </div>
@@ -266,8 +266,8 @@ function App() {
           <div className="stat-card">
             <div className="stat-indicator up"></div>
             <div className="stat-info">
-              <span className="stat-label">Inflación/Ajustes</span>
-              <span className="stat-value">{stats.upCount} Incrementos</span>
+              <span className="stat-label">Productos con incremento de precio</span>
+              <span className="stat-value">{stats.upCount} Precios a la alza</span>
             </div>
           </div>
         </div>
