@@ -398,23 +398,6 @@ function App() {
     })
   )}
 </div>
-          
-          {!outOfStock && p.mode_price && (
-            <div className="context-box">
-              <p><strong>Frecuente:</strong> {p.mode_price}</p>
-              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-            </div>
-          )}
-          
-          <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-             {outOfStock ? "Revisar en tienda" : "Ver producto"}
-          </a>
-          <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
-        </div>
-      )
-    })
-  )}
-</div>
 
         {/* Paginación Inferior */}
         {totalPages > 1 && !loading && (
