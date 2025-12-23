@@ -378,6 +378,31 @@
   margin-top: 6px;
 }
 
+.status-stable {
+  font-size: 12px;
+  color: #94a3b8; /* Gris azulado suave */
+  font-weight: 500;
+  font-style: italic;
+}
+
+.status-new {
+  font-size: 12px;
+  color: #007bff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Ajuste a las etiquetas para que el + o - luzca bien */
+.percentage-tag {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+}
+
 /* ====================================================================== */
 /* === 5. ESTILOS DEL MODAL DE LA GRÁFICA === */
 /* ====================================================================== */
