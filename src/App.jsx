@@ -301,7 +301,6 @@ function App() {
     currentProducts.map((p, index) => {
       const outOfStock = isOutOfStock(p);
       
-      // Lógica para identificar la tienda
       const isML = p.url.includes("mercadolibre");
       const isAmazon = p.url.includes("amazon");
       const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
@@ -317,36 +316,45 @@ function App() {
           }}
           onClick={() => setChartProductTitle(p.title)} 
         >
-          {/* 1. ENCABEZADO DE TIENDA ESTILO STEAM */}
+          {/* 1. HEADER DE TIENDA (Ahora arriba del todo y siempre visible) */}
           <div className={`store-header ${storeClass}`}>
             {storeName}
           </div>
 
-          {/* 2. BADGE DE PORCENTAJE (Solo si bajó de precio) */}
-          {!outOfStock && p.status === "down" && p.change_percentage && (
-            <div className="discount-tag">
-              {p.change_percentage}
-            </div>
-          )}
+          {/* 2. CONTENEDOR DE IMAGEN (Con badges flotando sobre la foto) */}
+          <div className="image-container">
+            <img src={p.image} alt={p.title} />
+            
+            {outOfStock && (
+              <div className="alert-badge stock-badge">🚫 SIN STOCK</div>
+            )}
+            
+            {!outOfStock && p.alert_type === "low_historical" && (
+              <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>
+            )}
+          </div>
 
-          {outOfStock && <div className="alert-badge" style={{backgroundColor: "#6c757d"}}>🚫 SIN STOCK</div>}
-          {!outOfStock && p.alert_type === "low_historical" && <div className="alert-badge low_historical">¡MÍNIMO HISTÓRICO! 📉</div>}
-          
-          <img src={p.image} alt={p.title} />
-          <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>{p.title}</h3>
+          <h3 style={{ textDecoration: outOfStock ? "line-through" : "none" }}>
+            {p.title}
+          </h3>
 
           {!outOfStock && p.status !== "new" && p.previous_price && (
-            <p className="previous-price">Precio Anterior: <s>{p.previous_price}</s></p>
+            <p className="previous-price">Antes: <s>{p.previous_price}</s></p>
           )}
 
-          <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+          <p className="current-price">
+            <strong>{outOfStock ? "No disponible" : p.price}</strong>
+          </p>
           
-          <p>
+          {/* 3. FILA DE ESTADO (Emoji + Etiqueta de Porcentaje en lugar de paréntesis) */}
+          <div className="status-row">
             {getStatusEmoji(p.status, p)} 
             {!outOfStock && (p.status === "up" || p.status === "down") && (
-              <span className="change-text"> ({p.change_percentage})</span>
+              <span className={`percentage-tag ${p.status}`}>
+                {p.change_percentage.replace(/[()]/g, '')} 
+              </span>
             )}
-          </p>
+          </div>
           
           {!outOfStock && p.mode_price && (
             <div className="context-box">
@@ -356,7 +364,7 @@ function App() {
           )}
           
           <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-             {outOfStock ? "Ver en ML (Revisar)" : "Ver producto"}
+             {outOfStock ? "Revisar en tienda" : "Ver producto"}
           </a>
           <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
         </div>
