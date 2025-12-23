@@ -277,7 +277,7 @@
 }
 
 .alert-badge.low_historical { 
-  background: linear-gradient(135deg, #22c55e, #16a34a) !important; 
+  background: linear-gradient(135deg, #28a745, #1e7e34) !important; 
 }
 
 .alert-badge:not(.low_historical) {
