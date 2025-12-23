@@ -1,4 +1,62 @@
 /* ====================================================================== */
+/* === 0. NAVBAR Y ESTRUCTURA GLOBAL === */
+/* ====================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+}
+
+.navbar-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #007bff;
+  background: linear-gradient(45deg, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.product-count {
+  font-size: 0.9rem;
+  color: #666;
+  background: #f0f2f5;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.main-content {
+  max-width: 1400px; /* Mismo ancho que la navbar */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Ajuste móvil para la Navbar */
+@media (max-width: 600px) {
+  .navbar-content {
+    justify-content: center;
+  }
+  .product-count {
+    display: none; /* Ocultar contador en móvil para simplificar */
+  }
+}
+
+/* ====================================================================== */
 /* === 1. ESTILOS BASE Y CONTENEDOR PRINCIPAL (.App) === */
 /* ====================================================================== */
 .App {
