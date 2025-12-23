@@ -306,6 +306,13 @@ function App() {
       const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
       const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
 
+      // --- LÓGICA DE MÍNIMO HISTÓRICO REAL ---
+      // Solo brilla si el sistema dice que es mínimo Y el precio realmente bajó (no estable)
+      const isRealLowHistorical = 
+        p.alert_type === "low_historical" && 
+        p.status === "down" && 
+        !outOfStock;
+
       return (
         <div
           key={index}
@@ -316,12 +323,10 @@ function App() {
           }}
           onClick={() => setChartProductTitle(p.title)} 
         >
-          {/* 1. HEADER DE TIENDA (Ahora arriba del todo y siempre visible) */}
           <div className={`store-header ${storeClass}`}>
             {storeName}
           </div>
 
-          {/* 2. CONTENEDOR DE IMAGEN (Con badges flotando sobre la foto) */}
           <div className="image-container">
             <img src={p.image} alt={p.title} />
             
@@ -329,7 +334,8 @@ function App() {
               <div className="alert-badge stock-badge">🚫 SIN STOCK</div>
             )}
             
-            {!outOfStock && p.alert_type === "low_historical" && (
+            {/* Solo se muestra si es una bajada real */}
+            {isRealLowHistorical && (
               <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>
             )}
           </div>
@@ -346,27 +352,50 @@ function App() {
             <strong>{outOfStock ? "No disponible" : p.price}</strong>
           </p>
           
-          {/* 3. FILA DE ESTADO (Emoji + Etiqueta de Porcentaje en lugar de paréntesis) */}
           <div className="status-row">
-  {!outOfStock && (
-    <>
-      {p.status === "down" && (
-        <span className="percentage-tag down">
-          -{p.change_percentage.replace(/[()%-]/g, '')}%
-        </span>
-      )}
-      {p.status === "up" && (
-        <span className="percentage-tag up">
-          +{p.change_percentage.replace(/[()%-]/g, '')}%
-        </span>
-      )}
-      {p.status === "equal" && (
-        <span className="status-stable">Precio estable</span>
-      )}
-      {p.status === "new" && (
-        <span className="status-new">Nuevo producto</span>
-      )}
-    </>
+            {!outOfStock && (
+              <>
+                {/* ESTADO BAJÓ: Flecha abajo + Signo Menos */}
+                {p.status === "down" && (
+                  <span className="percentage-tag down">
+                    ↓ -{p.change_percentage.replace(/[()%-]/g, '')}%
+                  </span>
+                )}
+                
+                {/* ESTADO SUBIÓ: Flecha arriba + Signo Más */}
+                {p.status === "up" && (
+                  <span className="percentage-tag up">
+                    ↑ +{p.change_percentage.replace(/[()%-]/g, '')}%
+                  </span>
+                )}
+                
+                {/* ESTADO ESTABLE: Sin colores llamativos */}
+                {(p.status === "equal" || p.status === "stable") && (
+                  <span className="status-stable">Sin cambios</span>
+                )}
+                
+                {/* ESTADO NUEVO: Mantiene su importancia visual */}
+                {p.status === "new" && (
+                  <span className="status-new">Recién añadido</span>
+                )}
+              </>
+            )}
+          </div>
+          
+          {!outOfStock && p.mode_price && (
+            <div className="context-box">
+              <p><strong>Frecuente:</strong> {p.mode_price}</p>
+              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+            </div>
+          )}
+          
+          <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+             {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
+          </a>
+          <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
+        </div>
+      )
+    })
   )}
 </div>
           
