@@ -284,24 +284,57 @@
 
 .stock-badge { background-color: #6c757d; color: white; }
 
-/* --- ETIQUETA DE PORCENTAJE --- */
+/* Etiquetas de estado y porcentaje */
 .status-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  margin: 4px 0;
+  margin: 8px 0;
+  min-height: 24px; /* Mantiene el espacio aunque no haya etiqueta */
 }
 
 .percentage-tag {
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
 }
 
-.percentage-tag.down { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-.percentage-tag.up { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+.percentage-tag.down {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.percentage-tag.up {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.status-stable {
+  font-size: 11px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-new {
+  font-size: 11px;
+  color: #0369a1;
+  background: #e0f2fe;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
 
 /* ====================================================================== */
 /* === 4. PRECIOS Y BADGES === */
