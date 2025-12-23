@@ -6,10 +6,10 @@
   top: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   padding: 12px 0;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .product-count {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #666;
   background: #f0f2f5;
   padding: 4px 12px;
@@ -41,165 +41,159 @@
 }
 
 .main-content {
-  max-width: 1400px; /* Mismo ancho que la navbar */
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Ajuste móvil para la Navbar */
-@media (max-width: 600px) {
-  .navbar-content {
-    justify-content: center;
-  }
-  .product-count {
-    display: none; /* Ocultar contador en móvil para simplificar */
-  }
-}
-
 /* ====================================================================== */
-/* === 1. ESTILOS BASE Y CONTENEDOR PRINCIPAL (.App) === */
+/* === 1. ESTILOS BASE (.App) === */
 /* ====================================================================== */
 .App {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', Roboto, sans-serif;
   text-align: center;
-  padding: 20px;
-  background-color: #f4f7f9;
-  /* --- NUEVO: Centrado de la página --- */
-  max-width: 1400px; /* Evita que se estire demasiado */
-  margin: 0 auto;    /* Centra el bloque en la pantalla */
+  background-color: #f8fafc; /* Gris profesional */
   min-height: 100vh;
 }
 
-h1 {
-  color: #333;
-  margin-bottom: 30px;
-  font-weight: 700;
-}
-
 /* ====================================================================== */
-/* === 2. ESTILOS DEL PANEL DE BÚSQUEDA Y RASTREO (.simulate-panel) === */
+/* === 2. PANEL DE BÚSQUEDA Y FILTROS === */
 /* ====================================================================== */
 .simulate-panel {
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 30px;
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 40px;
   display: flex;
-  flex-direction: column; /* Apilamos las filas verticalmente */
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 .simulate-panel h3 {
   margin: 0;
-  font-size: 18px;
-  text-align: center;
+  font-size: 1.1rem;
+  color: #1e293b;
+  font-weight: 700;
 }
 
 .control-row, .filter-row {
   display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
+  gap: 12px;
   width: 100%;
+  justify-content: center;
 }
 
-.simulate-panel select, 
-.simulate-panel input, 
-.simulate-panel button {
-  padding: 10px 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.simulate-panel input, .simulate-panel select {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
   font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.simulate-panel input:focus {
+  border-color: #007bff;
 }
 
 .control-row input[type="text"] {
   flex-grow: 1;
-  max-width: 450px;
+  max-width: 500px;
 }
 
-.simulate-panel button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 600;
+.btn-primary { 
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  font-weight: 600; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  padding: 12px 20px; 
+  transition: transform 0.2s;
 }
 
-.simulate-panel button:hover {
+.btn-secondary { 
+  background-color: #f1f5f9; 
+  color: #475569; 
+  border: none; 
+  font-weight: 600; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  padding: 12px 20px; 
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
   background-color: #0056b3;
-  transform: translateY(-1px);
 }
 
-.simulate-panel button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.select-wrapper { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 4px; 
 }
 
-.filter-label {
-    font-weight: 600;
-    color: #495057;
+.select-wrapper label { 
+  font-size: 10px; 
+  text-transform: uppercase; 
+  color: #94a3b8; 
+  font-weight: 800; 
+  margin-left: 4px; 
 }
 
 /* ====================================================================== */
-/* === 3. ESTILOS DE LA GRILLA Y LAS TARJETAS DE PRODUCTO (.product-grid) === */
+/* === 3. GRILLA Y TARJETAS (AJUSTE ESPACIO MÓVIL) === */
 /* ====================================================================== */
 .product-grid {
   display: grid;
-  /* Ajustado a 210px para que entren 5-6 en pantallas grandes */
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); 
-  gap: 15px;
-  padding: 20px 0;
-  /* NUEVO: Esto reserva espacio para al menos 3 filas de productos */
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); 
+  gap: 35px 20px; /* 35px vertical para PC */
+  padding: 30px 0;
   min-height: 800px;
 }
 
 .product-card {
-  background: rgba(255, 255, 255, 0.75); 
+  background: rgba(255, 255, 255, 0.8); 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 16px; 
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px; 
   padding: 16px; 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   position: relative; 
-  cursor: pointer;
   transition: all 0.3s ease;
-  overflow: visible; 
+  overflow: visible;
 }
 
-.product-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.product-card:hover { 
+  transform: translateY(-6px); 
+  background: #ffffff; 
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); 
 }
 
-.product-card img {
-  width: 100%;
+.product-card img { 
+  width: 100%; 
   height: 150px; 
-  object-fit: contain;
-  border-radius: 10px;
-  margin-bottom: 8px;
-  background: white;
+  object-fit: contain; 
+  margin-bottom: 12px; 
+  border-radius: 8px;
 }
 
-.product-card h3 {
-  font-size: 16px; 
-  color: #1a1a1a;
-  margin: 5px 0;
-  text-align: center;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
+.product-card h3 { 
+  font-size: 15px; 
+  color: #0f172a; 
+  margin: 8px 0; 
   height: 40px; 
-  line-height: 1.3;
+  line-height: 1.3; 
+  overflow: hidden; 
+  display: -webkit-box; 
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical; 
 }
 
 .product-card a {
@@ -214,114 +208,105 @@ h1 {
   text-align: center;
 }
 
-/* 📱 AJUSTES ESPECÍFICOS PARA CELULARES (RESPONSIVE) */
+/* 📱 AJUSTES CRÍTICOS PARA MÓVIL */
 @media (max-width: 600px) {
-  .product-grid {
-    /* 2 columnas exactas en móvil para que no se vea desordenado */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 10px;
+  .control-row, .filter-row { 
+    flex-direction: column; 
   }
-
+  
+  .product-grid { 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 45px 12px; /* 45px Vertical para que NO choquen los badges */
+    padding: 35px 10px; 
+  }
+  
   .product-card {
-    padding: 10px; /* Reducimos espacio interno para ganar espacio */
+    padding: 12px;
   }
-
-  .product-card img {
-    height: 120px; /* Foto más pequeña para que quepa todo */
+  
+  .product-card img { 
+    height: 110px; 
   }
-
-  .product-card h3 {
-    font-size: 14px; /* Un poco más pequeña solo en celular */
-    height: 35px;
+  
+  .alert-badge { 
+    font-size: 9px !important; 
+    padding: 4px 8px !important; 
+    top: -12px !important; 
+    width: 85%; 
   }
-
-  .current-price {
-    font-size: 18px !important; /* Aseguramos que el precio sea legible */
+  
+  .navbar-content { 
+    justify-content: center; 
   }
-
-  /* Bajamos un poco el tamaño del badge en móvil para que no tape todo */
-  .alert-badge {
-    font-size: 10px;
-    padding: 4px 10px;
+  
+  .product-count { 
+    display: none; 
   }
 }
 
 /* ====================================================================== */
-/* === 4. ESTILOS DE PRECIOS Y ESTADO (EMOJIS) === */
+/* === 4. PRECIOS Y BADGES === */
 /* ====================================================================== */
-
-.previous-price {
-  font-size: 13px; /* Legible */
-  color: #777;
-  margin: 0 !important;
+.current-price { 
+  font-size: 20px; 
+  font-weight: 800; 
+  color: #1e293b; 
+  margin: 4px 0 !important; 
 }
 
-.current-price {
-  font-size: 21px; /* Precio destacado y grande */
-  font-weight: 800;
-  color: #111;
-  margin: 2px 0 !important;
+.previous-price { 
+  font-size: 13px; 
+  color: #777; 
+  margin: 0 !important; 
 }
 
-.context-box {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
-  padding: 8px;
-  margin: 8px 0;
-  font-size: 13px; /* Tamaño estándar de lectura */
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* LA CÁPSULA DEL MÍNIMO (Énfasis sin romper diseño) */
-.context-box p:last-child {
-  background-color: #ffffff;
-  border-radius: 6px;
-  padding: 3px 10px;
-  display: inline-block;
-  margin: 2px auto 0 auto;
-  border: 1px dashed #28a745;
-  color: #1e7e34;
-  font-weight: 700;
-}
-
-/* 🟢 RESTAURACIÓN TOTAL DEL BADGE (Mínimo Histórico) */
 .alert-badge {
     position: absolute;
-    top: -12px; /* Flota arriba */
-    left: 50%;
+    top: -14px; 
+    left: 50%; 
     transform: translateX(-50%);
-    display: block !important; /* Fuerza su aparición */
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 6px 14px; 
+    border-radius: 30px; 
+    font-size: 11px; 
     font-weight: 800;
-    color: white !important;
+    color: white !important; 
+    z-index: 10; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 50;
     animation: pulse-badge 2s infinite;
 }
 
-/* Aplicar color al badge verde */
-.alert-badge.low_historical {
-    background: #28a745 !important; /* Verde sólido para evitar fallos de renderizado */
-    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+.alert-badge.low_historical { 
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important; 
 }
 
-/* Badge para Agotados */
 .alert-badge:not(.low_historical) {
     background: #6c757d !important;
 }
 
-@keyframes pulse-badge {
-    0% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.06); }
-    100% { transform: translateX(-50%) scale(1); }
+@keyframes pulse-badge { 
+  0% { transform: translateX(-50%) scale(1); } 
+  50% { transform: translateX(-50%) scale(1.05); } 
+  100% { transform: translateX(-50%) scale(1); } 
+}
+
+.context-box { 
+  background: rgba(0, 0, 0, 0.03); 
+  border-radius: 12px; 
+  padding: 10px; 
+  margin: 10px 0; 
+  font-size: 12px; 
+}
+
+.context-box p:last-child { 
+  background: white; 
+  border: 1px dashed #22c55e; 
+  color: #16a34a; 
+  padding: 3px 8px; 
+  border-radius: 6px; 
+  margin-top: 4px; 
+  display: inline-block; 
+  font-weight: 700; 
 }
 
 .timestamp {
@@ -334,122 +319,123 @@ h1 {
 /* === 5. ESTILOS DEL MODAL DE LA GRÁFICA === */
 /* ====================================================================== */
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.4); 
   backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  z-index: 2000;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 30px;
+  background-color: white; 
+  padding: 30px; 
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 750px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2); 
+  width: 90%; 
+  max-width: 750px; 
   position: relative;
+}
+
+.close-button { 
+  position: absolute; 
+  top: 15px; 
+  right: 20px; 
+  font-size: 28px; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  color: #666; 
 }
 
 /* ====================================================================== */
 /* === 6. PAGINACIÓN === */
 /* ====================================================================== */
 .pagination-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 8px; 
   margin: 30px 0;
-  /* NUEVO: Reservamos el espacio vertical de los botones */
   min-height: 50px; 
   width: 100%;
 }
 
 .pagination-number, .pagination-arrow {
-  padding: 10px 16px;
-  border: 1px solid #ddd;
+  padding: 10px 16px; 
+  border: 1px solid #e2e8f0; 
   background-color: white;
-  color: #333;
-  cursor: pointer;
-  border-radius: 10px;
-  font-weight: 600;
+  color: #333; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  font-weight: 600; 
   transition: all 0.2s;
 }
 
-.pagination-number.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+.pagination-number.active { 
+  background-color: #007bff; 
+  color: white; 
+  border-color: #007bff; 
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); 
 }
 
 /* ====================================================================== */
-/* === 7. ESTILOS SKELETON SCREEN (AJUSTE DE PRECISIÓN) === */
+/* === 7. ESTILOS SKELETON SCREEN (COMPLETO) === */
 /* ====================================================================== */
-
 .skeleton-card {
+  height: 415px; 
   background: rgba(255, 255, 255, 0.75) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px; 
-  padding: 16px;
-  display: flex;
+  padding: 16px; 
+  display: flex; 
   flex-direction: column;
-  
-  /* IMPORTANTE: Esta altura debe ser idéntica a la de tus tarjetas reales. 
-     Si notas que la real es más alta, sube este número de 5 en 5. */
-  height: 415px; 
-  box-sizing: border-box;
-  /* Evita que el salto ocurra por falta de margen */
-  margin-bottom: 5px; 
+  margin-bottom: 5px;
 }
 
-/* Animación base */
 .skeleton-img, .skeleton-title, .skeleton-text, .skeleton-button {
   background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
-  background-size: 200% 100%;
+  background-size: 200% 100%; 
   animation: skeleton-loading 1.5s infinite ease-in-out;
 }
 
-.skeleton-img {
-  width: 100%;
-  height: 150px; /* Misma altura que la imagen real */
-  border-radius: 10px;
-  margin-bottom: 8px;
+.skeleton-img { 
+  width: 100%; 
+  height: 150px; 
+  border-radius: 10px; 
+  margin-bottom: 8px; 
 }
 
-.skeleton-title {
-  height: 20px;
-  width: 85%;
-  margin: 8px auto;
-  border-radius: 4px;
+.skeleton-title { 
+  height: 20px; 
+  width: 85%; 
+  margin: 8px auto; 
+  border-radius: 4px; 
 }
 
-/* Simulamos el bloque de precios y contexto */
-.skeleton-text {
+.skeleton-text { 
   height: 80px; 
-  width: 100%;
-  margin: 10px 0;
-  background: rgba(0, 0, 0, 0.03) !important; /* Más tenue */
-  border-radius: 10px;
+  width: 100%; 
+  margin: 10px 0; 
+  background: rgba(0, 0, 0, 0.03) !important; 
+  border-radius: 10px; 
 }
 
-/* Simulamos el botón azul de abajo */
-.skeleton-button {
-  height: 35px;
-  width: 100%;
-  margin-top: auto; /* Lo pega abajo como el real */
-  border-radius: 8px;
+.skeleton-button { 
+  height: 35px; 
+  width: 100%; 
+  margin-top: auto; 
+  border-radius: 8px; 
 }
 
-@keyframes skeleton-loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+@keyframes skeleton-loading { 
+  0% { background-position: 200% 0; } 
+  100% { background-position: -200% 0; } 
 }
