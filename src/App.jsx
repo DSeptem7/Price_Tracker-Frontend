@@ -232,38 +232,44 @@ function App() {
       {/* === CONTENEDOR PRINCIPAL === */}
       <main className="main-content">
         
-        <div className="simulate-panel">
-            <h3>Añadir Nuevo Producto / Buscar en Catálogo</h3>
+              <div className="simulate-panel">
+            <h3>Gestión de Catálogo</h3>
             <div className="control-row"> 
                 <input
                     type="text"
-                    placeholder="Pega URL de ML o escribe para buscar aquí"
+                    placeholder="Pega URL de Mercado Libre o busca por nombre..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-                    {refreshing ? "Rastreando..." : "Rastrear / Buscar"}
+                <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                    {refreshing ? "Procesando..." : "Rastrear Producto"}
                 </button>
-                <button onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-                    {refreshing ? "Actualizando..." : "🔄 Actualizar Lista"}
+                <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+                    {refreshing ? "Actualizando..." : "Actualizar Lista"}
                 </button>
             </div>
 
             <div className="filter-row">
-                <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                    <option value="date_desc">📅 Fecha: Reciente</option>
-                    <option value="date_asc">📅 Fecha: Antiguo</option>
-                    <option value="price_asc">💰 Precio: Menor a Mayor</option>
-                    <option value="price_desc">💰 Precio: Mayor a Menor</option>
-                </select>
+                <div className="select-wrapper">
+                    <label>Ordenar por</label>
+                    <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                        <option value="date_desc">Más recientes</option>
+                        <option value="date_asc">Más antiguos</option>
+                        <option value="price_asc">Precio: Menor a Mayor</option>
+                        <option value="price_desc">Precio: Mayor a Menor</option>
+                    </select>
+                </div>
 
-                <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
-                    <option value="available">✅ Solo Disponibles</option>
-                    <option value="all">👁️ Ver Todos</option>
-                    <option value="out_of_stock">🚫 Ver Solo Agotados</option>
-                    <option value="historical_low">🏆 Mínimo Histórico</option>
-                    <option value="price_drop">📉 Solo Ofertas</option>
-                </select>
+                <div className="select-wrapper">
+                    <label>Filtrar estado</label>
+                    <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                        <option value="available">Solo Disponibles</option>
+                        <option value="all">Ver Todos</option>
+                        <option value="out_of_stock">Solo Agotados</option>
+                        <option value="historical_low">Mínimos Históricos</option>
+                        <option value="price_drop">Solo Ofertas</option>
+                    </select>
+                </div>
             </div>
             {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
         </div>
