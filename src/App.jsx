@@ -127,13 +127,37 @@ function App() {
 
   const parsePrice = (priceStr) => {
     if (!priceStr) return 0;
-    return parseFloat(priceStr.toString().replace(/[^0-9.]/g, ""));
+    const cleanStr = priceStr.toString().replace(/[^0-9.]/g, "");
+    return parseFloat(cleanStr) || 0;
   };
 
   const isOutOfStock = (p) => {
       const priceNum = parsePrice(p.price);
       return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
   };
+
+  // === LÓGICA DE ESTADÍSTICAS ===
+  const stats = useMemo(() => {
+    const available = products.filter(p => !isOutOfStock(p));
+    const drops = available.filter(p => p.status === "down");
+    const highs = available.filter(p => p.status === "up");
+    
+    const totalSavings = drops.reduce((acc, p) => {
+      const current = parsePrice(p.price);
+      const prev = parsePrice(p.previous_price);
+      return acc + (prev > current ? prev - current : 0);
+    }, 0);
+
+    let bestDiscount = { title: "Ninguna", percent: 0 };
+    drops.forEach(p => {
+      const pValue = parseFloat(p.change_percentage?.replace(/[()%-]/g, '') || 0);
+      if (pValue > bestDiscount.percent) {
+        bestDiscount = { title: p.title, percent: pValue };
+      }
+    });
+
+    return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
+  }, [products]);
 
   const handleTrackProduct = async () => {
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
@@ -158,16 +182,11 @@ function App() {
   // === LÓGICA DE FILTRADO Y ORDENAMIENTO ===
   const processedProducts = useMemo(() => {
     let result = [...products];
-    
-    // 1. Búsqueda por texto
     if (searchTerm && !searchTerm.includes("http")) {
       const lowerSearch = searchTerm.toLowerCase();
       result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
     }
-
-    // 2. Filtros
     if (filterOption === "historical_low") {
-      // CORRECCIÓN AQUÍ: Solo mostrar si es alerta histórica Y el precio bajó (status='down')
       result = result.filter(p => p.alert_type === "low_historical" && p.status === "down" && !isOutOfStock(p));
     } else if (filterOption === "price_drop") {
       result = result.filter(p => p.status === "down" && !isOutOfStock(p));
@@ -176,8 +195,6 @@ function App() {
     } else if (filterOption === "out_of_stock") {
       result = result.filter(p => isOutOfStock(p));
     }
-
-    // 3. Ordenamiento
     result.sort((a, b) => {
       switch (sortOption) {
         case "price_asc": return parsePrice(a.price) - parsePrice(b.price);
@@ -206,14 +223,6 @@ function App() {
     return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
   };
 
-  const getStatusEmoji = (status, product) => {
-    if (isOutOfStock(product)) return "🚫 Agotado";
-    if (status === "down") return "🟢 ↓ Bajó";
-    if (status === "up") return "🔴 ↑ Subió";
-    if (status === "same") return "🟡 → Igual";
-    return "🆕 Nuevo";
-  };
-
   return (
     <div className="App">
       {/* === NAVBAR === */}
@@ -221,9 +230,7 @@ function App() {
         <div className="navbar-content">
           <span className="logo">🛒 Price Tracker (ML)</span>
           <div className="nav-links">
-            <span className="product-count">
-              {processedProducts.length} Productos
-            </span>
+            <span className="product-count">{processedProducts.length} Productos</span>
           </div>
         </div>
       </nav>
@@ -231,6 +238,38 @@ function App() {
       {/* === CONTENEDOR PRINCIPAL === */}
       <main className="main-content">
         
+        {/* === PANEL DE ESTADÍSTICAS === */}
+        <div className="stats-grid">
+          <div className="stat-card">
+            <span className="stat-icon">📉</span>
+            <div className="stat-info">
+              <span className="stat-value">{stats.dropCount}</span>
+              <span className="stat-label">Bajadas de precio</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <span className="stat-icon">💰</span>
+            <div className="stat-info">
+              <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
+              <span className="stat-label">Ahorro total hoy</span>
+            </div>
+          </div>
+          <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)} style={{cursor: 'pointer'}}>
+            <span className="stat-icon">🏆</span>
+            <div className="stat-info">
+              <span className="stat-value">-{stats.bestDiscount.percent}%</span>
+              <span className="stat-label">Mejor oferta (Click)</span>
+            </div>
+          </div>
+          <div className="stat-card">
+            <span className="stat-icon">📊</span>
+            <div className="stat-info">
+              <span className="stat-value">{stats.upCount}</span>
+              <span className="stat-label">Incrementos</span>
+            </div>
+          </div>
+        </div>
+
         <div className="simulate-panel">
             <h3>Gestión de Catálogo</h3>
             <div className="control-row"> 
@@ -299,57 +338,31 @@ function App() {
           ) : (
             currentProducts.map((p, index) => {
               const outOfStock = isOutOfStock(p);
-
-              // Lógica de Tienda
               const isML = p.url.includes("mercadolibre");
               const isAmazon = p.url.includes("amazon");
               const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
               const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
+              const isRealLowHistorical = p.alert_type === "low_historical" && p.status === "down" && !outOfStock;
 
-              // Lógica para el badge MÍNIMO HISTÓRICO
-              const isRealLowHistorical = 
-                p.alert_type === "low_historical" && 
-                p.status === "down" && 
-                !outOfStock;
-
-              // Función para renderizar el precio anterior o un espacio vacío
               const renderPreviousPrice = () => {
                 if (!outOfStock && p.status !== "new" && p.previous_price) {
                   return <p className="previous-price">Antes: <s>{p.previous_price}</s></p>;
                 }
-                // Spacer para alinear tarjetas
                 return <div style={{ height: '18px', margin: '0' }}></div>;
               };
 
               return (
-                <div 
-                    key={index} 
-                    className="product-card" 
-                    onClick={() => setChartProductTitle(p.title)}
-                    style={{ 
-                        opacity: outOfStock ? 0.7 : 1, 
-                        filter: outOfStock ? "grayscale(100%)" : "none"
-                    }}
-                >
-                    {/* Header de Tienda */}
+                <div key={index} className="product-card" onClick={() => setChartProductTitle(p.title)}
+                    style={{ opacity: outOfStock ? 0.7 : 1, filter: outOfStock ? "grayscale(100%)" : "none" }}>
                     <div className={`store-header ${storeClass}`}>{storeName}</div>
-
                     <div className="image-container">
                       <img src={p.image} alt={p.title} />
                       {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
                       {isRealLowHistorical && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
                     </div>
-
                     <h3>{p.title}</h3>
-
-                    {/* Precio anterior (o espacio vacío) */}
                     {renderPreviousPrice()}
-
-                    <p className="current-price">
-                      <strong>{outOfStock ? "No disponible" : p.price}</strong>
-                    </p>
-                    
-                    {/* Fila de estado limpia */}
+                    <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
                     <div className="status-row">
                       {!outOfStock && (
                         <>
@@ -359,26 +372,19 @@ function App() {
                           {p.status === "up" && (
                             <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
                           )}
-                          
-                          {/* Esta lógica atrapará "equal", "same", o si el status viene vacío pero NO es un producto nuevo */}
-                          {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status) && p.status !== "new" && (
+                          {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status || p.status === "") && p.status !== "new" && (
                             <span className="status-stable">Sin cambios</span>
                           )}
-                          
-                          {p.status === "new" && (
-                            <span className="status-new">Recién añadido</span>
-                          )}
+                          {p.status === "new" && <span className="status-new">Recién añadido</span>}
                         </>
                       )}
                     </div>
-                          
                     {!outOfStock && p.mode_price && (
                         <div className="context-box">
                           <p><strong>Frecuente:</strong> {p.mode_price}</p>
                           <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
                         </div>
                     )}
-                    
                     <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
                        {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
                     </a>
