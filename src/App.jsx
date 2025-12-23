@@ -268,7 +268,7 @@ function App() {
       <div className="product-grid">
         {loading ? (
             // 🦴 SKELETON SCREEN (Mientras carga)
-            Array.from({ length: 16 }).map((_, index) => (
+            Array.from({ length: 18 }).map((_, index) => (
               <div key={index} className="product-card skeleton-card">
                 <div className="skeleton-img"></div>
                 <div className="skeleton-title"></div>
