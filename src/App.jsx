@@ -241,31 +241,33 @@ function App() {
         {/* === PANEL DE ESTADÍSTICAS === */}
         <div className="stats-grid">
           <div className="stat-card">
-            <span className="stat-icon">📉</span>
+            <div className="stat-indicator down"></div>
             <div className="stat-info">
-              <span className="stat-value">{stats.dropCount}</span>
-              <span className="stat-label">Bajadas de precio</span>
+              <span className="stat-label">Oportunidades</span>
+              <span className="stat-value">{stats.dropCount} Bajadas</span>
             </div>
           </div>
+          
           <div className="stat-card">
-            <span className="stat-icon">💰</span>
+            <div className="stat-indicator savings"></div>
             <div className="stat-info">
+              <span className="stat-label">Ahorro Proyectado</span>
               <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
-              <span className="stat-label">Ahorro total de hoy</span>
             </div>
           </div>
-          <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)} style={{cursor: 'pointer'}}>
-            <span className="stat-icon">🏆</span>
+
+          <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
             <div className="stat-info">
-              <span className="stat-value">-{stats.bestDiscount.percent}%</span>
-              <span className="stat-label">Mejor oferta (Click)</span>
+              <span className="stat-label">Rendimiento Máximo</span>
+              <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
             </div>
           </div>
+          
           <div className="stat-card">
-            <span className="stat-icon">📊</span>
+            <div className="stat-indicator up"></div>
             <div className="stat-info">
-              <span className="stat-value">{stats.upCount}</span>
-              <span className="stat-label">Incrementos</span>
+              <span className="stat-label">Inflación/Ajustes</span>
+              <span className="stat-value">{stats.upCount} Incrementos</span>
             </div>
           </div>
         </div>
