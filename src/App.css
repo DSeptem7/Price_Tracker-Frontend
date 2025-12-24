@@ -64,7 +64,7 @@
 }
 
 .logo {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 800;
   color: #007bff;
   background: linear-gradient(45deg, #007bff, #00c6ff);
@@ -563,7 +563,8 @@
   }
   
   .navbar-content { 
-    justify-content: center; 
+    justify-content: space-between !important; /* AHORA: Sepáralos a la fuerza */
+    width: 100%;
   }
   
   .product-count { 
