@@ -1,51 +1,54 @@
 /* ====================================================================== */
-/* === 0. VARIABLES Y CONFIGURACIÓN GLOBAL (EL MOTOR DEL CAMBIO) === */
+/* === 0. VARIABLES Y CONFIGURACIÓN GLOBAL === */
 /* ====================================================================== */
-:root {
-  --transition-speed: 0.3s;
-}
-
 .light-mode {
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
-  --bg-inner: rgba(0, 0, 0, 0.03);
   --text-main: #1e293b;
   --text-muted: #64748b;
   --border-color: rgba(0, 0, 0, 0.08);
   --input-bg: #ffffff;
-  --navbar-bg: rgba(255, 255, 255, 0.85);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --card-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .dark-mode {
   --bg-main: #020617;
   --bg-card: #0f172a;
-  --bg-inner: #1e293b;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
   --border-color: rgba(255, 255, 255, 0.1);
   --input-bg: #1e293b;
-  --navbar-bg: rgba(15, 23, 42, 0.9);
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 body, .App {
   background-color: var(--bg-main);
   color: var(--text-main);
-  transition: background-color var(--transition-speed), color var(--transition-speed);
-  font-family: 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
   margin: 0;
 }
 
+.App {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
 /* ====================================================================== */
-/* === 1. NAVBAR Y ESTRUCTURA === */
+/* === 1. NAVBAR === */
 /* ====================================================================== */
 .navbar {
   position: sticky;
   top: 0;
   width: 100%;
   z-index: 1000;
-  background: var(--navbar-bg);
+  background: var(--bg-card);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid var(--border-color);
@@ -69,15 +72,14 @@ body, .App {
   -webkit-text-fill-color: transparent;
 }
 
-.nav-controls { display: flex; align-items: center; gap: 15px; }
-
 .theme-toggle {
-  background: var(--input-bg);
+  background: none;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   padding: 5px 10px;
   font-size: 1.2rem;
+  margin-right: 15px;
   transition: transform 0.2s;
   color: var(--text-main);
 }
@@ -85,7 +87,7 @@ body, .App {
 .product-count {
   font-size: 0.85rem;
   color: var(--text-muted);
-  background: var(--bg-inner);
+  background: var(--bg-main);
   padding: 4px 12px;
   border-radius: 20px;
   font-weight: 600;
@@ -103,34 +105,45 @@ body, .App {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
 }
 
-.simulate-panel h3 { color: var(--text-main); margin: 0; font-weight: 700; text-align: center; }
+.simulate-panel h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  font-weight: 700;
+  text-align: center;
+}
 
 .simulate-panel input, .simulate-panel select {
   padding: 12px 16px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
+  font-size: 14px;
+  outline: none;
   background-color: var(--input-bg);
   color: var(--text-main);
-  outline: none;
 }
 
 .btn-primary { 
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white !important; border: none; font-weight: 600; cursor: pointer; border-radius: 10px; padding: 12px 20px;
+  color: white !important; 
+  border: none; font-weight: 600; cursor: pointer; border-radius: 10px; padding: 12px 20px; 
 }
 
 .btn-secondary { 
-  background-color: var(--bg-inner);
-  color: var(--text-main); border: 1px solid var(--border-color); font-weight: 600; border-radius: 10px; padding: 12px 20px; cursor: pointer;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  font-weight: 600; cursor: pointer; border-radius: 10px; padding: 12px 20px; 
 }
 
-/* Lógica de alineación que pediste originalmente */
 .control-row, .filter-row { display: flex; gap: 12px; width: 100%; justify-content: center; }
-.select-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 0 1 200px; }
-.select-wrapper label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); font-weight: 800; }
+.select-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 0 1 200px; min-width: 0; }
+.select-wrapper label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); font-weight: 800; margin-left: 4px; }
+.control-row input[type="text"] { flex-grow: 1; max-width: 500px; }
 
 /* ====================================================================== */
 /* === 3. GRILLA Y TARJETAS === */
@@ -147,85 +160,77 @@ body, .App {
   border: 1px solid var(--border-color);
   border-radius: 18px; 
   padding: 16px; 
-  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   position: relative; 
   transition: all 0.3s ease;
 }
 
-.product-card:hover { transform: translateY(-6px); border-color: #007bff; }
+.product-card:hover { transform: translateY(-6px); }
+.dark-mode .product-card:hover { background-color: #1e293b; border-color: #3b82f6; }
+.light-mode .product-card:hover { background-color: #ffffff; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); }
 
-.product-card h3 { font-size: 15px; color: var(--text-main); margin: 4px 0 8px 0; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.product-card h3 { 
+  font-size: 15px; color: var(--text-main); margin: 4px 0 8px 0; height: 40px; 
+  line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+}
+
+.store-header { font-size: 10px; font-weight: 800; padding: 7px 0; text-align: center; text-transform: uppercase; border-radius: 16px 16px 0 0; margin: -16px -16px 12px -16px; }
+.store-ml { background-color: #FFE600; color: #333; }
+.store-amazon { background-color: #232f3e; color: white; }
+
+.image-container img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; }
+.product-card a { margin-top: auto; padding: 10px; font-size: 14px; font-weight: 700; border-radius: 10px; background-color: #3b82f6; color: white !important; text-decoration: none; text-align: center; }
 
 /* ====================================================================== */
 /* === 4. PRECIOS Y ESTADOS === */
 /* ====================================================================== */
+.previous-price { font-size: 13px; color: var(--text-muted); margin: 0 !important; height: 18px; line-height: 18px; }
 .current-price { font-size: 20px; font-weight: 800; color: var(--text-main); margin: 4px 0 !important; }
-.previous-price { font-size: 13px; color: var(--text-muted); height: 18px; }
 
-.percentage-tag.down { background-color: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
-.percentage-tag.up { background-color: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+.percentage-tag.down { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.percentage-tag.up { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 
-.context-box { 
-  background: var(--bg-inner); 
-  border-radius: 12px; padding: 10px; margin: 10px 0; font-size: 12px; color: var(--text-main);
-}
-
-/* ====================================================================== */
-/* === 5. MEDIA QUERIES (MÓVIL) === */
-/* ====================================================================== */
-@media (max-width: 600px) {
-  .control-row { flex-direction: column; }
-  .filter-row { flex-direction: row !important; gap: 8px; justify-content: space-between; }
-  .select-wrapper { flex: 1; }
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 45px 12px; padding: 35px 10px; }
-}
+.context-box { background: rgba(0, 0, 0, 0.03); border-radius: 12px; padding: 10px; margin: 10px 0; font-size: 12px; color: var(--text-main); }
+.dark-mode .context-box { background: rgba(255, 255, 255, 0.05); }
 
 /* ====================================================================== */
 /* === 6. MODAL Y PAGINACIÓN === */
 /* ====================================================================== */
-.modal-content {
-  background-color: var(--bg-card); 
-  padding: 30px; border-radius: 20px; color: var(--text-main);
-}
+.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+.modal-content { background-color: var(--bg-card); padding: 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2); width: 90%; max-width: 750px; position: relative; color: var(--text-main); }
 
-.pagination-number, .pagination-arrow {
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
-}
+.pagination-container { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 30px 0; min-height: 50px; width: 100%; }
+.pagination-number, .pagination-arrow { padding: 10px 16px; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-main); cursor: pointer; border-radius: 10px; font-weight: 600; transition: all 0.2s; }
+.pagination-number.active { background-color: #007bff; color: white; border-color: #007bff; box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); }
 
 /* ====================================================================== */
 /* === 7. SKELETON SCREEN === */
 /* ====================================================================== */
-.skeleton-card {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border-color);
-}
-
-.skeleton-img, .skeleton-title, .skeleton-text {
-  background: var(--bg-inner) !important;
-  opacity: 0.6;
-}
+.skeleton-card { height: 415px; background: var(--bg-card) !important; border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; margin-bottom: 5px; }
+.skeleton-img, .skeleton-title, .skeleton-text, .skeleton-button { background: linear-gradient(90deg, var(--input-bg) 25%, var(--bg-main) 50%, var(--input-bg) 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite ease-in-out; }
 
 /* ====================================================================== */
-/* === 8. PANEL DE ESTADÍSTICAS LOOK PROFESIONAL === */
+/* === 8. PANEL DE ESTADÍSTICAS (LOOK PROFESIONAL) === */
 /* ====================================================================== */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 25px; }
-
-.stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  padding: 12px 16px; border-radius: 10px; display: flex; align-items: center; gap: 12px;
-}
-
+.stat-card { background: var(--bg-card); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; position: relative; box-shadow: var(--card-shadow); }
 .stat-card.highlight { background: #1e293b; border: none; }
+.stat-value { font-size: 1rem; font-weight: 800; color: var(--text-main); white-space: nowrap; }
 .stat-card.highlight .stat-value { color: #f8fafc; }
+.stat-indicator.down { background-color: #22c55e; }
+.stat-indicator.up { background-color: #ef4444; }
+.stat-indicator.savings { background-color: #3b82f6; }
 
-/* --- ESTILOS COMPARTIDOS --- */
-.store-header { font-size: 10px; font-weight: 800; padding: 7px 0; text-align: center; text-transform: uppercase; border-radius: 16px 16px 0 0; margin: -16px -16px 12px -16px; }
-.store-ml { background-color: #FFE600; color: #333; }
-.store-amazon { background-color: #232f3e; color: white; }
-.image-container img { width: 100%; height: 150px; object-fit: contain; }
-.alert-badge { position: absolute; top: 5px; left: 50%; transform: translateX(-50%); padding: 4px 12px; border-radius: 30px; font-size: 10px; font-weight: 900; color: white !important; }
+@keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ====================================================================== */
+/* === 9. MEDIA QUERIES === */
+/* ====================================================================== */
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .control-row, .filter-row { flex-direction: column; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 45px 12px; padding: 35px 10px; }
+  .navbar-content { justify-content: center; }
+  .product-count { display: none; }
+}
