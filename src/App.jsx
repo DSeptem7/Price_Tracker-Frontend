@@ -92,7 +92,8 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
   );
 }
 
-// === Componente Principal ===
+import { useState, useMemo, useEffect } from "react";
+
 // === Componente Principal ===
 function App() {
   const [products, setProducts] = useState([]);
@@ -104,7 +105,7 @@ function App() {
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available"); 
   
-  // NUEVO: Estado para Modo Oscuro (Inicia en true por tu preferencia de gris oscuro)
+  // Modo Oscuro: Inicia en true
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Paginación
@@ -230,206 +231,214 @@ function App() {
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
+        {/* === NAVBAR === */}
         <nav className="navbar">
           <div className="navbar-content">
-            <span className="logo">🛒 Price Tracker</span>
+            <span className="logo">🛒 Price Tracker (ML)</span>
             
-            {/* SWITCH ELEGANTE */}
-            <div className="theme-switch-wrapper">
-              <label className="theme-switch">
-                <input 
-                  type="checkbox" 
-                  checked={isDarkMode} 
-                  onChange={() => setIsDarkMode(!isDarkMode)} 
-                />
-                <div className="slider"></div>
-              </label>
+            <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              {/* SWITCH ELEGANTE */}
+              <div className="theme-switch-wrapper">
+                <label className="theme-switch">
+                  <input 
+                    type="checkbox" 
+                    checked={isDarkMode} 
+                    onChange={() => setIsDarkMode(!isDarkMode)} 
+                  />
+                  <div className="slider"></div>
+                </label>
+              </div>
+              
+              <span className="product-count">
+                {processedProducts.length} Productos
+              </span>
             </div>
           </div>
         </nav>
 
-      {/* === CONTENEDOR PRINCIPAL === */}
-      <main className="main-content">
-        
-        {/* === PANEL DE ESTADÍSTICAS === */}
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-indicator down"></div>
-            <div className="stat-info">
-              <span className="stat-label">Oportunidades</span>
-              <span className="stat-value">{stats.dropCount} Bajadas</span>
-            </div>
-          </div>
+        {/* === CONTENEDOR PRINCIPAL === */}
+        <main className="main-content">
           
-          <div className="stat-card">
-            <div className="stat-indicator savings"></div>
-            <div className="stat-info">
-              <span className="stat-label">Ahorro Proyectado</span>
-              <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
-            </div>
-          </div>
-
-          <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
-            <div className="stat-info">
-              <span className="stat-label">Rendimiento Máximo</span>
-              <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-indicator up"></div>
-            <div className="stat-info">
-              <span className="stat-label">Incrementos</span>
-              <span className="stat-value">{stats.upCount} Alzas</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="simulate-panel">
-            <h3>Gestión de Catálogo</h3>
-            <div className="control-row"> 
-                <input
-                    type="text"
-                    placeholder="Pega URL de Mercado Libre o busca por nombre..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-                    {refreshing ? "Procesando..." : "Rastrear Producto"}
-                </button>
-                <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-                    {refreshing ? "Actualizando..." : "Actualizar Lista"}
-                </button>
-            </div>
-
-            <div className="filter-row">
-                <div className="select-wrapper">
-                    <label>Ordenar por</label>
-                    <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                        <option value="date_desc">Más recientes</option>
-                        <option value="date_asc">Más antiguos</option>
-                        <option value="price_asc">Precio: Menor a Mayor</option>
-                        <option value="price_desc">Precio: Mayor a Menor</option>
-                    </select>
-                </div>
-
-                <div className="select-wrapper">
-                    <label>Filtrar estado</label>
-                    <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
-                        <option value="available">Solo Disponibles</option>
-                        <option value="all">Ver Todos</option>
-                        <option value="out_of_stock">Solo Agotados</option>
-                        <option value="historical_low">Mínimos Históricos</option>
-                        <option value="price_drop">Solo Ofertas</option>
-                    </select>
-                </div>
-            </div>
-            {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
-        </div>
-        
-        {/* Paginación Superior */}
-        {totalPages > 1 && !loading && (
-           <div className="pagination-container">
-              <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
-              {getPaginationGroup().map((item, i) => (
-                  <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
-              ))}
-              <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
-           </div>
-        )}
-
-        <div className="product-grid">
-          {loading ? (
-            Array.from({ length: 18 }).map((_, index) => (
-              <div key={index} className="product-card skeleton-card">
-                <div className="skeleton-img"></div>
-                <div className="skeleton-title"></div>
-                <div className="skeleton-text"></div>
-                <div className="skeleton-text short"></div>
+          {/* === PANEL DE ESTADÍSTICAS === */}
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-indicator down"></div>
+              <div className="stat-info">
+                <span className="stat-label">Oportunidades</span>
+                <span className="stat-value">{stats.dropCount} Bajadas</span>
               </div>
-            ))
-          ) : currentProducts.length === 0 ? (
-            <p className="no-products-message">No se encontraron productos.</p>
-          ) : (
-            currentProducts.map((p, index) => {
-              const outOfStock = isOutOfStock(p);
-              const isML = p.url.includes("mercadolibre");
-              const isAmazon = p.url.includes("amazon");
-              const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
-              const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
-              const isRealLowHistorical = p.alert_type === "low_historical" && p.status === "down" && !outOfStock;
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-indicator savings"></div>
+              <div className="stat-info">
+                <span className="stat-label">Ahorro Proyectado</span>
+                <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
+              </div>
+            </div>
 
-              const renderPreviousPrice = () => {
-                if (!outOfStock && p.status !== "new" && p.previous_price) {
-                  return <p className="previous-price">Antes: <s>{p.previous_price}</s></p>;
-                }
-                return <div style={{ height: '18px', margin: '0' }}></div>;
-              };
+            <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
+              <div className="stat-info">
+                <span className="stat-label">Rendimiento Máximo</span>
+                <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-indicator up"></div>
+              <div className="stat-info">
+                <span className="stat-label">Incrementos</span>
+                <span className="stat-value">{stats.upCount} Alzas</span>
+              </div>
+            </div>
+          </div>
 
-              return (
-                <div key={index} className="product-card" onClick={() => setChartProductTitle(p.title)}
-                    style={{ opacity: outOfStock ? 0.7 : 1, filter: outOfStock ? "grayscale(100%)" : "none" }}>
-                    <div className={`store-header ${storeClass}`}>{storeName}</div>
-                    <div className="image-container">
-                      <img src={p.image} alt={p.title} />
-                      {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
-                      {isRealLowHistorical && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
-                    </div>
-                    <h3>{p.title}</h3>
-                    {renderPreviousPrice()}
-                    <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
-                    <div className="status-row">
-                      {!outOfStock && (
-                        <>
-                          {p.status === "down" && (
-                            <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
-                          )}
-                          {p.status === "up" && (
-                            <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
-                          )}
-                          {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status || p.status === "") && p.status !== "new" && (
-                            <span className="status-stable">Sin cambios</span>
-                          )}
-                          {p.status === "new" && <span className="status-new">Recién añadido</span>}
-                        </>
-                      )}
-                    </div>
-                    {!outOfStock && p.mode_price && (
-                        <div className="context-box">
-                          <p><strong>Frecuente:</strong> {p.mode_price}</p>
-                          <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-                        </div>
-                    )}
-                    <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                       {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
-                    </a>
-                    <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
-                </div>
-              )
-            })
+          <div className="simulate-panel">
+              <h3>Gestión de Catálogo</h3>
+              <div className="control-row"> 
+                  <input
+                      type="text"
+                      placeholder="Pega URL de Mercado Libre o busca por nombre..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                      {refreshing ? "Procesando..." : "Rastrear Producto"}
+                  </button>
+                  <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+                      {refreshing ? "Actualizando..." : "Actualizar Lista"}
+                  </button>
+              </div>
+
+              <div className="filter-row">
+                  <div className="select-wrapper">
+                      <label>Ordenar por</label>
+                      <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                          <option value="date_desc">Más recientes</option>
+                          <option value="date_asc">Más antiguos</option>
+                          <option value="price_asc">Precio: Menor a Mayor</option>
+                          <option value="price_desc">Precio: Mayor a Menor</option>
+                      </select>
+                  </div>
+
+                  <div className="select-wrapper">
+                      <label>Filtrar estado</label>
+                      <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                          <option value="available">Solo Disponibles</option>
+                          <option value="all">Ver Todos</option>
+                          <option value="out_of_stock">Solo Agotados</option>
+                          <option value="historical_low">Mínimos Históricos</option>
+                          <option value="price_drop">Solo Ofertas</option>
+                      </select>
+                  </div>
+              </div>
+              {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
+          </div>
+          
+          {/* Paginación Superior */}
+          {totalPages > 1 && !loading && (
+             <div className="pagination-container">
+                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
+                {getPaginationGroup().map((item, i) => (
+                    <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
+                ))}
+                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
+             </div>
           )}
-        </div>
 
-        {/* Paginación Inferior */}
-        {totalPages > 1 && !loading && (
-           <div className="pagination-container" style={{marginTop: '30px', marginBottom: '50px'}}>
-              <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
-              {getPaginationGroup().map((item, i) => (
-                  <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
-              ))}
-              <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
-           </div>
+          <div className="product-grid">
+            {loading ? (
+              Array.from({ length: 18 }).map((_, index) => (
+                <div key={index} className="product-card skeleton-card">
+                  <div className="skeleton-img"></div>
+                  <div className="skeleton-title"></div>
+                  <div className="skeleton-text"></div>
+                  <div className="skeleton-text short"></div>
+                </div>
+              ))
+            ) : currentProducts.length === 0 ? (
+              <p className="no-products-message">No se encontraron productos.</p>
+            ) : (
+              currentProducts.map((p, index) => {
+                const outOfStock = isOutOfStock(p);
+                const isML = p.url.includes("mercadolibre");
+                const isAmazon = p.url.includes("amazon");
+                const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
+                const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
+                const isRealLowHistorical = p.alert_type === "low_historical" && p.status === "down" && !outOfStock;
+
+                const renderPreviousPrice = () => {
+                  if (!outOfStock && p.status !== "new" && p.previous_price) {
+                    return <p className="previous-price">Antes: <s>{p.previous_price}</s></p>;
+                  }
+                  return <div style={{ height: '18px', margin: '0' }}></div>;
+                };
+
+                return (
+                  <div key={index} className="product-card" onClick={() => setChartProductTitle(p.title)}
+                      style={{ opacity: outOfStock ? 0.7 : 1, filter: outOfStock ? "grayscale(100%)" : "none" }}>
+                      <div className={`store-header ${storeClass}`}>{storeName}</div>
+                      <div className="image-container">
+                        <img src={p.image} alt={p.title} />
+                        {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
+                        {isRealLowHistorical && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
+                      </div>
+                      <h3>{p.title}</h3>
+                      {renderPreviousPrice()}
+                      <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+                      <div className="status-row">
+                        {!outOfStock && (
+                          <>
+                            {p.status === "down" && (
+                              <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
+                            )}
+                            {p.status === "up" && (
+                              <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
+                            )}
+                            {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status || p.status === "") && p.status !== "new" && (
+                              <span className="status-stable">Sin cambios</span>
+                            )}
+                            {p.status === "new" && <span className="status-new">Recién añadido</span>}
+                          </>
+                        )}
+                      </div>
+                      {!outOfStock && p.mode_price && (
+                          <div className="context-box">
+                            <p><strong>Frecuente:</strong> {p.mode_price}</p>
+                            <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+                          </div>
+                      )}
+                      <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+                         {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
+                      </a>
+                      <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
+                  </div>
+                )
+              })
+            )}
+          </div>
+
+          {/* Paginación Inferior */}
+          {totalPages > 1 && !loading && (
+             <div className="pagination-container" style={{marginTop: '30px', marginBottom: '50px'}}>
+                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
+                {getPaginationGroup().map((item, i) => (
+                    <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
+                ))}
+                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="pagination-arrow">›</button>
+             </div>
+          )}
+        </main>
+
+        {chartProductTitle && (
+          <PriceChartModal
+            productTitle={chartProductTitle}
+            onClose={() => setChartProductTitle(null)}
+            apiBase={API_BASE}
+          />
         )}
-      </main>
-
-      {chartProductTitle && (
-        <PriceChartModal
-          productTitle={chartProductTitle}
-          onClose={() => setChartProductTitle(null)}
-          apiBase={API_BASE}
-        />
-      )}
-    </div>
+      </div> {/* Cierre App */}
+    </div> /* Cierre Modo Dinámico */
   );
 }
 
