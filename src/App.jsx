@@ -259,81 +259,81 @@ function App() {
         {/* === CONTENEDOR PRINCIPAL === */}
         <main className="main-content">
           
-          {/* === PANEL DE ESTADÍSTICAS === */}
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-indicator down"></div>
-              <div className="stat-info">
-                <span className="stat-label">Oportunidades</span>
-                <span className="stat-value">{stats.dropCount} Bajadas</span>
-              </div>
+         {/* === PANEL DE ESTADÍSTICAS === */}
+        <div className="stats-grid">
+          <div className="stat-card">
+            <div className="stat-indicator down"></div>
+            <div className="stat-info">
+              <span className="stat-label">Productos en descuento</span>
+              <span className="stat-value">{stats.dropCount} Precios bajos</span>
             </div>
-            
-            <div className="stat-card">
-              <div className="stat-indicator savings"></div>
-              <div className="stat-info">
-                <span className="stat-label">Ahorro Proyectado</span>
-                <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
-              </div>
-            </div>
-
-            <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
-              <div className="stat-info">
-                <span className="stat-label">Rendimiento Máximo</span>
-                <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
-              </div>
-            </div>
-            
-            <div className="stat-card">
-              <div className="stat-indicator up"></div>
-              <div className="stat-info">
-                <span className="stat-label">Incrementos</span>
-                <span className="stat-value">{stats.upCount} Alzas</span>
-              </div>
+          </div>
+          
+          <div className="stat-card">
+            <div className="stat-indicator savings"></div>
+            <div className="stat-info">
+              <span className="stat-label">Ahorro Proyectado</span>
+              <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
             </div>
           </div>
 
-          <div className="simulate-panel">
-              <h3>Gestión de Catálogo</h3>
-              <div className="control-row"> 
-                  <input
-                      type="text"
-                      placeholder="Pega URL de Mercado Libre o busca por nombre..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-                      {refreshing ? "Procesando..." : "Rastrear Producto"}
-                  </button>
-                  <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-                      {refreshing ? "Actualizando..." : "Actualizar Lista"}
-                  </button>
-              </div>
-
-              <div className="filter-row">
-                  <div className="select-wrapper">
-                      <label>Ordenar por</label>
-                      <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
-                          <option value="date_desc">Más recientes</option>
-                          <option value="date_asc">Más antiguos</option>
-                          <option value="price_asc">Precio: Menor a Mayor</option>
-                          <option value="price_desc">Precio: Mayor a Menor</option>
-                      </select>
-                  </div>
-
-                  <div className="select-wrapper">
-                      <label>Filtrar estado</label>
-                      <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
-                          <option value="available">Solo Disponibles</option>
-                          <option value="all">Ver Todos</option>
-                          <option value="out_of_stock">Solo Agotados</option>
-                          <option value="historical_low">Mínimos Históricos</option>
-                          <option value="price_drop">Solo Ofertas</option>
-                      </select>
-                  </div>
-              </div>
-              {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
+          <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
+            <div className="stat-info">
+              <span className="stat-label">Producto con mayor descuento</span>
+              <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
+            </div>
           </div>
+          
+          <div className="stat-card">
+            <div className="stat-indicator up"></div>
+            <div className="stat-info">
+              <span className="stat-label">Productos con incremento de precio</span>
+              <span className="stat-value">{stats.upCount} Precios a la alza</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="simulate-panel">
+            <h3>Gestión de Catálogo</h3>
+            <div className="control-row"> 
+                <input
+                    type="text"
+                    placeholder="Pega URL de Mercado Libre o busca por nombre..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                    {refreshing ? "Procesando..." : "Rastrear Producto"}
+                </button>
+                <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
+                    {refreshing ? "Actualizando..." : "Actualizar Lista"}
+                </button>
+            </div>
+
+            <div className="filter-row">
+                <div className="select-wrapper">
+                    <label>Ordenar por</label>
+                    <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                        <option value="date_desc">Más recientes</option>
+                        <option value="date_asc">Más antiguos</option>
+                        <option value="price_asc">Precio: Menor a Mayor</option>
+                        <option value="price_desc">Precio: Mayor a Menor</option>
+                    </select>
+                </div>
+
+                <div className="select-wrapper">
+                    <label>Filtrar estado</label>
+                    <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                        <option value="available">Solo Disponibles</option>
+                        <option value="all">Ver Todos</option>
+                        <option value="out_of_stock">Solo Agotados</option>
+                        <option value="historical_low">Mínimos Históricos</option>
+                        <option value="price_drop">Solo Ofertas</option>
+                    </select>
+                </div>
+            </div>
+            {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
+        </div>
           
           {/* Paginación Superior */}
           {totalPages > 1 && !loading && (

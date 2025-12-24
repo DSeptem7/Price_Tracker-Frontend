@@ -2,7 +2,6 @@
 /* === CONFIGURACIÓN DE COLORES DINÁMICOS === */
 /* ====================================================================== */
 :root {
-  /* Valores por defecto (Modo Claro) */
   --bg-app: #f8fafc;
   --bg-card: #ffffff;
   --bg-navbar: rgba(255, 255, 255, 0.85);
@@ -10,6 +9,7 @@
   --text-muted: #64748b;
   --border-color: rgba(0, 0, 0, 0.08);
   --input-bg: #ffffff;
+  --bg-skeleton: rgba(0, 0, 0, 0.05); /* Nuevo */
 }
 
 .dark-mode {
@@ -20,6 +20,7 @@
   --text-muted: #94a3b8;
   --border-color: rgba(255, 255, 255, 0.1);
   --input-bg: #1e293b;
+  --bg-skeleton: rgba(255, 255, 255, 0.05); /* Nuevo */
 }
 
 /* ====================================================================== */
@@ -188,6 +189,7 @@
   outline: none;
   transition: border-color 0.2s;
   background-color: var(--input-bg);
+  color: var(--text-main);
 }
 
 .simulate-panel input:focus {
@@ -211,9 +213,9 @@
 }
 
 .btn-secondary { 
-  background-color: #f1f5f9; 
-  color: #475569; 
-  border: none; 
+  background-color: var(--input-bg); 
+  color: var(--text-muted); 
+  border: 1px solid var(--border-color);
   font-weight: 600; 
   cursor: pointer; 
   border-radius: 10px; 
@@ -387,7 +389,7 @@
 /* --- TÍTULO Y BOTÓN --- */
 .product-card h3 { 
   font-size: 15px; 
-  color: #0f172a; 
+  color: var(--text-main); 
   margin: 4px 0 8px 0; 
   height: 40px; 
   line-height: 1.3; 
@@ -485,17 +487,18 @@
 
 /* Caja de Contexto (Precios frecuentes) */
 .context-box { 
-  background: rgba(255, 255, 255, 0.03); 
+  background: var(--bg-skeleton); 
   border-radius: 12px; 
   padding: 10px; 
   margin: 10px 0; 
   font-size: 12px; 
+  color: var(--text-muted);
 }
 
 .context-box p:last-child { 
-  background: white; 
+  background: transparent;
   border: 1px dashed #16a34a; 
-  color: #1e7e34; 
+  color: #22c55e; 
   padding: 3px 8px; 
   border-radius: 6px; 
   margin-top: 4px; 
@@ -563,10 +566,11 @@
 }
 
 .modal-content {
-  background-color: white; 
+  background-color: var(--bg-card);
+  color: var(--text-main);
   padding: 30px; 
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
   width: 90%; 
   max-width: 750px; 
   position: relative;
@@ -616,10 +620,10 @@
 /* ====================================================================== */
 .skeleton-card {
   height: 415px; 
-  background: rgba(255, 255, 255, 0.75) !important;
+  background: var(--bg-card) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-color);
   border-radius: 16px; 
   padding: 16px; 
   display: flex; 
@@ -654,7 +658,7 @@
   height: 80px; 
   width: 100%; 
   margin: 10px 0; 
-  background: rgba(0, 0, 0, 0.03) !important; 
+  background: var(--bg-skeleton) !important;
   border-radius: 10px; 
 }
 
@@ -787,7 +791,7 @@
 }
 
 .slider:before {
-  background-color: #fff;
+  background-color: #ffffff;
   bottom: 4px;
   content: "";
   height: 16px;
