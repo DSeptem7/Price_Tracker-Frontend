@@ -1,5 +1,5 @@
 /* ====================================================================== */
-/* === 0. NAVBAR Y ESTRUCTURA GLOBAL === */
+/* === 0. NAVBAR, ESTRUCTURA GLOBAL Y MODO OSCURO === */
 /* ====================================================================== */
 .navbar {
   position: sticky;
@@ -104,6 +104,53 @@
   }
 }
 
+/* Variables de color dinámicas */
+.light-mode {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: rgba(0,0,0,0.05);
+  --input-bg: #ffffff;
+}
+
+.dark-mode {
+  --bg-main: #020617;     /* Negro azulado profundo */
+  --bg-card: #0f172a;     /* El gris oscuro que te gustó */
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255,255,255,0.05);
+  --input-bg: #1e293b;
+}
+
+/* Aplicación global */
+body, .App {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ajuste de la Navbar */
+.navbar {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 1.2rem;
+  margin-right: 15px;
+  transition: transform 0.2s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
 /* ====================================================================== */
 /* === 1. ESTILOS BASE (.App) === */
 /* ====================================================================== */
@@ -115,38 +162,39 @@
 }
 
 /* ====================================================================== */
-/* === 2. PANEL DE BÚSQUEDA Y FILTROS (MODO OSCURO PRO) === */
+/* === 2. PANEL DE BÚSQUEDA Y FILTROS (MODO ADAPTABLE) === */
 /* ====================================================================== */
 .simulate-panel {
-  background-color: #0f172a; /* Azul grisáceo muy oscuro (profesional) */
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: var(--bg-card); /* Usa la variable del modo */
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
 .simulate-panel h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #f1f5f9; /* Blanco suave */
+  color: var(--text-main);
   font-weight: 700;
   text-align: center;
 }
 
-/* Inputs y Selects en Modo Oscuro */
+/* Inputs y Selects */
 .simulate-panel input, .simulate-panel select {
   padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid #334155; /* Borde sutil */
+  border: 1px solid var(--border-color);
   font-size: 14px;
   outline: none;
   transition: all 0.2s;
-  background-color: #1e293b; /* Un gris un poco más claro que el fondo */
-  color: #f1f5f9; /* Texto claro */
+  background-color: var(--input-bg);
+  color: var(--text-main);
 }
 
 .simulate-panel input:focus {
@@ -154,53 +202,34 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-.simulate-panel input::placeholder {
-  color: #64748b;
-}
-
-/* Botones con estilo Steam/Gaming */
+/* Botones con estilo Pro */
 .btn-primary { 
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white; 
+  color: white !important; 
   border: none; 
   font-weight: 600; 
   cursor: pointer; 
   border-radius: 10px; 
   padding: 12px 20px; 
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .btn-secondary { 
-  background-color: #334155; 
-  color: #f1f5f9; 
-  border: none; 
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
   font-weight: 600; 
   cursor: pointer; 
   border-radius: 10px; 
   padding: 12px 20px; 
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
-}
-
-/* Etiquetas de Filtros */
-.select-wrapper label { 
-  font-size: 10px; 
-  text-transform: uppercase; 
-  color: #94a3b8; /* Gris azulado suave */
-  font-weight: 800; 
-  margin-left: 4px; 
-}
-
-/* Mantenemos tu lógica Responsive anterior */
+/* Responsive Logic */
 .control-row, .filter-row { display: flex; gap: 12px; width: 100%; }
 .control-row { justify-content: center; }
 .filter-row { justify-content: center; }
 .select-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 0 1 200px; min-width: 0; }
+.select-wrapper label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); font-weight: 800; margin-left: 4px; }
 .control-row input[type="text"] { flex-grow: 1; max-width: 500px; }
 
 @media (max-width: 600px) {
@@ -212,105 +241,42 @@
 }
 
 /* ====================================================================== */
-/* === 3. GRILLA Y TARJETAS === */
+/* === 3. GRILLA Y TARJETAS (MODO ADAPTABLE) === */
 /* ====================================================================== */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); 
   gap: 35px 20px; 
   padding: 30px 0;
-  min-height: 800px;
 }
 
 .product-card {
-  background: rgba(255, 255, 255, 0.8); 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: var(--bg-card); /* Cambia con el switch */
+  border: 1px solid var(--border-color);
   border-radius: 18px; 
   padding: 16px; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   position: relative; 
   transition: all 0.3s ease;
-  overflow: visible;
 }
 
-.product-card:hover { 
-  transform: translateY(-6px); 
-  background: #ffffff; 
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); 
+/* Estilo específico para hover en modo oscuro vs claro */
+.dark-mode .product-card:hover {
+  background-color: #1e293b;
+  border-color: #3b82f6;
+  transform: translateY(-6px);
 }
 
-/* --- ENCABEZADO DE TIENDA --- */
-.store-header {
-  font-size: 10px;
-  font-weight: 800;
-  padding: 7px 0;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 16px 16px 0 0;
-  margin: -16px -16px 12px -16px; /* Ajuste para pegar a los bordes */
+.light-mode .product-card:hover {
+  background-color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-6px);
 }
 
-.store-ml { background-color: #FFE600; color: #333; }
-.store-amazon { background-color: #232f3e; color: white; }
-.store-default { background-color: #475569; color: white; }
-
-/* --- IMAGEN Y BADGES FLOTANTES --- */
-.image-container {
-  position: relative; 
-  width: 100%;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: center;
-}
-
-.product-card img { 
-  width: 100%; 
-  height: 150px; 
-  object-fit: contain; 
-  border-radius: 8px;
-}
-
-.alert-badge {
-  position: absolute;
-  top: 5px; /* Flota sobre la parte superior de la imagen */
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 12px;
-  border-radius: 30px; /* Borde redondeado moderno */
-  font-size: 10px;
-  font-weight: 900;
-  z-index: 5;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  color: white !important;
-}
-
-.alert-badge.stock-badge { 
-  background-color: #6c757d; 
-}
-
-.alert-badge.low_historical {
-  background: linear-gradient(135deg, #28a745 0%, #1e7e34 45%, #14532d 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-  animation: pulse-badge 2s infinite;
-}
-
-@keyframes pulse-badge { 
-  0% { transform: translateX(-50%) scale(1); } 
-  50% { transform: translateX(-50%) scale(1.05); } 
-  100% { transform: translateX(-50%) scale(1); } 
-}
-
-/* --- TÍTULO Y BOTÓN --- */
 .product-card h3 { 
   font-size: 15px; 
-  color: #0f172a; 
+  color: var(--text-main); /* Cambia color según el modo */
   margin: 4px 0 8px 0; 
   height: 40px; 
   line-height: 1.3; 
@@ -320,16 +286,47 @@
   -webkit-box-orient: vertical; 
 }
 
-.product-card a {
-  margin-top: 10px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
+/* --- BADGES Y OTROS (Mantienen su color brillante) --- */
+.store-header {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 7px 0;
+  text-align: center;
+  text-transform: uppercase;
+  border-radius: 16px 16px 0 0;
+  margin: -16px -16px 12px -16px;
+}
+
+.image-container img { 
+  width: 100%; 
+  height: 150px; 
+  object-fit: contain; 
   border-radius: 8px;
-  background-color: #007bff;
+  /* En modo oscuro, un filtro sutil ayuda a que las fotos no encandilen */
+  filter: brightness(0.9);
+}
+
+.product-card a {
+  margin-top: auto; /* Empuja el botón al fondo */
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 10px;
+  background-color: #3b82f6;
   color: white !important; 
   text-decoration: none;
   text-align: center;
+  transition: opacity 0.2s;
+}
+
+/* Caja de contexto (Modo Oscuro/Claro) */
+.context-box {
+  background-color: var(--bg-main);
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 12px;
+  color: var(--text-main);
 }
 
 /* ====================================================================== */
