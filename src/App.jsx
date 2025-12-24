@@ -431,3 +431,4 @@ function App() {
     </div>
   );
 }
+export default App; // ESTA LÍNEA ES VITAL
