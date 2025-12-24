@@ -102,6 +102,9 @@ function App() {
   const [chartProductTitle, setChartProductTitle] = useState(null);
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available"); 
+  
+  // NUEVO: Estado para Modo Oscuro (Inicia en true por tu preferencia de gris oscuro)
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -224,12 +227,21 @@ function App() {
   };
 
   return (
-    <div className="App">
+    // Agregamos la clase dinámica aquí para controlar todo el CSS
+    <div className={`App ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       {/* === NAVBAR === */}
       <nav className="navbar">
         <div className="navbar-content">
           <span className="logo">🛒 Price Tracker (ML)</span>
-          <div className="nav-links">
+          <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            {/* NUEVO: Botón de cambio de tema */}
+            <button 
+              className="theme-toggle" 
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
             <span className="product-count">{processedProducts.length} Productos</span>
           </div>
         </div>
@@ -243,8 +255,8 @@ function App() {
           <div className="stat-card">
             <div className="stat-indicator down"></div>
             <div className="stat-info">
-              <span className="stat-label">Productos en descuento</span>
-              <span className="stat-value">{stats.dropCount} Precios bajos</span>
+              <span className="stat-label">Oportunidades</span>
+              <span className="stat-value">{stats.dropCount} Bajadas</span>
             </div>
           </div>
           
@@ -258,7 +270,7 @@ function App() {
 
           <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
             <div className="stat-info">
-              <span className="stat-label">Producto con mayor descuento</span>
+              <span className="stat-label">Rendimiento Máximo</span>
               <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
             </div>
           </div>
@@ -266,8 +278,8 @@ function App() {
           <div className="stat-card">
             <div className="stat-indicator up"></div>
             <div className="stat-info">
-              <span className="stat-label">Productos con incremento de precio</span>
-              <span className="stat-value">{stats.upCount} Precios a la alza</span>
+              <span className="stat-label">Incrementos</span>
+              <span className="stat-value">{stats.upCount} Alzas</span>
             </div>
           </div>
         </div>
@@ -419,5 +431,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
