@@ -1,4 +1,13 @@
 /* ====================================================================== */
+/* === REINICIO GLOBAL === */
+/* ====================================================================== */
+* {
+  box-sizing: border-box; /* Evita que el padding y el borde aumenten el ancho de los elementos */
+  margin: 0;
+  padding: 0;
+}
+
+/* ====================================================================== */
 /* === CONFIGURACIÓN DE COLORES DINÁMICOS === */
 /* ====================================================================== */
 :root {
@@ -575,6 +584,11 @@
 }
 .pagination-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+/* Solución para el ancho del input de búsqueda */
+.control-row input[type="text"] {
+  max-width: 100%; /* En móvil, que ocupe todo el ancho posible */
 }
 
 /* ====================================================================== */
