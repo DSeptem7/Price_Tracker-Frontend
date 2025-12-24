@@ -115,78 +115,65 @@
 }
 
 /* ====================================================================== */
-/* === 2. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO RESPONSIVE) === */
+/* === 2. PANEL DE BÚSQUEDA Y FILTROS (MODO OSCURO PRO) === */
 /* ====================================================================== */
 .simulate-panel {
-  background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.05);
+  background-color: #0f172a; /* Azul grisáceo muy oscuro (profesional) */
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 24px;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .simulate-panel h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #1e293b;
+  color: #f1f5f9; /* Blanco suave */
   font-weight: 700;
-  text-align: center; /* Centramos el título para mayor equilibrio visual */
+  text-align: center;
 }
 
-/* Filas base */
-.control-row, .filter-row {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-}
-
-/* Fila de controles (Input y botones) */
-.control-row {
-  justify-content: center;
-}
-
-/* Fila de filtros (Selects) */
-.filter-row {
-  justify-content: center; /* En PC los mantiene agrupados al centro */
-}
-
+/* Inputs y Selects en Modo Oscuro */
 .simulate-panel input, .simulate-panel select {
   padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #334155; /* Borde sutil */
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s;
-  background-color: #fff;
+  transition: all 0.2s;
+  background-color: #1e293b; /* Un gris un poco más claro que el fondo */
+  color: #f1f5f9; /* Texto claro */
 }
 
 .simulate-panel input:focus {
-  border-color: #007bff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-.control-row input[type="text"] {
-  flex-grow: 1;
-  max-width: 500px;
+.simulate-panel input::placeholder {
+  color: #64748b;
 }
 
+/* Botones con estilo Steam/Gaming */
 .btn-primary { 
-  background-color: #007bff; 
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white; 
   border: none; 
   font-weight: 600; 
   cursor: pointer; 
   border-radius: 10px; 
   padding: 12px 20px; 
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .btn-secondary { 
-  background-color: #f1f5f9; 
-  color: #475569; 
+  background-color: #334155; 
+  color: #f1f5f9; 
   border: none; 
   font-weight: 600; 
   cursor: pointer; 
@@ -196,64 +183,32 @@
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  background-color: #0056b3;
+  filter: brightness(1.1);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
 }
 
-/* Ajuste de los selectores para PC */
-.select-wrapper { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: flex-start; 
-  gap: 4px; 
-  /* 0 = no crece, 1 = puede encogerse, 200px = tamaño base cómodo */
-  flex: 0 1 200px; 
-  min-width: 0; 
-}
-
+/* Etiquetas de Filtros */
 .select-wrapper label { 
   font-size: 10px; 
   text-transform: uppercase; 
-  color: #94a3b8; 
+  color: #94a3b8; /* Gris azulado suave */
   font-weight: 800; 
   margin-left: 4px; 
 }
 
-.select-wrapper select {
-  width: 100%;
-}
+/* Mantenemos tu lógica Responsive anterior */
+.control-row, .filter-row { display: flex; gap: 12px; width: 100%; }
+.control-row { justify-content: center; }
+.filter-row { justify-content: center; }
+.select-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; flex: 0 1 200px; min-width: 0; }
+.control-row input[type="text"] { flex-grow: 1; max-width: 500px; }
 
-/* 📱 AJUSTES ESPECÍFICOS PARA MÓVIL */
 @media (max-width: 600px) {
-  .simulate-panel {
-    padding: 16px;
-    gap: 15px;
-  }
-
-  .control-row {
-    flex-direction: column;
-  }
-
-  /* FORZAMOS que en móvil SI usen el 50/50 del ancho */
-  .filter-row {
-    flex-direction: row !important; 
-    gap: 8px;
-    justify-content: space-between;
-  }
-
-  .select-wrapper {
-    flex: 1; /* En móvil sí crecen para llenar la fila */
-    max-width: none; /* Quitamos el límite de 200px */
-  }
-
-  .simulate-panel input, .simulate-panel select {
-    padding: 10px;
-    font-size: 13px;
-  }
-
-  .btn-primary, .btn-secondary {
-    padding: 10px;
-    font-size: 14px;
-  }
+  .simulate-panel { padding: 16px; gap: 15px; }
+  .control-row { flex-direction: column; }
+  .filter-row { flex-direction: row !important; gap: 8px; justify-content: space-between; }
+  .select-wrapper { flex: 1; max-width: none; }
+  .simulate-panel input, .simulate-panel select { padding: 10px; font-size: 13px; }
 }
 
 /* ====================================================================== */
