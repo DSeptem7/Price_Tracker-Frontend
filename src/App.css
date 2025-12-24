@@ -42,9 +42,16 @@
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Esto es clave: separa los elementos a los extremos */
   align-items: center;
   padding: 0 20px;
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre el switch y el contador de productos */
 }
 
 .logo {
@@ -553,6 +560,21 @@
   .product-count { 
     display: none; 
   }
+}
+
+/* Solución para la paginación */
+.pagination-container {
+  overflow-x: auto;      /* Permite scroll horizontal si no cabe */
+  white-space: nowrap;   /* Mantiene los botones en una sola línea */
+  justify-content: flex-start; /* Alinea al principio para que el scroll empiece bien */
+  padding: 10px 0;       /* Un poco de espacio arriba y abajo */
+  
+  /* Ocultar la barra de scroll fea (opcional pero recomendado) */
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.pagination-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* ====================================================================== */
