@@ -92,8 +92,6 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
   );
 }
 
-import { useState, useMemo, useEffect } from "react";
-
 // === Componente Principal ===
 function App() {
   const [products, setProducts] = useState([]);
