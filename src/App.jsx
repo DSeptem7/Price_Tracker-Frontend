@@ -101,7 +101,8 @@ function App() {
   const [trackingMessage, setTrackingMessage] = useState(""); 
   const [chartProductTitle, setChartProductTitle] = useState(null);
   const [sortOption, setSortOption] = useState("date_desc");
-  const [filterOption, setFilterOption] = useState("available"); 
+  const [filterOption, setFilterOption] = useState("available");
+  const [isDarkMode, setIsDarkMode] = useState(true); 
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -416,6 +417,31 @@ function App() {
           apiBase={API_BASE}
         />
       )}
+    </div>
+  );
+  return (
+    <div className={isDarkMode ? "dark-mode" : "light-mode"}>
+      <div className="App">
+        <nav className="navbar">
+          <div className="navbar-content">
+            <span className="logo">🛒 Price Tracker</span>
+            
+            {/* SWITCH ELEGANTE */}
+            <div className="theme-switch-wrapper">
+              <label className="theme-switch">
+                <input 
+                  type="checkbox" 
+                  checked={isDarkMode} 
+                  onChange={() => setIsDarkMode(!isDarkMode)} 
+                />
+                <div className="slider"></div>
+              </label>
+            </div>
+          </div>
+        </nav>
+        
+        {/* Aquí va el resto de tu código intacto */}
+      </div>
     </div>
   );
 }
