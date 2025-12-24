@@ -228,25 +228,25 @@ function App() {
   };
 
   return (
-    // Agregamos la clase dinámica aquí para controlar todo el CSS
-    <div className={`App ${isDarkMode ? "dark-mode" : "light-mode"}`}>
-      {/* === NAVBAR === */}
-      <nav className="navbar">
-        <div className="navbar-content">
-          <span className="logo">🛒 Price Tracker (ML)</span>
-          <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            {/* NUEVO: Botón de cambio de tema */}
-            <button 
-              className="theme-toggle" 
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
-            >
-              {isDarkMode ? "☀️" : "🌙"}
-            </button>
-            <span className="product-count">{processedProducts.length} Productos</span>
+    <div className={isDarkMode ? "dark-mode" : "light-mode"}>
+      <div className="App">
+        <nav className="navbar">
+          <div className="navbar-content">
+            <span className="logo">🛒 Price Tracker</span>
+            
+            {/* SWITCH ELEGANTE */}
+            <div className="theme-switch-wrapper">
+              <label className="theme-switch">
+                <input 
+                  type="checkbox" 
+                  checked={isDarkMode} 
+                  onChange={() => setIsDarkMode(!isDarkMode)} 
+                />
+                <div className="slider"></div>
+              </label>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
       {/* === CONTENEDOR PRINCIPAL === */}
       <main className="main-content">
