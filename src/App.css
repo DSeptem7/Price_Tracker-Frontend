@@ -115,14 +115,14 @@
 }
 
 /* ====================================================================== */
-/* === 2. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO) === */
+/* === 2. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO RESPONSIVE) === */
 /* ====================================================================== */
 .simulate-panel {
   background-color: #fff;
   border: 1px solid rgba(0,0,0,0.05);
   border-radius: 16px;
   padding: 24px;
-  margin-bottom: 30px; /* Reducido un poco para ganar espacio */
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -134,6 +134,7 @@
   font-size: 1.1rem;
   color: #1e293b;
   font-weight: 700;
+  text-align: center; /* Centramos el título para mayor equilibrio visual */
 }
 
 /* Filas base */
@@ -150,7 +151,7 @@
 
 /* Fila de filtros (Selects) */
 .filter-row {
-  justify-content: space-between; /* Los separa equitativamente */
+  justify-content: center; /* En PC los mantiene agrupados al centro */
 }
 
 .simulate-panel input, .simulate-panel select {
@@ -198,14 +199,15 @@
   background-color: #0056b3;
 }
 
-/* Ajuste de los selectores */
+/* Ajuste de los selectores para PC */
 .select-wrapper { 
   display: flex; 
   flex-direction: column; 
   align-items: flex-start; 
   gap: 4px; 
-  flex: 1; /* Esto obliga a que ambos selectores ocupen el mismo ancho (50/50) */
-  min-width: 0; /* Evita desbordamientos */
+  /* 0 = no crece, 1 = puede encogerse, 200px = tamaño base cómodo */
+  flex: 0 1 200px; 
+  min-width: 0; 
 }
 
 .select-wrapper label { 
@@ -217,28 +219,34 @@
 }
 
 .select-wrapper select {
-  width: 100%; /* El select llena su mitad del contenedor */
+  width: 100%;
 }
 
 /* 📱 AJUSTES ESPECÍFICOS PARA MÓVIL */
 @media (max-width: 600px) {
   .simulate-panel {
-    padding: 16px; /* Menos espacio interno en móvil */
+    padding: 16px;
     gap: 15px;
   }
 
   .control-row {
-    flex-direction: column; /* Input y botones arriba/abajo */
+    flex-direction: column;
   }
 
-  /* FORZAMOS que los FILTROS se queden en una sola fila horizontal */
+  /* FORZAMOS que en móvil SI usen el 50/50 del ancho */
   .filter-row {
     flex-direction: row !important; 
-    gap: 8px; /* Espacio más pequeño entre selectores */
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .select-wrapper {
+    flex: 1; /* En móvil sí crecen para llenar la fila */
+    max-width: none; /* Quitamos el límite de 200px */
   }
 
   .simulate-panel input, .simulate-panel select {
-    padding: 10px; /* Reducimos el padding para que no se vea tosco */
+    padding: 10px;
     font-size: 13px;
   }
 
