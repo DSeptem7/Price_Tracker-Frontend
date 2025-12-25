@@ -662,6 +662,9 @@
   width: 90%; 
   max-width: 750px; 
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .close-button { 
@@ -673,6 +676,20 @@
   border: none; 
   cursor: pointer; 
   color: #666; 
+}
+
+/* El título de la gráfica dentro del modal */
+.modal-content h3 {
+  margin-top: 10px;    /* Espacio extra arriba */
+  margin-bottom: 20px; /* Espacio antes de la gráfica */
+  font-size: 1.2rem;
+  color: var(--text-color); /* Asegura que use el color del modo */
+}
+
+/* Contenedor específico del Canvas para que no toque bordes */
+.chart-container {
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .pagination-container {
