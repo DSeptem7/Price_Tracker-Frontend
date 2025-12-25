@@ -108,7 +108,7 @@ function App() {
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 18;
+  const itemsPerPage = 15;
 
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
