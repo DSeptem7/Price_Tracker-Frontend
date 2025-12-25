@@ -552,12 +552,18 @@
     flex-direction: column; 
   }
   
-  .product-grid { 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 45px 12px; 
-    padding: 35px 10px; 
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px 10px; /* Reducimos el espacio entre tarjetas para ganar aire */
+    padding: 15px 5px;
   }
   
+  /* Ajustamos el contenedor de imagen para que no sea tan alto en móvil */
+  .image-container {
+    height: 130px; /* Un poco más bajo para que la tarjeta no sea eterna */
+    padding: 5px;
+  }
+
   .product-card {
     padding: 12px;
   }
@@ -620,6 +626,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* MUY IMPORTANTE: Evitar que el cuerpo de la página genere scroll horizontal */
+body, html {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
 }
 
 /* ====================================================================== */
