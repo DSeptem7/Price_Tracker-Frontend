@@ -301,7 +301,9 @@ function App() {
             <div className="stat-indicator savings"></div>
             <div className="stat-info">
               <span className="stat-label">Ahorro Proyectado</span>
-              <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} en productos con descuentos</span>
+              <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
+              {/* Creamos una nueva clase para el detalle pequeño */}
+              <span className="stat-sublabel">en productos con descuento</span>
             </div>
           </div>
 
