@@ -365,15 +365,21 @@
 .image-container {
   position: relative; 
   width: 100%;
+  height: 160px; /* Altura fija para dar simetría */
   margin-bottom: 8px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  background-color: white; /* Esto crea el marco uniforme */
+  border-radius: 12px;     /* Bordes redondeados para el marco */
+  overflow: hidden;        /* Para que nada se salga del marco */
+  padding: 8px;            /* Espacio interno para que la foto no toque los bordes */
 }
 
 .product-card img { 
   width: 100%; 
-  height: 150px; 
-  object-fit: contain; 
+  height: 100%;
+  object-fit: contain; /* Esto asegura que la foto se vea completa sin deformarse */
   border-radius: 8px;
 }
 
