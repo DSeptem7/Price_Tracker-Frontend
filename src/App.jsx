@@ -395,7 +395,8 @@ function App() {
                 const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
                 const currentPriceNum = parsePrice(p.price);
                 const minHistoricalNum = parsePrice(p.min_historical_price);
-                const isAtHistoricalLow = currentPriceNum > 0 && Math.abs(currentPriceNum - minHistoricalNum) < 0.01 && !outOfStock;
+                const modePriceNum = parsePrice(p.mode_price);
+                const isAtHistoricalLow = currentPriceNum > 0 && Math.abs(currentPriceNum - minHistoricalNum) < 0.01 && currentPriceNum < modePriceNum && !outOfStock;
 
                 const renderPreviousPrice = () => {
                   if (!outOfStock && p.status !== "new" && p.previous_price) {
