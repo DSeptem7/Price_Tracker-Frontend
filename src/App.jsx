@@ -346,7 +346,7 @@ function App() {
 
           <div className="product-grid">
             {loading ? (
-              Array.from({ length: 18 }).map((_, index) => (
+              Array.from({ length: 15 }).map((_, index) => (
                 <div key={index} className="product-card skeleton-card">
                   <div className="skeleton-img"></div>
                   <div className="skeleton-title"></div>
