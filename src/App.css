@@ -329,6 +329,9 @@
   position: relative; 
   transition: all 0.3s ease;
   overflow: visible;
+  /* === AJUSTES DE SIMETRÍA AGREGADOS === */
+  justify-content: space-between; 
+  height: 100%;
 }
 
 /* EFECTO HOVER UNIFICADO (MODO CLARO POR DEFECTO) */
