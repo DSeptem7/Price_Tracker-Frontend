@@ -300,7 +300,7 @@ function App() {
           <div className="stat-card">
             <div className="stat-indicator savings"></div>
             <div className="stat-info">
-              <span className="stat-label">Ahorro Proyectado en productos con descuento</span>
+              <span className="stat-label">Ahorro en ofertas</span>
               <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
             </div>
           </div>
