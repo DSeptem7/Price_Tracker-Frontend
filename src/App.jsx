@@ -12,9 +12,13 @@ import {
 import "./App.css"; 
 
 // === Componente Modal para la Gráfica ===
-function PriceChartModal({ productTitle, onClose, apiBase }) {
+function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // 2. Define los colores dinámicos
+  const textColor = isDarkMode ? "#f1f5f9" : "#333";
+  const gridColor = isDarkMode ? "rgba(255, 255, 255, 0.1)" : "#ccc";
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -66,25 +70,51 @@ function PriceChartModal({ productTitle, onClose, apiBase }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onClose}>&times;</button>
-        <h3 style={{ color: '#333' }}>Historial de Precio: {productTitle}</h3>
+        
+        {/* 3. Título dinámico y con margen superior */}
+        <h3 style={{ color: textColor, marginTop: '20px', marginBottom: '20px' }}>
+          Historial de Precio: {productTitle}
+        </h3>
+
         {loading ? (
-          <p style={{ color: '#333' }}>Cargando historial...</p>
+          <p style={{ color: textColor }}>Cargando historial...</p>
         ) : history.length > 1 ? ( 
-          <div style={{ width: "100%", height: 300 }}>
+          <div style={{ width: "100%", height: 300, paddingRight: '20px' }}>
             <ResponsiveContainer>
               <LineChart data={history}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis domain={["auto", "auto"]} /> 
-                <Tooltip formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} />
-                <Legend />
-                <Line type="monotone" dataKey="price" stroke="#8884d8" dot={false} activeDot={false} />
+                {/* 4. Colores dinámicos en los componentes de la gráfica */}
+                <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                <XAxis 
+                  dataKey="date" 
+                  tick={{ fill: textColor, fontSize: 12 }} 
+                />
+                <YAxis 
+                  domain={["auto", "auto"]} 
+                  tick={{ fill: textColor, fontSize: 12 }} 
+                /> 
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: isDarkMode ? "#1e293b" : "#fff", 
+                    color: textColor,
+                    border: `1px solid ${gridColor}`
+                  }}
+                  itemStyle={{ color: isDarkMode ? "#3b82f6" : "#8884d8" }}
+                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} 
+                />
+                <Legend wrapperStyle={{ paddingTop: '10px' }} />
+                <Line 
+                  type="monotone" 
+                  dataKey="price" 
+                  stroke={isDarkMode ? "#3b82f6" : "#8884d8"} 
+                  dot={false} 
+                  strokeWidth={2}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
         ) : (
-          <p style={{ color: '#333' }}>
-            No hay suficiente historial para mostrar una gráfica (se necesitan al menos 2 precios distintos).
+          <p style={{ color: textColor }}>
+            No hay suficiente historial para mostrar una gráfica.
           </p>
         )}
       </div>
@@ -433,6 +463,7 @@ function App() {
             productTitle={chartProductTitle}
             onClose={() => setChartProductTitle(null)}
             apiBase={API_BASE}
+            isDarkMode={isDarkMode} // <--- ESTA LÍNEA ES CLAVE
           />
         )}
       </div> {/* Cierre App */}
