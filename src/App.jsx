@@ -393,7 +393,9 @@ function App() {
                 const isAmazon = p.url.includes("amazon");
                 const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
                 const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
-                const isRealLowHistorical = p.alert_type === "low_historical" && p.status === "down" && !outOfStock;
+                const currentPriceNum = parsePrice(p.price);
+                const minHistoricalNum = parsePrice(p.min_historical_price);
+                const isAtHistoricalLow = currentPriceNum > 0 && Math.abs(currentPriceNum - minHistoricalNum) < 0.01 && !outOfStock;
 
                 const renderPreviousPrice = () => {
                   if (!outOfStock && p.status !== "new" && p.previous_price) {
@@ -409,7 +411,7 @@ function App() {
                       <div className="image-container">
                         <img src={p.image} alt={p.title} />
                         {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
-                        {isRealLowHistorical && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
+                        {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
                       </div>
                       <h3>{p.title}</h3>
                       {renderPreviousPrice()}
