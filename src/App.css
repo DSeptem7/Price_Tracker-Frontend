@@ -548,91 +548,92 @@
 /* === 5. MEDIA QUERIES (MÓVIL) === */
 /* ====================================================================== */
 @media (max-width: 600px) {
-  .control-row, .filter-row { 
-    flex-direction: column; 
-  }
-  
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px 10px; /* Reducimos el espacio entre tarjetas para ganar aire */
-    padding: 15px 5px;
-  }
-  
-  /* Ajustamos el contenedor de imagen para que no sea tan alto en móvil */
-  .image-container {
-    height: 130px; /* Un poco más bajo para que la tarjeta no sea eterna */
-    padding: 5px;
-  }
-
-  .product-card {
-    padding: 12px;
-  }
-  
-  .product-card img { 
-    height: 110px; 
-  }
-  
-  .alert-badge { 
-    font-size: 9px !important; 
-    padding: 4px 8px !important; 
-  }
-  
-  .navbar-content { 
-    justify-content: space-between !important; /* AHORA: Sepáralos a la fuerza */
+  /* Evitar desbordamiento lateral */
+  body, html {
+    overflow-x: hidden;
     width: 100%;
   }
-  
-  .product-count { 
-    display: none; 
+
+  /* 1. Ajuste de Grilla: 2 columnas perfectas */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px; 
+    padding: 15px 10px;
+    align-items: stretch; /* Fuerza a las tarjetas a medir lo mismo de alto */
   }
-}
 
-/* Solución para la paginación */
-.pagination-container {
-  overflow-x: auto;      /* Permite scroll horizontal si no cabe */
-  white-space: nowrap;   /* Mantiene los botones en una sola línea */
-  justify-content: flex-start; /* Alinea al principio para que el scroll empiece bien */
-  padding: 10px 0;       /* Un poco de espacio arriba y abajo */
+  /* 2. Ajuste de Tarjeta: Simetría de elementos */
+  .product-card {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Alinea el botón siempre al fondo */
+    height: 100%;
+    min-width: 0; /* Evita que el texto largo estire la tarjeta */
+  }
+
+  .product-card h3 {
+    font-size: 13px !important;
+    line-height: 1.2;
+    margin: 8px 0;
+    /* Limitamos el título a 2 líneas para que no deforme la tarjeta */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 32px; /* Altura fija para el título para mantener simetría */
+  }
+
+  /* 3. Contenedor de Imagen en móvil */
+  .image-container {
+    height: 120px !important;
+    padding: 8px !important;
+    margin-bottom: 5px;
+  }
+
+  .product-card img {
+    object-fit: contain;
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  /* 4. Navbar y controles */
+  .navbar-content { 
+    justify-content: space-between !important; 
+    padding: 0 15px;
+  }
+
+  .product-count { display: none; }
   
-  /* Ocultar la barra de scroll fea (opcional pero recomendado) */
-  -ms-overflow-style: none;  /* IE y Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-.pagination-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
+  .control-row, .filter-row { 
+    flex-direction: column; 
+    gap: 10px;
+  }
 
-/* Solución para el ancho del input de búsqueda */
-.control-row input[type="text"] {
-  max-width: 100%; /* En móvil, que ocupe todo el ancho posible */
-}
+  .control-row input[type="text"] {
+    max-width: 100%;
+  }
 
-/* Contenedor de paginación ajustado */
-.pagination-container {
-  gap: 4px !important; /* Reduce el espacio entre botones al mínimo */
-  padding: 10px 0;
-  flex-wrap: wrap; /* Permite que si son demasiados, bajen a otra línea sin romperse */
-  justify-content: center;
-}
+  /* 5. Paginación Compacta (Ahora dentro del media query) */
+  .pagination-container {
+    gap: 4px !important;
+    padding: 15px 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 
-/* Botones de paginación "Mini" para móvil */
-.pagination-number, 
-.pagination-arrow {
-  padding: 6px 10px !important; /* Botones más delgados */
-  font-size: 12px !important;   /* Letra más pequeña */
-  border-radius: 6px !important; /* Bordes menos redondeados para ahorrar espacio */
-  min-width: 30px; /* Ancho mínimo para que sean fáciles de tocar */
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .pagination-number, 
+  .pagination-arrow {
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+    min-width: 28px;
+    height: 28px;
+  }
 
-/* MUY IMPORTANTE: Evitar que el cuerpo de la página genere scroll horizontal */
-body, html {
-  overflow-x: hidden;
-  position: relative;
-  width: 100%;
+  /* Ocultamos los precios de "Antes" y fechas en móvil para ganar espacio */
+  .price-before, .update-date {
+    font-size: 10px !important;
+  }
 }
 
 /* ====================================================================== */
