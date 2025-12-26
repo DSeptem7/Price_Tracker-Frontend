@@ -173,9 +173,10 @@
 
 /* 2. Efecto Hover Específico para Modo Oscuro */
 .dark-mode .search-btn:hover {
-  /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
-  background-color: rgba(255, 255, 255, 0.1); 
-  color: var(--text-main); /* Asegura que el icono mantenga su color */
+  background-color: transparent; /* Quitamos el círculo blanco */
+  color: #3b82f6; /* La lupa cambia a azul brillante al pasar el mouse */
+  transform: scale(1.1); /* Crece un poquito */
+  transition: all 0.3s ease;
 }
 
 /* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
