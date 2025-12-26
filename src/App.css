@@ -36,7 +36,7 @@
 /* === 0. NAVBAR Y ESTRUCTURA GLOBAL === */
 /* ====================================================================== */
 .navbar {
-  height: 64px; /* 1. Altura fija para garantizar el centro vertical */
+  height: 64px; /* Altura fija para el centro vertical */
   display: flex;
   align-items: center; /* Centra todo verticalmente */
   /* Tus otros estilos de sticky, background, z-index siguen aquí... */
@@ -49,53 +49,59 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid var(--border-color);
+  padding: 0; /* Eliminamos padding del contenedor principal */
 }
 
 .navbar-content {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* 2. Alineación crítica */
+  align-items: center; /* Centrado vertical crítico */
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 100%; /* Hereda la altura de 64px */
+  /* CAMBIO 1: Ancho máximo que coincide con el resto de tu contenido (aprox. 1280px) */
+  max-width: 1280px; 
+  margin: 0 auto; /* Centra el contenido en pantallas muy anchas */
+  padding: 0 20px; /* Mismo padding lateral que el resto de tu página */
+  height: 100%;
 }
 
+/* CAMBIO 3: Título grande para PC */
 .logo {
   display: flex;
-  align-items: center; /* Asegura que el texto/icono del logo esté centrado */
+  align-items: center;
   height: 100%;
-  /* Tus estilos de fuente del logo... */
-  font-size: 1rem;
+  font-size: 1.35rem; /* Tamaño grande para PC */
   font-weight: 700;
   color: #3b82f6;
   letter-spacing: -0.5px;
+  /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
+  flex-grow: 1; 
 }
 
+/* CAMBIO 2: Los controles se pegan a la derecha */
 .nav-controls {
   display: flex;
-  align-items: center; /* 3. Centra buscador y switch entre sí */
-  gap: 12px; /* Espacio entre el buscador y el switch */
+  align-items: center;
+  justify-content: flex-end; /* Asegura que todo esté a la derecha */
+  gap: 16px; /* Espacio un poco mayor entre buscador, switch y contador */
   height: 100%;
 }
 
-/* --- BUSCADOR MINIMALISTA CORREGIDO --- */
+/* --- BUSCADOR MINIMALISTA (El CSS es el mismo del paso anterior) --- */
 .search-box {
-  position: relative; /* Necesario para el posicionamiento absoluto del botón */
+  position: relative;
   height: 36px;
-  width: 36px; /* Círculo perfecto inicial */
+  width: 36px;
   background: var(--bg-card);
   border-radius: 50px;
   border: 1px solid var(--border-color);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
   display: flex;
   align-items: center;
-  overflow: hidden; /* Corta lo que sobre */
+  overflow: hidden;
 }
 
 .search-box.expanded {
-  width: 240px; /* Ancho al abrir */
+  width: 240px;
   border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
@@ -110,8 +116,6 @@
   color: var(--text-color);
   opacity: 0;
   transition: opacity 0.3s ease 0.1s;
-  
-  /* CLAVE: Padding a la derecha para no escribir debajo del botón */
   padding: 0 40px 0 15px; 
 }
 
@@ -119,9 +123,8 @@
   opacity: 1;
 }
 
-/* EL ARREGLO DE LA LUPA: POSICIÓN ABSOLUTA */
 .search-btn {
-  position: absolute; /* 4. Lo sacamos del flujo para clavarlo a la derecha */
+  position: absolute;
   right: 0;
   top: 0;
   width: 36px;
@@ -131,12 +134,12 @@
   background: transparent;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centrado perfecto del SVG */
+  justify-content: center;
   cursor: pointer;
   color: var(--text-color);
-  z-index: 2; /* Asegura que esté por encima del input */
+  z-index: 2;
   transition: color 0.3s ease;
-  padding: 0; /* Eliminamos cualquier padding heredado */
+  padding: 0;
 }
 
 .search-box.expanded .search-btn {
@@ -650,12 +653,22 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   .search-box.expanded {
-    width: 180px; /* Un poco más estrecho en celular */
+    width: 160px !important; /* Un poco más estrecho en celular */
   }
   
+  .logo {
+    font-size: 1rem !important; /* Reducimos el tamaño */
+    flex-grow: 0 !important; /* Ya no empuja, para dar espacio al buscador */
+    margin-right: auto; /* Se pega a la izquierda */
+  }
+
   .nav-search-input {
     padding: 6px 10px;
     font-size: 12px;
+  }
+
+  .nav-controls {
+    gap: 8px !important; /* Menos espacio entre elementos en móvil */
   }
 
   /* 1. Reparación Maestra de Scroll y Sticky */
