@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react"; 
+import React, { useEffect, useState, useMemo, useRef } from "react"; 
 import {
   LineChart,
   Line,
@@ -133,7 +133,8 @@ function App() {
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  
+  const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
+
   // Modo Oscuro: Inicia en true
   const [isDarkMode, setIsDarkMode] = useState(true);
 
@@ -141,6 +142,25 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 600 ? 8 : 15);
 
+  // 2. Lógica para detectar clic fuera del componente
+useEffect(() => {
+  function handleClickOutside(event) {
+    // Si el buscador está abierto Y el clic ocurrió FUERA del contenedor referenciado...
+    if (isSearchExpanded && searchRef.current && !searchRef.current.contains(event.target)) {
+      // ... cerramos el buscador y borramos el texto si no se ha buscado nada.
+      if (searchTerm === "") {
+         setIsSearchExpanded(false);
+      }
+    }
+  }
+  // Añadimos el escuchador de eventos al documento entero
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    // Limpiamos el escuchador cuando el componente se desmonta
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isSearchExpanded, searchTerm]); // Se ejecuta cuando cambia el estado de expansión o el término
+  
   // Opcional: Ajustar si el usuario cambia el tamaño de la ventana (resizing)
 useEffect(() => {
   const handleResize = () => {
@@ -289,23 +309,29 @@ const processedProducts = useMemo(() => {
           <div className="navbar-content">
             <span className="logo">🛒 Price Tracker (ML)</span>
             
-        {/* Buscador integrado en la Navbar */}
-              <div className="nav-controls"></div>
-              <div className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
+            {/* Redujimos el gap aquí en el CSS para pegarlo más a la derecha */}
+          <div className="nav-controls"></div>
+
+        {/* BUSCADOR EXPANSIBLE MINIMALISTA */}
+            {/* 3. Conectamos la referencia (ref={searchRef}) a este div */}
+            <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
               <input 
                 type="text" 
                 className="search-input" 
                 placeholder="Buscar..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onBlur={() => searchTerm === "" && setIsSearchExpanded(false)} // Se cierra si está vacío al perder el foco
+                // Eliminamos el onBlur anterior, ya no es necesario
               />
               <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
-                <span className="search-icon">🔍</span>
+                {/* 4. NUEVO ICONO SVG MINIMALISTA */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon-svg">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
               </button>
             </div>
 
-            <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               {/* SWITCH ELEGANTE */}
               <div className="theme-switch-wrapper">
                 <label className="theme-switch">
