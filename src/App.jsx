@@ -332,6 +332,7 @@ const processedProducts = useMemo(() => {
               </button>
             </div>
 
+            <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               {/* SWITCH ELEGANTE */}
               <div className="theme-switch-wrapper">
                 <label className="theme-switch">
