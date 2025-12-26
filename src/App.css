@@ -119,7 +119,7 @@
   width: 100%;
   height: 100%;
   border: none;
-  background: transparent;
+  background: var(--bg-card);
   outline: none;
   font-size: 14px;
   color: var(--text-color);
