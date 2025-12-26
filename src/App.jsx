@@ -290,9 +290,8 @@ const processedProducts = useMemo(() => {
             <span className="logo">🛒 Price Tracker (ML)</span>
             
         {/* Buscador integrado en la Navbar */}
-              <div className="nav-controls">
-            {/* BUSCADOR EXPANSIBLE */}
-            <div className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
+              <div className="nav-controls"></div>
+              <div className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
               <input 
                 type="text" 
                 className="search-input" 
