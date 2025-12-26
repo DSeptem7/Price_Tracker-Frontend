@@ -131,7 +131,8 @@ function App() {
   const [trackingMessage, setTrackingMessage] = useState(""); 
   const [chartProductTitle, setChartProductTitle] = useState(null);
   const [sortOption, setSortOption] = useState("date_desc");
-  const [filterOption, setFilterOption] = useState("available"); 
+  const [filterOption, setFilterOption] = useState("available");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   
   // Modo Oscuro: Inicia en true
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -288,15 +289,21 @@ const processedProducts = useMemo(() => {
           <div className="navbar-content">
             <span className="logo">🛒 Price Tracker (ML)</span>
             
-        {/* NUEVO: Buscador integrado en la Navbar */}
-            <div className="nav-search-container">
+        {/* Buscador integrado en la Navbar */}
+              <div className="nav-controls">
+            {/* BUSCADOR EXPANSIBLE */}
+            <div className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
               <input 
                 type="text" 
+                className="search-input" 
                 placeholder="Buscar..." 
-                value={searchTerm} 
+                value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="nav-search-input"
+                onBlur={() => searchTerm === "" && setIsSearchExpanded(false)} // Se cierra si está vacío al perder el foco
               />
+              <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
+                <span className="search-icon">🔍</span>
+              </button>
             </div>
 
             <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
