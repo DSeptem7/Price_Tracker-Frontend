@@ -57,6 +57,15 @@
   padding: 0 20px;
 }
 
+.logo {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #007bff;
+  background: linear-gradient(45deg, #007bff, #00c6ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* busqueda navbar animación */
 .nav-controls {
   display: flex;
@@ -132,19 +141,6 @@
   width: 18px; /* Tamaño ideal para el contenedor de 36px */
   height: 18px;
   stroke-width: 2.5px; /* Líneas un poco más gruesas para definición */
-}
-
-.search-icon {
-  font-size: 18px;
-}
-
-.logo {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #007bff;
-  background: linear-gradient(45deg, #007bff, #00c6ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .product-count {
