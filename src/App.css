@@ -36,86 +36,94 @@
 /* === 0. NAVBAR Y ESTRUCTURA GLOBAL === */
 /* ====================================================================== */
 .navbar {
+  height: 64px; /* 1. Altura fija para garantizar el centro vertical */
+  display: flex;
+  align-items: center; /* Centra todo verticalmente */
+  /* Tus otros estilos de sticky, background, z-index siguen aquí... */
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 2000;
   background: var(--bg-navbar);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid var(--border-color);
-  padding: 12px 0;
 }
 
 .navbar-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; /* 2. Alineación crítica */
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  height: 100%; /* Hereda la altura de 64px */
 }
 
 .logo {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #007bff;
-  background: linear-gradient(45deg, #007bff, #00c6ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center; /* Asegura que el texto/icono del logo esté centrado */
+  height: 100%;
+  /* Tus estilos de fuente del logo... */
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #3b82f6;
+  letter-spacing: -0.5px;
 }
 
-/* busqueda navbar animación */
 .nav-controls {
   display: flex;
-  align-items: center;
-  /* PUNTO 2: Reducimos el espacio para que estén más juntos a la derecha */
-  gap: 8px; 
+  align-items: center; /* 3. Centra buscador y switch entre sí */
+  gap: 12px; /* Espacio entre el buscador y el switch */
+  height: 100%;
 }
 
-/* Contenedor del buscador */
+/* --- BUSCADOR MINIMALISTA CORREGIDO --- */
 .search-box {
-  position: relative;
-  height: 36px; /* Un poco más compacto */
+  position: relative; /* Necesario para el posicionamiento absoluto del botón */
+  height: 36px;
+  width: 36px; /* Círculo perfecto inicial */
+  background: var(--bg-card);
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
   display: flex;
   align-items: center;
-  /* Animación suave para abrir y cerrar */
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
-  width: 36px; /* Tamaño inicial (círculo) */
-  background: var(--bg-card);
-  border-radius: 50px; /* Bordes completamente redondeados */
-  border: 1px solid var(--border-color);
-  overflow: hidden;
+  overflow: hidden; /* Corta lo que sobre */
 }
 
-/* Cuando está expandido */
 .search-box.expanded {
-  width: 240px; /* Ancho al abrirse */
-  border-color: #3b82f6; /* Color de acento al estar activo */
+  width: 240px; /* Ancho al abrir */
+  border-color: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
-/* El input oculto */
 .search-input {
-  flex-grow: 1; /* Ocupa el espacio restante */
+  width: 100%;
+  height: 100%;
   border: none;
   background: transparent;
   outline: none;
-  padding: 0 0 0 15px;
   font-size: 14px;
   color: var(--text-color);
-  opacity: 0; /* Invisible cuando está cerrado */
-  transition: opacity 0.3s ease 0.1s; /* Pequeño retraso al aparecer */
-  width: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.1s;
+  
+  /* CLAVE: Padding a la derecha para no escribir debajo del botón */
+  padding: 0 40px 0 15px; 
 }
 
 .search-box.expanded .search-input {
-  opacity: 1; /* Visible al expandir */
+  opacity: 1;
 }
 
-/* El botón de la lupa */
+/* EL ARREGLO DE LA LUPA: POSICIÓN ABSOLUTA */
 .search-btn {
+  position: absolute; /* 4. Lo sacamos del flujo para clavarlo a la derecha */
+  right: 0;
+  top: 0;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -123,24 +131,23 @@
   background: transparent;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Centrado perfecto del SVG */
   cursor: pointer;
-  flex-shrink: 0; /* Evita que se aplaste */
-  padding: 0; /* Sin padding para que el icono no se corte */
   color: var(--text-color);
+  z-index: 2; /* Asegura que esté por encima del input */
   transition: color 0.3s ease;
+  padding: 0; /* Eliminamos cualquier padding heredado */
 }
 
 .search-box.expanded .search-btn {
-  color: #3b82f6; /* Color azul cuando está abierto */
+  color: #3b82f6;
 }
 
-/* Estilos del nuevo SVG minimalista */
 .search-icon-svg {
   display: block;
-  width: 18px; /* Tamaño ideal para el contenedor de 36px */
+  width: 18px;
   height: 18px;
-  stroke-width: 2.5px; /* Líneas un poco más gruesas para definición */
+  stroke-width: 2px;
 }
 
 .product-count {
