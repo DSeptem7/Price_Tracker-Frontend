@@ -81,6 +81,29 @@
   font-weight: 600;
 }
 
+.nav-search-container {
+  flex: 1;
+  max-width: 400px; /* Para que no sea demasiado largo en PC */
+  margin: 0 20px;
+}
+
+.nav-search-input {
+  width: 100%;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-color);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.nav-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
 .main-content {
   max-width: 1400px;
   margin: 0 auto;
@@ -548,7 +571,16 @@
 /* === 5. MEDIA QUERIES (MÓVIL) === */
 /* ====================================================================== */
 @media (max-width: 600px) {
+  .nav-search-container {
+    margin: 0 10px;
+    max-width: 150px; /* Más pequeño en móvil para que quepa el logo */
+  }
   
+  .nav-search-input {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
   /* 1. Reparación Maestra de Scroll y Sticky */
   html, body {
     overflow-x: visible !important;
