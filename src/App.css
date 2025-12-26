@@ -617,17 +617,36 @@
     height: 100% !important;
   }
 
-  /* 5. Controles y Navbar */
+  /* 5. Controles y Navbar - Ajuste de Simetría */
   .navbar-content { 
     justify-content: space-between !important; 
     padding: 0 15px !important;
   }
 
-  .product-count { display: none !important; }
-  
-  .control-row, .filter-row { 
+  /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
+  .control-row { 
     flex-direction: column !important; 
     gap: 10px !important;
+  }
+
+  /* LA SOLUCIÓN: La fila de filtros vuelve a ser horizontal (2 columnas) */
+  .filter-row { 
+    flex-direction: row !important; /* Volvemos a horizontal */
+    display: flex !important;
+    gap: 10px !important;
+    justify-content: space-between !important;
+  }
+
+  /* Aseguramos que cada selector ocupe el 50% del espacio disponible */
+  .filter-row .select-wrapper {
+    flex: 1 !important;
+    min-width: 0 !important; /* Evita que el texto largo los desalinee */
+  }
+
+  .filter-row select {
+    width: 100% !important;
+    font-size: 12px !important; /* Letra un poco más pequeña para que quepa todo */
+    padding: 8px 4px !important;
   }
 
   /* 6. Paginación Compacta */
