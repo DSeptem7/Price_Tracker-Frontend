@@ -549,12 +549,6 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   
-  /* Evitar desbordamiento lateral */
-  body, html {
-    overflow-x: hidden;
-    width: 100%;
-  }
-
   .App {
     overflow-x: hidden;
     width: 100%;
