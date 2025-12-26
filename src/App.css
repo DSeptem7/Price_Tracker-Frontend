@@ -549,16 +549,16 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   
-  .App {
-    overflow-x: hidden;
+  /* Evitar desbordamiento lateral */
+  body, html {
+    overflow-x: visible;
     width: 100%;
     position: relative;
   }
 
-  /* Aseguramos que la navbar sea sticky explícitamente en móvil */
-  .navbar {
-    position: sticky !important;
-    top: 0 !important;
+  .App {
+    overflow-x: hidden;
+    width: 100%;
   }
 
   /* 1. Ajuste de Grilla: 2 columnas perfectas */
@@ -605,6 +605,14 @@
   }
 
   /* 4. Navbar y controles */
+  .navbar {
+    position: sticky !important;
+    position: -webkit-sticky !important; /* Safari móvil */
+    top: 0 !important;
+    z-index: 9999 !important; /* Aseguramos que nada la tape */
+    padding: 8px 0 !important; /* Más compacta para móvil */
+  }
+
   .navbar-content { 
     justify-content: space-between !important; 
     padding: 0 15px;
