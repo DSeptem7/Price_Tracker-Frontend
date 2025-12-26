@@ -548,10 +548,23 @@
 /* === 5. MEDIA QUERIES (MÓVIL) === */
 /* ====================================================================== */
 @media (max-width: 600px) {
+  
   /* Evitar desbordamiento lateral */
   body, html {
     overflow-x: hidden;
     width: 100%;
+  }
+
+  .App {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Aseguramos que la navbar sea sticky explícitamente en móvil */
+  .navbar {
+    position: sticky !important;
+    top: 0 !important;
   }
 
   /* 1. Ajuste de Grilla: 2 columnas perfectas */
