@@ -82,7 +82,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end; /* Asegura que todo esté a la derecha */
-  gap: 16px; /* Espacio un poco mayor entre buscador, switch y contador */
+  gap: 20px; /* Espacio un poco mayor entre buscador, switch y contador */
   height: 100%;
 }
 
@@ -98,6 +98,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  margin-right: 5px;
 }
 
 .search-box.expanded {
@@ -645,7 +646,11 @@
   }
 
   .nav-controls {
-    gap: 8px !important; /* Menos espacio entre elementos en móvil */
+    gap: 12px !important; /* Menos espacio entre elementos en móvil */
+  }
+
+  .search-box {
+    margin-right: 0;
   }
 
   /* 1. Reparación Maestra de Scroll y Sticky */
