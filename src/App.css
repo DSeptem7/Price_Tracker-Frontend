@@ -48,64 +48,67 @@
 }
 
 .navbar-content {
-  max-width: 1400px;
-  margin: 0 auto;
   display: flex;
-  justify-content: space-between; /* Esto es clave: separa los elementos a los extremos */
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 20px;
-  width: 100%; /* Asegura que ocupe todo el ancho disponible */
 }
 
 /* busqueda navbar animación */
 .nav-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  /* PUNTO 2: Reducimos el espacio para que estén más juntos a la derecha */
+  gap: 8px; 
 }
 
 /* Contenedor del buscador */
 .search-box {
   position: relative;
-  height: 40px;
+  height: 36px; /* Un poco más compacto */
   display: flex;
   align-items: center;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 40px; /* Tamaño del círculo inicial */
+  /* Animación suave para abrir y cerrar */
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  width: 36px; /* Tamaño inicial (círculo) */
   background: var(--bg-card);
-  border-radius: 20px;
+  border-radius: 50px; /* Bordes completamente redondeados */
   border: 1px solid var(--border-color);
   overflow: hidden;
 }
 
 /* Cuando está expandido */
 .search-box.expanded {
-  width: 220px; /* Ancho al abrirse */
-  border-color: #3b82f6;
+  width: 240px; /* Ancho al abrirse */
+  border-color: #3b82f6; /* Color de acento al estar activo */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 /* El input oculto */
 .search-input {
-  width: 100%;
+  flex-grow: 1; /* Ocupa el espacio restante */
   border: none;
   background: transparent;
   outline: none;
-  padding: 0;
-  padding-left: 15px;
+  padding: 0 0 0 15px;
   font-size: 14px;
   color: var(--text-color);
-  opacity: 0;
-  transition: opacity 0.3s;
+  opacity: 0; /* Invisible cuando está cerrado */
+  transition: opacity 0.3s ease 0.1s; /* Pequeño retraso al aparecer */
+  width: 100%;
 }
 
 .search-box.expanded .search-input {
-  opacity: 1;
+  opacity: 1; /* Visible al expandir */
 }
 
 /* El botón de la lupa */
 .search-btn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   background: transparent;
@@ -113,7 +116,22 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Evita que se aplaste */
+  padding: 0; /* Sin padding para que el icono no se corte */
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.search-box.expanded .search-btn {
+  color: #3b82f6; /* Color azul cuando está abierto */
+}
+
+/* Estilos del nuevo SVG minimalista */
+.search-icon-svg {
+  display: block;
+  width: 18px; /* Tamaño ideal para el contenedor de 36px */
+  height: 18px;
+  stroke-width: 2.5px; /* Líneas un poco más gruesas para definición */
 }
 
 .search-icon {
@@ -629,7 +647,7 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   .search-box.expanded {
-    width: 160px; /* Un poco más pequeño en móvil */
+    width: 180px; /* Un poco más estrecho en celular */
   }
   
   .nav-search-input {
