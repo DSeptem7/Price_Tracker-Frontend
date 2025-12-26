@@ -212,22 +212,37 @@ function App() {
     }
   };
 
-  // === LÓGICA DE FILTRADO Y ORDENAMIENTO ===
-  const processedProducts = useMemo(() => {
-    let result = [...products];
-    if (searchTerm && !searchTerm.includes("http")) {
-      const lowerSearch = searchTerm.toLowerCase();
-      result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
-    }
-    if (filterOption === "historical_low") {
-      result = result.filter(p => p.alert_type === "low_historical" && p.status === "down" && !isOutOfStock(p));
-    } else if (filterOption === "price_drop") {
-      result = result.filter(p => p.status === "down" && !isOutOfStock(p));
-    } else if (filterOption === "available") {
-      result = result.filter(p => !isOutOfStock(p));
-    } else if (filterOption === "out_of_stock") {
-      result = result.filter(p => isOutOfStock(p));
-    }
+ // === LÓGICA DE FILTRADO Y ORDENAMIENTO ===
+const processedProducts = useMemo(() => {
+  let result = [...products];
+
+  if (searchTerm && !searchTerm.includes("http")) {
+    const lowerSearch = searchTerm.toLowerCase();
+    result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
+  }
+
+  if (filterOption === "historical_low") {
+    // NUEVA LÓGICA PERMANENTE PARA EL FILTRO
+    result = result.filter(p => {
+      const curr = parsePrice(p.price);
+      const minH = parsePrice(p.min_historical_price);
+      const modeP = parsePrice(p.mode_price);
+      const outOfStock = isOutOfStock(p);
+
+      // Solo pasa el filtro si:
+      // 1. El precio actual es el mínimo (curr === minH)
+      // 2. Realmente es una oferta (curr < modeP)
+      // 3. No está agotado
+      return curr > 0 && Math.abs(curr - minH) < 0.01 && curr < modeP && !outOfStock;
+    });
+  } else if (filterOption === "price_drop") {
+    // Aquí mantenemos status "down" porque "Ofertas" sí suele ser algo temporal del último scraping
+    result = result.filter(p => p.status === "down" && !isOutOfStock(p));
+  } else if (filterOption === "available") {
+    result = result.filter(p => !isOutOfStock(p));
+  } else if (filterOption === "out_of_stock") {
+    result = result.filter(p => isOutOfStock(p));
+  }
     result.sort((a, b) => {
       switch (sortOption) {
         case "price_asc": return parsePrice(a.price) - parsePrice(b.price);
