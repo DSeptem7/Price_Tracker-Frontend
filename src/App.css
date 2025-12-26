@@ -549,19 +549,27 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   
-  /* Evitar desbordamiento lateral */
+  /* 1. Reparación del Scroll y Navbar Sticky */
   body, html {
-    overflow-x: visible;
+    overflow-x: visible !important;;
     width: 100%;
-    position: relative;
   }
 
   .App {
     overflow-x: hidden;
     width: 100%;
+    position: relative;
   }
 
-  /* 1. Ajuste de Grilla: 2 columnas perfectas */
+  .navbar {
+    position: sticky !important;
+    position: -webkit-sticky !important; /* Safari móvil */
+    top: 0 !important;
+    z-index: 9999 !important; /* Aseguramos que nada la tape */
+    padding: 8px 0 !important; /* Más compacta para móvil */
+  }
+
+  /* 2. Ajuste de Grilla: 2 columnas perfectas */
   .product-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 12px; 
@@ -605,14 +613,6 @@
   }
 
   /* 4. Navbar y controles */
-  .navbar {
-    position: sticky !important;
-    position: -webkit-sticky !important; /* Safari móvil */
-    top: 0 !important;
-    z-index: 9999 !important; /* Aseguramos que nada la tape */
-    padding: 8px 0 !important; /* Más compacta para móvil */
-  }
-
   .navbar-content { 
     justify-content: space-between !important; 
     padding: 0 15px;
