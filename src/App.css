@@ -649,6 +649,8 @@
     padding: 8px 4px !important;
   }
 
+  .product-count { display: none; }
+
   /* 6. Paginación Compacta */
   .pagination-container {
     gap: 4px !important;
