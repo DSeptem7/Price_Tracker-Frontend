@@ -138,7 +138,16 @@ function App() {
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 600 ? 8 : 15);
+
+  // Opcional: Ajustar si el usuario cambia el tamaño de la ventana (resizing)
+useEffect(() => {
+  const handleResize = () => {
+    setItemsPerPage(window.innerWidth < 600 ? 8 : 15);
+  };
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
@@ -391,7 +400,8 @@ const processedProducts = useMemo(() => {
 
           <div className="product-grid">
             {loading ? (
-              Array.from({ length: 15 }).map((_, index) => (
+              // Ahora usará 8 en móvil y 15 en PC automáticamente
+              Array.from({ length: itemsPerPage }).map((_, index) => (
                 <div key={index} className="product-card skeleton-card">
                   <div className="skeleton-img"></div>
                   <div className="skeleton-title"></div>
