@@ -549,103 +549,101 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   
-  /* 1. Reparación del Scroll y Navbar Sticky */
-  body, html {
-    overflow-x: visible !important;;
-    width: 100%;
+  /* 1. Reparación Maestra de Scroll y Sticky */
+  html, body {
+    overflow-x: visible !important;
+    overflow-y: visible !important; /* Asegura que el scroll principal mande */
+    height: auto !important;
+    width: 100% !important;
+    position: relative !important;
   }
 
   .App {
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
+    overflow: visible !important; /* Eliminamos el hidden aquí también temporalmente */
+    display: block !important;
   }
 
   .navbar {
-    position: sticky !important;
     position: -webkit-sticky !important; /* Safari móvil */
+    position: sticky !important;
     top: 0 !important;
-    z-index: 9999 !important; /* Aseguramos que nada la tape */
-    padding: 8px 0 !important; /* Más compacta para móvil */
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+    background: var(--bg-navbar) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    padding: 10px 0 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
   }
 
   /* 2. Ajuste de Grilla: 2 columnas perfectas */
   .product-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px; 
-    padding: 15px 10px;
-    align-items: stretch; /* Fuerza a las tarjetas a medir lo mismo de alto */
+    gap: 12px !important; 
+    padding: 15px 10px !important;
+    align-items: stretch !important;
   }
 
-  /* 2. Ajuste de Tarjeta: Simetría de elementos */
+  /* 3. Ajuste de Tarjeta */
   .product-card {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Alinea el botón siempre al fondo */
-    height: 100%;
-    min-width: 0; /* Evita que el texto largo estire la tarjeta */
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
   }
 
   .product-card h3 {
     font-size: 13px !important;
-    line-height: 1.2;
-    margin: 8px 0;
-    /* Limitamos el título a 2 líneas para que no deforme la tarjeta */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    height: 32px; /* Altura fija para el título para mantener simetría */
+    line-height: 1.2 !important;
+    margin: 8px 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    height: 32px !important;
   }
 
-  /* 3. Contenedor de Imagen en móvil */
+  /* 4. Contenedor de Imagen */
   .image-container {
     height: 120px !important;
     padding: 8px !important;
-    margin-bottom: 5px;
+    margin-bottom: 5px !important;
   }
 
   .product-card img {
-    object-fit: contain;
+    object-fit: contain !important;
     height: 100% !important;
-    width: 100% !important;
   }
 
-  /* 4. Navbar y controles */
+  /* 5. Controles y Navbar */
   .navbar-content { 
     justify-content: space-between !important; 
-    padding: 0 15px;
+    padding: 0 15px !important;
   }
 
-  .product-count { display: none; }
+  .product-count { display: none !important; }
   
   .control-row, .filter-row { 
-    flex-direction: column; 
-    gap: 10px;
+    flex-direction: column !important; 
+    gap: 10px !important;
   }
 
-  .control-row input[type="text"] {
-    max-width: 100%;
-  }
-
-  /* 5. Paginación Compacta (Ahora dentro del media query) */
+  /* 6. Paginación Compacta */
   .pagination-container {
     gap: 4px !important;
-    padding: 15px 5px;
-    justify-content: center;
-    flex-wrap: wrap;
+    padding: 15px 5px !important;
+    justify-content: center !important;
   }
 
-  .pagination-number, 
-  .pagination-arrow {
+  .pagination-number, .pagination-arrow {
     padding: 5px 8px !important;
     font-size: 12px !important;
-    min-width: 28px;
-    height: 28px;
+    min-width: 28px !important;
+    height: 28px !important;
   }
 
-  /* Ocultamos los precios de "Antes" y fechas en móvil para ganar espacio */
   .price-before, .update-date {
     font-size: 10px !important;
   }
