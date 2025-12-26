@@ -288,6 +288,17 @@ const processedProducts = useMemo(() => {
           <div className="navbar-content">
             <span className="logo">🛒 Price Tracker (ML)</span>
             
+        {/* NUEVO: Buscador integrado en la Navbar */}
+            <div className="nav-search-container">
+              <input 
+                type="text" 
+                placeholder="Buscar..." 
+                value={searchTerm} 
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="nav-search-input"
+              />
+            </div>
+
             <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               {/* SWITCH ELEGANTE */}
               <div className="theme-switch-wrapper">
