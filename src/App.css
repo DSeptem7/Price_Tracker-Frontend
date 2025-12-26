@@ -103,8 +103,9 @@
 
 .search-box.expanded {
   width: 240px;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: var(--border-color);
+  background: var(--bg-card); 
+  box-shadow: none; /* Eliminamos el resplandor azul */
 }
 
 .search-input {
@@ -114,13 +115,14 @@
   background: transparent;
   outline: none;
   font-size: 14px;
-  color: var(--text-color);
-  opacity: 0;
+  color: #64748b;
+  opacity: 1;
   transition: opacity 0.3s ease 0.1s;
   padding: 0 40px 0 15px; 
 }
 
 .search-box.expanded .search-input {
+  color: var(--text-color);
   opacity: 1;
 }
 
@@ -144,7 +146,7 @@
 }
 
 .search-box.expanded .search-btn {
-  color: #3b82f6;
+  color: var(--text-color);
 }
 
 .search-icon-svg {
