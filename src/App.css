@@ -166,6 +166,24 @@
   stroke-width: 2px;
 }
 
+/* 1. Efecto Hover General (Modo Claro por defecto) */
+.search-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Un gris muy suave en lugar de blanco sólido */
+}
+
+/* 2. Efecto Hover Específico para Modo Oscuro */
+.dark-mode .search-btn:hover {
+  /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: var(--text-main); /* Asegura que el icono mantenga su color */
+}
+
+/* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
+      forzamos a que la lupa cambie a color oscuro solo en ese instante */
+.dark-mode .search-btn:hover .search-icon-svg {
+  stroke: var(--text-main); /* O el color que prefieras para que resalte */
+}
+
 .product-count {
   font-size: 0.85rem;
   color: #666;
