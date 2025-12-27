@@ -989,6 +989,7 @@
 }
 
 .stat-card.highlight {
+  background: #1e293b;
   cursor: pointer !important; /* Cambia a la mano al pasar el mouse */
   position: relative;
   overflow: hidden;
