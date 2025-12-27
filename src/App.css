@@ -1005,6 +1005,24 @@
   box-shadow: none;
 }
 
+/* 1. Color BASE para todas las tarjetas (cuando el mouse NO está encima) */
+.stat-card .stat-value {
+  /* Usamos la variable de texto principal que definiste al inicio */
+  color: var(--text-main); 
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* 3. Ajuste para Modo Claro (por si acaso hay alguna regla de navegador) */
+:not(.dark-mode) .stat-card .stat-value {
+  color: #1e293b; /* Un tono oscuro sólido para el modo claro */
+}
+
+/* 4. Ajuste para Modo Oscuro */
+.dark-mode .stat-card .stat-value {
+  color: #f1f5f9; /* El blanco/grisáceo de tu modo oscuro */
+}
+
 .stat-indicator {
   width: 3px; /* Más sutil */
   height: 24px;
