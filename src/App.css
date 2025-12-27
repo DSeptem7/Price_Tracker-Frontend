@@ -967,6 +967,9 @@
   gap: 12px;
   position: relative;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  cursor: default; /* Por defecto, no parece un botón */
+  user-select: none;
+  transition: all 0.3s ease;
 }
 
 .stat-indicator {
@@ -979,9 +982,42 @@
 .stat-indicator.up { background-color: #ef4444; }
 .stat-indicator.savings { background-color: #3b82f6; }
 
+/* Eliminamos efectos de hover para las tarjetas normales (1, 2 y 4) */
+.stat-card:not(.highlight):hover {
+  transform: none;
+  border-color: var(--border-color);
+  box-shadow: none;
+}
+
 .stat-card.highlight {
   background: #1e293b;
   border: none;
+  cursor: pointer !important; /* Cambia a la mano al pasar el mouse */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto visual solo para la tarjeta con descuento */
+.stat-card.highlight:hover {
+  border-color: #3b82f6; /* El azul que querías */
+  transform: translateY(-3px); /* Se eleva un poquito */
+  background: var(--bg-card);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); /* Sombra azul tenue */
+}
+
+/* Opcional: Un pequeño indicador visual de que es clicable */
+.stat-card.highlight::after {
+  content: '→';
+  position: absolute;
+  right: 15px;
+  opacity: 0;
+  color: #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.stat-card.highlight:hover::after {
+  opacity: 1;
+  right: 10px;
 }
 
 .stat-info {
