@@ -972,7 +972,7 @@
 }
 
 .stat-card.highlight {
-  background: var(--bg-card);
+  background: #1e293b;
   border: 1px solid var(--border-color);
   cursor: pointer !important; /* Cambia a la mano al pasar el mouse */
   position: relative;
@@ -983,7 +983,7 @@
 .stat-card.highlight:hover {
   border-color: #3b82f6; /* El azul que querías */
   transform: translateY(-4px); /* Se eleva un poquito */
-  background: var(--bg-card);
+  background: #0f1a2e;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); /* Sombra azul tenue */
 }
 
@@ -1003,24 +1003,6 @@
   transform: none;
   border-color: var(--border-color);
   box-shadow: none;
-}
-
-/* 1. Color BASE para todas las tarjetas (cuando el mouse NO está encima) */
-.stat-card .stat-value {
-  /* Usamos la variable de texto principal que definiste al inicio */
-  color: var(--text-main); 
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-/* 3. Ajuste para Modo Claro (por si acaso hay alguna regla de navegador) */
-:not(.dark-mode) .stat-card .stat-value {
-  color: #1e293b; /* Un tono oscuro sólido para el modo claro */
-}
-
-/* 4. Ajuste para Modo Oscuro */
-.dark-mode .stat-card .stat-value {
-  color: #f1f5f9; /* El blanco/grisáceo de tu modo oscuro */
 }
 
 .stat-indicator {
