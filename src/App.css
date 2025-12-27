@@ -966,7 +966,6 @@
   align-items: center;
   gap: 12px;
   position: relative;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   cursor: default; /* Por defecto, no parece un botón */
   user-select: none;
   transition: all 0.3s ease;
@@ -990,8 +989,6 @@
 }
 
 .stat-card.highlight {
-  background: #1e293b;
-  border: none;
   cursor: pointer !important; /* Cambia a la mano al pasar el mouse */
   position: relative;
   overflow: hidden;
