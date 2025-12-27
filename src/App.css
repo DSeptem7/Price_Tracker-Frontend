@@ -987,6 +987,12 @@
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); /* Sombra azul tenue */
 }
 
+/* El texto del porcentaje también cambia a verde al hacer hover */
+.stat-card.highlight:hover .stat-value {
+  color: #10b981;
+  transition: color 0.3s ease;
+}
+
 .stat-card.highlight:hover::after {
   opacity: 1;
   right: 10px;
