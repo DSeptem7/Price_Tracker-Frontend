@@ -398,7 +398,7 @@ const processedProducts = useMemo(() => {
                 )}
               </span>
             </div>
-
+          </div>
           
           <div className="stat-card">
           <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
