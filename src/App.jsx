@@ -136,29 +136,11 @@ function App() {
   const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
 
   // Modo Oscuro: Inicia en true
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Al cargar, buscamos la variable 'theme' en el almacenamiento local
-    const savedTheme = localStorage.getItem('theme');
-    // Si existe y es 'light', devolvemos false (modo claro), de lo contrario true
-    return savedTheme ? savedTheme === 'dark' : true;
-  });
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 600 ? 8 : 15);
-
-  // 1. guardar modos en el disco duro del navegador
-  useEffect(() => {
-    // Guardamos la preferencia actual para la próxima visita
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
-    
-    // Opcional: Si manejas la clase en el body, asegúrate de actualizarla aquí
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
 
   // 2. Lógica para detectar clic fuera del componente
 useEffect(() => {
