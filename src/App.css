@@ -292,6 +292,99 @@
   text-align: center; /* Centramos el título para mayor equilibrio visual */
 }
 
+/* Contenedor del encabezado para alinear h3 e icono */
+.panel-header-row {
+  display: flex;
+  align-items: center; /* Centra verticalmente el icono con el texto */
+  gap: 10px;           /* Espacio entre el texto y el icono */
+  margin-bottom: 15px; /* Espacio antes de los controles */
+}
+
+/* Quitamos el margen por defecto del h3 para que no descuadre el centro */
+.panel-header-row h3 {
+  margin: 0;
+}
+
+/* El círculo con la "i" */
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  border-radius: 50%;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Contenedor del icono de información (i) */
+.info-tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  cursor: help;
+}
+
+.info-icon:hover {
+  background: var(--text-muted);
+  color: var(--bg-card);
+}
+
+/* El recuadro que aparece (Tooltip) */
+.tooltip-content {
+  visibility: hidden;
+  width: 250px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  text-align: left;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%; /* Aparece arriba del icono */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Triangulito del tooltip */
+.tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--border-color) transparent transparent transparent;
+}
+
+/* Mostrar al pasar el mouse */
+.info-tooltip-wrapper:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltip-content ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.tooltip-content li {
+  margin-bottom: 6px;
+}
+
 /* Filas base */
 .control-row, .filter-row {
   display: flex;
@@ -381,86 +474,6 @@
 
 .select-wrapper select {
   width: 100%;
-}
-
-/* Contenedor del icono de información (i) */
-.info-tooltip-wrapper {
-  position: relative;
-  display: inline-block;
-  margin-left: 8px;
-  cursor: help;
-}
-
-/* El círculo con la "i" */
-.info-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  background: transparent;
-  border: 1px solid var(--text-muted);
-  color: var(--text-muted);
-  border-radius: 50%;
-  font-size: 12px;
-  font-style: italic;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.info-icon:hover {
-  background: var(--text-muted);
-  color: var(--bg-card);
-}
-
-/* El recuadro que aparece (Tooltip) */
-.tooltip-content {
-  visibility: hidden;
-  width: 250px;
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  text-align: left;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 12px;
-  position: absolute;
-  z-index: 100;
-  bottom: 125%; /* Aparece arriba del icono */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-/* Triangulito del tooltip */
-.tooltip-content::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--border-color) transparent transparent transparent;
-}
-
-/* Mostrar al pasar el mouse */
-.info-tooltip-wrapper:hover .tooltip-content {
-  visibility: visible;
-  opacity: 1;
-}
-
-.tooltip-content ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 8px;
-}
-
-.tooltip-content li {
-  margin-bottom: 6px;
 }
 
 /* 📱 AJUSTES ESPECÍFICOS PARA MÓVIL */
