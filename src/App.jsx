@@ -358,33 +358,59 @@ const processedProducts = useMemo(() => {
          {/* === PANEL DE ESTADÍSTICAS === */}
         <div className="stats-grid">
           <div className="stat-card">
-            <div className="stat-indicator down"></div>
+          <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
             <div className="stat-info">
               <span className="stat-label">Con descuento</span>
-              <span className="stat-value">{stats.dropCount} Productos</span>
+              <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
+                {loading ? (
+                  "Cargando..."
+                ) : (
+                  `${stats.dropCount} Productos`
+                )}
+              </span>
             </div>
           </div>
           
           <div className="stat-card">
-            <div className="stat-indicator savings"></div>
+          <div className={`stat-indicator savings ${loading ? 'loading-pulse' : ''}`}></div>
             <div className="stat-info">
               <span className="stat-label">Ahorro en ofertas</span>
-              <span className="stat-value">${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
+              <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
+                {loading ? (
+                  "Cargando..."
+                ) : (
+                  `$${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}`
+                )}
+              </span>
             </div>
           </div>
 
-          <div className="stat-card highlight" onClick={() => stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}>
+          <div className="stat-card highlight" onClick={() => !loading && stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}
+            style={{ cursor: loading ? 'default' : 'pointer' }} // Evita el cursor de mano al cargar
+          >
             <div className="stat-info">
               <span className="stat-label">Producto con mayor descuento</span>
-              <span className="stat-value">-{stats.bestDiscount.percent}% Descuento</span>
+              <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
+                {loading ? (
+                  "Cargando..."
+                ) : (
+                  `-${stats.bestDiscount.percent}% Descuento`
+                )}
+              </span>
             </div>
           </div>
           
           <div className="stat-card">
-            <div className="stat-indicator up"></div>
+          <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
             <div className="stat-info">
               <span className="stat-label">Con incremento de precio</span>
-              <span className="stat-value">{stats.upCount} Productos</span>
+              <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
+                 {loading ? (
+                  "Cargando..."
+                ) : (
+                  `${stats.upCount} Productos`
+                )}
+              </span>
             </div>
           </div>
         </div>
