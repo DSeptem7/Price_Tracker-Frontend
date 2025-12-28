@@ -300,11 +300,6 @@
   margin-bottom: 15px; /* Espacio antes de los controles */
 }
 
-/* Quitamos el margen por defecto del h3 para que no descuadre el centro */
-.panel-header-row h3 {
-  margin: 0;
-}
-
 /* El círculo con la "i" */
 .info-icon {
   display: flex;
