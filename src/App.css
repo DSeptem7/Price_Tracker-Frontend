@@ -338,41 +338,43 @@
 /* El recuadro que aparece (Tooltip) */
 .tooltip-content {
   visibility: hidden;
-  width: 250px;
+  width: 280px;
   background-color: var(--bg-card);
   color: var(--text-main);
   text-align: left;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 12px;
+  border: 1px solid #10b981;
+  border-radius: 12px;
+  padding: 15px;
   position: absolute;
-  z-index: 100;
-  bottom: 125%; /* Aparece arriba del icono */
-  left: 50%;
-  transform: translateX(-50%);
+  z-index: 2100;
+  top: 50%;
+  left: 130%; 
+  transform: translateY(-50%);
   opacity: 0;
-  transition: opacity 0.3s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 /* Triangulito del tooltip */
 .tooltip-content::after {
   content: "";
   position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
+  top: 50%;
+  right: 100%; /* Posicionado a la izquierda del cuadro */
+  margin-top: -8px;
+  border-width: 8px;
   border-style: solid;
-  border-color: var(--border-color) transparent transparent transparent;
+  /* El color del triangulito debe ser el del borde verde */
+  border-color: transparent #10b981 transparent transparent;
 }
 
 /* Mostrar al pasar el mouse */
 .info-tooltip-wrapper:hover .tooltip-content {
   visibility: visible;
   opacity: 1;
+  left: 140%; /* Desplazamiento suave hacia afuera */
 }
 
 .tooltip-content ul {
