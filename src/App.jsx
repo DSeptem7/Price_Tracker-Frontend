@@ -360,8 +360,8 @@ const processedProducts = useMemo(() => {
           <div className="stat-card">
             <div className="stat-indicator down"></div>
             <div className="stat-info">
-              <span className="stat-label">Productos en descuento</span>
-              <span className="stat-value">{stats.dropCount} Precios bajos</span>
+              <span className="stat-label">Con descuento</span>
+              <span className="stat-value">{stats.dropCount} Productos</span>
             </div>
           </div>
           
@@ -383,8 +383,8 @@ const processedProducts = useMemo(() => {
           <div className="stat-card">
             <div className="stat-indicator up"></div>
             <div className="stat-info">
-              <span className="stat-label">Productos con incremento de precio</span>
-              <span className="stat-value">{stats.upCount} Precios a la alza</span>
+              <span className="stat-label">Con incremento de precio</span>
+              <span className="stat-value">{stats.upCount} Productos</span>
             </div>
           </div>
         </div>
@@ -405,7 +405,7 @@ const processedProducts = useMemo(() => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="control-row"> 
                 <input
                     type="text"
