@@ -357,6 +357,11 @@
   line-height: 1.5;
 }
 
+.tooltip-content strong {
+  color: #10b981; /* Resalta "Buscar", "Añadir", etc. en verde */
+  font-weight: 700;
+}
+
 /* Triangulito del tooltip */
 .tooltip-content::after {
   content: "";
