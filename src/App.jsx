@@ -391,6 +391,17 @@ const processedProducts = useMemo(() => {
 
         <div className="simulate-panel">
             <h3>Gestión de Catálogo</h3>
+              <div className="info-tooltip-wrapper">
+                <span className="info-icon">i</span>
+                <div className="tooltip-content">
+                  <p><strong>💡 Guía rápida:</strong></p>
+                  <ul>
+                    <li>🔍 <strong>Buscar:</strong> Escribe el nombre del producto.</li>
+                    <li>🔗 <strong>Añadir:</strong> Pega la URL para rastrear uno nuevo.</li>
+                    <li>🔄 <strong>Actualizar:</strong> Ingresa la URL de un producto ya guardado.</li>
+                  </ul>
+                </div>
+              </div>
             <div className="control-row"> 
                 <input
                     type="text"
