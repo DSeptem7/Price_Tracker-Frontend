@@ -338,7 +338,7 @@
 /* El recuadro que aparece (Tooltip) */
 .tooltip-content {
   visibility: hidden;
-  width: 280px;
+  width: 260px;
   background-color: var(--bg-card);
   color: var(--text-main);
   text-align: left;
@@ -355,6 +355,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   font-size: 13px;
   line-height: 1.5;
+  pointer-events: none; /* Evita que el cuadro interfiera si no está visible */
 }
 
 .tooltip-content strong {
@@ -902,7 +903,34 @@
   .price-before, .update-date {
     font-size: 10px !important;
   }
+
+  /* --- AJUSTE DE GUÍA (TOOLTIP) EN MÓVIL --- */
+  .tooltip-content {
+    /* Reposicionamos: ABAJO y CENTRADO */
+    top: 140% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 220px !important; /* Evitamos que se salga de la pantalla */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Cambiamos el triangulito para que apunte hacia ARRIBA */
+  .tooltip-content::after {
+    top: auto !important;
+    bottom: 100% !important; 
+    left: 50% !important;
+    right: auto !important;
+    margin-left: -8px !important;
+    border-color: transparent transparent #10b981 transparent !important;
+  }
+
+  /* Animación de entrada en móvil al tocar el icono */
+  .info-tooltip-wrapper:hover .tooltip-content {
+    top: 150% !important;
+    left: 50% !important;
+  }
 }
+
 
 /* ====================================================================== */
 /* === 6. MODAL Y PAGINACIÓN === */
