@@ -385,7 +385,10 @@ const processedProducts = useMemo(() => {
             </div>
           </div>
 
-          <div className="stat-card highlight" onClick={() => !loading && stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}
+          <div 
+            // Mantenemos la clase 'highlight' siempre, pero deshabilitamos el click si está cargando
+            className="stat-card highlight" 
+            onClick={() => !loading && stats.bestDiscount.percent > 0 && setSearchTerm(stats.bestDiscount.title)}
             style={{ cursor: loading ? 'default' : 'pointer' }} // Evita el cursor de mano al cargar
           >
             <div className="stat-info">
@@ -398,6 +401,8 @@ const processedProducts = useMemo(() => {
                 )}
               </span>
             </div>
+             {/* Opcional: Puedes agregar un indicador de carga visual extra a esta tarjeta si quieres */}
+             {loading && <div className="stat-indicator savings loading-pulse" style={{position: 'absolute', right: '20px', height: '10px', width: '10px'}}></div>}
           </div>
           
           <div className="stat-card">
