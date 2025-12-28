@@ -300,29 +300,32 @@
   margin-bottom: 15px; /* Espacio antes de los controles */
 }
 
+/* Quitamos el margen por defecto del h3 para que no descuadre el centro */
+.panel-header-row h3 {
+  margin: 0;
+}
+
 /* El círculo con la "i" */
 .info-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  background: transparent;
-  border: 1px solid var(--text-muted);
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--text-muted);
   color: var(--text-muted);
   border-radius: 50%;
-  font-size: 12px;
-  font-style: italic;
+  font-size: 13px;
   font-weight: bold;
+  cursor: help;
   transition: all 0.3s ease;
 }
 
 /* Contenedor del icono de información (i) */
 .info-tooltip-wrapper {
   position: relative;
-  display: inline-block;
-  margin-left: 8px;
-  cursor: help;
+  display: flex;
+  align-items: center;
 }
 
 .info-icon:hover {
