@@ -295,9 +295,11 @@
 /* Contenedor del encabezado para alinear h3 e icono */
 .panel-header-row {
   display: flex;
-  align-items: center; /* Centra verticalmente el icono con el texto */
-  gap: 10px;           /* Espacio entre el texto y el icono */
-  margin-bottom: 15px; /* Espacio antes de los controles */
+  align-items: center; 
+  justify-content: center; /* ESTA LÍNEA centra el grupo (h3 + ?) en el panel */
+  gap: 10px;           
+  margin-bottom: 15px; 
+  width: 100%;             /* Asegura que ocupe todo el ancho para poder centrar */
 }
 
 /* Quitamos el margen por defecto del h3 para que no descuadre el centro */
