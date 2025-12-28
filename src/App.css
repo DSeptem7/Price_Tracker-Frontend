@@ -1236,3 +1236,35 @@
 
 input:checked + .slider { background-color: #3b82f6; }
 input:checked + .slider:before { transform: translateX(21px); }
+
+/* ====================================================================== */
+/* === ANIMACIONES DE CARGA (ESTADÍSTICAS) === */
+/* ====================================================================== */
+
+/* Definición de la animación de pulso */
+@keyframes pulse-dot {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+}
+
+/* Clase que activa la animación en los indicadores */
+.loading-pulse {
+  animation: pulse-dot 1.5s infinite ease-in-out;
+}
+
+/* Opcional: Un color de texto más sutil para el "Cargando..." */
+.stat-value.loading-text {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  font-style: italic;
+}
