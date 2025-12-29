@@ -135,8 +135,29 @@ function App() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
 
-  // Modo Oscuro: Inicia en true
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  // Modo Oscuro: Intenta leer de LocalStorage, si no existe usa true por defecto
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      const savedTheme = localStorage.getItem("isDarkMode");
+      // Importante: LocalStorage guarda strings, comparamos contra "false"
+      return savedTheme !== null ? savedTheme === "true" : true;
+    } catch (error) {
+      return true; // Si hay error, regresamos al modo oscuro por defecto
+    }
+  });
+
+  // Efecto para persistir el modo oscuro y aplicarlo al DOM
+  useEffect(() => {
+    // Guardamos la preferencia
+    localStorage.setItem("isDarkMode", isDarkMode);
+    
+    // Aplicamos o quitamos la clase al body
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [isDarkMode]);
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
