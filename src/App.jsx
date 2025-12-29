@@ -134,6 +134,7 @@ function App() {
   const [filterOption, setFilterOption] = useState("available");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
+  const [loadingText, setLoadingText] = useState("Iniciando rastreo...");
 
   // Modo Oscuro: Intenta leer de LocalStorage, si no existe usa true por defecto
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -158,6 +159,30 @@ function App() {
       document.body.classList.remove("dark-mode");
     }
   }, [isDarkMode]);
+
+// Lista de mensajes para mantener al usuario entretenido
+const loadingMessages = [
+  "Conectando...",
+  "Extrayendo información del producto...",
+  "Analizando historial de precios...",
+  "Verificando disponibilidad de stock...",
+  "Guardando datos en la nube...",
+  "¡Ya casi terminamos!"
+];
+
+// Efecto para rotar los mensajes cuando 'refreshing' (o loading) es true
+useEffect(() => {
+  let interval;
+  if (refreshing) { // Ojo: asegúrate de usar la variable que activa tu carga (refreshing o loading)
+    let i = 0;
+    setLoadingText(loadingMessages[0]); // Mensaje inicial
+    interval = setInterval(() => {
+      i = (i + 1) % loadingMessages.length; // Ciclo infinito
+      setLoadingText(loadingMessages[i]);
+    }, 3500); // Cambia cada 3.5 segundos
+  }
+  return () => clearInterval(interval);
+}, [refreshing]);
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -460,13 +485,49 @@ const processedProducts = useMemo(() => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
-                    {refreshing ? "Procesando..." : "Rastrear Producto"}
+                
+                {/* BOTÓN CON ANIMACIÓN DE PUNTOS */}
+                <button 
+                  className="btn-primary" 
+                  onClick={handleTrackProduct} 
+                  disabled={refreshing || !searchTerm}
+                  style={{ minWidth: '160px' }} // Para que el botón no cambie de tamaño
+                >
+                    {refreshing ? (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span>Procesando</span>
+                        {/* Los 3 puntos animados */}
+                        <span className="dot-flashing"></span>
+                        <span className="dot-flashing"></span>
+                        <span className="dot-flashing"></span>
+                      </div>
+                    ) : (
+                      "Rastrear Producto"
+                    )}
                 </button>
+
                 <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
                     {refreshing ? "Actualizando..." : "Actualizar Lista"}
                 </button>
             </div>
+
+            {/* MENSAJE DE ESTADO INTELIGENTE (Debajo de los controles) */}
+            {refreshing && (
+              <div className="status-message-container">
+                <span className="status-message-text" key={loadingText}> 
+                  {/* El 'key' fuerza a React a reiniciar la animación fade-in cada vez que cambia el texto */}
+                  <div className="spinner-icon"></div>
+                  {loadingText}
+                </span>
+              </div>
+            )}
+            
+            {/* Mensaje de éxito/error estático (si existe) una vez termina la carga */}
+            {!refreshing && trackingMessage && (
+               <p className={`tracking-message ${trackingMessage.includes("Error") ? "error" : "success"}`}>
+                 {trackingMessage}
+               </p>
+            )}
 
             <div className="filter-row">
                 <div className="select-wrapper">
