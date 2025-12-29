@@ -542,9 +542,10 @@
 
 /* 2. Estilo para el mensaje rotativo de abajo */
 .status-message-container {
-  margin-top: 15px;
-  text-align: center;
-  min-height: 24px; /* Evita saltos de layout */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .status-message-text {
