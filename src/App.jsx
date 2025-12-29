@@ -271,13 +271,17 @@ useEffect(() => {
   const handleTrackProduct = async () => {
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
     if (!isUrl) return; 
+    
     setRefreshing(true); 
-    setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
+    // ELIMINAMOS ESTA LÍNEA: setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
+    setTrackingMessage(""); // Opcional: Limpiamos mensajes anteriores
+    
     try {
       const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`;
       const res = await fetch(url);
       const result = await res.json();
       if (!res.ok) throw new Error(result.detail || "Error desconocido.");
+      
       setTrackingMessage(result.message); 
       setSearchTerm("");
       await fetchProducts(); 
@@ -286,7 +290,7 @@ useEffect(() => {
     } finally {
       setRefreshing(false); 
     }
-  };
+};
 
  // === LÓGICA DE FILTRADO Y ORDENAMIENTO ===
 const processedProducts = useMemo(() => {
