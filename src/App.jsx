@@ -273,20 +273,25 @@ useEffect(() => {
     if (!isUrl) return; 
     
     setRefreshing(true); 
-    // ELIMINAMOS ESTA LÍNEA: setTrackingMessage("Rastreando... esto puede tardar hasta 40 segundos.");
-    setTrackingMessage(""); // Opcional: Limpiamos mensajes anteriores
+    setTrackingMessage(""); // Limpiamos cualquier mensaje previo al iniciar
     
     try {
       const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`;
       const res = await fetch(url);
       const result = await res.json();
+      
       if (!res.ok) throw new Error(result.detail || "Error desconocido.");
       
       setTrackingMessage(result.message); 
       setSearchTerm("");
       await fetchProducts(); 
+      
+      // Limpiar el mensaje de éxito automáticamente tras 6 segundos
+      setTimeout(() => setTrackingMessage(""), 6000);
+
     } catch (err) {
       setTrackingMessage(`Error: ${err.message}`); 
+      // Los errores los dejamos visibles para que el usuario sepa qué falló
     } finally {
       setRefreshing(false); 
     }
