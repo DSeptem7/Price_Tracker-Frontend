@@ -525,13 +525,25 @@ const processedProducts = useMemo(() => {
                 </span>
               </div>
             )}
-            
-            {/* Mensaje de éxito/error estático (si existe) una vez termina la carga */}
-            {!refreshing && trackingMessage && (
-               <p className={`tracking-message ${trackingMessage.includes("Error") ? "error" : "success"}`}>
-                 {trackingMessage}
-               </p>
-            )}
+
+            {/* ÚNICO CONTENEDOR DE MENSAJES (CARGA, ÉXITO O ERROR) */}
+            <div className="status-message-container" style={{ minHeight: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px 0' }}>
+                {refreshing ? (
+                    /* Mientras carga: Mensajes dinámicos */
+                    <span className="status-message-text" key={loadingText}> 
+                        <div className="spinner-icon"></div>
+                        {loadingText}
+                    </span>
+                ) : (
+                    /* Al terminar: Solo si hay un mensaje de éxito o error */
+                    trackingMessage && (
+                        <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
+                           style={{ fontSize: '1.1rem', fontWeight: '600', margin: 0 }}>
+                            {trackingMessage}
+                        </p>
+                    )
+                )}
+            </div>
 
             <div className="filter-row">
                 <div className="select-wrapper">
@@ -555,7 +567,7 @@ const processedProducts = useMemo(() => {
                     </select>
                 </div>
             </div>
-            {trackingMessage && <p className="tracking-message">{trackingMessage}</p>}
+            
         </div>
           
           {/* Paginación Superior */}
