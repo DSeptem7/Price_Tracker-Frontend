@@ -614,7 +614,9 @@ const processedProducts = useMemo(() => {
 
                 return (
                   <div key={index} className="product-card" onClick={() => setChartProductTitle(p.title)}
-                      style={{ opacity: outOfStock ? 0.7 : 1, filter: outOfStock ? "grayscale(100%)" : "none" }}>
+                      style={{ opacity: outOfStock ? 0.7 : 1, filter: outOfStock ? "grayscale(100%)" : "none",
+                      /* NUEVA LÍNEA: Micro-interacción escalonada */
+                      animationDelay: `${index * 0.05}s` }}>
                       <div className={`store-header ${storeClass}`}>{storeName}</div>
                       <div className="image-container">
                         <img src={p.image} alt={p.title} />
