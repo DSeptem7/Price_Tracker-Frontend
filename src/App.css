@@ -548,12 +548,14 @@
 }
 
 .status-message-text {
-  font-size: 0.9rem;
-  color: #94a3b8; /* Gris azulado suave */
+  font-size: 1.1rem; /* Antes era 0.9rem, aquí lo agrandamos */
+  color: #94a3b8; 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px; /* Aumentamos un poco el espacio con el spinner */
+  font-weight: 500; /* Le damos un poquito más de cuerpo */
   animation: fadeInOut 0.5s ease-in-out;
+  margin-bottom: 10px; /* Separación extra */
 }
 
 /* Animación de entrada suave para el texto */
@@ -564,8 +566,8 @@
 
 /* Icono giratorio pequeño para acompañar el texto */
 .spinner-icon {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border: 2px solid rgba(148, 163, 184, 0.3);
   border-top-color: #10b981; /* Verde éxito o el azul de tu marca */
   border-radius: 50%;
