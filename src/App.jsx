@@ -495,59 +495,26 @@ const processedProducts = useMemo(() => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 
-                {/* BOTÓN CON ANIMACIÓN DE PUNTOS */}
-                <button 
-                  className="btn-primary" 
-                  onClick={handleTrackProduct} 
-                  disabled={refreshing || !searchTerm}
-                  style={{ minWidth: '160px' }} // Para que el botón no cambie de tamaño
-                >
-                    {refreshing ? (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <span>Procesando</span>
-                        {/* Los 3 puntos animados */}
-                        <span className="dot-flashing"></span>
-                        <span className="dot-flashing"></span>
-                        <span className="dot-flashing"></span>
-                      </div>
-                    ) : (
-                      "Rastrear Producto"
-                    )}
-                </button>
-
-                <button className="btn-secondary" onClick={() => { setSearchTerm(""); fetchProducts(); }} disabled={refreshing}>
-                    {refreshing ? "Actualizando..." : "Actualizar Lista"}
-                </button>
-            </div>
-
-            {/* MENSAJE DE ESTADO INTELIGENTE (Debajo de los controles) */}
-            {refreshing && (
-              <div className="status-message-container">
-                <span className="status-message-text" key={loadingText}> 
-                  {/* El 'key' fuerza a React a reiniciar la animación fade-in cada vez que cambia el texto */}
-                  <div className="spinner-icon"></div>
-                  {loadingText}
-                </span>
+              {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
+            {(refreshing || trackingMessage) && (
+              <div className="status-message-container" style={{ margin: '15px 0 5px 0', textAlign: 'center' }}>
+                {refreshing ? (
+                  /* Fase de Carga: Solo un mensaje dinámico */
+                  <span className="status-message-text" key={loadingText}> 
+                    <div className="spinner-icon"></div>
+                    {loadingText}
+                  </span>
+                ) : (
+                  /* Fase de Resultado: Éxito o Error */
+                  trackingMessage && (
+                    <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
+                       style={{ fontSize: '1.1rem', fontWeight: '600', display: 'inline-block', margin: 0 }}>
+                      {trackingMessage}
+                    </p>
+                  )
+                )}
               </div>
             )}
-
-            {/* ÚNICO CONTENEDOR DE MENSAJES (CARGA, ÉXITO O ERROR) */}
-            <div className="status-message-container" style={{ minHeight: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px 0' }}>
-                {refreshing ? (
-                    /* Mientras carga: Mensajes dinámicos */
-                    <span className="status-message-text" key={loadingText}> 
-                        <div className="spinner-icon"></div>
-                        {loadingText}
-                    </span>
-                ) : (
-                    /* Al terminar: Solo si hay un mensaje de éxito o error */
-                    trackingMessage && (
-                        <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
-                           style={{ fontSize: '1.1rem', fontWeight: '600', margin: 0 }}>
-                            {trackingMessage}
-                        </p>
-                    )
-                )}
             </div>
 
             <div className="filter-row">
