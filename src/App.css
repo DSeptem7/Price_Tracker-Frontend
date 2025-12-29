@@ -516,6 +516,7 @@
     padding: 10px;
     font-size: 14px;
   }
+}
 
   /* === ANIMACIONES DE CARGA (BOTÓN Y MENSAJES) === */
 
@@ -573,7 +574,6 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
 }
 
 /* ====================================================================== */
