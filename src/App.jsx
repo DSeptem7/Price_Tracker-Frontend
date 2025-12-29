@@ -494,6 +494,34 @@ const processedProducts = useMemo(() => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                {/* BOTÓN 1: RASTREAR */}
+                <button 
+                  className="btn-primary" 
+                  onClick={handleTrackProduct} 
+                  disabled={refreshing || !searchTerm}
+                  style={{ minWidth: '160px' }}
+                >
+                    {refreshing ? (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span>Procesando</span>
+                        <span className="dot-flashing"></span>
+                        <span className="dot-flashing"></span>
+                        <span className="dot-flashing"></span>
+                      </div>
+                    ) : (
+                      "Rastrear Producto"
+                    )}
+                </button>
+
+                {/* BOTÓN 2: ACTUALIZAR */}
+                <button 
+                  className="btn-secondary" 
+                  onClick={() => { setSearchTerm(""); fetchProducts(); }} 
+                  disabled={refreshing}
+                >
+                    {refreshing ? "Actualizando..." : "Actualizar Lista"}
+                </button>
+            </div> {/* AQUÍ CIERRA EL CONTROL-ROW (DONDE ESTÁN LOS BOTONES) */}
                 
               {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
             {(refreshing || trackingMessage) && (
@@ -515,7 +543,6 @@ const processedProducts = useMemo(() => {
                 )}
               </div>
             )}
-            </div>
 
             <div className="filter-row">
                 <div className="select-wrapper">
