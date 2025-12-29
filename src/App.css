@@ -32,30 +32,6 @@
   --bg-skeleton: rgba(255, 255, 255, 0.05); /* Nuevo */
 }
 
-/* === MICRO-INTERACCIONES === */
-
-/* 1. Entrada suave para las tarjetas de productos */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 3. Transiciones suaves para botones y paginación */
-.btn-primary, .btn-secondary, .pagination-number, .pagination-arrow {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 4. Feedback visual al presionar botones (efecto de hundimiento) */
-.btn-primary:active, .btn-secondary:active, .pagination-number:active {
-  transform: scale(0.95);
-}
-
 /* ====================================================================== */
 /* === 0. NAVBAR Y ESTRUCTURA GLOBAL === */
 /* ====================================================================== */
