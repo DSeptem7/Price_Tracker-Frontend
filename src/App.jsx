@@ -137,6 +137,7 @@ function App() {
   const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
   const [loadingText, setLoadingText] = useState("Iniciando rastreo...");
   const [isExiting, setIsExiting] = useState(false);
+  const navigate = useNavigate();
 
   // Modo Oscuro: Intenta leer de LocalStorage, si no existe usa true por defecto
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -643,10 +644,19 @@ const processedProducts = useMemo(() => {
                 };
 
                 return (
-                  <div key={index} className="product-card" onClick={() => setChartProductTitle(p.title)}
-                      style={{ opacity: outOfStock ? 0.7 : 1, filter: outOfStock ? "grayscale(100%)" : "none",
-                      /* NUEVA LÍNEA: Micro-interacción escalonada */
-                      animationDelay: `${index * 0.05}s` }}>
+                  <div 
+                    key={index} 
+                    className="product-card" 
+                    /* === CAMBIO AQUÍ: Navegación en lugar de Modal === */
+                    /* Usamos p.id para la ruta. Si no tienes ID aún, usa p.title temporalmente, pero id es mejor */
+                    onClick={() => navigate(`/producto/${p.id}`)} 
+                    style={{ 
+                      opacity: outOfStock ? 0.7 : 1, 
+                      filter: outOfStock ? "grayscale(100%)" : "none",
+                      cursor: 'pointer', /* Añadimos manita para indicar que es clickeable */
+                      animationDelay: `${index * 0.05}s` 
+                    }}
+                  >
                       <div className={`store-header ${storeClass}`}>{storeName}</div>
                       <div className="image-container">
                         <img src={p.image} alt={p.title} />
@@ -678,8 +688,9 @@ const processedProducts = useMemo(() => {
                             <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
                           </div>
                       )}
+                      {/* Detenemos la propagación en el link de "Ver producto" para que no active la navegación general */}
                       <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                         {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
+                         {outOfStock ? "Revisar disponibilidad" : "Ver producto original"}
                       </a>
                       <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
                   </div>
