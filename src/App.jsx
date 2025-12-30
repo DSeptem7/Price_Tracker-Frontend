@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo, useRef } from "react"; 
+import React, { useEffect, useState, useMemo, useRef } from "react";
+import { Routes, Route, useNavigate } from 'react-router-dom'; 
 import {
   LineChart,
   Line,
@@ -369,6 +370,12 @@ const processedProducts = useMemo(() => {
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
+        {/* === INICIO DE RUTAS === */}
+        <Routes>
+
+          {/* RUTA 1: VISTA DE LISTA (Todo tu código actual) */}
+          <Route path="/" element={
+            <>
         {/* === NAVBAR === */}
         <nav className="navbar">
           <div className="navbar-content">
@@ -692,6 +699,26 @@ const processedProducts = useMemo(() => {
              </div>
           )}
         </main>
+          {/* === AGREGA ESTAS DOS LÍNEAS AQUÍ === */}
+          </>
+                } />
+    {/* RUTA 2: VISTA DE DETALLE (La nueva página) */}
+    <Route path="/producto/:id" element={
+                <div style={{ padding: '100px 20px', textAlign: 'center', minHeight: '100vh' }}>
+                  <h2>Detalle del Producto</h2>
+                  <p style={{ color: '#94a3b8' }}>ID del producto seleccionado: {window.location.pathname.split('/').pop()}</p>
+                  <button 
+                    className="btn-primary" 
+                    onClick={() => navigate('/')}
+                    style={{ marginTop: '20px' }}
+                  >
+                    Volver al inicio
+                  </button>
+                </div>
+              } />
+
+            </Routes>
+            {/* === FIN DE RUTAS === */}
 
         {chartProductTitle && (
           <PriceChartModal
@@ -702,7 +729,7 @@ const processedProducts = useMemo(() => {
           />
         )}
       </div> {/* Cierre App */}
-    </div> /* Cierre Modo Dinámico */
+    </div> /* Cierre Modo Dinámico */ 
   );
 }
 
