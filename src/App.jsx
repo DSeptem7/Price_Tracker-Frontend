@@ -536,30 +536,36 @@ const processedProducts = useMemo(() => {
              {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
             {(refreshing || trackingMessage) && (
               <div 
-                className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`} 
-                style={{ 
-                  margin: '15px 0 5px 0', 
-                  textAlign: 'center',
-                  /* Si está saliendo, forzamos la opacidad a 0 aquí también por seguridad */
-                  opacity: isExiting ? 0 : 1 
-                }}
-              >
+              className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`} 
+              style={{ 
+                margin: isExiting ? '0' : '15px 0 5px 0', 
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' // Sincronizado con el CSS
+              }}
+            >
                 {refreshing ? (
-                  /* Fase de Carga: Solo un mensaje dinámico */
                   <span className="status-message-text" key={loadingText}> 
                     <div className="spinner-icon"></div>
                     {loadingText}
                   </span>
                 ) : (
-                  /* Fase de Resultado: Éxito o Error */
                   trackingMessage && (
                     <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
-                      style={{ fontSize: '1.1rem', fontWeight: '600', display: 'inline-block', margin: 0 }}>
+                       style={{ 
+                         fontSize: '1.1rem', 
+                         fontWeight: '600', 
+                         margin: 0,
+                         transition: 'opacity 0.4s ease' // Desvanecimiento interno
+                       }}>
                       {trackingMessage}
                     </p>
                   )
                 )}
-              </div>
+            </div>
             )}
 
             <div className="filter-row">
