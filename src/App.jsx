@@ -543,7 +543,22 @@ const processedProducts = useMemo(() => {
                         <option value="price_desc">Precio: Mayor a Menor</option>
                     </select>
                 </div>
-    {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
+
+                <div className="select-wrapper">
+                    <label>Filtrar estado</label>
+                    <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                        <option value="available">Solo Disponibles</option>
+                        <option value="all">Ver Todos</option>
+                        <option value="out_of_stock">Solo Agotados</option>
+                        <option value="historical_low">Mínimos Históricos</option>
+                        <option value="price_drop">Solo Ofertas</option>
+                    </select>
+                </div>
+            </div>
+            
+        </div>
+        
+        {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
     {(refreshing || trackingMessage) && (
                   <div 
                   className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`} 
@@ -577,20 +592,6 @@ const processedProducts = useMemo(() => {
                     )}
                 </div>
                 )}
-                
-                <div className="select-wrapper">
-                    <label>Filtrar estado</label>
-                    <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
-                        <option value="available">Solo Disponibles</option>
-                        <option value="all">Ver Todos</option>
-                        <option value="out_of_stock">Solo Agotados</option>
-                        <option value="historical_low">Mínimos Históricos</option>
-                        <option value="price_drop">Solo Ofertas</option>
-                    </select>
-                </div>
-            </div>
-            
-        </div>
           
           {/* Paginación Superior */}
           {totalPages > 1 && !loading && (
