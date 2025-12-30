@@ -8,7 +8,7 @@
 }
 
 /* ====================================================================== */
-/* === CONFIGURACIÓN DE COLORES DINÁMICOS === */
+/* === CONFIGURACIÓN DE COLORES DINÁMICOS Y MICRO INTERACCIONES === */
 /* ====================================================================== */
 :root {
   --bg-app: #f8fafc;
@@ -30,6 +30,30 @@
   --border-color: rgba(255, 255, 255, 0.1);
   --input-bg: #1e293b;
   --bg-skeleton: rgba(255, 255, 255, 0.05); /* Nuevo */
+}
+
+/* === MICRO-INTERACCIONES === */
+
+/* 1. Entrada suave para las tarjetas de productos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Transiciones suaves para botones y paginación */
+.btn-primary, .btn-secondary, .pagination-number, .pagination-arrow {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3. Feedback visual al presionar botones (efecto de hundimiento) */
+.btn-primary:active, .btn-secondary:active, .pagination-number:active {
+  transform: scale(0.95);
 }
 
 /* ====================================================================== */
