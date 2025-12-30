@@ -603,7 +603,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Clase para la salida orgánica */
+/* RASTRO Clase para la salida orgánica */
 .fade-out-message {
   opacity: 0 !important;
   transform: translateY(-8px) scale(0.98); /* Ligero encogimiento */
