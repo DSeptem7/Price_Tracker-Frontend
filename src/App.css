@@ -542,7 +542,7 @@
   }
 }
 
-  /* === ANIMACIONES DE CARGA (BOTÓN Y MENSAJES) === */
+  /* === ANIMACIONES DE CARGA (BOTÓN Y MENSAJES) Y RASTREO === */
 
 /* 1. Animación para los puntos suspensivos (efecto ola) */
 @keyframes loading-dots-bounce {
@@ -601,6 +601,20 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Clase para desvanecer el mensaje */
+.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, margin 0.5s ease;
+  pointer-events: none; /* Evita que el usuario interactúe con algo invisible */
+}
+
+/* Ajuste al contenedor para que el cierre de espacio sea fluido */
+.status-message-container {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden; /* Importante para que no haya saltos visuales */
 }
 
 /* ====================================================================== */
