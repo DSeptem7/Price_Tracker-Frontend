@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom'; 
+import ProductDetail from './ProductDetail';
 import {
   LineChart,
   Line,
@@ -713,20 +714,11 @@ const processedProducts = useMemo(() => {
           {/* === AGREGA ESTAS DOS LÍNEAS AQUÍ === */}
           </>
                 } />
-    {/* RUTA 2: VISTA DE DETALLE (La nueva página) */}
-    <Route path="/producto/:id" element={
-                <div style={{ padding: '100px 20px', textAlign: 'center', minHeight: '100vh' }}>
-                  <h2>Detalle del Producto</h2>
-                  <p style={{ color: '#94a3b8' }}>ID del producto seleccionado: {window.location.pathname.split('/').pop()}</p>
-                  <button 
-                    className="btn-primary" 
-                    onClick={() => navigate('/')}
-                    style={{ marginTop: '20px' }}
-                  >
-                    Volver al inicio
-                  </button>
-                </div>
-              } />
+                /* LO NUEVO (PEGAR) */
+            <Route 
+              path="/producto/:id" 
+              element={<ProductDetail API_BASE={API_BASE} isDarkMode={isDarkMode} />} 
+            />
 
             </Routes>
             {/* === FIN DE RUTAS === */}
