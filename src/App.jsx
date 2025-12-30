@@ -532,41 +532,6 @@ const processedProducts = useMemo(() => {
                     {refreshing ? "Actualizando..." : "Actualizar Lista"}
                 </button>
             </div> {/* AQUÍ CIERRA EL CONTROL-ROW (DONDE ESTÁN LOS BOTONES) */}
-                
-             {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
-            {(refreshing || trackingMessage) && (
-              <div 
-              className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`} 
-              style={{ 
-                margin: isExiting ? '0' : '15px 0 5px 0', 
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' // Sincronizado con el CSS
-              }}
-            >
-                {refreshing ? (
-                  <span className="status-message-text" key={loadingText}> 
-                    <div className="spinner-icon"></div>
-                    {loadingText}
-                  </span>
-                ) : (
-                  trackingMessage && (
-                    <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
-                       style={{ 
-                         fontSize: '1.1rem', 
-                         fontWeight: '600', 
-                         margin: 0,
-                         transition: 'opacity 0.4s ease' // Desvanecimiento interno
-                       }}>
-                      {trackingMessage}
-                    </p>
-                  )
-                )}
-            </div>
-            )}
 
             <div className="filter-row">
                 <div className="select-wrapper">
@@ -578,7 +543,41 @@ const processedProducts = useMemo(() => {
                         <option value="price_desc">Precio: Mayor a Menor</option>
                     </select>
                 </div>
-
+    {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
+    {(refreshing || trackingMessage) && (
+                  <div 
+                  className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`} 
+                  style={{ 
+                    margin: isExiting ? '0' : '15px 0 5px 0', 
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' // Sincronizado con el CSS
+                  }}
+                >
+                    {refreshing ? (
+                      <span className="status-message-text" key={loadingText}> 
+                        <div className="spinner-icon"></div>
+                        {loadingText}
+                      </span>
+                    ) : (
+                      trackingMessage && (
+                        <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
+                          style={{ 
+                            fontSize: '1.1rem', 
+                            fontWeight: '600', 
+                            margin: 0,
+                            transition: 'opacity 0.4s ease' // Desvanecimiento interno
+                          }}>
+                          {trackingMessage}
+                        </p>
+                      )
+                    )}
+                </div>
+                )}
+                
                 <div className="select-wrapper">
                     <label>Filtrar estado</label>
                     <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
