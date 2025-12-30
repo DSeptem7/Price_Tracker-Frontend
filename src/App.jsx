@@ -135,6 +135,7 @@ function App() {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
   const [loadingText, setLoadingText] = useState("Iniciando rastreo...");
+  const [isExiting, setIsExiting] = useState(false);
 
   // Modo Oscuro: Intenta leer de LocalStorage, si no existe usa true por defecto
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -273,7 +274,8 @@ useEffect(() => {
     if (!isUrl) return; 
     
     setRefreshing(true); 
-    setTrackingMessage(""); // Limpiamos cualquier mensaje previo al iniciar
+    setTrackingMessage(""); 
+    setIsExiting(false); // Aseguramos que no esté en modo salida
     
     try {
       const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`;
@@ -286,12 +288,20 @@ useEffect(() => {
       setSearchTerm("");
       await fetchProducts(); 
       
-      // Limpiar el mensaje de éxito automáticamente tras 6 segundos
-      setTimeout(() => setTrackingMessage(""), 6000);
+      // INICIO DE LA DESAPARICIÓN SUAVE
+      setTimeout(() => {
+        setIsExiting(true); // Activa la clase CSS 'fade-out-message'
+        
+        // Esperamos a que termine la animación (600ms) para limpiar el estado
+        setTimeout(() => {
+          setTrackingMessage("");
+          setIsExiting(false);
+        }, 600); 
+      }, 6000); // Se queda visible 6 segundos
 
     } catch (err) {
       setTrackingMessage(`Error: ${err.message}`); 
-      // Los errores los dejamos visibles para que el usuario sepa qué falló
+      // Los errores no los animamos para que el usuario los lea bien
     } finally {
       setRefreshing(false); 
     }
@@ -523,9 +533,17 @@ const processedProducts = useMemo(() => {
                 </button>
             </div> {/* AQUÍ CIERRA EL CONTROL-ROW (DONDE ESTÁN LOS BOTONES) */}
                 
-              {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
+             {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
             {(refreshing || trackingMessage) && (
-              <div className="status-message-container" style={{ margin: '15px 0 5px 0', textAlign: 'center' }}>
+              <div 
+                className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`} 
+                style={{ 
+                  margin: '15px 0 5px 0', 
+                  textAlign: 'center',
+                  /* Si está saliendo, forzamos la opacidad a 0 aquí también por seguridad */
+                  opacity: isExiting ? 0 : 1 
+                }}
+              >
                 {refreshing ? (
                   /* Fase de Carga: Solo un mensaje dinámico */
                   <span className="status-message-text" key={loadingText}> 
@@ -536,7 +554,7 @@ const processedProducts = useMemo(() => {
                   /* Fase de Resultado: Éxito o Error */
                   trackingMessage && (
                     <p className={`tracking-message ${trackingMessage.toLowerCase().includes("error") ? "error" : "success"}`} 
-                       style={{ fontSize: '1.1rem', fontWeight: '600', display: 'inline-block', margin: 0 }}>
+                      style={{ fontSize: '1.1rem', fontWeight: '600', display: 'inline-block', margin: 0 }}>
                       {trackingMessage}
                     </p>
                   )
