@@ -603,15 +603,25 @@
   to { transform: rotate(360deg); }
 }
 
-/* Clase para la salida suave */
+/* Clase para la salida orgánica */
 .fade-out-message {
   opacity: 0 !important;
-  transform: translateY(-10px);
+  transform: translateY(-8px) scale(0.98); /* Ligero encogimiento */
   max-height: 0 !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  
+  /* Cubic-bezier es la clave para que no sea robótico */
+  transition: 
+    opacity 0.5s ease, 
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    margin 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    
   overflow: hidden;
+  pointer-events: none;
 }
 
 /* Base del contenedor para que soporte la transición */
