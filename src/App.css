@@ -1484,27 +1484,6 @@ input:checked + .slider:before { transform: translateX(21px); }
   margin-top: 20px;
 }
 
-/* Hacemos que el semáforo ocupe el espacio de abajo de forma elegante */
-.stat-card-mini.full-width-mobile {
-  grid-column: span 3; /* Se expande a lo ancho de las 3 columnas */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 25px;
-}
-
-/* Efecto de brillo si es el mejor precio */
-.deal-glow {
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-  animation: pulse-glow 2s infinite;
-}
-
-@keyframes pulse-glow {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.01); }
-  100% { transform: scale
-
 .stat-card-mini strong {
   display: block;
   font-size: 1.2rem;
@@ -1555,3 +1534,25 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 .stat-card-mini.green strong { color: #10b981; }
 .stat-card-mini.red strong { color: #ef4444; }
+
+/* Hacemos que el semáforo ocupe el espacio de abajo de forma elegante */
+.stat-card-mini.full-width-mobile {
+  grid-column: span 3; /* Se expande a lo ancho de las 3 columnas */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+}
+
+/* Efecto de brillo si es el mejor precio */
+.deal-glow {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
