@@ -1187,7 +1187,7 @@
 }
 
 /* ====================================================================== */
-/* === 8. PANEL DE ESTADÍSTICAS Y BOTON MODO OSCURO (LOOK PROFESIONAL) === */
+/* === 8. PANEL DE ESTADÍSTICAS, BOTON MODO OSCURO (LOOK PROFESIONAL) Y SUBLINKS === */
 /* ====================================================================== */
 .stats-grid {
   display: grid;
@@ -1383,10 +1383,39 @@ input:checked + .slider:before { transform: translateX(21px); }
 /* ====================================================================== */
 /* === SUBLINK === */
 /* ====================================================================== */
+/* Contenedor principal del detalle para que no se pegue a los bordes */
 .detail-page {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px 20px;
   min-height: 100vh;
-  padding: 20px;
-  background: var(--bg-color);
+}
+
+/* Ajuste del botón volver para que se vea como en la principal */
+.back-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: var(--accent-color);
+  color: white;
+  transform: translateX(-5px);
+}
+
+/* Limpieza de etiquetas innecesarias */
+.priority-badge {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 5px 12px;
+  border-radius: 20px;
 }
 
 .detail-nav {
