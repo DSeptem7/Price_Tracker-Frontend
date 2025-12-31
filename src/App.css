@@ -1465,11 +1465,30 @@ input:checked + .slider:before { transform: translateX(21px); }
   border: 1px solid rgba(255,255,255,0.1);
 }
 
-.stats-grid-detail {
-  display: flex; /* Cambiamos grid por flex para centrarlo si es uno solo */
+.old-price-detail {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  display: block;
+}
+
+.status-badge-container {
+  margin-top: 10px;
+  display: flex;
   justify-content: center;
+}
+
+.stats-grid-detail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
   gap: 15px;
   margin-top: 20px;
+}
+
+.stat-card-mini strong {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-top: 5px;
 }
 
 .stat-card-mini {
