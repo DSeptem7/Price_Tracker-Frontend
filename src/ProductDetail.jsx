@@ -106,13 +106,17 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                 </div>
               </div>
 
-              {/* NUEVO: Semáforo de Decisión */}
-              <div className={`stat-card-mini ${product.current_price <= product.min_historical ? 'deal-glow' : ''}`}>
-                <span>Recomendación</span>
-                <strong style={{ color: product.current_price <= product.min_historical ? '#10b981' : '#f59e0b' }}>
-                  {product.current_price <= product.min_historical ? " ¡Mejor Precio!" : "Analizando..."}
-                </strong>
-              </div>
+              {/* SEMÁFORO CORREGIDO: Ahora usa la respuesta del servidor */}
+            <div className="stat-card-mini full-width-mobile" 
+                style={{ 
+                  borderTop: `3px solid ${product.rec_color}`,
+                  background: `${product.rec_color}10` // Añade un 10% de opacidad del color de la recomendación
+                }}>
+              <span>Estado del Mercado</span>
+              <strong style={{ color: product.rec_color }}>
+                {product.recommendation.split('!')[0]} {/* Muestra el texto sin los emojis si prefieres algo más limpio */}
+              </strong>
+            </div>
       
            {/* NUEVA FILA: Tiempos de Rastreo */}
           <div className="time-info-row">
