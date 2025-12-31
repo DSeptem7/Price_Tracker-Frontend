@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
 } from 'recharts';
 
 const ProductDetail = ({ API_BASE, isDarkMode }) => {
@@ -14,7 +14,6 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
     const fetchFullDetail = async () => {
       try {
         setLoading(true);
-        // Esta llamada activa el db_product.priority += 1 en tu app.py
         const response = await fetch(`${API_BASE}/product/${id}`);
         const data = await response.json();
         setProduct(data);
@@ -32,26 +31,38 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
 
   return (
     <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
-      {/* Barra de Navegación Superior Interna */}
       <nav className="detail-nav">
         <button onClick={() => navigate('/')} className="back-btn">← Volver al Listado</button>
       </nav>
 
       <div className="detail-layout">
-        {/* Lado Izquierdo: Info e Imagen */}
+        {/* LADO IZQUIERDO: Imagen, Título, Precio y Status */}
         <section className="product-summary">
           <img src={product.image} alt={product.title} className="detail-img" />
           <h1>{product.title}</h1>
+          
           <div className="price-focus">
+            {product.previous_price && (
+              <span className="old-price-detail">Antes: <s>${product.previous_price.toLocaleString()}</s></span>
+            )}
             <span className="label">Precio Actual</span>
             <span className="value">${product.current_price.toLocaleString()}</span>
+            
+            {/* Etiqueta de Porcentaje (Status) */}
+            <div className="status-badge-container">
+              {product.status === "down" && <span className="percentage-tag down">↓ -{product.change_percentage}</span>}
+              {product.status === "up" && <span className="percentage-tag up">↑ +{product.change_percentage}</span>}
+              {product.status === "stable" && <span className="status-stable">Sin cambios</span>}
+              {product.status === "new" && <span className="status-new">Recién añadido</span>}
+            </div>
           </div>
+
           <a href={product.url} target="_blank" rel="noreferrer" className="buy-btn">
             Ver en Mercado Libre
           </a>
         </section>
 
-       {/* Lado Derecho: Gráfica con Ejes Profesionales */}
+        {/* LADO DERECHO: Gráfica y Estadísticas */}
         <section className="analysis-section">
           <div className="chart-container-pro">
             <h3>Historial de Precios</h3>
@@ -64,62 +75,29 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                       <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  
-                  {/* EJE VERTICAL (PRECIOS) */}
-                  <YAxis 
-                    domain={['auto', 'auto']} 
-                    stroke={isDarkMode ? "#94a3b8" : "#64748b"}
-                    tickFormatter={(value) => `$${value.toLocaleString()}`} // Formato moneda
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-
-                  {/* EJE HORIZONTAL (FECHAS/DÍAS) */}
-                  <XAxis 
-                    dataKey="timestamp" 
-                    stroke={isDarkMode ? "#94a3b8" : "#64748b"}
-                    fontSize={10}
-                    tickFormatter={(str) => {
-                      // Cortamos el timestamp para mostrar solo la fecha (YYYY-MM-DD)
-                      return str ? str.split(' ')[0] : '';
-                    }}
-                    tickLine={false}
-                    axisLine={false}
-                    minTickGap={30} // Evita que se amontonen las fechas
-                  />
-
+                  <YAxis domain={['auto', 'auto']} stroke={isDarkMode ? "#94a3b8" : "#64748b"} tickFormatter={(v) => `$${v.toLocaleString()}`} fontSize={12} tickLine={false} axisLine={false} />
+                  <XAxis dataKey="timestamp" stroke={isDarkMode ? "#94a3b8" : "#64748b"} fontSize={10} tickFormatter={(str) => str?.split(' ')[0]} tickLine={false} axisLine={false} minTickGap={30} />
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
-                  
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: isDarkMode ? '#1e293b' : '#fff', 
-                      border: 'none', 
-                      borderRadius: '8px',
-                      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.3)' 
-                    }}
-                    formatter={(value) => [`$${value.toLocaleString()}`, 'Precio']}
-                    labelFormatter={(label) => `Fecha: ${label}`}
-                  />
-
-                  <Area 
-                    type="monotone" 
-                    dataKey="price" 
-                    stroke="#3b82f6" 
-                    fillOpacity={1} 
-                    fill="url(#colorPrice)" 
-                    strokeWidth={3} 
-                    animationDuration={1500}
-                  />
+                  <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#1e293b' : '#fff', border: 'none', borderRadius: '8px' }} formatter={(v) => [`$${v.toLocaleString()}`, 'Precio']} />
+                  <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={1} fill="url(#colorPrice)" strokeWidth={3} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
+          {/* CUADRICULA DE DATOS INFERIOR */}
           <div className="stats-grid-detail">
             <div className="stat-card-mini">
               <span>Mínimo Histórico</span>
               <strong>${product.min_historical.toLocaleString()}</strong>
+            </div>
+            <div className="stat-card-mini">
+              <span>Precio Frecuente</span>
+              <strong>${product.mode_price.toLocaleString()}</strong>
+            </div>
+            <div className="stat-card-mini">
+              <span>Último Rastreo</span>
+              <strong style={{ fontSize: '0.8rem' }}>{product.last_update}</strong>
             </div>
           </div>
         </section>
