@@ -64,6 +64,11 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
 
         {/* LADO DERECHO: Gráfica y Estadísticas */}
         <section className="analysis-section">
+          {/* NUEVO: Banner de Recomendación Inteligente */}
+          <div className="recommendation-banner" style={{ borderLeft: `5px solid ${product.rec_color}` }}>
+            <span className="rec-label">Sugerencia del Sistema:</span>
+            <strong style={{ color: product.rec_color }}>{product.recommendation}</strong>
+          </div>
           <div className="chart-container-pro">
             <h3>Historial de Precios</h3>
             <div style={{ width: '100%', height: 350 }}>
@@ -85,16 +90,20 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
             </div>
           </div>
 
-          {/* CUADRICULA DE DATOS INFERIOR */}
-          <div className="stats-grid-detail">
-            <div className="stat-card-mini">
-              <span>Mínimo Histórico</span>
-              <strong>${product.min_historical.toLocaleString()}</strong>
-            </div>
-            {/* NUEVO: Máximo Histórico */}
-              <div className="stat-card-mini highlight-red">
-                <span>Máximo Registrado</span>
-                <strong>${product.max_historical?.toLocaleString() || '---'}</strong>
+          {/* CUADRICULA DE DATOS ENRIQUECIDA */}
+              <div className="stats-grid-detail">
+                <div className="stat-card-mini green">
+                  <span>Mínimo Histórico</span>
+                  <strong>${product.min_historical.toLocaleString()}</strong>
+                </div>
+                <div className="stat-card-mini red">
+                  <span>Máximo Histórico</span>
+                  <strong>${product.max_historical.toLocaleString()}</strong>
+                </div>
+                <div className="stat-card-mini">
+                  <span>Precio Frecuente</span>
+                  <strong>${product.mode_price.toLocaleString()}</strong>
+                </div>
               </div>
 
               {/* NUEVO: Semáforo de Decisión */}
@@ -104,13 +113,16 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                   {product.current_price <= product.min_historical ? " ¡Mejor Precio!" : "Analizando..."}
                 </strong>
               </div>
-            <div className="stat-card-mini">
-              <span>Precio Frecuente</span>
-              <strong>${product.mode_price.toLocaleString()}</strong>
+      
+           {/* NUEVA FILA: Tiempos de Rastreo */}
+          <div className="time-info-row">
+            <div className="time-badge">
+              <span className="icon">📅</span> 
+              Rastreado desde: <strong>{product.tracking_since.split(' ')[0]}</strong>
             </div>
-            <div className="stat-card-mini">
-              <span>Último Rastreo</span>
-              <strong style={{ fontSize: '0.8rem' }}>{product.last_update}</strong>
+            <div className="time-badge">
+              <span className="icon">🔄</span> 
+              Última actualización: <strong>{product.last_update}</strong>
             </div>
           </div>
         </section>
