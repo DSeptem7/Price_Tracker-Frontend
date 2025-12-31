@@ -1497,3 +1497,40 @@ input:checked + .slider:before { transform: translateX(21px); }
   border-radius: 12px;
   text-align: center;
 }
+
+.recommendation-banner {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rec-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+}
+
+.time-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  gap: 15px;
+}
+
+.time-badge {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-card-mini.green strong { color: #10b981; }
+.stat-card-mini.red strong { color: #ef4444; }
