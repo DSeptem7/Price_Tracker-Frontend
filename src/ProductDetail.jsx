@@ -35,7 +35,6 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
       {/* Barra de Navegación Superior Interna */}
       <nav className="detail-nav">
         <button onClick={() => navigate('/')} className="back-btn">← Volver al Listado</button>
-        <div className="priority-badge">Prioridad de Rastreo: {product.priority}</div>
       </nav>
 
       <div className="detail-layout">
@@ -121,10 +120,6 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
             <div className="stat-card-mini">
               <span>Mínimo Histórico</span>
               <strong>${product.min_historical.toLocaleString()}</strong>
-            </div>
-            <div className="stat-card-mini">
-              <span>Puntos de Datos</span>
-              <strong>{product.history.length}</strong>
             </div>
           </div>
         </section>
