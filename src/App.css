@@ -1187,7 +1187,7 @@
 }
 
 /* ====================================================================== */
-/* === 8. PANEL DE ESTADÍSTICAS, BOTON MODO OSCURO (LOOK PROFESIONAL) Y SUBLINKS === */
+/* === 8. PANEL DE ESTADÍSTICAS, BOTON MODO OSCURO (LOOK PROFESIONAL) === */
 /* ====================================================================== */
 .stats-grid {
   display: grid;
@@ -1466,8 +1466,8 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .stats-grid-detail {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex; /* Cambiamos grid por flex para centrarlo si es uno solo */
+  justify-content: center;
   gap: 15px;
   margin-top: 20px;
 }
