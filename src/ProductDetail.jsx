@@ -89,29 +89,26 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
               <div className="stats-grid-detail">
                 <div className="stat-card-mini green">
                   <span>Mínimo Histórico</span>
-                  <strong>${product.min_historical.toLocaleString()}</strong>
+                  <strong>{product.is_new ? "---" : `$${product.min_historical?.toLocaleString()}`}</strong>
                 </div>
                 <div className="stat-card-mini red">
                   <span>Máximo Histórico</span>
-                  <strong>${product.max_historical.toLocaleString()}</strong>
+                  <strong>{product.is_new ? "---" : `$${product.max_historical?.toLocaleString()}`}</strong>
                 </div>
                 <div className="stat-card-mini">
                   <span>Precio Frecuente</span>
-                  <strong>${product.mode_price.toLocaleString()}</strong>
+                  <strong>{product.is_new ? "Suficientes datos..." : `$${product.mode_price?.toLocaleString()}`}</strong>
                 </div>
               </div>
 
-              {/* SEMÁFORO CORREGIDO: Ahora usa la respuesta del servidor */}
-            <div className="stat-card-mini full-width-mobile" 
-                style={{ 
-                  borderTop: `3px solid ${product.rec_color}`,
-                  background: `${product.rec_color}10` // Añade un 10% de opacidad del color de la recomendación
-                }}>
-              <span>Estado del Mercado</span>
-              <strong style={{ color: product.rec_color }}>
-                {product.recommendation.split('!')[0]} {/* Muestra el texto sin los emojis si prefieres algo más limpio */}
-              </strong>
-            </div>
+            {/* SEMÁFORO DE ESTADO */}
+          <div className="stat-card-mini full-width-mobile" 
+              style={{ borderTop: `3px solid ${product.rec_color}`, background: `${product.rec_color}10` }}>
+            <span>Análisis de Mercado</span>
+            <strong style={{ color: product.rec_color }}>
+              {product.recommendation}
+            </strong>
+          </div>
       
            {/* NUEVA FILA: Tiempos de Rastreo */}
           <div className="time-info-row">
