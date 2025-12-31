@@ -91,6 +91,19 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
               <span>Mínimo Histórico</span>
               <strong>${product.min_historical.toLocaleString()}</strong>
             </div>
+            {/* NUEVO: Máximo Histórico */}
+              <div className="stat-card-mini highlight-red">
+                <span>Máximo Registrado</span>
+                <strong>${product.max_historical?.toLocaleString() || '---'}</strong>
+              </div>
+
+              {/* NUEVO: Semáforo de Decisión */}
+              <div className={`stat-card-mini ${product.current_price <= product.min_historical ? 'deal-glow' : ''}`}>
+                <span>Recomendación</span>
+                <strong style={{ color: product.current_price <= product.min_historical ? '#10b981' : '#f59e0b' }}>
+                  {product.current_price <= product.min_historical ? " ¡Mejor Precio!" : "Analizando..."}
+                </strong>
+              </div>
             <div className="stat-card-mini">
               <span>Precio Frecuente</span>
               <strong>${product.mode_price.toLocaleString()}</strong>
