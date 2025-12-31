@@ -64,11 +64,6 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
 
         {/* LADO DERECHO: Gráfica y Estadísticas */}
         <section className="analysis-section">
-          {/* NUEVO: Banner de Recomendación Inteligente */}
-          <div className="recommendation-banner" style={{ borderLeft: `5px solid ${product.rec_color}` }}>
-            <span className="rec-label">Sugerencia del Sistema:</span>
-            <strong style={{ color: product.rec_color }}>{product.recommendation}</strong>
-          </div>
           <div className="chart-container-pro">
             <h3>Historial de Precios</h3>
             <div style={{ width: '100%', height: 350 }}>
