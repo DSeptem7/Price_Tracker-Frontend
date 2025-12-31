@@ -97,7 +97,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                 </div>
                 <div className="stat-card-mini">
                   <span>Precio Frecuente</span>
-                  <strong>{product.is_new ? "Suficientes datos..." : `$${product.mode_price?.toLocaleString()}`}</strong>
+                  <strong>{product.is_new ? "---" : `$${product.mode_price?.toLocaleString()}`}</strong>
                 </div>
               </div>
 
