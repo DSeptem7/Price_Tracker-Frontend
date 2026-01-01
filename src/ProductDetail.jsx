@@ -43,7 +43,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
           
           <div className="price-focus">
             {product.previous_price && (
-              <span className="old-price-detail">Antes: <s>${product.previous_price.toLocaleString()}</s></span>
+              <span className="old-price-detail">Precio anterior: <s>${product.previous_price.toLocaleString()}</s></span>
             )}
             <span className="label">Precio Actual</span>
             <span className="value">${product.current_price.toLocaleString()}</span>
