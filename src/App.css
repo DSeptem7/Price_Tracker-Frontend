@@ -1,5 +1,5 @@
 /* ====================================================================== */
-/* === REINICIO GLOBAL === */
+/* === 0. REINICIO GLOBAL === */
 /* ====================================================================== */
 * {
   box-sizing: border-box; /* Evita que el padding y el borde aumenten el ancho de los elementos */
@@ -8,7 +8,7 @@
 }
 
 /* ====================================================================== */
-/* === CONFIGURACIÓN DE COLORES DINÁMICOS Y MICRO INTERACCIONES === */
+/* === 1. CONFIGURACIÓN DE COLORES DINÁMICOS Y MICRO INTERACCIONES === */
 /* ====================================================================== */
 :root {
   --bg-app: #f8fafc;
@@ -57,7 +57,7 @@
 }
 
 /* ====================================================================== */
-/* === 0. NAVBAR Y ESTRUCTURA GLOBAL === */
+/* === 2. NAVBAR Y ESTRUCTURA GLOBAL === */
 /* ====================================================================== */
 .navbar {
   height: 64px; /* Altura fija para el centro vertical */
@@ -282,7 +282,7 @@
 }
 
 /* ====================================================================== */
-/* === 1. ESTILOS BASE (.App) === */
+/* === 3. ESTILOS BASE (.App) === */
 /* ====================================================================== */
 .App {
   font-family: 'Segoe UI', Roboto, sans-serif;
@@ -294,7 +294,7 @@
 }
 
 /* ====================================================================== */
-/* === 2. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO RESPONSIVE) === */
+/* === 4. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO RESPONSIVE) === */
 /* ====================================================================== */
 .simulate-panel {
   background-color: var(--bg-card);
@@ -630,7 +630,7 @@
 }
 
 /* ====================================================================== */
-/* === 3. GRILLA Y TARJETAS === */
+/* === 5. GRILLA Y TARJETAS === */
 /* ====================================================================== */
 .product-grid {
   display: grid;
@@ -768,7 +768,7 @@
 }
 
 /* ====================================================================== */
-/* === 4. PRECIOS Y ESTADOS (ESTRUCTURA FIJA) === */
+/* === 6. PRECIOS Y ESTADOS (ESTRUCTURA FIJA) === */
 /* ====================================================================== */
 
 /* Altura fija para evitar saltos si no hay precio anterior */
@@ -869,7 +869,7 @@
 }
 
 /* ====================================================================== */
-/* === 5. MEDIA QUERIES (MÓVIL) === */
+/* === 7. MEDIA QUERIES (MÓVIL) === */
 /* ====================================================================== */
 @media (max-width: 600px) {
   .search-box.expanded {
@@ -1044,7 +1044,7 @@
 
 
 /* ====================================================================== */
-/* === 6. MODAL Y PAGINACIÓN === */
+/* === 8. MODAL Y PAGINACIÓN === */
 /* ====================================================================== */
 .modal-backdrop {
   position: fixed; 
@@ -1128,7 +1128,7 @@
 }
 
 /* ====================================================================== */
-/* === 7. SKELETON SCREEN === */
+/* === 9. SKELETON SCREEN === */
 /* ====================================================================== */
 .skeleton-card {
   height: 415px; 
@@ -1187,7 +1187,7 @@
 }
 
 /* ====================================================================== */
-/* === 8. PANEL DE ESTADÍSTICAS, BOTON MODO OSCURO (LOOK PROFESIONAL) === */
+/* === 10. PANEL DE ESTADÍSTICAS, BOTON MODO OSCURO (LOOK PROFESIONAL) === */
 /* ====================================================================== */
 .stats-grid {
   display: grid;
@@ -1349,7 +1349,7 @@ input:checked + .slider { background-color: #3b82f6; }
 input:checked + .slider:before { transform: translateX(21px); }
 
 /* ====================================================================== */
-/* === ANIMACIONES DE CARGA (ESTADÍSTICAS) === */
+/* === 11. ANIMACIONES DE CARGA (ESTADÍSTICAS) === */
 /* ====================================================================== */
 
 /* Definición de la animación de pulso */
@@ -1381,7 +1381,7 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 /* ====================================================================== */
-/* === SUBLINK === */
+/* === 12. SUBLINK === */
 /* ====================================================================== */
 /* Contenedor principal del detalle para que no se pegue a los bordes */
 .detail-page {
