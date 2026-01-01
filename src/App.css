@@ -1433,11 +1433,32 @@ input:checked + .slider:before { transform: translateX(21px); }
   margin: 0 auto;
 }
 
+/* --- Ajuste dinámico del título --- */
+.product-summary h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 15px 0;
+  /* Aquí usamos la lógica dinámica */
+  color: var(--text-main); 
+}
+
+/* Ajuste para el texto "Precio Actual" y otras etiquetas */
+.product-summary .label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Mejora opcional: fondo de la tarjeta adaptable */
 .product-summary {
   text-align: center;
-  background: rgba(255,255,255,0.05);
+  /* Esto hará que el fondo sea ligeramente oscuro en dark y claro en light */
+  background: var(--card-bg); 
   padding: 30px;
   border-radius: 20px;
+  border: 1px solid var(--border-color);
 }
 
 .detail-img {
