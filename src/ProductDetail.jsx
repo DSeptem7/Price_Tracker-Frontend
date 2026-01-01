@@ -131,16 +131,14 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
           </div>
       
            {/* NUEVA FILA: Tiempos de Rastreo */}
-          <div className="time-info-row">
-            <div className="time-badge">
-              <span className="icon"></span> 
-              Rastreado desde: <strong>{product.tracking_since.split(' ')[0]}</strong>
-            </div>
-            <div className="time-badge">
-              <span className="icon"></span> 
-              Última actualización: <strong>{product.last_update}</strong>
-            </div>
+           <div className="time-info-row">
+          <div className="time-badge">
+            Rastreado desde: <strong>{product.tracking_since.split(' ')[0]}</strong>
           </div>
+          <div className="time-badge">
+            Última actualización: <strong>{product.last_update}</strong>
+          </div>
+        </div>
         </section>
       </div>
     </div>
