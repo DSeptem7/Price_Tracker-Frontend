@@ -1464,13 +1464,14 @@ input:checked + .slider:before { transform: translateX(21px); }
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 20px;
 }
 
 .old-price-container, .current-price-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 5px;
 }
 
 .label-small { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
@@ -1484,20 +1485,28 @@ input:checked + .slider:before { transform: translateX(21px); }
   line-height: 1;
 }
 
+/* El badge de estado (Sin cambios / Bajó / Subió) */
+.status-badge-container.detail-status {
+  margin: 15px 0; /* Más espacio arriba y abajo del badge */
+  display: flex;
+  justify-content: center;
+}
+
 .buy-btn-main {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #3b82f6 !important;
   color: #ffffff !important;
-  padding: 14px 20px;
+  padding: 16px 20px; /* Botón ligeramente más alto */
   border-radius: 12px;
   text-decoration: none;
   font-weight: 700;
   transition: all 0.3s ease;
   width: 100%;
   border: none;
-  margin-top: 10px;
+  /* Separación clara del badge de estado */
+  margin-top: 10px; 
   box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
 }
 
