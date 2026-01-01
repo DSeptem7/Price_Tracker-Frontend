@@ -1435,12 +1435,27 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 /* --- Ajuste dinámico del título --- */
 .product-summary h1 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  line-height: 1.3;
+  color: var(--text-main);
   margin: 15px 0;
-  /* Aquí usamos la lógica dinámica */
-  color: var(--text-main); 
+  /* Limitamos el título a 3 líneas para que no empuje el precio demasiado abajo */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  height: 4.2em; /* Aproximadamente 3 líneas de texto */
+}
+
+.price-focus {
+  margin-top: auto; /* Empuja el precio hacia la parte inferior del recuadro */
+  padding-bottom: 20px;
+}
+
+.price-focus .value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #3b82f6;
 }
 
 /* Ajuste para el texto "Precio Actual" y otras etiquetas */
@@ -1459,24 +1474,23 @@ input:checked + .slider:before { transform: translateX(21px); }
   padding: 30px;
   border-radius: 20px;
   border: 1px solid var(--border-color);
-}
 
-.detail-img {
-  max-width: 100%;
-  border-radius: 15px;
-  margin-bottom: 20px;
-}
-
-.price-focus {
-  margin: 20px 0;
+  /* Esto asegura que el recuadro siempre tenga una base mínima de altura */
   display: flex;
   flex-direction: column;
+  min-height: 600px;
 }
 
-.price-focus .value {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #3b82f6;
+/* Control total sobre la foto */
+.detail-img {
+  width: 100%;
+  height: 300px; /* Altura fija para todas las fotos */
+  object-fit: contain; /* Ajusta la foto sin deformarla, dejando espacios si es necesario */
+  background: white; /* Opcional: fondo blanco para que las fotos transparentes luzcan igual */
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .chart-container-pro {
