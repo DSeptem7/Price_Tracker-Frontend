@@ -1447,15 +1447,46 @@ input:checked + .slider:before { transform: translateX(21px); }
   height: 4.2em; /* Aproximadamente 3 líneas de texto */
 }
 
+/* Reducción de espacio entre precio y botón */
 .price-focus {
-  margin-top: auto; /* Empuja el precio hacia la parte inferior del recuadro */
-  padding-bottom: 20px;
+  margin: 10px 0; /* Bajamos de 20px a 10px */
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Controla el espacio interno entre elementos de precio */
 }
 
 .price-focus .value {
   font-size: 2.5rem;
   font-weight: 800;
   color: #3b82f6;
+}
+
+.status-badge-container.detail-status {
+  margin-top: 5px;
+  margin-bottom: 5px; /* Espacio mínimo antes del botón */
+}
+
+/* Estilo para botón mercado libre */
+.buy-btn-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6; /* Azul estándar de tu app */
+  color: white !important;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.buy-btn-main:hover {
+  background-color: #2563eb; /* El azul más oscuro que usamos en la principal */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 /* Ajuste para el texto "Precio Actual" y otras etiquetas */
