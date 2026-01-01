@@ -130,7 +130,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
             </strong>
           </div>
       
-           {/* NUEVA FILA: Tiempos de Rastreo */}
+              {/* NUEVA FILA: Tiempos de Rastreo */}
           <div className="time-info-row">
             <div className="time-badge">
               <span className="icon"></span> 
