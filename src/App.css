@@ -1487,7 +1487,8 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 /* El badge de estado (Sin cambios / Bajó / Subió) */
 .status-badge-container.detail-status {
-  margin: 15px 0; /* Más espacio arriba y abajo del badge */
+  margin-top: 5px; 
+  margin-bottom: 20px; /* Este es el "renglón" de espacio hacia el botón */
   display: flex;
   justify-content: center;
 }
