@@ -96,19 +96,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                     </linearGradient>
                   </defs>
                   <YAxis domain={['auto', 'auto']} stroke={isDarkMode ? "#94a3b8" : "#64748b"} tickFormatter={(v) => `$${v.toLocaleString()}`} fontSize={12} tickLine={false} axisLine={false} />
-                  <XAxis 
-                        dataKey="timestamp" 
-                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
-                        fontSize={10} 
-                        tickFormatter={(str) => {
-                          // Si str es "25/12/2025 14:30", esto devuelve solo "25/12"
-                          const datePart = str?.split(' ')[0];
-                          return datePart ? datePart.substring(0, 5) : ""; 
-                        }}
-                        tickLine={false} 
-                        axisLine={false} 
-                        minTickGap={30} 
-                      />
+                  <XAxis dataKey="timestamp" stroke={isDarkMode ? "#94a3b8" : "#64748b"} fontSize={10} tickFormatter={(str) => str?.split(' ')[0]} tickLine={false} axisLine={false} minTickGap={30} />
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
                   <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#1e293b' : '#fff', border: 'none', borderRadius: '8px' }} formatter={(v) => [`$${v.toLocaleString()}`, 'Precio']} />
                   <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={1} fill="url(#colorPrice)" strokeWidth={3} />
@@ -143,14 +131,16 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
           </div>
       
               {/* NUEVA FILA: Tiempos de Rastreo */}
-              <div className="time-info-row">
-                <div className="time-badge">
-                  Rastreado desde: <strong>{product.tracking_since.split(' ')[0]}</strong>
-                </div>
-                <div className="time-badge">
-                  Última actualización: <strong>{product.last_update}</strong>
-                </div>
-              </div>
+          <div className="time-info-row">
+            <div className="time-badge">
+              <span className="icon"></span> 
+              Rastreado desde: <strong>{product.tracking_since.split(' ')[0]}</strong>
+            </div>
+            <div className="time-badge">
+              <span className="icon"></span> 
+              Última actualización: <strong>{product.last_update}</strong>
+            </div>
+          </div>
         </section>
       </div>
     </div>
