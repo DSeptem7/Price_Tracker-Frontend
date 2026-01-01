@@ -1381,9 +1381,9 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 /* ====================================================================== */
-/* === 12. SUBLINK === */
+/* === 12. SUBLINK (VERSIÓN CORREGIDA) === */
 /* ====================================================================== */
-/* Contenedor principal del detalle para que no se pegue a los bordes */
+
 .detail-page {
   max-width: 1300px;
   margin: 0 auto;
@@ -1391,313 +1391,103 @@ input:checked + .slider:before { transform: translateX(21px); }
   min-height: 100vh;
 }
 
-/* Ajuste del botón volver para que se vea como en la principal */
-.back-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  padding: 10px 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.back-btn:hover {
-  background: var(--accent-color);
-  color: white;
-  transform: translateX(-5px);
-}
-
-/* Limpieza de etiquetas innecesarias */
-.priority-badge {
-  font-size: 0.85rem;
-  color: #94a3b8;
-  background: rgba(59, 130, 246, 0.1);
-  padding: 5px 12px;
-  border-radius: 20px;
-}
-
-.detail-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
 .detail-layout {
   display: grid;
-  grid-template-columns: 1fr 2fr; /* Imagen pequeña a la izquierda, gráfica grande a la derecha */
+  grid-template-columns: 1fr 2fr;
   gap: 40px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* --- Ajuste dinámico del título --- */
-.product-summary h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 15px 0;
-  /* Limitamos el título a 3 líneas para que no empuje el precio demasiado abajo */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
-  height: 4.2em; /* Aproximadamente 3 líneas de texto */
-}
-
-/* Reducción de espacio entre precio y botón */
-.price-focus {
-  margin: 10px 0; /* Bajamos de 20px a 10px */
-  display: flex;
-  flex-direction: column;
-  gap: 5px; /* Controla el espacio interno entre elementos de precio */
-}
-
-.price-focus .value {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #3b82f6;
-}
-
-.status-badge-container.detail-status {
-  margin-top: 5px;
-  margin-bottom: 5px; /* Espacio mínimo antes del botón */
-}
-
-/* Estilo para botón mercado libre */
-.buy-btn-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #3b82f6; /* Azul estándar de tu app */
-  color: white !important;
-  padding: 12px 20px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
-
-.buy-btn-main:hover {
-  background-color: #2563eb; /* El azul más oscuro que usamos en la principal */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-}
-
-/* Ajuste para el texto "Precio Actual" y otras etiquetas */
-.product-summary .label {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Mejora opcional: fondo de la tarjeta adaptable */
+/* --- TARJETA IZQUIERDA (SUMMARY) --- */
 .product-summary {
   text-align: center;
-  /* Esto hará que el fondo sea ligeramente oscuro en dark y claro en light */
   background: var(--card-bg); 
   padding: 30px;
   border-radius: 20px;
   border: 1px solid var(--border-color);
-
-  /* Esto asegura que el recuadro siempre tenga una base mínima de altura */
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 600px;
 }
 
-/* Control total sobre la foto */
 .detail-img {
   width: 100%;
-  height: 300px; /* Altura fija para todas las fotos */
-  object-fit: contain; /* Ajusta la foto sin deformarla, dejando espacios si es necesario */
-  background: white; /* Opcional: fondo blanco para que las fotos transparentes luzcan igual */
+  height: 300px;
+  object-fit: contain;
+  background: white; 
   padding: 10px;
   border-radius: 15px;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.chart-container-pro {
-  background: rgba(255,255,255,0.03);
-  padding: 25px;
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.old-price-detail {
-  color: #94a3b8;
-  font-size: 1.1rem;
-  display: block;
-}
-
-.status-badge-container {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.stats-grid-detail {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.stat-card-mini strong {
-  display: block;
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  margin-top: 5px;
-}
-
-.stat-card-mini {
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.recommendation-banner {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 15px 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.rec-label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #94a3b8;
-}
-
-.time-info-row {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-  gap: 15px;
-}
-
-.time-badge {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  color: #94a3b8;
-  flex: 1;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.stat-card-mini.green strong { color: #10b981; }
-.stat-card-mini.red strong { color: #ef4444; }
-
-/* Hacemos que el semáforo ocupe el espacio de abajo de forma elegante */
-.stat-card-mini.full-width-mobile {
-  grid-column: span 3; /* Se expande a lo ancho de las 3 columnas */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 25px;
-}
-
-/* Efecto de brillo si es el mejor precio */
-.deal-glow {
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-  animation: pulse-glow 2s infinite;
-}
-
-@keyframes pulse-glow {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.01); }
-  100% { transform: scale(1); }
-}
-
-/* --- Estilos para el recuadro izquierdo --- */
-
-/* Contenedor del precio anterior */
-.old-price-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.label-small {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
-}
-
-.old-price-value {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* Contenedor del precio actual */
-.current-price-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.label-main {
-  font-size: 1rem;
+.product-summary h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--text-main);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 5px;
-  opacity: 0.9;
+  margin: 10px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  height: 4.2em;
 }
 
-/* El precio grande y azul */
+/* --- SECCIÓN DE PRECIOS Y BOTÓN (COMPACTO) --- */
+.price-focus {
+  width: 100%;
+  margin-top: auto; /* Empuja todo hacia abajo */
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Espacio pequeño entre elementos */
+}
+
+.old-price-container, .current-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label-small { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+.old-price-value { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
+.label-main { font-size: 0.9rem; color: var(--text-main); font-weight: 600; text-transform: uppercase; }
+
 .current-price-value {
-  font-size: 2.8rem; /* Un poco más grande para más impacto */
+  font-size: 2.8rem;
   font-weight: 800;
-  color: var(--accent-color); /* Usa tu color de acento (azul) */
-  line-height: 1.1;
+  color: #3b82f6; /* Azul brillante */
+  line-height: 1;
 }
 
-/* --- Botón de Mercado Libre --- */
-.buy-btn-styled {
-  display: inline-flex;
+/* Contenedor de badges (reducido) */
+.status-badge-container.detail-status {
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- EL BOTÓN DE ACCIÓN (ESTILO PRINCIPAL) --- */
+.buy-btn-main {
+  display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--accent-color); /* Fondo azul */
-  color: white !important; /* Texto blanco */
-  font-weight: 600;
-  padding: 12px 24px;
+  background-color: #3b82f6 !important; /* Azul forzado */
+  color: #ffffff !important; /* Texto blanco forzado */
+  padding: 14px 20px;
   border-radius: 12px;
   text-decoration: none;
+  font-weight: 700;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2); /* Sombra suave con el color azul */
-  margin-top: 20px;
-  width: 100%; /* Opcional: que ocupe todo el ancho disponible */
+  width: 100%;
+  border: none;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
 }
 
-.buy-btn-styled:hover {
-  background-color: #2563eb; /* Un tono más oscuro al pasar el mouse */
-  transform: translateY(-2px); /* Pequeño efecto de elevación */
-  box-shadow: 0 6px 8px rgba(59, 130, 246, 0.3);
-}
-
-/* Ajuste para el contenedor de la etiqueta de estado */
-.status-badge-container {
-  margin-top: 5px;
-  margin-bottom: 10px;
+.buy-btn-main:hover {
+  background-color: #1d4ed8 !important; /* Azul más oscuro */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(29, 78, 216, 0.4);
 }
