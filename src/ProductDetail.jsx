@@ -42,23 +42,44 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
           <h1>{product.title}</h1>
           
           <div className="price-focus">
-            {product.previous_price && (
-              <span className="old-price-detail">Precio anterior: <s>${product.previous_price.toLocaleString()}</s></span>
-            )}
-            <span className="label">Precio Actual</span>
-            <span className="value">${product.current_price.toLocaleString()}</span>
+          {product.previous_price && (
+          <div className="old-price-container">
+            <span className="label-small">Precio anterior</span>
+            <span className="old-price-value"><s>${product.previous_price.toLocaleString()}</s></span>
+          </div>
+        )}
+           {/* SECCIÓN DE PRECIO ACTUAL */}
+          <div className="current-price-container">
+            <span className="label-main">Precio Actual</span>
+            <span className="current-price-value">${product.current_price.toLocaleString()}</span>
+          </div>
             
-            {/* Etiqueta de Porcentaje (Status) */}
-            <div className="status-badge-container">
-              {product.status === "down" && <span className="percentage-tag down">↓ -{product.change_percentage}</span>}
-              {product.status === "up" && <span className="percentage-tag up">↑ +{product.change_percentage}</span>}
-              {product.status === "stable" && <span className="status-stable">Sin cambios</span>}
-              {product.status === "new" && <span className="status-new">Recién añadido</span>}
+            {/* ETIQUETA DE ESTADO */}
+          <div className="status-badge-container">
+            {product.status === "down" && (
+              <span className="percentage-tag down">↓ -{product.change_percentage}</span>
+            )}
+            {product.status === "up" && (
+              <span className="percentage-tag up">↑ +{product.change_percentage}</span>
+            )}
+            {product.status === "stable" && (
+              <span className="status-stable">Sin cambios</span>
+              )}
+              {product.status === "new" && (
+              <span className="status-new">Recién añadido</span>
+              )}
             </div>
           </div>
 
-          <a href={product.url} target="_blank" rel="noreferrer" className="buy-btn">
+         {/* BOTÓN DE MERCADO LIBRE */}
+          <a href={product.url} target="_blank" rel="noreferrer" className="buy-btn-styled">
             Ver en Mercado Libre
+            {/* Icono de flecha opcional para darle más dinamismo */}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}>
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
           </a>
         </section>
 
