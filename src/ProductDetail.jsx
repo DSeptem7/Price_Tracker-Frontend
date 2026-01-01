@@ -41,7 +41,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
         {/* NUEVO: Badge de la tienda (Dinámico) */}
         <div className="shop-badge-detail" 
               style={{ backgroundColor: product.shop_color || '#fee600', color: product.shop_text_color || '#000' }}>
-            <span className="shop-icon">🛒</span> {/* Puedes cambiar esto por un logo luego */}
+            <span className="shop-icon"></span> {/* Puedes cambiar esto por un logo luego */}
             <span className="shop-name">{product.shop_name || 'Mercado Libre'}</span>
           </div>
 
