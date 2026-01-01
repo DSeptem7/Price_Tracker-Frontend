@@ -56,18 +56,10 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
             
             {/* ETIQUETA DE ESTADO */}
           <div className="status-badge-container">
-            {product.status === "down" && (
-              <span className="percentage-tag down">↓ -{product.change_percentage}</span>
-            )}
-            {product.status === "up" && (
-              <span className="percentage-tag up">↑ +{product.change_percentage}</span>
-            )}
-            {product.status === "stable" && (
-              <span className="status-stable">Sin cambios</span>
-              )}
-              {product.status === "new" && (
-              <span className="status-new">Recién añadido</span>
-              )}
+            {product.status === "down" && <span className="percentage-tag down">↓ -{product.change_percentage}</span>}
+            {product.status === "up" && <span className="percentage-tag up">↑ +{product.change_percentage}</span>}
+            {product.status === "stable" && <span className="status-stable">Sin cambios</span>}
+              {product.status === "new" && <span className="status-new">Recién añadido</span>}
             </div>
           </div>
 
