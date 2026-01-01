@@ -1507,7 +1507,7 @@ input:checked + .slider:before { transform: translateX(21px); }
   width: 100%;
   border: none;
   /* Separación clara del badge de estado */
-  margin-top: 10px; 
+  margin-top: 20px; 
   box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
 }
 
