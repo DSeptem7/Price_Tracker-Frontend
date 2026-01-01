@@ -1591,3 +1591,82 @@ input:checked + .slider:before { transform: translateX(21px); }
   50% { transform: scale(1.01); }
   100% { transform: scale(1); }
 }
+
+/* --- Estilos para el recuadro izquierdo --- */
+
+/* Contenedor del precio anterior */
+.old-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.label-small {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.old-price-value {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Contenedor del precio actual */
+.current-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.label-main {
+  font-size: 1rem;
+  color: var(--text-main);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  opacity: 0.9;
+}
+
+/* El precio grande y azul */
+.current-price-value {
+  font-size: 2.8rem; /* Un poco más grande para más impacto */
+  font-weight: 800;
+  color: var(--accent-color); /* Usa tu color de acento (azul) */
+  line-height: 1.1;
+}
+
+/* --- Botón de Mercado Libre --- */
+.buy-btn-styled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-color); /* Fondo azul */
+  color: white !important; /* Texto blanco */
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2); /* Sombra suave con el color azul */
+  margin-top: 20px;
+  width: 100%; /* Opcional: que ocupe todo el ancho disponible */
+}
+
+.buy-btn-styled:hover {
+  background-color: #2563eb; /* Un tono más oscuro al pasar el mouse */
+  transform: translateY(-2px); /* Pequeño efecto de elevación */
+  box-shadow: 0 6px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Ajuste para el contenedor de la etiqueta de estado */
+.status-badge-container {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
