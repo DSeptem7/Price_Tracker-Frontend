@@ -38,6 +38,13 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
       <div className="detail-layout">
         {/* LADO IZQUIERDO: Imagen, Título, Precio y Status */}
         <section className="product-summary">
+        {/* NUEVO: Badge de la tienda (Dinámico) */}
+        <div className="shop-badge-detail" 
+              style={{ backgroundColor: product.shop_color || '#fee600', color: product.shop_text_color || '#000' }}>
+            <span className="shop-icon">🛒</span> {/* Puedes cambiar esto por un logo luego */}
+            <span className="shop-name">{product.shop_name || 'Mercado Libre'}</span>
+          </div>
+
           <img src={product.image} alt={product.title} className="detail-img" />
           <h1>{product.title}</h1>
           
