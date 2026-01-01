@@ -64,7 +64,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
           </div>
 
          {/* BOTÓN DE MERCADO LIBRE */}
-          <a href={product.url} target="_blank" rel="noreferrer" className="buy-btn-styled">
+          <a href={product.url} target="_blank" rel="noreferrer" className="buy-btn-main">
             Ver en Mercado Libre
             {/* Icono de flecha opcional para darle más dinamismo */}
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}>
