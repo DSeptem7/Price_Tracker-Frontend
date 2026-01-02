@@ -10,6 +10,17 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ESTADOS PARA EL NAVBAR QUE COPIAMOS
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const searchRef = useRef(null);
+
+  // EFECTO: Si el usuario busca algo, lo mandamos a la home
+  useEffect(() => {
+    if (searchTerm !== "") {
+      navigate('/');
+    }
+  }, [searchTerm, navigate]);
+
   useEffect(() => {
     const fetchFullDetail = async () => {
       try {
@@ -31,6 +42,45 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
 
   return (
     <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
+      {/* === COPIA DEL NAVBAR DE APP.JSX === */}
+      <nav className="navbar">
+        <div className="navbar-content">
+          <span className="logo" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
+            🛒 Price Tracker (ML)
+          </span>
+          
+          <div className="nav-controls">
+            {/* BUSCADOR EXPANSIBLE */}
+            <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
+              <input 
+                type="text" 
+                className="search-input" 
+                placeholder="Buscar..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon-svg">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </button>
+            </div>
+
+            <div className="theme-switch-wrapper">
+              <label className="theme-switch">
+                <input 
+                  type="checkbox" 
+                  checked={isDarkMode} 
+                  onChange={() => setIsDarkMode(!isDarkMode)} 
+                />
+                <div className="slider"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
       <nav className="detail-nav">
         <button onClick={() => navigate('/')} className="back-btn">← Volver al Listado</button>
       </nav>
