@@ -82,15 +82,16 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
             </label>
           </div>
           
-         {/* CONTADOR (Ocupa su lugar si existe, si no, deja el hueco a su izquierda) */}
-        {productCount !== undefined ? (
-          <span className="product-count">
-            {productCount} Productos
+         {/* CONTADOR SIEMPRE PRESENTE PERO OCULTO SI NO HAY DATOS */}
+          <span 
+            className="product-count" 
+            style={{ 
+              visibility: productCount !== undefined ? 'visible' : 'hidden',
+              opacity: productCount !== undefined ? 1 : 0
+            }}
+          >
+            {productCount || 0} Productos
           </span>
-        ) : (
-          /* Div vacío que ocupa el mismo espacio que el contador para que nada se mueva */
-          <div style={{ width: '100px' }}></div> 
-        )}
 
         </div>
       </div>
