@@ -107,6 +107,7 @@
   align-items: center;
   justify-content: flex-end; /* Asegura que todo esté a la derecha */
   gap: 20px !important; /* Espacio un poco mayor entre buscador, switch y contador */
+  min-width: fit-content;
 }
 
 /* --- BUSCADOR MINIMALISTA (El CSS es el mismo del paso anterior) --- */
@@ -1306,6 +1307,8 @@
 
 /* SWITCH ELEGANTE */
 .theme-switch-wrapper {
+  margin: 0 !important;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
 }
