@@ -717,7 +717,7 @@ const processedProducts = useMemo(() => {
                 /* LO NUEVO (PEGAR) */
             <Route 
               path="/producto/:id" 
-              element={<ProductDetail API_BASE={API_BASE} isDarkMode={isDarkMode} />} 
+              element={<ProductDetail API_BASE={API_BASE} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>} 
             />
 
             </Routes>
