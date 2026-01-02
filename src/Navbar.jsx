@@ -1,5 +1,5 @@
 // src/Navbar.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 
 // Recibimos "productCount" como prop opcional, por si queremos mostrarlo en la Home pero no en el detalle
