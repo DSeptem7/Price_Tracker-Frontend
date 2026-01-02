@@ -1626,3 +1626,10 @@ input:checked + .slider:before { transform: translateX(21px); }
   font-weight: 600;
   text-transform: uppercase;
 }
+
+/* Aseguramos que el contenedor del detalle baje lo suficiente */
+.detail-container {
+  padding-top: 100px; /* Ajusta este valor según la altura de tu Navbar */
+  max-width: 1300px;
+  margin: 0 auto;
+}
