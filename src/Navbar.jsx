@@ -77,7 +77,6 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
           </div>
           
           {/* CONTADOR DE PRODUCTOS (Solo se muestra si se pasa el dato) */}
-          <div className="product-count-wrapper" style={{ minWidth: '100px', display: 'flex', justifyContent: 'flex-end' }}></div>
           {productCount !== undefined && (
              <span className="product-count">
                {productCount} Productos
