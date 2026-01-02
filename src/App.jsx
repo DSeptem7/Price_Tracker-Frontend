@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom'; 
+import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ProductDetail from './ProductDetail';
 import {
   LineChart,
@@ -134,8 +135,6 @@ function App() {
   const [chartProductTitle, setChartProductTitle] = useState(null);
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available");
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const searchRef = useRef(null); // 1. Creamos una referencia al contenedor del buscador
   const [loadingText, setLoadingText] = useState("Iniciando rastreo...");
   const [isExiting, setIsExiting] = useState(false);
   const navigate = useNavigate();
@@ -378,53 +377,14 @@ const processedProducts = useMemo(() => {
           {/* RUTA 1: VISTA DE LISTA (Todo tu código actual) */}
           <Route path="/" element={
             <>
-        {/* === NAVBAR === */}
-        <nav className="navbar">
-          <div className="navbar-content">
-            <span className="logo">🛒 Price Tracker (ML)</span>
-            
-            {/* Redujimos el gap aquí en el CSS para pegarlo más a la derecha */}
-          <div className="nav-controls"></div>
-
-        {/* BUSCADOR EXPANSIBLE MINIMALISTA */}
-            {/* 3. Conectamos la referencia (ref={searchRef}) a este div */}
-            <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
-              <input 
-                type="text" 
-                className="search-input" 
-                placeholder="Buscar..." 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                // Eliminamos el onBlur anterior, ya no es necesario
-              />
-              <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
-                {/* 4. NUEVO ICONO SVG MINIMALISTA */}
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon-svg">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-            </div>
-
-            <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              {/* SWITCH ELEGANTE */}
-              <div className="theme-switch-wrapper">
-                <label className="theme-switch">
-                  <input 
-                    type="checkbox" 
-                    checked={isDarkMode} 
-                    onChange={() => setIsDarkMode(!isDarkMode)} 
-                  />
-                  <div className="slider"></div>
-                </label>
-              </div>
-              
-              <span className="product-count">
-                {processedProducts.length} Productos
-              </span>
-            </div>
-          </div>
-        </nav>
+        {/* === NAVBAR COMPONENTE === */}
+        <Navbar 
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
+          productCount={processedProducts.length} /* Aquí SÍ pasamos el contador */
+        />
 
         {/* === CONTENEDOR PRINCIPAL === */}
         <main className="main-content">
