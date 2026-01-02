@@ -106,8 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end; /* Asegura que todo esté a la derecha */
-  gap: 20px; /* Espacio un poco mayor entre buscador, switch y contador */
-  height: 100%;
+  gap: 20px !important; /* Espacio un poco mayor entre buscador, switch y contador */
 }
 
 /* --- BUSCADOR MINIMALISTA (El CSS es el mismo del paso anterior) --- */
@@ -122,7 +121,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  margin-right: 15px;
+  margin-right: 0 !important;
 }
 
 .search-box.expanded {
@@ -1309,7 +1308,6 @@
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .theme-switch {
