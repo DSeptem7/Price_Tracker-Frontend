@@ -44,7 +44,13 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
         {/* ESPACIADOR INVISIBLE: Empuja los controles a la derecha */}
         <div style={{ flexGrow: 1 }}></div>
 
-        <div className="nav-controls" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="nav-controls" style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '20px', 
+            justifyContent: 'flex-end',
+            minWidth: '280px' /* Este valor debe ser suficiente para Lupa + Switch + Contador */
+          }}>
           
           {/* BUSCADOR */}
           <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
@@ -76,12 +82,15 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
             </label>
           </div>
           
-          {/* CONTADOR DE PRODUCTOS (Solo se muestra si se pasa el dato) */}
-          {productCount !== undefined && (
-             <span className="product-count">
-               {productCount} Productos
-             </span>
-          )}
+         {/* CONTADOR (Ocupa su lugar si existe, si no, deja el hueco a su izquierda) */}
+        {productCount !== undefined ? (
+          <span className="product-count">
+            {productCount} Productos
+          </span>
+        ) : (
+          /* Div vacío que ocupa el mismo espacio que el contador para que nada se mueva */
+          <div style={{ width: '100px' }}></div> 
+        )}
 
         </div>
       </div>
