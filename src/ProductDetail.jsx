@@ -42,20 +42,31 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
     /* CORRECCIÓN: El wrapper abre aquí y NO se cierra con /> */
     <div className="product-detail-wrapper">
       
-      {/* === NAVBAR INTEGRADA === */}
+      {/* === NAVBAR CORREGIDA === */}
       <nav className="navbar">
         <div className="navbar-content">
-          <span className="logo" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
+          {/* 1. LOGO: Le quitamos el flex-grow para que el clic sea solo en el texto */}
+          <span 
+            className="logo" 
+            onClick={() => navigate('/')} 
+            style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px' }}
+          >
             🛒 Price Tracker (ML)
           </span>
           
+          {/* 2. ESPACIADOR: Este div invisible empuja todo a la derecha */}
+          <div style={{ flexGrow: 1 }}></div>
+          
           <div className="nav-controls">
+            {/* BUSCADOR */}
             <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
               <input 
                 type="text" 
                 className="search-input" 
                 placeholder="Buscar..." 
                 value={searchTerm}
+                /* IMPORTANTE: stopPropagation evita que el clic en el input dispare otros eventos */
+                onClick={(e) => e.stopPropagation()} 
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
@@ -66,11 +77,13 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
               </button>
             </div>
 
+            {/* SWITCH MODO OSCURO */}
             <div className="theme-switch-wrapper">
               <label className="theme-switch">
                 <input 
                   type="checkbox" 
                   checked={isDarkMode} 
+                  /* Asegúrate de que setIsDarkMode se esté recibiendo en los props del componente */
                   onChange={() => setIsDarkMode(!isDarkMode)} 
                 />
                 <div className="slider"></div>
