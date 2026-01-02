@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
 } from 'recharts';
@@ -9,9 +10,6 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const searchRef = useRef(null);
 
   useEffect(() => {
     if (searchTerm && searchTerm !== "") {
@@ -42,56 +40,14 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
     /* CORRECCIÓN: El wrapper abre aquí y NO se cierra con /> */
     <div className="product-detail-wrapper">
       
-      {/* === NAVBAR CORREGIDA === */}
-      <nav className="navbar">
-        <div className="navbar-content">
-          {/* 1. LOGO: Le quitamos el flex-grow para que el clic sea solo en el texto */}
-          <span 
-            className="logo" 
-            onClick={() => navigate('/')} 
-            style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px' }}
-          >
-            🛒 Price Tracker (ML)
-          </span>
-          
-          {/* 2. ESPACIADOR: Este div invisible empuja todo a la derecha */}
-          <div style={{ flexGrow: 1 }}></div>
-          
-          <div className="nav-controls">
-            {/* BUSCADOR */}
-            <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
-              <input 
-                type="text" 
-                className="search-input" 
-                placeholder="Buscar..." 
-                value={searchTerm}
-                /* IMPORTANTE: stopPropagation evita que el clic en el input dispare otros eventos */
-                onClick={(e) => e.stopPropagation()} 
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon-svg">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-            </div>
-
-            {/* SWITCH MODO OSCURO */}
-            <div className="theme-switch-wrapper">
-              <label className="theme-switch">
-                <input 
-                  type="checkbox" 
-                  checked={isDarkMode} 
-                  /* Asegúrate de que setIsDarkMode se esté recibiendo en los props del componente */
-                  onChange={() => setIsDarkMode(!isDarkMode)} 
-                />
-                <div className="slider"></div>
-              </label>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* === AQUÍ USAMOS EL COMPONENTE === */}
+      <Navbar 
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        isDarkMode={isDarkMode}
+        setIsDarkMode={setIsDarkMode}
+        // No pasamos productCount porque aquí no queremos mostrar el contador global
+      />
 
       <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
         <div className="detail-container">
