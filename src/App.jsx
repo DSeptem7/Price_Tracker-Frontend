@@ -190,25 +190,6 @@ useEffect(() => {
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 600 ? 8 : 15);
-
-  // 2. Lógica para detectar clic fuera del componente
-useEffect(() => {
-  function handleClickOutside(event) {
-    // Si el buscador está abierto Y el clic ocurrió FUERA del contenedor referenciado...
-    if (isSearchExpanded && searchRef.current && !searchRef.current.contains(event.target)) {
-      // ... cerramos el buscador y borramos el texto si no se ha buscado nada.
-      if (searchTerm === "") {
-         setIsSearchExpanded(false);
-      }
-    }
-  }
-  // Añadimos el escuchador de eventos al documento entero
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => {
-    // Limpiamos el escuchador cuando el componente se desmonta
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [isSearchExpanded, searchTerm]); // Se ejecuta cuando cambia el estado de expansión o el término
   
   // Opcional: Ajustar si el usuario cambia el tamaño de la ventana (resizing)
 useEffect(() => {

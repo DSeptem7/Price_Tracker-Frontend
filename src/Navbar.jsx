@@ -10,6 +10,25 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const searchRef = useRef(null);
 
+   // 2. Lógica para detectar clic fuera del componente
+    useEffect(() => {
+      function handleClickOutside(event) {
+        // Si el buscador está abierto Y el clic ocurrió FUERA del contenedor referenciado...
+        if (isSearchExpanded && searchRef.current && !searchRef.current.contains(event.target)) {
+          // ... cerramos el buscador y borramos el texto si no se ha buscado nada.
+          if (searchTerm === "") {
+            setIsSearchExpanded(false);
+          }
+        }
+      }
+      // Añadimos el escuchador de eventos al documento entero
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Limpiamos el escuchador cuando el componente se desmonta
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [isSearchExpanded, searchTerm]); // Se ejecuta cuando cambia el estado de expansión o el término
+
   return (
     <nav className="navbar">
       <div className="navbar-content">
