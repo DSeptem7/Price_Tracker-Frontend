@@ -3,8 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
 } from 'recharts';
+import Navbar from './Navbar'; // Ajusta la ruta según tu carpeta
 
-const ProductDetail = ({ API_BASE, isDarkMode }) => {
+const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSearchTerm }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -31,6 +32,16 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
 
   return (
     <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
+      {/* 1. Insertamos el Navbar arriba de todo */}
+      <Navbar 
+        isDarkMode={isDarkMode} 
+        setIsDarkMode={setIsDarkMode} 
+        searchTerm={searchTerm} 
+        setSearchTerm={setSearchTerm} 
+      />
+      <div className="detail-container"> 
+        {/* Encapsulamos el contenido original para que el padding del Navbar no lo tape */}
+        
       <nav className="detail-nav">
         <button onClick={() => navigate('/')} className="back-btn">← Volver al Listado</button>
       </nav>
@@ -142,6 +153,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
             </div>
           </div>
         </section>
+      </div>
       </div>
     </div>
   );
