@@ -843,14 +843,18 @@ html {
 }
 
 .status-new {
-  font-size: 11px;
-  color: #0369a1;
-  background: #e0f2fe;
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-weight: 700;
+  font-size: 11px !important; /* Forzamos tamaño pequeño */
+  color: #0369a1 !important;  /* Azul oscuro */
+  background: #e0f2fe !important; /* Azul cielo suave */
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  font-weight: 800 !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid #bae6fd; /* Borde sutil para que no se vea plano */
+  display: inline-flex;
+  align-items: center;
+  height: 22px; /* Altura controlada */
 }
 
 /* Caja de Contexto (Precios frecuentes) */
