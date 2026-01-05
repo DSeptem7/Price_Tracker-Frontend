@@ -1720,11 +1720,13 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .featured-info-container {
-  flex-grow: 1; /* El resto de la información ocupa el espacio restante */
+  flex-grow: 1;
   padding: 20px 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Para que los elementos se distribuyan verticalmente */
+  justify-content: center; /* Centra verticalmente */
+  align-items: center;     /* ESTA ES LA CLAVE: Centra horizontalmente todo el bloque */
+  text-align: center;      /* Centra el texto de los párrafos */
 }
 
 .featured-store-header {
