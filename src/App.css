@@ -1766,16 +1766,29 @@ input:checked + .slider:before { transform: translateX(21px); }
   margin-bottom: 10px;
 }
 
+.featured-prices {
+  display: flex;
+  flex-direction: column; /* Cambiamos a columna para mejor control */
+  gap: 5px;
+  margin-bottom: 15px;
+  align-items: flex-start; /* Todo alineado a la izquierda */
+}
+
 .featured-previous-price {
   font-size: 1.1rem;
   color: var(--text-muted);
-  text-decoration: line-through;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio para poner el tag de descuento al lado si queremos */
 }
 
 .featured-current-price {
-  font-size: 2.2rem;
+  font-size: 2.8rem; /* Un poco más grande para impacto */
   font-weight: 800;
-  color: #10b981; /* Verde fuerte para el precio actual */
+  color: #10b981;
+  line-height: 1;
+  margin: 0;
 }
 
 .dark-mode .featured-current-price {
