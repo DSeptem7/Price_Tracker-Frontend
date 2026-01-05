@@ -596,7 +596,7 @@ const processedProducts = useMemo(() => {
 
                 return (
                   <div 
-                  key={p.id || index} // Usar el ID real como key es más seguro
+                  key={p.id} // // Usar el ID real como key es más seguro
                     className="product-card" 
                     /* === CAMBIO AQUÍ: Navegación en lugar de Modal === */
                     onClick={() => {
