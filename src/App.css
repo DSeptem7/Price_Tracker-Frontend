@@ -883,13 +883,17 @@ html {
 /* ====================================================================== */
 @media (max-width: 600px) {
   .search-box.expanded {
-    width: 150px !important; /* Un poco más estrecho en celular */
+    width: 140px !important; /* Un poco más estrecho en celular */
   }
   
   .logo {
-    font-size: 1rem !important; /* Reducimos el tamaño */
-    flex-grow: 0 !important; /* Ya no empuja, para dar espacio al buscador */
-    margin-right: auto; /* Se pega a la izquierda */
+    font-size: 1.1rem !important; /* Un poco más grande para que sea legible */
+    font-weight: 700 !important;
+    flex-grow: 0 !important; 
+    margin-right: 10px !important; /* Espacio mínimo con los controles */
+    white-space: nowrap !important; /* Evita que el logo se parta en dos líneas */
+    display: flex !important;
+    align-items: center !important;
   }
 
   .nav-search-input {
@@ -898,7 +902,11 @@ html {
   }
 
   .nav-controls {
-    gap: 12px !important; /* Menos espacio entre elementos en móvil */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important; /* Espacio compacto para que quepa todo en una línea */
+    flex-shrink: 1 !important; /* Permite que los controles se ajusten si el logo es largo */
   }
 
   .search-box {
@@ -975,8 +983,11 @@ html {
 
   /* 5. Controles y Navbar - Ajuste de Simetría */
   .navbar-content { 
+    display: flex !important;
     justify-content: space-between !important; 
+    align-items: center !important; /* Alineación vertical perfecta */
     padding: 0 15px !important;
+    height: 100% !important;
   }
 
   /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
