@@ -553,11 +553,14 @@ const processedProducts = useMemo(() => {
              </div>
           )}
 
-            {/* AQUÍ PONEMOS EL CONTADOR - Es parte del contenido, no de la barra */}
-            <span style={{ color: '#666', fontWeight: '600' }}>
-                  {processedProducts.length} Resultados
+            {/* CONTADOR - En vuelto en un contenedor para dar espacio */}
+            {!loading && (
+              <div style={{ marginBottom: '15px', textAlign: 'right' }}>
+                <span style={{ color: 'var(--text-muted, #666)', fontWeight: '600', fontSize: '0.9rem' }}>
+                  {processedProducts.length} Productos encontrados
                 </span>
               </div>
+            )}
 
           <div className="product-grid">
             {loading ? (
