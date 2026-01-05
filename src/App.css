@@ -221,6 +221,10 @@ html {
   padding: 4px 12px;
   border-radius: 20px;
   font-weight: 600;
+  /* AGREGAR ESTO PARA EVITAR CAMBIOS DE TAMAÑO INTERNOS */
+  min-width: 110px; /* Un ancho suficiente para "999+ Productos" */
+  text-align: center; /* Para que el texto se vea centrado en esa cajita */
+  display: inline-block; /* Necesario para que respete el ancho */
 }
 
 .main-content {
