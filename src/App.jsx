@@ -596,11 +596,16 @@ const processedProducts = useMemo(() => {
 
                 return (
                   <div 
-                    key={index} 
+                  key={p.id || index} // Usar el ID real como key es más seguro
                     className="product-card" 
                     /* === CAMBIO AQUÍ: Navegación en lugar de Modal === */
-                    /* Usamos p.id para la ruta. Si no tienes ID aún, usa p.title temporalmente, pero id es mejor */
-                    onClick={() => navigate(`/producto/${p.id}`)} 
+                    onClick={() => {
+                      if (p.id) {
+                        navigate(`/producto/${p.id}`);
+                      } else {
+                        console.error("Este producto no tiene ID:", p);
+                      }
+                    }} 
                     style={{ 
                       opacity: outOfStock ? 0.7 : 1, 
                       filter: outOfStock ? "grayscale(100%)" : "none",
