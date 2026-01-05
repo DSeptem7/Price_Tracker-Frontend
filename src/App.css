@@ -1665,3 +1665,253 @@ input:checked + .slider:before { transform: translateX(21px); }
   margin: 0 auto;
   margin-top: 40px; /* Añadimos margen para que no choque con el Navbar sticky */
 }
+
+/* ====================================================================== */
+/* === DISEÑO DE TARJETA DESTACADA (FEATURED PRODUCT CARD) === */
+/* ====================================================================== */
+
+.featured-product-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px;
+}
+
+.featured-product-card {
+  display: flex; /* Es horizontal */
+  align-items: center; /* Centra verticalmente el contenido */
+  background: var(--bg-card);
+  border: 2px solid var(--border-color-highlight); /* Borde vibrante */
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 900px; /* Ancho máximo para pantallas grandes */
+  width: 100%; /* Para que ocupe todo el espacio disponible hasta el max-width */
+  transition: all 0.3s ease;
+  position: relative;
+  min-height: 250px; /* Altura mínima */
+}
+
+.dark-mode .featured-product-card {
+  border-color: #3b82f6; /* Azul más oscuro en dark mode */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.featured-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+}
+
+.featured-image-container {
+  flex-shrink: 0; /* La imagen no se encoge */
+  width: 250px; /* Ancho fijo para la imagen */
+  height: 250px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-image-container);
+  border-right: 1px solid var(--border-color);
+}
+
+.featured-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.featured-info-container {
+  flex-grow: 1; /* El resto de la información ocupa el espacio restante */
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Para que los elementos se distribuyan verticalmente */
+}
+
+.featured-store-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #3b82f6; /* Color de tienda por defecto */
+  color: white;
+  padding: 6px 15px;
+  border-bottom-right-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  z-index: 5;
+}
+
+/* Colores de las tiendas en la tarjeta destacada */
+.featured-store-header.store-ml { background: #ffe600; color: #333; }
+.featured-store-header.store-amazon { background: #ff9900; color: white; }
+.dark-mode .featured-store-header.store-ml { background: #ffe600; color: #333; }
+.dark-mode .featured-store-header.store-amazon { background: #ff9900; color: white; }
+
+
+.featured-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limita el título a 2 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.featured-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.featured-previous-price {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.featured-current-price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #10b981; /* Verde fuerte para el precio actual */
+}
+
+.dark-mode .featured-current-price {
+  color: #34d399; /* Verde un poco más claro en dark mode */
+}
+
+.featured-status-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.featured-percentage-tag {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.featured-percentage-tag.down { background: #dcfce7; color: #10b981; }
+.featured-percentage-tag.up { background: #fee2e2; color: #ef4444; }
+.dark-mode .featured-percentage-tag.down { background: #166534; color: #a7f3d0; }
+.dark-mode .featured-percentage-tag.up { background: #7f1d1d; color: #fecaca; }
+
+.featured-status-stable, .featured-status-new {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: var(--bg-tag-muted);
+  color: var(--text-tag-muted);
+}
+
+.featured-context-box {
+  background: var(--bg-context-box);
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+}
+
+.featured-context-box p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.featured-context-box strong {
+  color: var(--text-main);
+}
+
+.featured-view-product-link {
+  display: inline-block;
+  background: #3b82f6;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.featured-view-product-link:hover {
+  background: #2563eb;
+}
+
+.dark-mode .featured-view-product-link {
+  background: #3b82f6;
+}
+
+.dark-mode .featured-view-product-link:hover {
+  background: #2563eb;
+}
+
+.featured-timestamp {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: right;
+}
+
+
+/* ====================================================================== */
+/* === RESPONSIVE PARA MÓVILES (FEATURED PRODUCT CARD) === */
+/* ====================================================================== */
+@media (max-width: 768px) { /* Usamos 768px para que se active antes en tablets pequeñas */
+  .featured-product-card {
+    flex-direction: column; /* De horizontal a vertical */
+    max-width: 400px; /* Más estrecha en móvil */
+    padding-top: 50px; /* Espacio para el header de tienda */
+  }
+
+  .featured-store-header {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centramos en la parte superior */
+    width: 100%; /* Ocupa todo el ancho */
+    text-align: center;
+    border-radius: 16px 16px 0 0; /* Bordes redondeados arriba */
+    padding: 10px 15px;
+  }
+
+  .featured-image-container {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 180px; /* Altura más compacta */
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px;
+  }
+
+  .featured-info-container {
+    padding: 15px 20px;
+  }
+
+  .featured-title {
+    font-size: 1.3rem;
+  }
+
+  .featured-current-price {
+    font-size: 1.8rem;
+  }
+
+  .featured-view-product-link {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .featured-context-box {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+
+  .featured-timestamp {
+    font-size: 0.75rem;
+  }
+}
