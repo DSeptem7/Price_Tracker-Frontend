@@ -1,10 +1,15 @@
 /* ====================================================================== */
-/* === 0. REINICIO GLOBAL === */
+/* === 0. REINICIO GLOBAL Y FIX GLOBAL DE ESTABILIDAD=== */
 /* ====================================================================== */
 * {
   box-sizing: border-box; /* Evita que el padding y el borde aumenten el ancho de los elementos */
   margin: 0;
   padding: 0;
+}
+
+html {
+  /* Opción Moderna: Reserva el espacio del scrollbar siempre */
+  scrollbar-gutter: stable;
 }
 
 /* ====================================================================== */
@@ -99,6 +104,7 @@
   letter-spacing: -0.5px;
   /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
   flex-grow: 0;
+  margin-right: 20px; /* Un margen de seguridad */
 }
 
 /* CAMBIO 2: Los controles se pegan a la derecha */
