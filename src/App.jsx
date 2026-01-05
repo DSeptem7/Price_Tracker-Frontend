@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom'; 
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ProductDetail from './ProductDetail';
+import FeaturedProductCard from './FeaturedProductCard';
 import {
   LineChart,
   Line,
@@ -575,6 +576,11 @@ const processedProducts = useMemo(() => {
               ))
             ) : currentProducts.length === 0 ? (
               <p className="no-products-message">No se encontraron productos.</p>
+              ) : currentProducts.length === 1 && searchTerm !== "" ? ( // <-- AQUÍ LA LÓGICA CLAVE
+              // Si solo hay un producto Y viene de una búsqueda/filtro (no es la página principal con 1 producto por defecto)
+              <div className="featured-product-wrapper">
+                <FeaturedProductCard product={currentProducts[0]} />
+              </div>
             ) : (
               currentProducts.map((p, index) => {
                 const outOfStock = isOutOfStock(p);
@@ -649,7 +655,7 @@ const processedProducts = useMemo(() => {
                       )}
                       {/* Detenemos la propagación en el link de "Ver producto" para que no active la navegación general */}
                       <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                         {outOfStock ? "Revisar disponibilidad" : "Ver producto original"}
+                         {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
                       </a>
                       <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
                   </div>
