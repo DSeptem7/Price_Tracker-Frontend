@@ -1702,21 +1702,23 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .featured-image-container {
-  flex-shrink: 0; /* La imagen no se encoge */
-  width: 250px; /* Ancho fijo para la imagen */
+  flex-shrink: 0;
+  width: 250px; /* Tamaño fijo en PC */
   height: 250px;
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-image-container);
-  border-right: 1px solid var(--border-color);
+  background: white; /* O var(--bg-image-container) */
+  border-radius: 12px; /* Un toque redondeado interno */
+  margin: 10px;
 }
 
 .featured-image-container img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100% !important;
+  height: 100% !important;
+  /* El secreto para que no se deforme: */
+  object-fit: contain !important; 
 }
 
 .featured-info-container {
@@ -1895,11 +1897,10 @@ input:checked + .slider:before { transform: translateX(21px); }
   }
 
   .featured-image-container {
-    width: 100%; /* Ocupa todo el ancho disponible */
-    height: 180px; /* Altura más compacta */
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 15px;
+    width: 100% !important;
+    height: 200px !important; /* Más baja en móvil para que no ocupe toda la pantalla */
+    margin: 0;
+    border-radius: 12px 12px 0 0;
   }
 
   .featured-info-container {
