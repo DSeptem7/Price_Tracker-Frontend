@@ -98,7 +98,8 @@
   color: #3b82f6;
   letter-spacing: -0.5px;
   /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
-  flex-grow: 1; 
+  flex-grow: 0;
+  margin-right: 20px; /* Un margen de seguridad */
 }
 
 /* CAMBIO 2: Los controles se pegan a la derecha */
