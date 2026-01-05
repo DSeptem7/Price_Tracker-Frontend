@@ -1769,14 +1769,6 @@ input:checked + .slider:before { transform: translateX(21px); }
   align-items: center; /* Cambiamos flex-start por center */
 }
 
-.featured-prices {
-  display: flex;
-  flex-direction: column; /* Cambiamos a columna para mejor control */
-  gap: 5px;
-  margin-bottom: 15px;
-  align-items: flex-start; /* Todo alineado a la izquierda */
-}
-
 .featured-previous-price {
   font-size: 1.1rem;
   color: var(--text-muted);
@@ -1911,7 +1903,21 @@ input:checked + .slider:before { transform: translateX(21px); }
   }
 
   .featured-info-container {
-    padding: 15px 20px;
+    align-items: center !important; /* Fuerza el centrado horizontal de todo */
+    text-align: center !important;
+  }
+
+  .featured-prices {
+    width: 100% !important;
+    align-items: center !important; /* Centra los precios uno sobre otro */
+    justify-content: center !important;
+  }
+
+  .featured-previous-price {
+    justify-content: center !important; /* Centra el contenido del flex del precio anterior */
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 
   .featured-title {
