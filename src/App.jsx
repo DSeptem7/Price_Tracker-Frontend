@@ -579,7 +579,10 @@ const processedProducts = useMemo(() => {
   <p className="no-products-message">No se encontraron productos.</p>
 ) : currentProducts.length === 1 && searchTerm !== "" ? (
   <div className="featured-product-wrapper">
-    <FeaturedProductCard product={currentProducts[0]} />
+    <FeaturedProductCard 
+      product={currentProducts[0]} 
+      setSearchTerm={setSearchTerm} 
+    />
   </div>
 ) : (
   /* AQUÍ LA CORRECCIÓN: Abrimos la grilla y metemos el map dentro */
