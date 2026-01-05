@@ -600,18 +600,14 @@ const processedProducts = useMemo(() => {
                     className="product-card" 
                     /* === CAMBIO AQUÍ: Navegación en lugar de Modal === */
                     onClick={() => {
-                      console.log("=== DIAGNÓSTICO DE CLIC ===");
-                      console.log("Producto completo:", p);
-                      console.log("ID del producto:", p.id);
-                      console.log("Tipo de ID:", typeof p.id);
-                      if (p.id) {
-                        navigate(`/producto/${p.id}`);
-                      } else {
-                        console.error("Este producto no tiene ID:", p);
-                      }
-                      if (p._id) {
-                        console.warn("¡Encontré _id en lugar de id! Usando _id para navegar...");
-                        navigate(`/producto/${p._id}`);
+                      console.log("Navegando a ID:", p.id);
+                      
+                      // 1. Limpiamos la búsqueda primero para desbloquear la vista
+                      if (setSearchTerm) setSearchTerm(""); 
+                      
+                      // 2. Navegamos
+                      navigate(`/producto/${p.id}`);
+                    }}
                       }
                     }} 
                     style={{ 
