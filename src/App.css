@@ -1763,9 +1763,10 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 .featured-prices {
   display: flex;
-  align-items: baseline;
-  gap: 15px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+  align-items: center; /* Cambiamos flex-start por center */
 }
 
 .featured-prices {
@@ -1799,8 +1800,10 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 .featured-status-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  justify-content: center; /* Asegura que las etiquetas se agrupen al centro */
 }
 
 .featured-percentage-tag {
@@ -1832,6 +1835,7 @@ input:checked + .slider:before { transform: translateX(21px); }
   margin-bottom: 15px;
   font-size: 0.9rem;
   border: 1px solid var(--border-color);
+  width: fit-content; /* Para que no ocupe todo el ancho y se vea centrado */
 }
 
 .featured-context-box p {
