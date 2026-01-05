@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const FeaturedProductCard = ({ product }) => {
+const FeaturedProductCard = ({ product, setSearchTerm }) => {
   const navigate = useNavigate();
 
   // Asegúrate de tener estas funciones para manejar los precios y stock
@@ -22,7 +22,13 @@ const FeaturedProductCard = ({ product }) => {
   return (
     <div 
       className="featured-product-card" 
-      onClick={() => navigate(`/producto/${product.id}`)}
+      onClick={() => {
+        // 1. LIMPIAR la búsqueda para que la navegación sea efectiva
+        if (setSearchTerm) setSearchTerm(""); 
+        
+        // 2. NAVEGAR al detalle
+        navigate(`/producto/${product.id}`);
+      }}
       style={{ cursor: 'pointer', animationDelay: '0s' }}
     >
       <div className={`featured-store-header ${storeClass}`}>{storeName}</div>
