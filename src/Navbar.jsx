@@ -81,17 +81,6 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
               <div className="slider"></div>
             </label>
           </div>
-          
-         {/* CONTADOR SIEMPRE PRESENTE PERO OCULTO SI NO HAY DATOS */}
-          <span 
-            className="product-count" 
-            style={{ 
-              visibility: productCount !== undefined ? 'visible' : 'hidden',
-              opacity: productCount !== undefined ? 1 : 0
-            }}
-          >
-            {productCount || 0} Productos
-          </span>
 
         </div>
       </div>
