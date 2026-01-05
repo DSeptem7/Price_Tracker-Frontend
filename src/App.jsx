@@ -608,8 +608,7 @@ const processedProducts = useMemo(() => {
                       // 2. Navegamos
                       navigate(`/producto/${p.id}`);
                     }}
-                      }
-                    }} 
+   
                     style={{ 
                       opacity: outOfStock ? 0.7 : 1, 
                       filter: outOfStock ? "grayscale(100%)" : "none",
