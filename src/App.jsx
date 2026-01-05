@@ -553,6 +553,12 @@ const processedProducts = useMemo(() => {
              </div>
           )}
 
+            {/* AQUÍ PONEMOS EL CONTADOR - Es parte del contenido, no de la barra */}
+            <span style={{ color: '#666', fontWeight: '600' }}>
+                  {processedProducts.length} Resultados
+                </span>
+              </div>
+
           <div className="product-grid">
             {loading ? (
               // Ahora usará 8 en móvil y 15 en PC automáticamente
