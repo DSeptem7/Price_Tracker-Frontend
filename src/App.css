@@ -1078,7 +1078,6 @@ html {
   }
 }
 
-
 /* ====================================================================== */
 /* === 8. MODAL Y PAGINACIÓN === */
 /* ====================================================================== */
@@ -1710,45 +1709,23 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .featured-image-container {
-  position: relative; /* CRÍTICO: Esto atrapa los elementos flotantes */
+  flex-shrink: 0;
+  width: 250px; /* Tamaño fijo en PC */
+  height: 250px;
+  padding: 20px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 250px; /* Altura fija para evitar saltos */
-  width: 250px;
-  background: white;
-  border-radius: 12px;
-  margin: 0 auto 20px auto; /* Centrado */
+  justify-content: center;
+  background: white; /* O var(--bg-image-container) */
+  border-radius: 12px; /* Un toque redondeado interno */
+  margin: 10px;
 }
 
-/* 2. La imagen se ajusta sin deformarse */
 .featured-image-container img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.featured-image-container .alert-badge, 
-.featured-image-container .low_historical { 
-  position: absolute !important; /* Flotar */
-  top: 10px;
-  left: 10px;
-  margin: 0; /* Sin márgenes que empujen */
-  z-index: 10;
-  /* Aseguramos el estilo verde */
-  background-color: #dcfce7;
-  color: #15803d;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.featured-img {
-  max-width: 100%;
-  max-height: 240px;
-  object-fit: contain;
+  width: 100% !important;
+  height: 100% !important;
+  /* El secreto para que no se deforme: */
+  object-fit: contain !important; 
 }
 
 .featured-info-container {
@@ -1779,7 +1756,6 @@ input:checked + .slider:before { transform: translateX(21px); }
 .featured-store-header.store-amazon { background: #ff9900; color: white; }
 .dark-mode .featured-store-header.store-ml { background: #ffe600; color: #333; }
 .dark-mode .featured-store-header.store-amazon { background: #ff9900; color: white; }
-
 
 .featured-title {
   font-size: 1.6rem;
@@ -1905,7 +1881,6 @@ input:checked + .slider:before { transform: translateX(21px); }
   text-align: right;
 }
 
-
 /* ====================================================================== */
 /* === RESPONSIVE PARA MÓVILES (FEATURED PRODUCT CARD) === */
 /* ====================================================================== */
@@ -1973,3 +1948,4 @@ input:checked + .slider:before { transform: translateX(21px); }
     font-size: 0.75rem;
   }
 }
+
