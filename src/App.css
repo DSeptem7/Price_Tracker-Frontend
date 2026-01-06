@@ -1423,7 +1423,7 @@ input:checked + .slider:before { transform: translateX(21px); }
 .detail-page {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px 20px 20px; /* Quitamos el padding superior de 20px */
   min-height: 100vh;
 }
 
@@ -1431,7 +1431,7 @@ input:checked + .slider:before { transform: translateX(21px); }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .back-btn {
@@ -1665,14 +1665,14 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 /* Aseguramos que el contenedor del detalle baje lo suficiente */
 .detail-container {
-  padding-top: 100px; /* Ajusta este valor según la altura de tu Navbar */
+  padding-top: 20px; /* Ajusta este valor según la altura de tu Navbar */
   max-width: 1300px;
   margin: 0 auto;
-  margin-top: 40px; /* Añadimos margen para que no choque con el Navbar sticky */
+  margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
 }
 
 /* ====================================================================== */
-/* === DISEÑO DE TARJETA DESTACADA (FEATURED PRODUCT CARD) === */
+/* === 13. DISEÑO DE TARJETA DESTACADA (FEATURED PRODUCT CARD) === */
 /* ====================================================================== */
 
 .featured-product-wrapper {
