@@ -172,3 +172,4 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
 };
 
 export default ProductDetail;
+
