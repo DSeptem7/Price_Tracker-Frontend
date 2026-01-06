@@ -240,7 +240,15 @@ useEffect(() => {
       return acc + (prev > current ? prev - current : 0);
     }, 0);
 
-    let bestDiscount = { title: "Ninguna", percent: 0 };
+   // CAMBIO: Objeto inicial con propiedades seguras
+let bestDiscount = { 
+  title: "Ninguna", 
+  percent: 0, 
+  price: "$0", 
+  url: "", 
+  history: [], 
+  status: "stable" 
+};
 
     const realOffers = available.filter(p => {
       const current = parsePrice(p.price);
