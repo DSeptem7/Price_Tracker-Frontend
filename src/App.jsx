@@ -224,47 +224,46 @@ useEffect(() => {
     const cleanStr = priceStr.toString().replace(/[^0-9.]/g, "");
     return parseFloat(cleanStr) || 0;
   };
-
-  const isOutOfStock = (p) => {
-      const priceNum = parsePrice(p.price);
-      return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
-  };
-
-// === LÓGICA DE ESTADÍSTICAS (CON FILTRO DE HONESTIDAD) ===
+// === LÓGICA DE ESTADÍSTICAS (ROBUSTA Y HONESTA) ===
 const stats = useMemo(() => {
   const available = products.filter(p => !isOutOfStock(p));
   const drops = available.filter(p => p.status === "down");
   const highs = available.filter(p => p.status === "up");
   
+  // Mantenemos el ahorro total basado en el cambio detectado
   const totalSavings = drops.reduce((acc, p) => {
     const current = parsePrice(p.price);
     const prev = parsePrice(p.previous_price);
     return acc + (prev > current ? prev - current : 0);
   }, 0);
 
-  // --- NUEVA LÓGICA DE MEJOR DESCUENTO REAL ---
   let bestDiscount = { title: "Ninguna", percent: 0 };
 
-  // 1. Solo consideramos productos que están por debajo de su precio frecuente (mode_price)
+  // FILTRO DE HONESTIDAD: Solo consideramos productos por debajo de su precio frecuente
   const realOffers = available.filter(p => {
     const current = parsePrice(p.price);
     const mode = parsePrice(p.mode_price);
     return current < mode && mode > 0;
   });
 
-  // 2. De las ofertas reales, buscamos la que tenga mayor caída respecto al historial
   realOffers.forEach(p => {
     const current = parsePrice(p.price);
     const mode = parsePrice(p.mode_price);
-    
-    // Calculamos el % de descuento REAL (basado en el promedio, no en el inflado)
     const realPercent = ((mode - current) / mode) * 100;
 
     if (realPercent > bestDiscount.percent) {
-      // Guardamos TODA la info del producto (p) + el porcentaje calculado
+      // --- ARQUEOLOGÍA DE PRECIO ANTERIOR REAL ---
+      // Buscamos en el historial el último precio que NO sea el actual
+      const history = p.history || [];
+      const lastDifferentEntry = [...history]
+        .reverse()
+        .find(entry => parsePrice(entry.price) !== current);
+
       bestDiscount = { 
         ...p, 
-        percent: Math.round(realPercent) 
+        percent: Math.round(realPercent),
+        // Si hallamos el precio de $21,999 en el historial, lo guardamos aquí
+        true_previous_price: lastDifferentEntry ? lastDifferentEntry.price : p.previous_price
       };
     }
   });
