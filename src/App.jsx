@@ -224,52 +224,61 @@ useEffect(() => {
     const cleanStr = priceStr.toString().replace(/[^0-9.]/g, "");
     return parseFloat(cleanStr) || 0;
   };
-// === LÓGICA DE ESTADÍSTICAS (ROBUSTA Y HONESTA) ===
-const stats = useMemo(() => {
-  const available = products.filter(p => !isOutOfStock(p));
-  const drops = available.filter(p => p.status === "down");
-  const highs = available.filter(p => p.status === "up");
-  
-  // Mantenemos el ahorro total basado en el cambio detectado
-  const totalSavings = drops.reduce((acc, p) => {
-    const current = parsePrice(p.price);
-    const prev = parsePrice(p.previous_price);
-    return acc + (prev > current ? prev - current : 0);
-  }, 0);
+  const stats = useMemo(() => {
+    // 1. Verificación de seguridad inicial
+    if (!products || products.length === 0) {
+      return { dropCount: 0, upCount: 0, totalSavings: 0, bestDiscount: { title: "Ninguna", percent: 0 } };
+    }
 
-  let bestDiscount = { title: "Ninguna", percent: 0 };
+    const available = products.filter(p => !isOutOfStock(p));
+    const drops = available.filter(p => p.status === "down");
+    const highs = available.filter(p => p.status === "up");
+    
+    const totalSavings = drops.reduce((acc, p) => {
+      const current = parsePrice(p.price);
+      const prev = parsePrice(p.previous_price);
+      return acc + (prev > current ? prev - current : 0);
+    }, 0);
 
-  // FILTRO DE HONESTIDAD: Solo consideramos productos por debajo de su precio frecuente
-  const realOffers = available.filter(p => {
-    const current = parsePrice(p.price);
-    const mode = parsePrice(p.mode_price);
-    return current < mode && mode > 0;
-  });
+    let bestDiscount = { title: "Ninguna", percent: 0 };
 
-  realOffers.forEach(p => {
-    const current = parsePrice(p.price);
-    const mode = parsePrice(p.mode_price);
-    const realPercent = ((mode - current) / mode) * 100;
+    const realOffers = available.filter(p => {
+      const current = parsePrice(p.price);
+      const mode = parsePrice(p.mode_price);
+      return current < mode && mode > 0;
+    });
 
-    if (realPercent > bestDiscount.percent) {
-      // --- ARQUEOLOGÍA DE PRECIO ANTERIOR REAL ---
-      // Buscamos en el historial el último precio que NO sea el actual
-      const history = p.history || [];
+    if (realOffers.length > 0) {
+      const winner = realOffers.reduce((prev, current) => {
+        const pPrice = parsePrice(prev.price);
+        const pMode = parsePrice(prev.mode_price);
+        const cPrice = parsePrice(current.price);
+        const cMode = parsePrice(current.mode_price);
+        
+        const prevRealDisc = pMode > 0 ? (pMode - pPrice) / pMode : 0;
+        const currRealDisc = cMode > 0 ? (cMode - cPrice) / cMode : 0;
+
+        return (currRealDisc > prevRealDisc) ? current : prev;
+      }, realOffers[0]);
+
+      // --- ARQUEOLOGÍA SEGURA ---
+      const history = winner?.history || [];
+      const currentVal = parsePrice(winner?.price);
+      
+      // Usamos el encadenamiento opcional ?. para evitar el pantallazo blanco
       const lastDifferentEntry = [...history]
         .reverse()
-        .find(entry => parsePrice(entry.price) !== current);
+        .find(entry => entry && parsePrice(entry.price) !== currentVal);
 
       bestDiscount = { 
-        ...p, 
-        percent: Math.round(realPercent),
-        // Si hallamos el precio de $21,999 en el historial, lo guardamos aquí
-        true_previous_price: lastDifferentEntry ? lastDifferentEntry.price : p.previous_price
+        ...winner, 
+        percent: Math.round(((parsePrice(winner.mode_price) - currentVal) / parsePrice(winner.mode_price)) * 100),
+        true_previous_price: lastDifferentEntry ? lastDifferentEntry.price : winner.previous_price
       };
     }
-  });
 
-  return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
-}, [products]);
+    return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
+  }, [products]);
 
   const handleTrackProduct = async () => {
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
