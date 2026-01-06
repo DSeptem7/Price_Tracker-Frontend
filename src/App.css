@@ -1710,36 +1710,39 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .featured-image-container {
-  flex-shrink: 0;
-  width: 250px; /* Tamaño fijo en PC */
-  height: 250px;
-  padding: 20px;
-  position: relative;
+  position: relative; /* CRÍTICO: Esto atrapa los elementos flotantes */
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: white; /* O var(--bg-image-container) */
-  border-radius: 12px; /* Un toque redondeado interno */
-  margin: 10px;
+  align-items: center;
+  height: 250px; /* Altura fija para evitar saltos */
+  width: 250px;
+  background: white;
+  border-radius: 12px;
+  margin: 0 auto 20px auto; /* Centrado */
 }
 
+/* 2. La imagen se ajusta sin deformarse */
 .featured-image-container img {
-  width: 100% !important;
-  height: 100% !important;
-  /* El secreto para que no se deforme: */
-  object-fit: contain !important; 
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-.featured-image-container .alert-badge {
-  position: absolute; /* Lo sacamos del flujo para que no empuje nada */
+.featured-image-container .alert-badge, 
+.featured-image-container .low_historical { 
+  position: absolute !important; /* Flotar */
   top: 10px;
   left: 10px;
+  margin: 0; /* Sin márgenes que empujen */
   z-index: 10;
-  padding: 4px 12px;
+  /* Aseguramos el estilo verde */
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 0.75rem;
-  border-radius: 4px;
   font-weight: 800;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .featured-img {
