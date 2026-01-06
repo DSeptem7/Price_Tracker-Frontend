@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Routes, Route, useNavigate } from 'react-router-dom'; 
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ProductDetail from './ProductDetail';
+import FeaturedProductCard from './FeaturedProductCard';
 import {
   LineChart,
   Line,
@@ -553,93 +554,106 @@ const processedProducts = useMemo(() => {
              </div>
           )}
 
-          <div className="product-grid">
-            {loading ? (
-              // Ahora usará 8 en móvil y 15 en PC automáticamente
-              Array.from({ length: itemsPerPage }).map((_, index) => (
-                <div key={index} className="product-card skeleton-card">
-                  <div className="skeleton-img"></div>
-                  <div className="skeleton-title"></div>
-                  <div className="skeleton-text"></div>
-                  <div className="skeleton-text short"></div>
-                </div>
-              ))
-            ) : currentProducts.length === 0 ? (
-              <p className="no-products-message">No se encontraron productos.</p>
-            ) : (
-              currentProducts.map((p, index) => {
-                const outOfStock = isOutOfStock(p);
-                const isML = p.url.includes("mercadolibre");
-                const isAmazon = p.url.includes("amazon");
-                const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
-                const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
-                const currentPriceNum = parsePrice(p.price);
-                const minHistoricalNum = parsePrice(p.min_historical_price);
-                const modePriceNum = parsePrice(p.mode_price);
-                const isAtHistoricalLow = currentPriceNum > 0 && Math.abs(currentPriceNum - minHistoricalNum) < 0.01 && currentPriceNum < modePriceNum && !outOfStock;
+{/* CONTADOR */}
+{!loading && (
+  <div style={{ marginBottom: '15px', textAlign: 'right' }}>
+    <span style={{ color: 'var(--text-muted, #666)', fontWeight: '600', fontSize: '0.9rem' }}>
+      {processedProducts.length} Productos encontrados
+    </span>
+  </div>
+)}
 
-                const renderPreviousPrice = () => {
-                  if (!outOfStock && p.status !== "new" && p.previous_price) {
-                    return <p className="previous-price">Antes: <s>{p.previous_price}</s></p>;
-                  }
-                  return <div style={{ height: '18px', margin: '0' }}></div>;
-                };
+{/* INICIO DE LÓGICA CONDICIONAL */}
+{loading ? (
+  <div className="product-grid">
+    {Array.from({ length: itemsPerPage }).map((_, index) => (
+      <div key={index} className="product-card skeleton-card">
+        <div className="skeleton-img"></div>
+        <div className="skeleton-title"></div>
+        <div className="skeleton-text"></div>
+        <div className="skeleton-text short"></div>
+      </div>
+    ))}
+  </div>
+) : currentProducts.length === 0 ? (
+  <p className="no-products-message">No se encontraron productos.</p>
+) : currentProducts.length === 1 && searchTerm !== "" ? (
+  <div className="featured-product-wrapper">
+    <FeaturedProductCard 
+      product={currentProducts[0]} 
+      setSearchTerm={setSearchTerm} 
+    />
+  </div>
+) : (
+  /* AQUÍ LA CORRECCIÓN: Abrimos la grilla y metemos el map dentro */
+  <div className="product-grid">
+    {currentProducts.map((p, index) => {
+      const outOfStock = isOutOfStock(p);
+      const isML = p.url.includes("mercadolibre");
+      const isAmazon = p.url.includes("amazon");
+      const storeName = isML ? "Mercado Libre" : isAmazon ? "Amazon" : "Tienda";
+      const storeClass = isML ? "store-ml" : isAmazon ? "store-amazon" : "store-default";
+      const currentPriceNum = parsePrice(p.price);
+      const minHistoricalNum = parsePrice(p.min_historical_price);
+      const modePriceNum = parsePrice(p.mode_price);
+      const isAtHistoricalLow = currentPriceNum > 0 && Math.abs(currentPriceNum - minHistoricalNum) < 0.01 && currentPriceNum < modePriceNum && !outOfStock;
 
-                return (
-                  <div 
-                    key={index} 
-                    className="product-card" 
-                    /* === CAMBIO AQUÍ: Navegación en lugar de Modal === */
-                    /* Usamos p.id para la ruta. Si no tienes ID aún, usa p.title temporalmente, pero id es mejor */
-                    onClick={() => navigate(`/producto/${p.id}`)} 
-                    style={{ 
-                      opacity: outOfStock ? 0.7 : 1, 
-                      filter: outOfStock ? "grayscale(100%)" : "none",
-                      cursor: 'pointer', /* Añadimos manita para indicar que es clickeable */
-                      animationDelay: `${index * 0.05}s` 
-                    }}
-                  >
-                      <div className={`store-header ${storeClass}`}>{storeName}</div>
-                      <div className="image-container">
-                        <img src={p.image} alt={p.title} />
-                        {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
-                        {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
-                      </div>
-                      <h3>{p.title}</h3>
-                      {renderPreviousPrice()}
-                      <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
-                      <div className="status-row">
-                        {!outOfStock && (
-                          <>
-                            {p.status === "down" && (
-                              <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
-                            )}
-                            {p.status === "up" && (
-                              <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>
-                            )}
-                            {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status || p.status === "") && p.status !== "new" && (
-                              <span className="status-stable">Sin cambios</span>
-                            )}
-                            {p.status === "new" && <span className="status-new">Recién añadido</span>}
-                          </>
-                        )}
-                      </div>
-                      {!outOfStock && p.mode_price && (
-                          <div className="context-box">
-                            <p><strong>Frecuente:</strong> {p.mode_price}</p>
-                            <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-                          </div>
-                      )}
-                      {/* Detenemos la propagación en el link de "Ver producto" para que no active la navegación general */}
-                      <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-                         {outOfStock ? "Revisar disponibilidad" : "Ver producto original"}
-                      </a>
-                      <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
-                  </div>
-                )
-              })
+      const renderPreviousPrice = () => {
+        if (!outOfStock && p.status !== "new" && p.previous_price) {
+          return <p className="previous-price">Antes: <s>{p.previous_price}</s></p>;
+        }
+        return <div style={{ height: '18px', margin: '0' }}></div>;
+      };
+
+      return (
+        <div 
+          key={p.id || index} 
+          className="product-card" 
+          onClick={() => {
+            if (setSearchTerm) setSearchTerm(""); 
+            navigate(`/producto/${p.id}`);
+          }}
+          style={{ 
+            opacity: outOfStock ? 0.7 : 1, 
+            filter: outOfStock ? "grayscale(100%)" : "none",
+            cursor: 'pointer',
+            animationDelay: `${index * 0.05}s` 
+          }}
+        >
+          <div className={`store-header ${storeClass}`}>{storeName}</div>
+          <div className="image-container">
+            <img src={p.image} alt={p.title} />
+            {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
+            {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
+          </div>
+          <h3>{p.title}</h3>
+          {renderPreviousPrice()}
+          <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+          <div className="status-row">
+            {!outOfStock && (
+              <>
+                {p.status === "down" && <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
+                {p.status === "up" && <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
+                {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status) && p.status !== "new" && <span className="status-stable">Sin cambios</span>}
+                {p.status === "new" && <span className="status-new">Recién añadido</span>}
+              </>
             )}
           </div>
+          {!outOfStock && p.mode_price && (
+            <div className="context-box">
+              <p><strong>Frecuente:</strong> {p.mode_price}</p>
+              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
+            </div>
+          )}
+          <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
+             {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
+          </a>
+          <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
+        </div>
+      );
+    })}
+  </div> /* Cerramos product-grid después del map */
+)}
 
           {/* Paginación Inferior */}
           {totalPages > 1 && !loading && (

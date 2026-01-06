@@ -1,10 +1,15 @@
 /* ====================================================================== */
-/* === 0. REINICIO GLOBAL === */
+/* === 0. REINICIO GLOBAL Y FIX GLOBAL DE ESTABILIDAD=== */
 /* ====================================================================== */
 * {
   box-sizing: border-box; /* Evita que el padding y el borde aumenten el ancho de los elementos */
   margin: 0;
   padding: 0;
+}
+
+html {
+  /* Opción Moderna: Reserva el espacio del scrollbar siempre */
+  scrollbar-gutter: stable;
 }
 
 /* ====================================================================== */
@@ -98,16 +103,17 @@
   color: #3b82f6;
   letter-spacing: -0.5px;
   /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
-  flex-grow: 1; 
+  flex-grow: 0;
+  margin-right: 20px; /* Un margen de seguridad */
 }
 
 /* CAMBIO 2: Los controles se pegan a la derecha */
 .nav-controls {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Asegura que todo esté a la derecha */
-  gap: 20px !important; /* Espacio un poco mayor entre buscador, switch y contador */
-  min-width: fit-content;
+  justify-content: flex-end;
+  gap: 15px; /* Un gap normal es suficiente ahora */
+  /* Eliminamos min-width raros */
 }
 
 /* --- BUSCADOR MINIMALISTA (El CSS es el mismo del paso anterior) --- */
@@ -215,6 +221,10 @@
   padding: 4px 12px;
   border-radius: 20px;
   font-weight: 600;
+  /* AGREGAR ESTO PARA EVITAR CAMBIOS DE TAMAÑO INTERNOS */
+  min-width: 110px; /* Un ancho suficiente para "999+ Productos" */
+  text-align: center; /* Para que el texto se vea centrado en esa cajita */
+  display: inline-block; /* Necesario para que respete el ancho */
 }
 
 .main-content {
@@ -638,6 +648,8 @@
   gap: 35px 20px; 
   padding: 30px 0;
   min-height: 800px;
+  /* Evita que las tarjetas se estiren verticalmente de forma rara */
+  align-items: start;
 }
 
 .product-card {
@@ -831,14 +843,18 @@
 }
 
 .status-new {
-  font-size: 11px;
-  color: #0369a1;
-  background: #e0f2fe;
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-weight: 700;
+  font-size: 11px !important; /* Forzamos tamaño pequeño */
+  color: #0369a1 !important;  /* Azul oscuro */
+  background: #e0f2fe !important; /* Azul cielo suave */
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  font-weight: 800 !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid #bae6fd; /* Borde sutil para que no se vea plano */
+  display: inline-flex;
+  align-items: center;
+  height: 22px; /* Altura controlada */
 }
 
 /* Caja de Contexto (Precios frecuentes) */
@@ -873,13 +889,18 @@
 /* ====================================================================== */
 @media (max-width: 600px) {
   .search-box.expanded {
-    width: 150px !important; /* Un poco más estrecho en celular */
+    width: 140px !important; /* Un poco más estrecho en celular */
   }
   
+  /* 2. El Logo: permitimos que se ajuste */
   .logo {
-    font-size: 1rem !important; /* Reducimos el tamaño */
-    flex-grow: 0 !important; /* Ya no empuja, para dar espacio al buscador */
-    margin-right: auto; /* Se pega a la izquierda */
+    font-size: 1.1rem !important;
+    margin-right: auto !important; /* Esto empuja los controles a la derecha de forma natural */
+    flex-shrink: 1 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Si el nombre es muy largo, pone puntos suspensivos */
+    max-width: 50%; /* Evita que el logo ocupe toda la pantalla */
   }
 
   .nav-search-input {
@@ -888,7 +909,11 @@
   }
 
   .nav-controls {
-    gap: 12px !important; /* Menos espacio entre elementos en móvil */
+    min-width: 0 !important; /* CRÍTICO: Elimina el bloqueo de 280px */
+    width: auto !important;
+    gap: 10px !important; /* Espacio más apretado para que quepa todo */
+    display: flex !important;
+    flex-shrink: 0 !important; /* Los iconos no deben achicarse */
   }
 
   .search-box {
@@ -925,7 +950,9 @@
 
   /* 2. Ajuste de Grilla: 2 columnas perfectas */
   .product-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
+    display: grid !important;
+    /* El secreto está aquí: minmax evita que crezcan infinitamente */
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important; 
     gap: 12px !important; 
     padding: 15px 10px !important;
     align-items: stretch !important;
@@ -965,8 +992,17 @@
 
   /* 5. Controles y Navbar - Ajuste de Simetría */
   .navbar-content { 
+    display: flex !important;
     justify-content: space-between !important; 
+    align-items: center !important; /* Alineación vertical perfecta */
     padding: 0 15px !important;
+    height: 100% !important;
+  }
+
+  /* 1. Quitamos el espaciador invisible en móvil para que no empuje */
+  .navbar-content div[style*="flex-grow: 1"] {
+    flex-grow: 0 !important;
+    width: 0 !important;
   }
 
   /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
@@ -1633,4 +1669,282 @@ input:checked + .slider:before { transform: translateX(21px); }
   max-width: 1300px;
   margin: 0 auto;
   margin-top: 40px; /* Añadimos margen para que no choque con el Navbar sticky */
+}
+
+/* ====================================================================== */
+/* === DISEÑO DE TARJETA DESTACADA (FEATURED PRODUCT CARD) === */
+/* ====================================================================== */
+
+.featured-product-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px;
+  width: 100% !important;
+}
+
+.featured-product-card {
+  display: flex; /* Es horizontal */
+  align-items: center; /* Centra verticalmente el contenido */
+  background: var(--bg-card);
+  border: 2px solid var(--border-color-highlight); /* Borde vibrante */
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 900px; /* Ancho máximo para pantallas grandes */
+  width: 100% !important; /* Para que ocupe todo el espacio disponible hasta el max-width */
+  margin: 0 !important;
+  transition: all 0.3s ease;
+  position: relative;
+  min-height: 250px; /* Altura mínima */
+}
+
+.dark-mode .featured-product-card {
+  border-color: #3b82f6; /* Azul más oscuro en dark mode */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.featured-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+}
+
+.featured-image-container {
+  flex-shrink: 0;
+  width: 250px; /* Tamaño fijo en PC */
+  height: 250px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white; /* O var(--bg-image-container) */
+  border-radius: 12px; /* Un toque redondeado interno */
+  margin: 10px;
+}
+
+.featured-image-container img {
+  width: 100% !important;
+  height: 100% !important;
+  /* El secreto para que no se deforme: */
+  object-fit: contain !important; 
+}
+
+.featured-info-container {
+  flex-grow: 1;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center;     /* ESTA ES LA CLAVE: Centra horizontalmente todo el bloque */
+  text-align: center;      /* Centra el texto de los párrafos */
+}
+
+.featured-store-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #3b82f6; /* Color de tienda por defecto */
+  color: white;
+  padding: 6px 15px;
+  border-bottom-right-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  z-index: 5;
+}
+
+/* Colores de las tiendas en la tarjeta destacada */
+.featured-store-header.store-ml { background: #ffe600; color: #333; }
+.featured-store-header.store-amazon { background: #ff9900; color: white; }
+.dark-mode .featured-store-header.store-ml { background: #ffe600; color: #333; }
+.dark-mode .featured-store-header.store-amazon { background: #ff9900; color: white; }
+
+.featured-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limita el título a 2 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.featured-prices {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+  align-items: center; /* Cambiamos flex-start por center */
+}
+
+.featured-previous-price {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* AGREGAR ESTO para centrar el texto tachado */
+  gap: 10px;
+  width: 100%; /* Asegura que ocupe todo el ancho para poder centrar */
+}
+
+.featured-current-price {
+  font-size: 2.8rem; /* Un poco más grande para impacto */
+  font-weight: 800;
+  color: #10b981;
+  line-height: 1;
+  margin: 0;
+}
+
+.dark-mode .featured-current-price {
+  color: #34d399; /* Verde un poco más claro en dark mode */
+}
+
+.featured-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center; /* Asegura que las etiquetas se agrupen al centro */
+}
+
+.featured-percentage-tag {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.featured-percentage-tag.down { background: #dcfce7; color: #10b981; }
+.featured-percentage-tag.up { background: #fee2e2; color: #ef4444; }
+.dark-mode .featured-percentage-tag.down { background: #166534; color: #a7f3d0; }
+.dark-mode .featured-percentage-tag.up { background: #7f1d1d; color: #fecaca; }
+
+.featured-status-stable, .featured-status-new {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: var(--bg-tag-muted);
+  color: var(--text-tag-muted);
+}
+
+.featured-context-box {
+  background: var(--bg-context-box);
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  width: fit-content; /* Para que no ocupe todo el ancho y se vea centrado */
+}
+
+.featured-context-box p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.featured-context-box strong {
+  color: var(--text-main);
+}
+
+.featured-view-product-link {
+  display: inline-block;
+  background: #3b82f6;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.featured-view-product-link:hover {
+  background: #2563eb;
+}
+
+.dark-mode .featured-view-product-link {
+  background: #3b82f6;
+}
+
+.dark-mode .featured-view-product-link:hover {
+  background: #2563eb;
+}
+
+.featured-timestamp {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* ====================================================================== */
+/* === RESPONSIVE PARA MÓVILES (FEATURED PRODUCT CARD) === */
+/* ====================================================================== */
+@media (max-width: 768px) { /* Usamos 768px para que se active antes en tablets pequeñas */
+  .featured-product-card {
+    flex-direction: column; /* De horizontal a vertical */
+    max-width: 400px; /* Más estrecha en móvil */
+    padding-top: 50px; /* Espacio para el header de tienda */
+  }
+
+  .featured-store-header {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centramos en la parte superior */
+    width: 100%; /* Ocupa todo el ancho */
+    text-align: center;
+    border-radius: 16px 16px 0 0; /* Bordes redondeados arriba */
+    padding: 10px 15px;
+  }
+
+  .featured-image-container {
+    width: 100% !important;
+    height: 200px !important; /* Más baja en móvil para que no ocupe toda la pantalla */
+    margin: 0;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .featured-info-container {
+    align-items: center !important; /* Fuerza el centrado horizontal de todo */
+    text-align: center !important;
+  }
+
+  .featured-prices {
+    width: 100% !important;
+    align-items: center !important; /* Centra los precios uno sobre otro */
+    justify-content: center !important;
+  }
+
+  .featured-previous-price {
+    justify-content: center !important; /* Centra el contenido del flex del precio anterior */
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .featured-title {
+    font-size: 1.3rem;
+  }
+
+  .featured-current-price {
+    font-size: 1.8rem;
+  }
+
+  .featured-view-product-link {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .featured-context-box {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+
+  .featured-timestamp {
+    font-size: 0.75rem;
+  }
 }
