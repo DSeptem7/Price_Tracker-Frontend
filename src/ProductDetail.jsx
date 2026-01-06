@@ -154,9 +154,9 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
               </div>
 
               <div className="stat-card-mini full-width-mobile" 
-                  style={{ borderTop: `3px solid ${product.rec_color}`, background: `${product.rec_color}10` }}>
+                  style={{ borderTop: `3px solid ${finalColor}`, background: `${finalColor}10` }}>
                 <span>Análisis de Mercado</span>
-                <strong style={{ color: product.rec_color }}>{product.recommendation}</strong>
+                <strong style={{ color: finalColor }}>{finalRecommendation}</strong>
               </div>
           
               <div className="time-info-row">
