@@ -36,6 +36,27 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
   if (loading) return <div className="loading-state">Cargando análisis profundo...</div>;
   if (!product) return <div>Producto no encontrado.</div>;
 
+  // --- LÓGICA DE CORRECCIÓN DE ANÁLISIS ---
+    const currentPrice = product.current_price;
+    const modePrice = product.mode_price;
+    const minPrice = product.min_historical;
+
+    let finalRecommendation = product.recommendation;
+    let finalColor = product.rec_color;
+
+    // CASO DE ERROR: El producto es estable (Precio Actual == Precio Frecuente)
+    // pero se marca como Mínimo Histórico erróneamente.
+    if (currentPrice === modePrice) {
+        finalRecommendation = "Precio Estable. Es el precio habitual de este producto.";
+        finalColor = "#64748b"; // Gris azulado (puedes usar el que prefieras)
+    } 
+    // CASO REAL: El precio actual es menor al frecuente (bajó de verdad)
+    else if (currentPrice <= minPrice && currentPrice < modePrice) {
+        finalRecommendation = "¡PRECIO MÍNIMO! Compra altamente recomendada.";
+        finalColor = "#16a34a"; // Verde
+    }
+    // ---------------------------------------
+
   return (
     /* CORRECCIÓN: El wrapper abre aquí y NO se cierra con /> */
     <div className="product-detail-wrapper">
