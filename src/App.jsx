@@ -607,8 +607,9 @@ const processedProducts = useMemo(() => {
 ) : currentProducts.length === 1 && searchTerm !== "" ? (
   <div className="featured-product-wrapper">
     <FeaturedProductCard 
-      product={currentProducts[0]} 
-      setSearchTerm={setSearchTerm} 
+      /* PASAMOS EL PRODUCTO SELECCIONADO POR EL FILTRO DE HONESTIDAD */
+      product={stats.bestDiscount} 
+      setSearchTerm={setSearchTerm}
     />
   </div>
 ) : (
