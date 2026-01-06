@@ -261,8 +261,9 @@ const stats = useMemo(() => {
     const realPercent = ((mode - current) / mode) * 100;
 
     if (realPercent > bestDiscount.percent) {
+      // Guardamos TODA la info del producto (p) + el porcentaje calculado
       bestDiscount = { 
-        title: p.title, 
+        ...p, 
         percent: Math.round(realPercent) 
       };
     }
