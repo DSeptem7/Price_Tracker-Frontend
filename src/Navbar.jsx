@@ -44,7 +44,13 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
         {/* ESPACIADOR INVISIBLE: Empuja los controles a la derecha */}
         <div style={{ flexGrow: 1 }}></div>
 
-        <div className="nav-controls">
+        <div className="nav-controls" style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '20px', 
+            justifyContent: 'flex-end',
+            minWidth: '280px' /* Este valor debe ser suficiente para Lupa + Switch + Contador */
+          }}>
           
           {/* BUSCADOR */}
           <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
@@ -75,6 +81,17 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
               <div className="slider"></div>
             </label>
           </div>
+          
+         {/* CONTADOR SIEMPRE PRESENTE PERO OCULTO SI NO HAY DATOS */}
+          <span 
+            className="product-count" 
+            style={{ 
+              visibility: productCount !== undefined ? 'visible' : 'hidden',
+              opacity: productCount !== undefined ? 1 : 0
+            }}
+          >
+            {productCount || 0} Productos
+          </span>
 
         </div>
       </div>
