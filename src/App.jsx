@@ -230,28 +230,46 @@ useEffect(() => {
       return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
   };
 
-  // === LÓGICA DE ESTADÍSTICAS ===
-  const stats = useMemo(() => {
-    const available = products.filter(p => !isOutOfStock(p));
-    const drops = available.filter(p => p.status === "down");
-    const highs = available.filter(p => p.status === "up");
+// === LÓGICA DE ESTADÍSTICAS (CON FILTRO DE HONESTIDAD) ===
+const stats = useMemo(() => {
+  const available = products.filter(p => !isOutOfStock(p));
+  const drops = available.filter(p => p.status === "down");
+  const highs = available.filter(p => p.status === "up");
+  
+  const totalSavings = drops.reduce((acc, p) => {
+    const current = parsePrice(p.price);
+    const prev = parsePrice(p.previous_price);
+    return acc + (prev > current ? prev - current : 0);
+  }, 0);
+
+  // --- NUEVA LÓGICA DE MEJOR DESCUENTO REAL ---
+  let bestDiscount = { title: "Ninguna", percent: 0 };
+
+  // 1. Solo consideramos productos que están por debajo de su precio frecuente (mode_price)
+  const realOffers = available.filter(p => {
+    const current = parsePrice(p.price);
+    const mode = parsePrice(p.mode_price);
+    return current < mode && mode > 0;
+  });
+
+  // 2. De las ofertas reales, buscamos la que tenga mayor caída respecto al historial
+  realOffers.forEach(p => {
+    const current = parsePrice(p.price);
+    const mode = parsePrice(p.mode_price);
     
-    const totalSavings = drops.reduce((acc, p) => {
-      const current = parsePrice(p.price);
-      const prev = parsePrice(p.previous_price);
-      return acc + (prev > current ? prev - current : 0);
-    }, 0);
+    // Calculamos el % de descuento REAL (basado en el promedio, no en el inflado)
+    const realPercent = ((mode - current) / mode) * 100;
 
-    let bestDiscount = { title: "Ninguna", percent: 0 };
-    drops.forEach(p => {
-      const pValue = parseFloat(p.change_percentage?.replace(/[()%-]/g, '') || 0);
-      if (pValue > bestDiscount.percent) {
-        bestDiscount = { title: p.title, percent: pValue };
-      }
-    });
+    if (realPercent > bestDiscount.percent) {
+      bestDiscount = { 
+        title: p.title, 
+        percent: Math.round(realPercent) 
+      };
+    }
+  });
 
-    return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
-  }, [products]);
+  return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
+}, [products]);
 
   const handleTrackProduct = async () => {
     const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
