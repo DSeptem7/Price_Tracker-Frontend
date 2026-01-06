@@ -1714,6 +1714,7 @@ input:checked + .slider:before { transform: translateX(21px); }
   width: 250px; /* Tamaño fijo en PC */
   height: 250px;
   padding: 20px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1727,6 +1728,24 @@ input:checked + .slider:before { transform: translateX(21px); }
   height: 100% !important;
   /* El secreto para que no se deforme: */
   object-fit: contain !important; 
+}
+
+.featured-image-container .alert-badge {
+  position: absolute; /* Lo sacamos del flujo para que no empuje nada */
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.featured-img {
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
 }
 
 .featured-info-container {
