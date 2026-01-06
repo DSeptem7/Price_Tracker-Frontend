@@ -1438,26 +1438,17 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 /* === BOTÓN VOLVER (ESTILO AZUL) === */
 .back-btn {
-  background-color: #3b82f6;   /* El azul de 'Rastrear' */
-  border: none;                /* Quitamos el borde anterior */
-  color: white;                /* Texto siempre blanco */
-  padding: 10px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 700;            /* Más grueso para que no se pierda */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+  padding: 8px 16px;
+  font-size: 0.9rem;
 }
 
-/* === EFECTO HOVER (OSCURECIDO Y DESPLAZADO) === */
 .back-btn:hover {
-  background-color: #2563eb;   /* Azul más oscuro (Darker Blue) */
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #3b82f6;
   color: white;
-  transform: translateX(-5px); /* Mantenemos tu efecto de desplazamiento */
-  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
 }
 
 .detail-layout {
@@ -1565,27 +1556,17 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .buy-btn-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #3b82f6 !important;
-  color: #ffffff !important;
-  padding: 16px 20px; /* Botón ligeramente más alto */
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  width: 100%;
-  border: none;
-  /* Separación clara del badge de estado */
-  margin-top: 20px; 
-  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+  background: #ffe600 !important; /* Amarillo Mercado Libre */
+  color: #2d3277 !important;     /* Azul oscuro Mercado Libre */
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(255, 230, 0, 0.2);
 }
 
 .buy-btn-main:hover {
-  background-color: #1d4ed8 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(29, 78, 216, 0.4);
+  background: #f5dc00 !important;
+  transform: scale(1.02);
 }
 
 /* --- PANEL DERECHO: ANÁLISIS --- */
@@ -1628,13 +1609,21 @@ input:checked + .slider:before { transform: translateX(21px); }
 
 /* Semáforo / Estado del Mercado */
 .stat-card-mini.full-width-mobile {
-  grid-column: span 3;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 25px;
-  margin-top: 10px;
+  background: rgba(245, 158, 11, 0.1); /* Fondo naranja muy suave */
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+}
+
+.stat-card-mini.full-width-mobile strong {
+  color: #fbbf24 !important; /* Naranja brillante */
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+}
+
+/* 4. Efecto de cristal en los contenedores (Glassmorphism) */
+.product-summary, .chart-container-pro {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Tiempos de rastreo */
