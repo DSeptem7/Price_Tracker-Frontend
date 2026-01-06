@@ -224,12 +224,14 @@ useEffect(() => {
     const cleanStr = priceStr.toString().replace(/[^0-9.]/g, "");
     return parseFloat(cleanStr) || 0;
   };
-  const stats = useMemo(() => {
-    // 1. Verificación de seguridad inicial
-    if (!products || products.length === 0) {
-      return { dropCount: 0, upCount: 0, totalSavings: 0, bestDiscount: { title: "Ninguna", percent: 0 } };
-    }
 
+  const isOutOfStock = (p) => {
+      const priceNum = parsePrice(p.price);
+      return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
+  };
+
+  // === LÓGICA DE ESTADÍSTICAS ===
+  const stats = useMemo(() => {
     const available = products.filter(p => !isOutOfStock(p));
     const drops = available.filter(p => p.status === "down");
     const highs = available.filter(p => p.status === "up");
@@ -240,50 +242,13 @@ useEffect(() => {
       return acc + (prev > current ? prev - current : 0);
     }, 0);
 
-   // CAMBIO: Objeto inicial con propiedades seguras
-let bestDiscount = { 
-  title: "Ninguna", 
-  percent: 0, 
-  price: "$0", 
-  url: "", 
-  history: [], 
-  status: "stable" 
-};
-
-    const realOffers = available.filter(p => {
-      const current = parsePrice(p.price);
-      const mode = parsePrice(p.mode_price);
-      return current < mode && mode > 0;
+    let bestDiscount = { title: "Ninguna", percent: 0 };
+    drops.forEach(p => {
+      const pValue = parseFloat(p.change_percentage?.replace(/[()%-]/g, '') || 0);
+      if (pValue > bestDiscount.percent) {
+        bestDiscount = { title: p.title, percent: pValue };
+      }
     });
-
-    if (realOffers.length > 0) {
-      const winner = realOffers.reduce((prev, current) => {
-        const pPrice = parsePrice(prev.price);
-        const pMode = parsePrice(prev.mode_price);
-        const cPrice = parsePrice(current.price);
-        const cMode = parsePrice(current.mode_price);
-        
-        const prevRealDisc = pMode > 0 ? (pMode - pPrice) / pMode : 0;
-        const currRealDisc = cMode > 0 ? (cMode - cPrice) / cMode : 0;
-
-        return (currRealDisc > prevRealDisc) ? current : prev;
-      }, realOffers[0]);
-
-      // --- ARQUEOLOGÍA SEGURA ---
-      const history = winner?.history || [];
-      const currentVal = parsePrice(winner?.price);
-      
-      // Usamos el encadenamiento opcional ?. para evitar el pantallazo blanco
-      const lastDifferentEntry = [...history]
-        .reverse()
-        .find(entry => entry && parsePrice(entry.price) !== currentVal);
-
-      bestDiscount = { 
-        ...winner, 
-        percent: Math.round(((parsePrice(winner.mode_price) - currentVal) / parsePrice(winner.mode_price)) * 100),
-        true_previous_price: lastDifferentEntry ? lastDifferentEntry.price : winner.previous_price
-      };
-    }
 
     return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
   }, [products]);
@@ -615,9 +580,8 @@ const processedProducts = useMemo(() => {
 ) : currentProducts.length === 1 && searchTerm !== "" ? (
   <div className="featured-product-wrapper">
     <FeaturedProductCard 
-      /* PASAMOS EL PRODUCTO SELECCIONADO POR EL FILTRO DE HONESTIDAD */
-      product={stats.bestDiscount} 
-      setSearchTerm={setSearchTerm}
+      product={currentProducts[0]} 
+      setSearchTerm={setSearchTerm} 
     />
   </div>
 ) : (
