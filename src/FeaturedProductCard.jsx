@@ -44,11 +44,11 @@ const FeaturedProductCard = ({ product, setSearchTerm }) => {
         
         <div className="featured-prices">
   {/* 1. Precio anterior recuperado del historial (el de $21,999) */}
-          {bestDiscount.true_previous_price && 
-          parsePrice(bestDiscount.true_previous_price) !== parsePrice(bestDiscount.price) && (
-            <p className="featured-previous-price">
-              Antes: <s>${bestDiscount.true_previous_price.toLocaleString()}</s>
-            </p>
+        {bestDiscount?.true_previous_price && 
+      parsePrice(bestDiscount.true_previous_price) !== parsePrice(bestDiscount.price) && (
+        <p className="featured-previous-price">
+          Antes: <s>${bestDiscount.true_previous_price.toLocaleString()}</s>
+        </p>
           )}
 
           {/* 2. Precio actual con validación de Stock (Mantenemos tu lógica de seguridad) */}
