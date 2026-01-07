@@ -658,7 +658,7 @@ const processedProducts = useMemo(() => {
 
           {/* Paginación Inferior */}
           {totalPages > 1 && !loading && (
-             <div className="pagination-container" style={{marginTop: '30px', marginBottom: '50px'}}>
+             <div className="pagination-container">
                 <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="pagination-arrow">‹</button>
                 {getPaginationGroup().map((item, i) => (
                     <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={`pagination-number ${currentPage === item ? 'active' : ''} ${item === '...' ? 'dots' : ''}`} disabled={item === '...'}>{item}</button>
