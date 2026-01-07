@@ -644,16 +644,18 @@ html {
 /* ====================================================================== */
 .product-grid {
   display: grid;
-  /* CAMBIO: Usamos un ancho fijo máximo en lugar de 1fr para que no se expandan */
-  grid-template-columns: repeat(auto-fill, minmax(215px, 250px)); 
+  /* El auto-fill con 1fr está bien si limitamos la fila */
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); 
   
-  /* Centra la cuadrícula si hay pocos elementos */
-  justify-content: center; 
+  /* ESTO ES LA CLAVE: Evita que las filas crezcan para llenar los 800px */
+  grid-auto-rows: max-content; 
+  
+  /* Alinea las tarjetas al principio de su celda, no permite que se estiren */
+  align-items: start; 
   
   gap: 35px 20px; 
   padding: 30px 0;
-  min-height: 800px;
-  align-items: start;
+  min-height: 800px; /* Mantenemos esto para que el footer no suba demasiado */
 }
 
 
