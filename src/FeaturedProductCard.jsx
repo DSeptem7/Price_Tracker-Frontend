@@ -74,7 +74,7 @@ const FeaturedProductCard = ({ product, setSearchTerm }) => {
         )}
 
         <a href={url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="featured-view-product-link">
-          Ver producto original
+          Ver producto
         </a>
       </div>
     </div>
