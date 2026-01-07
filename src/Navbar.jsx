@@ -4,31 +4,37 @@ import './Navbar.css';
 
 const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, allProducts = [] }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // <--- IMPORTANTE: Necesitas importar useLocation de react-router-dom
+  const [localSearch, setLocalSearch] = useState(searchTerm); // Estado interno
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef(null);
 
-  // Filtrar productos para el buscador en vivo
-  const liveResults = searchTerm.length > 1 
-    ? allProducts.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 6) 
-    : [];
-
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowResults(false);
-        if (searchTerm === "") setIsSearchExpanded(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    setLocalSearch(searchTerm);
   }, [searchTerm]);
 
-  const handleSelectProduct = (id) => {
-    setSearchTerm(""); // Limpiamos el texto para que la Home no se quede filtrada
-    setShowResults(false);
-    navigate(`/producto/${id}`);
-  };
+  // Filtrar productos para el buscador en vivo
+  const liveResults = localSearch.length > 1 
+    ? allProducts.filter(p => p.title.toLowerCase().includes(localSearch.toLowerCase())).slice(0, 6) 
+    : [];
+    const handleInputChange = (e) => {
+      const value = e.target.value;
+      setLocalSearch(value); // Actualiza el input visualmente
+      setShowResults(true);
+  
+      // SOLO si estamos en la Home ("/"), actualizamos el global para filtrar la lista
+      if (location.pathname === "/") {
+        setSearchTerm(value);
+      }
+    };
+
+    const handleSelectProduct = (id) => {
+      setLocalSearch(""); // Limpiamos el local
+      setSearchTerm("");   // Limpiamos el global
+      setShowResults(false);
+      navigate(`/producto/${id}`);
+    };
 
   return (
     <nav className="navbar">
@@ -41,18 +47,14 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, allProdu
 
         <div className="nav-controls">
           <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
-            <input 
-              type="text" 
-              className="search-input" 
-              placeholder="Buscar producto..." 
-              value={searchTerm}
-              onFocus={() => setShowResults(true)}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setShowResults(true);
-                setIsSearchExpanded(true);
-              }}
-            />
+          <input 
+            type="text" 
+            className="search-input" 
+            placeholder="Buscar producto..." 
+            value={localSearch} // <--- USA LOCAL
+            onFocus={() => setShowResults(true)}
+            onChange={handleInputChange} // <--- USA LA NUEVA FUNCIÓN
+          />
             <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon-svg">
                 <circle cx="11" cy="11" r="8"></circle>
