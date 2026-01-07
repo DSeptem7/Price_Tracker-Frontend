@@ -1748,8 +1748,8 @@ input:checked + .slider:before { transform: translateX(21px); }
   left: 50%;
   transform: translateX(-50%); /* Desplaza el badge exactamente a la mitad de su propio ancho */
   /* ---------------------------- */
-  background-color: #dcfce7 !important; 
-  color: #15803d !important;            
+  background-color: #15803d !important; 
+  color: #dcfce7 !important;            
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 0.75rem;
