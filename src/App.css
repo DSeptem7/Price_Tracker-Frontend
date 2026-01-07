@@ -1705,6 +1705,8 @@ input:checked + .slider:before { transform: translateX(21px); }
   transition: all 0.3s ease;
   position: relative;
   min-height: 250px; /* Altura mínima */
+  flex-direction: row; /* Mantiene el diseño horizontal */
+  padding: 20px;
 }
 
 .dark-mode .featured-product-card {
@@ -1718,16 +1720,17 @@ input:checked + .slider:before { transform: translateX(21px); }
 }
 
 .featured-image-container {
-  flex-shrink: 0;
-  width: 250px; /* Tamaño fijo en PC */
-  height: 250px;
-  padding: 20px;
+  position: relative; /* Indispensable para que el badge se posicione respecto a la foto */
+  flex-shrink: 0;     /* Evita que la imagen se aplaste */
+  width: 280px;       /* Ajusta según tu diseño */
+  height: 200px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: white; /* O var(--bg-image-container) */
-  border-radius: 12px; /* Un toque redondeado interno */
-  margin: 10px;
+  align-items: center;
+  background: white;  /* Fondo blanco para que la transparencia no se vea rara */
+  border-radius: 12px;
+  margin-right: 20px;
+  overflow: hidden;   /* Protege el borde de la imagen */
 }
 
 .featured-image-container img {
@@ -1735,6 +1738,29 @@ input:checked + .slider:before { transform: translateX(21px); }
   height: 100% !important;
   /* El secreto para que no se deforme: */
   object-fit: contain !important; 
+}
+
+/* Estilo unificado para el badge en el destacado */
+.featured-image-container .low_historical {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #dcfce7 !important; /* Verde claro */
+  color: #15803d !important;            /* Verde oscuro */
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border: 1px solid #bbf7d0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  animation: bounce 2s infinite; /* Si quieres que mantenga el brinco */
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-5px);}
+  60% {transform: translateY(-3px);}
 }
 
 .featured-info-container {
