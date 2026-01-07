@@ -1745,7 +1745,7 @@ input:checked + .slider:before { transform: translateX(21px); }
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #10b981 !important; /* Verde claro */
+  background-color: #15803d !important; /* Verde claro */
   color: #dcfce7 !important;            /* Verde oscuro */
   padding: 4px 10px;
   border-radius: 6px;
