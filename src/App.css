@@ -1744,10 +1744,12 @@ input:checked + .slider:before { transform: translateX(21px); }
 .featured-image-container .low_historical {
   position: absolute;
   top: 10px;
-  left: 50px;
+  /* --- CAMBIOS PARA CENTRAR --- */
+  left: 50%;
   transform: translateX(-50%); /* Desplaza el badge exactamente a la mitad de su propio ancho */
-  background-color: #15803d !important; /* Verde claro */
-  color: #dcfce7 !important;            /* Verde oscuro */
+  /* ---------------------------- */
+  background-color: #dcfce7 !important; 
+  color: #15803d !important;            
   padding: 4px 12px;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -1756,9 +1758,12 @@ input:checked + .slider:before { transform: translateX(21px); }
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
-  animation: bounce 2s infinite; /* Si quieres que mantenga el brinco */
+  
+  /* Mantén la animación si la tenías, pero combinando el centrado */
+  animation: bounce-centered 2s infinite;
 }
 
+/* Ajuste de la animación para no perder el centrado horizontal */
 @keyframes bounce-centered {
   0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
   40% { transform: translateX(-50%) translateY(-5px); }
