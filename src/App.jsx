@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ProductDetail from './ProductDetail';
 import FeaturedProductCard from './FeaturedProductCard';
+import Footer from './Footer';
 import {
   LineChart,
   Line,
@@ -677,6 +678,9 @@ const processedProducts = useMemo(() => {
 
             </Routes>
             {/* === FIN DE RUTAS === */}
+
+            {/* AQUÍ VA EL FOOTER: Fuera de Routes para que sea universal */}
+            <Footer />
 
         {chartProductTitle && (
           <PriceChartModal
