@@ -362,11 +362,11 @@ const processedProducts = useMemo(() => {
             <>
         {/* === NAVBAR COMPONENTE === */}
         <Navbar 
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
-          productCount={processedProducts.length} /* Aquí SÍ pasamos el contador */
+          searchTerm={searchTerm} 
+          setSearchTerm={setSearchTerm} 
+          isDarkMode={isDarkMode} 
+          setIsDarkMode={setIsDarkMode} 
+          allProducts={processedProducts} // <-- Asegúrate de pasar tu array de productos aquí
         />
 
         {/* === CONTENEDOR PRINCIPAL === */}
