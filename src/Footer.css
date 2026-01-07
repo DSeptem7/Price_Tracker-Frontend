@@ -2,7 +2,7 @@
     background: var(--card-bg); /* Usa tus variables de modo claro/oscuro */
     border-top: 1px solid var(--border-color);
     padding: 50px 20px 20px 20px;
-    margin-top: 50px;
+    margin-top: 20px;
     width: 100%;
   }
   
