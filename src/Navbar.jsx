@@ -25,8 +25,8 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, allProdu
   }, [searchTerm]);
 
   const handleSelectProduct = (id) => {
+    setSearchTerm(""); // Limpiamos el texto para que la Home no se quede filtrada
     setShowResults(false);
-    setSearchTerm(""); // Limpiamos para la próxima búsqueda
     navigate(`/producto/${id}`);
   };
 
