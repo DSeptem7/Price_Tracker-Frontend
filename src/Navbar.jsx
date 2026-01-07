@@ -1,61 +1,57 @@
-// src/Navbar.jsx
 import React, { useState, useRef, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-// Recibimos "productCount" como prop opcional, por si queremos mostrarlo en la Home pero no en el detalle
-const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, allProducts = [] }) => {
   const navigate = useNavigate();
-  
-  // Estos estados son exclusivos de la Navbar (visuales), así que viven aquí, no en App.jsx
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const searchRef = useRef(null);
 
-   // 2. Lógica para detectar clic fuera del componente
-    useEffect(() => {
-      function handleClickOutside(event) {
-        // Si el buscador está abierto Y el clic ocurrió FUERA del contenedor referenciado...
-        if (isSearchExpanded && searchRef.current && !searchRef.current.contains(event.target)) {
-          // ... cerramos el buscador y borramos el texto si no se ha buscado nada.
-          if (searchTerm === "") {
-            setIsSearchExpanded(false);
-          }
-        }
+  // Filtrar productos para el buscador en vivo
+  const liveResults = searchTerm.length > 1 
+    ? allProducts.filter(p => p.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 6) 
+    : [];
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+        if (searchTerm === "") setIsSearchExpanded(false);
       }
-      // Añadimos el escuchador de eventos al documento entero
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        // Limpiamos el escuchador cuando el componente se desmonta
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [isSearchExpanded, searchTerm]); // Se ejecuta cuando cambia el estado de expansión o el término
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchTerm]);
+
+  const handleSelectProduct = (id) => {
+    setShowResults(false);
+    setSearchTerm(""); // Limpiamos para la próxima búsqueda
+    navigate(`/producto/${id}`);
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        {/* LOGO: Clickeable para ir al inicio */}
-        <span 
-          className="logo" 
-          onClick={() => navigate('/')} 
-          style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px' }}
-        >
-          🛒 Price Tracker (ML)
+        <span className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          🛒 Price Tracker
         </span>
         
-        {/* ESPACIADOR INVISIBLE: Empuja los controles a la derecha */}
         <div style={{ flexGrow: 1 }}></div>
 
         <div className="nav-controls">
-          
-          {/* BUSCADOR */}
           <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
             <input 
               type="text" 
               className="search-input" 
-              placeholder="Buscar..." 
+              placeholder="Buscar producto..." 
               value={searchTerm}
-              onClick={(e) => e.stopPropagation()} 
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setShowResults(true)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowResults(true);
+                setIsSearchExpanded(true);
+              }}
             />
             <button className="search-btn" onClick={() => setIsSearchExpanded(!isSearchExpanded)}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-icon-svg">
@@ -63,20 +59,33 @@ const Navbar = ({ searchTerm, setSearchTerm, isDarkMode, setIsDarkMode, productC
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
             </button>
+
+            {/* PANEL DE RESULTADOS EN VIVO */}
+            {showResults && liveResults.length > 0 && (
+              <div className="live-search-results">
+                {liveResults.map((product) => (
+                  <div 
+                    key={product.id} 
+                    className="live-result-item"
+                    onClick={() => handleSelectProduct(product.id)}
+                  >
+                    <img src={product.image} alt={product.title} className="live-result-img" />
+                    <div className="live-result-info">
+                      <span className="live-result-title">{product.title}</span>
+                      <span className="live-result-price">${Number(product.current_price).toLocaleString()}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* SWITCH MODO OSCURO */}
           <div className="theme-switch-wrapper">
             <label className="theme-switch">
-              <input 
-                type="checkbox" 
-                checked={isDarkMode} 
-                onChange={() => setIsDarkMode(!isDarkMode)} 
-              />
+              <input type="checkbox" checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />
               <div className="slider"></div>
             </label>
           </div>
-
         </div>
       </div>
     </nav>
