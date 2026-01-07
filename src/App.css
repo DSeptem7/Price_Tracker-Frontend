@@ -644,11 +644,15 @@ html {
 /* ====================================================================== */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); 
+  /* CAMBIO: Usamos un ancho fijo máximo en lugar de 1fr para que no se expandan */
+  grid-template-columns: repeat(auto-fill, minmax(215px, 250px)); 
+  
+  /* Centra la cuadrícula si hay pocos elementos */
+  justify-content: center; 
+  
   gap: 35px 20px; 
   padding: 30px 0;
   min-height: 800px;
-  /* Evita que las tarjetas se estiren verticalmente de forma rara */
   align-items: start;
 }
 
