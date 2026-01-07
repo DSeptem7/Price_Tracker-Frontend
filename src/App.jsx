@@ -354,22 +354,21 @@ const processedProducts = useMemo(() => {
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
-        
-        {/* === NAVBAR COMPONENTE === */}
-        <Navbar 
-          searchTerm={searchTerm} 
-          setSearchTerm={setSearchTerm} 
-          isDarkMode={isDarkMode} 
-          setIsDarkMode={setIsDarkMode} 
-          allProducts={processedProducts} // <-- Asegúrate de pasar tu array de productos aquí
-        />
-
         {/* === INICIO DE RUTAS === */}
         <Routes>
+
           {/* RUTA 1: VISTA DE LISTA (Todo tu código actual) */}
           <Route path="/" element={
             <>
-       
+        {/* === NAVBAR COMPONENTE === */}
+        <Navbar 
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
+          productCount={processedProducts.length} /* Aquí SÍ pasamos el contador */
+        />
+
         {/* === CONTENEDOR PRINCIPAL === */}
         <main className="main-content">
           

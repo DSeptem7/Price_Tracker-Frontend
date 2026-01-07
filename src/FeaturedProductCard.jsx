@@ -83,3 +83,4 @@ const FeaturedProductCard = ({ product, setSearchTerm }) => {
 };
 
 export default FeaturedProductCard;
+
