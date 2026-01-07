@@ -1,4 +1,5 @@
 import React from 'react';
+import './FeaturedProductCard.css';
 import { useNavigate } from 'react-router-dom';
 
 const FeaturedProductCard = ({ product, setSearchTerm }) => {
