@@ -1744,23 +1744,25 @@ input:checked + .slider:before { transform: translateX(21px); }
 .featured-image-container .low_historical {
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 50px;
+  transform: translateX(-50%); /* Desplaza el badge exactamente a la mitad de su propio ancho */
   background-color: #15803d !important; /* Verde claro */
   color: #dcfce7 !important;            /* Verde oscuro */
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 800;
   border: 1px solid #bbf7d0;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
   animation: bounce 2s infinite; /* Si quieres que mantenga el brinco */
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-  40% {transform: translateY(-5px);}
-  60% {transform: translateY(-3px);}
+@keyframes bounce-centered {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+  40% { transform: translateX(-50%) translateY(-5px); }
+  60% { transform: translateX(-50%) translateY(-3px); }
 }
 
 .featured-info-container {
