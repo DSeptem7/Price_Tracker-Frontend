@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ProductDetail from './ProductDetail';
 import FeaturedProductCard from './FeaturedProductCard';
-import Footer from '.Footer';
+import Footer from './Footer';
 import {
   LineChart,
   Line,
