@@ -34,7 +34,41 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
     fetchFullDetail();
   }, [id, API_BASE]);
 
-  if (loading) return <div className="loading-state">Cargando análisis profundo...</div>;
+  if (loading) {
+    return (
+      <div className="product-detail-wrapper">
+        <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
+          <div className="detail-container">
+            {/* Botón Volver Skeleton */}
+            <div className="skeleton sk-back-btn"></div>
+            
+            <div className="detail-layout">
+              {/* Columna Izquierda */}
+              <section className="product-summary">
+                <div className="skeleton sk-badge"></div>
+                <div className="skeleton sk-image"></div>
+                <div className="skeleton sk-title"></div>
+                <div className="skeleton sk-price-box"></div>
+                <div className="skeleton sk-button"></div>
+              </section>
+
+              {/* Columna Derecha */}
+              <section className="analysis-section">
+                <div className="skeleton sk-chart-title"></div>
+                <div className="skeleton sk-chart"></div>
+                <div className="stats-grid-detail">
+                  <div className="skeleton sk-stat-card"></div>
+                  <div className="skeleton sk-stat-card"></div>
+                  <div className="skeleton sk-stat-card"></div>
+                </div>
+                <div className="skeleton sk-analysis-box"></div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!product) return <div>Producto no encontrado.</div>;
 
   // --- LÓGICA DE CORRECCIÓN DE ANÁLISIS ---
