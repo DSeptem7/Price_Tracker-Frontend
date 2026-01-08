@@ -261,56 +261,69 @@
     margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
   }
   
-  /* --- BASE DEL SKELETON --- */
+/* --- BASE DEL SKELETON (SUB-LINKS) --- */
 .skeleton {
-  background: var(--skeleton-bg, #e2e8f0);
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
+  background: linear-gradient(90deg, 
+    var(--input-bg) 25%, 
+    var(--bg-app) 50%, 
+    var(--input-bg) 75%);
+  background-size: 200% 100%; 
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  border-radius: 12px;
   margin-bottom: 15px;
 }
 
-.dark .skeleton {
-  --skeleton-bg: #1e293b;
+/* Reutilizamos tu animación de la Home */
+@keyframes skeleton-loading { 
+  0% { background-position: 200% 0; } 
+  100% { background-position: -200% 0; } 
 }
 
-/* Animación de brillo (shimmer) */
-.skeleton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0,
-    rgba(255, 255, 255, 0.2) 20%,
-    rgba(255, 255, 255, 0.5) 60%,
-    rgba(255, 255, 255, 0)
-  );
-  animation: shimmer 2s infinite;
+/* Bloque especial para contenedores grandes (como el área del gráfico o análisis) */
+.sk-container-dark {
+  background: var(--bg-skeleton) !important;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
 }
 
-@keyframes shimmer {
-  100% { transform: translateX(100%); }
-}
-
-/* --- DIMENSIONES ESPECÍFICAS --- */
+/* --- DIMENSIONES ESPECÍFICAS PARA EL DETALLE --- */
 .sk-back-btn { width: 150px; height: 35px; margin-bottom: 30px; }
 .sk-badge { width: 120px; height: 24px; }
-.sk-image { width: 100%; aspect-ratio: 1/1; max-width: 400px; margin: 20px auto; }
-.sk-title { width: 90%; height: 32px; }
-.sk-price-box { width: 60%; height: 80px; margin: 20px 0; }
+.sk-image { 
+  width: 100%; 
+  aspect-ratio: 1/1; 
+  max-width: 400px; 
+  margin: 20px auto; 
+  border-radius: 20px;
+}
+.sk-title { width: 90%; height: 32px; border-radius: 6px; }
+
+/* Caja de precio y botón */
+.sk-price-box { 
+  width: 100%; 
+  height: 100px; 
+  margin: 20px 0; 
+  background: var(--bg-skeleton) !important; /* Usamos tu color grisáceo suave */
+}
 .sk-button { width: 100%; height: 50px; border-radius: 12px; }
 
+/* Sección de Análisis (Derecha) */
 .sk-chart-title { width: 200px; height: 28px; }
-.sk-chart { width: 100%; height: 350px; margin-bottom: 25px; }
+.sk-chart { 
+  width: 100%; 
+  height: 350px; 
+  margin-bottom: 25px; 
+  background: var(--bg-skeleton) !important;
+}
 .sk-stat-card { width: 100%; height: 80px; }
-.sk-analysis-box { width: 100%; height: 100px; margin-top: 20px; }
+.sk-analysis-box { 
+  width: 100%; 
+  height: 120px; 
+  margin-top: 20px; 
+  border: 2px solid var(--border-color);
+}
 
-/* Responsivo para Skeleton */
+/* Responsividad */
 @media (max-width: 768px) {
   .sk-image { max-width: 250px; }
   .sk-chart { height: 250px; }
