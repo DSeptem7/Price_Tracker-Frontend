@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
-import { Routes, Route, useNavigate } from 'react-router-dom'; 
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ProductDetail from './ProductDetail';
 import FeaturedProductCard from './FeaturedProductCard';
@@ -354,21 +354,22 @@ const processedProducts = useMemo(() => {
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
-        {/* === INICIO DE RUTAS === */}
-        <Routes>
 
-          {/* RUTA 1: VISTA DE LISTA (Todo tu código actual) */}
-          <Route path="/" element={
-            <>
         {/* === NAVBAR COMPONENTE === */}
         <Navbar 
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           isDarkMode={isDarkMode}
           setIsDarkMode={setIsDarkMode}
-          productCount={processedProducts.length} /* Aquí SÍ pasamos el contador */
+          productCount={processedProducts.length}
         />
 
+        {/* === INICIO DE RUTAS === */}
+        <Routes>
+
+          {/* RUTA 1: RUTA PRINCIPAL (HOME) */}
+          <Route path="/" element={
+            <>
         {/* === CONTENEDOR PRINCIPAL === */}
         <main className="main-content">
           
@@ -379,11 +380,7 @@ const processedProducts = useMemo(() => {
             <div className="stat-info">
               <span className="stat-label">Con descuento</span>
               <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
-                {loading ? (
-                  "Cargando..."
-                ) : (
-                  `${stats.dropCount} Productos`
-                )}
+              {loading ? "Cargando..." : `${stats.dropCount} Productos`}
               </span>
             </div>
           </div>
@@ -393,11 +390,7 @@ const processedProducts = useMemo(() => {
             <div className="stat-info">
               <span className="stat-label">Ahorro en ofertas</span>
               <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
-                {loading ? (
-                  "Cargando..."
-                ) : (
-                  `$${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}`
-                )}
+              {loading ? "Cargando..." : `$${stats.totalSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})}`}
               </span>
             </div>
           </div>
@@ -408,11 +401,7 @@ const processedProducts = useMemo(() => {
             <div className="stat-info">
               <span className="stat-label">Producto con mayor descuento</span>
               <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
-                {loading ? (
-                  "Cargando..."
-                ) : (
-                  `-${stats.bestDiscount.percent}% Descuento`
-                )}
+              {loading ? "Cargando..." : `-${stats.bestDiscount.percent}% Descuento`}
               </span>
             </div>
           </div>
@@ -422,18 +411,14 @@ const processedProducts = useMemo(() => {
             <div className="stat-info">
               <span className="stat-label">Con incremento de precio</span>
               <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
-                 {loading ? (
-                  "Cargando..."
-                ) : (
-                  `${stats.upCount} Productos`
-                )}
+              {loading ? "Cargando..." : `${stats.upCount} Productos`}
               </span>
             </div>
           </div>
         </div>
 
+        {/* --- PANEL DE GESTIÓN --- */}
         <div className="simulate-panel">
-          {/* NUEVO CONTENEDOR PARA ALINEAR TÍTULO E ICONO */}
             <div className="panel-header-row">
                 <h3>Gestión de Catálogo</h3>
                 <div className="info-tooltip-wrapper">
@@ -606,54 +591,69 @@ const processedProducts = useMemo(() => {
         return <div style={{ height: '18px', margin: '0' }}></div>;
       };
 
-      return (
-        <div 
-          key={p.id || index} 
-          className="product-card" 
-          onClick={() => {
-            if (setSearchTerm) setSearchTerm(""); 
-            navigate(`/producto/${p.id}`);
-          }}
-          style={{ 
-            opacity: outOfStock ? 0.7 : 1, 
-            filter: outOfStock ? "grayscale(100%)" : "none",
-            cursor: 'pointer',
-            animationDelay: `${index * 0.05}s` 
-          }}
-        >
-          <div className={`store-header ${storeClass}`}>{storeName}</div>
-          <div className="image-container">
-            <img src={p.image} alt={p.title} />
-            {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
-            {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
-          </div>
-          <h3>{p.title}</h3>
-          {renderPreviousPrice()}
-          <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
-          <div className="status-row">
-            {!outOfStock && (
-              <>
-                {p.status === "down" && <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
-                {p.status === "up" && <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
-                {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status) && p.status !== "new" && <span className="status-stable">Sin cambios</span>}
-                {p.status === "new" && <span className="status-new">Recién añadido</span>}
-              </>
-            )}
-          </div>
-          {!outOfStock && p.mode_price && (
-            <div className="context-box">
-              <p><strong>Frecuente:</strong> {p.mode_price}</p>
-              <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
-            </div>
-          )}
-          <a href={p.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>
-             {outOfStock ? "Revisar disponibilidad" : "Ver producto"}
-          </a>
-          <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
+return (
+    <Link 
+      key={p.id || index} 
+      to={`/producto/${p.id}`} // Enlace interno al detalle
+      className="product-card"
+      onClick={() => {
+         if (setSearchTerm) setSearchTerm(""); // Limpiamos búsqueda si es necesario
+      }}
+      style={{ 
+        textDecoration: 'none', 
+        color: 'inherit',
+        opacity: outOfStock ? 0.7 : 1, 
+        filter: outOfStock ? "grayscale(100%)" : "none",
+        display: 'block', 
+        cursor: 'pointer',
+        animationDelay: `${index * 0.05}s`,
+        position: 'relative' // Necesario para posicionamiento
+      }}
+    >
+      <div className={`store-header ${storeClass}`}>{storeName}</div>
+      
+      <div className="image-container">
+        <img src={p.image} alt={p.title} />
+        {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
+        {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
+      </div>
+
+      <h3>{p.title}</h3>
+      
+      {renderPreviousPrice()}
+      
+      <p className="current-price">
+        <strong>{outOfStock ? "No disponible" : p.price}</strong>
+      </p>
+
+      <div className="status-row">
+        {!outOfStock && (
+          <>
+            {p.status === "down" && <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
+            {p.status === "up" && <span className="percentage-tag up">↑ +{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
+            {(p.status === "equal" || p.status === "same" || p.status === "stable" || !p.status) && p.status !== "new" && <span className="status-stable">Sin cambios</span>}
+            {p.status === "new" && <span className="status-new">Recién añadido</span>}
+          </>
+        )}
+      </div>
+
+      {!outOfStock && p.mode_price && (
+        <div className="context-box">
+          <p><strong>Frecuente:</strong> {p.mode_price}</p>
+          <p><strong>Mín. Registrado:</strong> {p.min_historical_price}</p>
         </div>
-      );
-    })}
-  </div> /* Cerramos product-grid después del map */
+      )}
+
+      {/* CAMBIO IMPORTANTE: YA NO ES UN <A>, ES UN DIV ESTILIZADO */}
+      <div className="card-action-button">
+         {outOfStock ? "Consultar disponibilidad" : "Ver producto"}
+      </div>
+      
+      <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p> 
+    </Link> // Cerramos correctamente el Link
+  );
+})}
+</div> // CIERRE CORRECTO DEL PRODUCT-GRID
 )}
 
           {/* Paginación Inferior */}
