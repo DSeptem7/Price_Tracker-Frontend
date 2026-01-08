@@ -328,3 +328,69 @@
   .sk-image { max-width: 250px; }
   .sk-chart { height: 250px; }
 }
+
+/* ====================================================================== */
+/* === AJUSTES RESPONSIVOS PARA MÓVIL === */
+/* ====================================================================== */
+
+@media (max-width: 600px) {
+  .detail-layout {
+    grid-template-columns: 1fr; /* Apilamos las columnas en una sola */
+    gap: 20px;
+  }
+
+  .product-summary {
+    min-height: auto; /* Quitamos la altura fija para que se ajuste al contenido */
+    padding: 20px;
+  }
+
+  .detail-img {
+    height: 250px; /* Reducimos un poco la imagen en móvil */
+  }
+
+  .current-price-value {
+    font-size: 2.2rem; /* Precio un poco más pequeño para que no desborde */
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-page {
+    padding: 0 10px 20px 10px;
+  }
+
+  .detail-container {
+    margin-top: 10px;
+  }
+
+  /* Ajustamos las mini estadísticas para que no se amontonen */
+  .stats-grid-detail {
+    grid-template-columns: 1fr 1fr; /* De 3 columnas pasamos a 2 */
+  }
+
+  .stat-card-mini.full-width-mobile {
+    grid-column: span 2; /* El análisis de mercado ocupa todo el ancho */
+    flex-direction: column; /* Texto arriba y valor abajo */
+    gap: 10px;
+    text-align: center;
+  }
+
+  /* El gráfico necesita una altura fija menor en móviles muy pequeños */
+  .chart-container-pro {
+    padding: 15px;
+  }
+  
+  .chart-container-pro div[style*="height: 350"] {
+    height: 280px !important; /* Forzamos una altura menor para el gráfico */
+  }
+
+  /* Ajuste de los badges de tiempo */
+  .time-info-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .back-btn {
+    width: 100%; /* Botón de volver a ancho completo para facilitar el clic */
+    justify-content: center;
+  }
+}
