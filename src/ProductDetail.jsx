@@ -61,15 +61,6 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
   return (
     /* CORRECCIÓN: El wrapper abre aquí y NO se cierra con /> */
     <div className="product-detail-wrapper">
-      
-      {/* === AQUÍ USAMOS EL COMPONENTE === */}
-      <Navbar 
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        isDarkMode={isDarkMode}
-        setIsDarkMode={setIsDarkMode}
-        // No pasamos productCount porque aquí no queremos mostrar el contador global
-      />
 
       <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
         <div className="detail-container">
