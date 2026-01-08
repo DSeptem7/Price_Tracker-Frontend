@@ -332,65 +332,59 @@
 /* ====================================================================== */
 /* === AJUSTES RESPONSIVOS PARA MÓVIL === */
 /* ====================================================================== */
-
 @media (max-width: 600px) {
+  /* 1. Forzamos una sola columna */
   .detail-layout {
-    grid-template-columns: 1fr; /* Apilamos las columnas en una sola */
-    gap: 20px;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
   }
 
+  /* 2. Ajuste del Panel de Producto */
   .product-summary {
-    min-height: auto; /* Quitamos la altura fija para que se ajuste al contenido */
-    padding: 20px;
+    min-height: auto !important;
+    padding: 20px !important;
+    width: 100% !important;
   }
 
   .detail-img {
-    height: 250px; /* Reducimos un poco la imagen en móvil */
+    height: 220px !important; /* Un poco más pequeña en móvil */
+    margin: 0 auto 15px auto !important;
   }
 
+  .product-summary h1 {
+    font-size: 1.2rem !important;
+    height: auto !important; /* Permitimos que el título crezca si es necesario */
+    -webkit-line-clamp: unset !important;
+  }
+
+  /* 3. Ajuste de Precios */
   .current-price-value {
-    font-size: 2.2rem; /* Precio un poco más pequeño para que no desborde */
-  }
-}
-
-@media (max-width: 600px) {
-  .detail-page {
-    padding: 0 10px 20px 10px;
+    font-size: 2.2rem !important;
   }
 
-  .detail-container {
-    margin-top: 10px;
-  }
-
-  /* Ajustamos las mini estadísticas para que no se amontonen */
+  /* 4. Ajuste de Grilla de Estadísticas (2 columnas en lugar de 3) */
   .stats-grid-detail {
-    grid-template-columns: 1fr 1fr; /* De 3 columnas pasamos a 2 */
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
+  /* El análisis de mercado (el que es full-width) debe ocupar las 2 columnas */
   .stat-card-mini.full-width-mobile {
-    grid-column: span 2; /* El análisis de mercado ocupa todo el ancho */
-    flex-direction: column; /* Texto arriba y valor abajo */
-    gap: 10px;
-    text-align: center;
+    grid-column: span 2 !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 15px !important;
   }
 
-  /* El gráfico necesita una altura fija menor en móviles muy pequeños */
+  /* 5. Gráfico: Forzamos la altura para que no sea infinita */
   .chart-container-pro {
-    padding: 15px;
-  }
-  
-  .chart-container-pro div[style*="height: 350"] {
-    height: 280px !important; /* Forzamos una altura menor para el gráfico */
+    padding: 15px !important;
   }
 
-  /* Ajuste de los badges de tiempo */
+  /* 6. Tiempos de rastreo en vertical */
   .time-info-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .back-btn {
-    width: 100%; /* Botón de volver a ancho completo para facilitar el clic */
-    justify-content: center;
+    flex-direction: column !important;
+    gap: 8px !important;
   }
 }
