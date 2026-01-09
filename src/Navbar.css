@@ -163,3 +163,81 @@
     text-align: center; /* Para que el texto se vea centrado en esa cajita */
     display: inline-block; /* Necesario para que respete el ancho */
   }
+
+  /* === LIVE SEARCH DROPDOWN === */
+.live-search-results {
+  position: absolute;
+  top: 100%; /* Justo debajo del input */
+  left: 0;
+  right: 0;
+  background: var(--bg-card); /* Usa tus variables de color */
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 1000;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.2s;
+}
+
+.search-result-item:hover {
+  background: var(--input-bg); /* Un ligero cambio de color al pasar el mouse */
+}
+
+.mini-thumb {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.mini-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mini-title {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.mini-price {
+  font-size: 11px;
+  color: #10b981; /* Verde precio */
+  font-weight: 700;
+}
+
+.view-all-results {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #3b82f6; /* Azul enlace */
+  font-weight: 700;
+  cursor: pointer;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.view-all-results:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.no-results-item {
+  padding: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}

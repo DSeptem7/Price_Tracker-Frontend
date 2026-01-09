@@ -357,12 +357,13 @@ const processedProducts = useMemo(() => {
 
         {/* === NAVBAR COMPONENTE === */}
         <Navbar 
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
-          productCount={processedProducts.length}
-        />
+        products={products}  // <--- AGREGAR ESTA LÍNEA (pasamos todos los datos)
+        searchTerm={searchTerm} // Esto se queda, pero ya no se usa para el input directo
+        setSearchTerm={setSearchTerm}
+        isDarkMode={isDarkMode}
+        setIsDarkMode={setIsDarkMode}
+        productCount={processedProducts.length} 
+      />
 
         {/* === INICIO DE RUTAS === */}
         <Routes>

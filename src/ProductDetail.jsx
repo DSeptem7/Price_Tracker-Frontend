@@ -13,12 +13,6 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (searchTerm && searchTerm !== "") {
-      navigate('/');
-    }
-  }, [searchTerm, navigate]);
-
-  useEffect(() => {
     const fetchFullDetail = async () => {
       try {
         setLoading(true);
