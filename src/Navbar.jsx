@@ -1,26 +1,23 @@
-// src/Navbar.jsx
 import React, { useState, useRef, useEffect } from 'react'; 
-import { useNavigate, Link } from 'react-router-dom'; // Importamos Link
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-// AHORA RECIBIMOS "products" COMPLETO
 const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
   const navigate = useNavigate();
   
-  // Estado LOCAL del input (lo que el usuario escribe al momento)
   const [localSearch, setLocalSearch] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   
   const searchRef = useRef(null);
+  const inputRef = useRef(null); // Referencia para el input
 
-  // Cada vez que el usuario escribe, filtramos la lista localmente
+  // Lógica de filtrado en vivo
   const handleInputChange = (e) => {
     const text = e.target.value;
     setLocalSearch(text);
 
     if (text.length > 0 && products) {
-      // Filtramos productos que coincidan con el texto (ignorando mayúsculas)
       const matches = products.filter(p => 
         p.title.toLowerCase().includes(text.toLowerCase())
       );
@@ -30,26 +27,47 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
     }
   };
 
-  // Función para "Ver todos los resultados"
+  // Función FINAL: Ejecuta la búsqueda global y cambia de página
   const handleSearchSubmit = () => {
-    setSearchTerm(localSearch); // Le avisamos a App.jsx que filtre de verdad
+    if (localSearch.trim() === "") return; // No buscar si está vacío
+    
+    setSearchTerm(localSearch); 
     setIsSearchExpanded(false);
     setFilteredSuggestions([]);
-    navigate('/'); // Nos vamos a la home
+    navigate('/'); 
   };
 
-  // Detectar tecla ENTER
+  // --- CORRECCIÓN CLAVE: Lógica inteligente del botón de lupa ---
+  const handleSearchIconClick = (e) => {
+    e.stopPropagation(); // Evita que el click cierre el buscador inmediatamente
+
+    if (!isSearchExpanded) {
+      // 1. Si está CERRADO -> ABRIRLO
+      setIsSearchExpanded(true);
+      // Ponemos el foco en el input automáticamente
+      setTimeout(() => inputRef.current?.focus(), 100); 
+    } else {
+      // 2. Si está ABIERTO...
+      if (localSearch.trim() !== "") {
+        // ...y hay texto -> BUSCAR
+        handleSearchSubmit();
+      } else {
+        // ...y está vacío -> CERRARLO
+        setIsSearchExpanded(false);
+      }
+    }
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearchSubmit();
     }
   };
 
-  // Lógica para detectar clic fuera
+  // Clic fuera para cerrar
   useEffect(() => {
     function handleClickOutside(event) {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        // Cerramos el desplegable pero NO borramos el texto por si quiere seguir escribiendo luego
         setIsSearchExpanded(false); 
       }
     }
@@ -63,8 +81,8 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
         <span 
           className="logo" 
           onClick={() => {
-            setSearchTerm(""); // Limpiar búsqueda global
-            setLocalSearch(""); // Limpiar búsqueda local
+            setSearchTerm(""); 
+            setLocalSearch(""); 
             navigate('/');
           }} 
           style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px' }}
@@ -76,31 +94,31 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
 
         <div className="nav-controls">
           
-          {/* CONTENEDOR DEL BUSCADOR */}
           <div ref={searchRef} className={`search-box ${isSearchExpanded ? 'expanded' : ''}`}>
             <input 
+              ref={inputRef} // Conectamos la referencia
               type="text" 
               className="search-input" 
-              placeholder="Buscar producto..." 
-              value={localSearch} // Usamos estado LOCAL
-              onClick={() => setIsSearchExpanded(true)} // Al hacer clic, abrimos si hay texto
+              placeholder="Buscar..." 
+              value={localSearch}
+              onClick={() => setIsSearchExpanded(true)}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
             />
             
-            <button className="search-btn" onClick={handleSearchSubmit}>
+            {/* CORRECCIÓN: Usamos la nueva función handleSearchIconClick */}
+            <button className="search-btn" onClick={handleSearchIconClick}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
             </button>
 
-            {/* === DESPLEGABLE DE RESULTADOS EN VIVO === */}
+            {/* Dropdown de resultados (Live Search) */}
             {isSearchExpanded && localSearch.length > 0 && (
               <div className="live-search-results">
                 {filteredSuggestions.length > 0 ? (
                   <>
-                    {/* Mostramos solo los primeros 5 */}
                     {filteredSuggestions.slice(0, 5).map((p) => (
                       <div 
                         key={p.id} 
@@ -108,7 +126,7 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                         onClick={() => {
                           navigate(`/producto/${p.id}`);
                           setIsSearchExpanded(false);
-                          setLocalSearch(""); // Opcional: limpiar al entrar
+                          setLocalSearch(""); 
                         }}
                       >
                         <img src={p.image} alt="" className="mini-thumb" />
@@ -119,13 +137,12 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                       </div>
                     ))}
                     
-                    {/* Botón Ver Todos */}
                     <div className="view-all-results" onClick={handleSearchSubmit}>
-                      Ver los {filteredSuggestions.length} resultados para "{localSearch}"
+                      Ver resultados para "{localSearch}"
                     </div>
                   </>
                 ) : (
-                  <div className="no-results-item">No se encontraron productos.</div>
+                  <div className="no-results-item">Sin resultados</div>
                 )}
               </div>
             )}
