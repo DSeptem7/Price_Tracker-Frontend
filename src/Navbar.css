@@ -164,80 +164,111 @@
     display: inline-block; /* Necesario para que respete el ancho */
   }
 
-  /* === LIVE SEARCH DROPDOWN === */
-.live-search-results {
-  position: absolute;
-  top: 100%; /* Justo debajo del input */
-  left: 0;
-  right: 0;
-  background: var(--bg-card); /* Usa tus variables de color */
-  border: 1px solid var(--border-color);
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  z-index: 1000;
-  overflow: hidden;
-  margin-top: 5px;
+/* ========================================= */
+/* === VENTANA DE RESULTADOS (LIVE SEARCH) === */
+/* ========================================= */
+
+/* El contenedor del input debe ser relativo para que la ventana se pegue a él */
+.search-box {
+  position: relative !important; 
+  /* Asegura que la lista sepa dónde ubicarse */
 }
 
+.live-search-results {
+  position: absolute;
+  top: 100%; /* Justo debajo del buscador */
+  left: 0;
+  right: 0;
+  
+  /* ESTILOS DE LA VENTANA */
+  background-color: var(--bg-card) !important; /* Fondo sólido */
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 16px 16px; /* Bordes redondos solo abajo */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Sombra fuerte para resaltar */
+  
+  z-index: 9999; /* ¡MUY IMPORTANTE! Para que flote sobre todo */
+  overflow: hidden;
+  margin-top: 8px; /* Un pequeño espacio de separación */
+  
+  /* Animación de entrada */
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* CADA ELEMENTO DE LA LISTA */
 .search-result-item {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 12px 15px;
   cursor: pointer;
   border-bottom: 1px solid var(--border-color);
+  background: var(--bg-card);
   transition: background 0.2s;
 }
 
 .search-result-item:hover {
-  background: var(--input-bg); /* Un ligero cambio de color al pasar el mouse */
+  background-color: rgba(59, 130, 246, 0.1); /* Azul muy clarito al pasar mouse */
 }
 
+/* IMAGEN MINIATURA */
 .mini-thumb {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  margin-right: 10px;
-  border-radius: 4px;
+  margin-right: 12px;
+  background: #fff;
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
 }
 
 .mini-info {
   display: flex;
   flex-direction: column;
+  flex: 1; /* Ocupa el resto del espacio */
   overflow: hidden;
 }
 
 .mini-title {
-  font-size: 12px;
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--text-main);
-  font-weight: 500;
+  text-overflow: ellipsis; /* Puntos suspensivos si es largo */
 }
 
 .mini-price {
-  font-size: 11px;
-  color: #10b981; /* Verde precio */
+  font-size: 12px;
+  color: #10b981; /* Verde esmeralda */
   font-weight: 700;
+  margin-top: 2px;
 }
 
+/* BOTÓN FINAL "VER TODOS" */
 .view-all-results {
-  padding: 12px;
+  padding: 14px;
   text-align: center;
   font-size: 13px;
-  color: #3b82f6; /* Azul enlace */
+  color: #3b82f6; 
   font-weight: 700;
   cursor: pointer;
-  background: rgba(59, 130, 246, 0.05);
+  background: var(--bg-app);
+  border-top: 1px solid var(--border-color);
 }
 
 .view-all-results:hover {
-  background: rgba(59, 130, 246, 0.1);
+  text-decoration: underline;
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .no-results-item {
-  padding: 15px;
+  padding: 20px;
   text-align: center;
-  font-size: 13px;
   color: var(--text-muted);
+  font-size: 13px;
 }
