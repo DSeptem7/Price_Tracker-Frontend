@@ -89,7 +89,8 @@
   color: var(--text-main) !important;
   opacity: 0;
   transition: opacity 0.3s ease 0.1s;
-  padding: 0 40px 0 15px; 
+  padding: 0 40px 0 15px;
+  pointer-events: none; /* Evita clics cuando está cerrado */
 }
 
 .search-box.expanded .search-input {
