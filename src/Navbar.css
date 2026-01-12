@@ -30,6 +30,148 @@
   overflow: visible !important; /* CRÍTICO PARA EL DROPDOWN */
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3b82f6;
+  letter-spacing: -0.5px;
+  flex-grow: 0;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+/* CONTROLES (Derecha) */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  overflow: visible !important;
+  justify-content: flex-end;
+  gap: 15px; /* Un gap normal es suficiente ahora */
+}
+
+/* ========================================= */
+/* === BUSCADOR (ESTILOS BASE PC) === */
+/* ========================================= */
+.search-box {
+  position: relative !important;
+  height: 36px;
+  width: 36px;
+  background: var(--input-bg) !important;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  overflow: visible !important;
+  margin-right: 0 !important;
+}
+
+/* Cuando se expande en PC */
+.search-box.expanded {
+  width: 380px;
+  border-color: var(--border-color);
+  background: var(--input-bg) !important;
+  box-shadow: none; /* Eliminamos el resplandor azul */
+}
+
+.search-input {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 14px;
+  color: var(--text-main) !important;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.1s;
+  padding: 0 40px 0 15px; 
+  pointer-events: none; /* Evita clics cuando está cerrado */
+}
+
+.search-box.expanded .search-input {
+  pointer-events: auto;
+  padding: 8px 10px;
+  opacity: 1;
+}
+
+/* === B. Color del Texto "Buscar..." (Placeholder) === */
+.search-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8; /* Esto suele dar el tono exacto de los placeholders de sistema */
+}
+
+/* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
+.search-input::-webkit-input-placeholder {
+  color: var(--text-muted);
+}
+
+.search-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+  z-index: 2;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.search-box.expanded .search-btn {
+  color: var(--text-main);
+}
+
+.search-icon-svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  stroke-width: 2px;
+}
+
+CSS
+
+/* ====================================================================== */
+/* === NAVBAR (VERSIÓN MAESTRA UNIFICADA) === */
+/* ====================================================================== */
+.navbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 2000;
+  background: var(--bg-navbar);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px; 
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  overflow: visible !important; /* CRÍTICO PARA EL DROPDOWN */
+}
+
 /* LOGO */
 .logo {
   display: flex;
@@ -122,55 +264,115 @@
 /* ========================================= */
 /* === VENTANA DE RESULTADOS (LIVE SEARCH) === */
 /* ========================================= */
-.live-search-results {
+
+/* El contenedor del input debe ser relativo para que la ventana se pegue a él */
+.search-box {
+  position: relative !important; 
+  /* Asegura que la lista sepa dónde ubicarse */
+  }
+  
+  .live-search-results {
   position: absolute;
-  top: 100%;
+  top: 100%; /* Justo debajo del buscador */
   left: 0;
   right: 0;
-  width: 100%; /* En PC sigue el ancho del input */
+  min-width: 100%; /* Mínimo el ancho del buscador */
+  width: auto;     /* Que crezca si es necesario */
   
-  background-color: var(--bg-card) !important;
+  /* ESTILOS DE LA VENTANA */
+  background-color: var(--bg-card) !important; /* Fondo sólido */
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  border-radius: 0 0 16px 16px; /* Bordes redondos solo abajo */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Sombra fuerte para resaltar */
   
-  z-index: 9999;
+  z-index: 9999; /* ¡MUY IMPORTANTE! Para que flote sobre todo */
   overflow: hidden;
-  margin-top: 12px;
+  margin-top: 8px; /* Un pequeño espacio de separación */
+  
+  /* Animación de entrada */
   animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
+  }
+  
+  @keyframes slideDown {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Items de la lista */
-.search-result-item {
+  }
+  
+  /* CADA ELEMENTO DE LA LISTA */
+  .search-result-item {
   display: flex;
   align-items: center;
   padding: 12px 15px;
   cursor: pointer;
   border-bottom: 1px solid var(--border-color);
+  background: var(--bg-card);
   transition: background 0.2s;
-}
-.search-result-item:hover { background-color: rgba(59, 130, 246, 0.08); }
+  }
+  
+  .search-result-item:hover {
+  background-color: rgba(59, 130, 246, 0.1); /* Azul muy clarito al pasar mouse */
+  }
+  
+  /* IMAGEN MINIATURA */
+  .mini-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 12px;
+  background: #fff;
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  }
+  
+  .mini-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Ocupa el resto del espacio */
+  overflow: hidden;
+  }
+  
+  .mini-title {
+  font-size: 13px;
+  color: var(--text-main);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Puntos suspensivos si es largo */
+  }
+  
+  .mini-price {
+  font-size: 12px;
+  color: #10b981; /* Verde esmeralda */
+  font-weight: 700;
+  margin-top: 2px;
+  }
+  
+  /* BOTÓN FINAL "VER TODOS" */
+  .view-all-results {
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: #3b82f6; 
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--bg-app);
+  border-top: 1px solid var(--border-color);
+  }
+  
+  .view-all-results:hover {
+  text-decoration: underline;
+  background: rgba(59, 130, 246, 0.05);
+  }
+  
+  .no-results-item {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  }
 
-.mini-thumb {
-  width: 40px; height: 40px; object-fit: contain;
-  margin-right: 12px; background: #fff;
-  padding: 2px; border-radius: 6px; border: 1px solid var(--border-color);
-}
-.mini-info { display: flex; flex-direction: column; overflow: hidden; }
-.mini-title { font-size: 13px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mini-price { font-size: 12px; color: #10b981; font-weight: 700; }
-
-.view-all-results {
-  padding: 12px; text-align: center; font-size: 13px; color: #3b82f6; font-weight: 700; cursor: pointer; background: var(--bg-app);
-}
-.no-results-item { padding: 20px; text-align: center; color: var(--text-muted); }
-
-/* Switch de Tema */
+  /* Switch de Tema */
 .theme-switch-wrapper { display: flex; align-items: center; }
 .theme-switch {
   position: relative; display: inline-block; width: 44px; height: 24px;
@@ -187,48 +389,56 @@
 input:checked + .slider { background-color: #3b82f6; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-
 /* ====================================================================== */
 /* === MEDIA QUERIES (ESPECÍFICO PARA NAVBAR MÓVIL) === */
 /* ====================================================================== */
+
+/* 2. Ajuste para pantallas medianas (Tablets/Laptops pequeñas) */
 @media (max-width: 900px) {
-  .search-box.expanded { width: 250px; }
+.search-box.expanded .search-input {
+  width: 250px !important; /* Un poco menos en pantallas medianas */
+}
 }
 
+/* 3. Ajuste para Celulares (Ya lo tienes, pero confirmamos) */
 @media (max-width: 600px) {
-  .navbar-content {
-    padding: 0 15px;
-  }
+.search-box.expanded {
+  position: static; /* Para que ocupe el ancho disponible del header */
+}
 
-  /* 1. Logo responsivo */
-  .logo {
-    font-size: 1.1rem;
-    max-width: 50%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.search-box.expanded .search-input {
+  width: 160px !important; /* En celular no podemos abusar del ancho */
+}
 
-  /* 2. Controles ajustados */
-  .nav-controls {
-    gap: 10px;
-    width: auto;
-    flex-shrink: 0;
-  }
+/* 1. Logo responsivo */
+.logo {
+  font-size: 1.1rem;
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  /* 3. BÚSQUEDA EN MÓVIL (El ajuste importante) */
-  .search-box {
-    /* No forzamos posición estática para mantener control */
-    transition: width 0.3s ease;
-  }
+/* 2. Controles ajustados */
+.nav-controls {
+  gap: 10px;
+  width: auto;
+  flex-shrink: 0;
+}
 
-  /* Cuando se expande, que ocupe un ancho decente pero sin romper */
-  .search-box.expanded {
-    width: 160px; /* Suficiente para escribir "iPhone" */
-    position: static; /* Permite que el hijo fixed se posicione relativo a la ventana */
-  }
+/* 3. BÚSQUEDA EN MÓVIL (El ajuste importante) */
+.search-box {
+  /* No forzamos posición estática para mantener control */
+  transition: width 0.3s ease;
+}
 
-  /* === TRUCO PARA LA VENTANA GRANDE === */
+/* Cuando se expande, que ocupe un ancho decente pero sin romper */
+.search-box.expanded {
+  width: 160px; /* Suficiente para escribir "iPhone" */
+  position: static; /* Permite que el hijo fixed se posicione relativo a la ventana */
+}
+
+/* === TRUCO PARA LA VENTANA GRANDE === */
   /* Al usar position: fixed, la ventana se sale del input y flota en la pantalla */
   .live-search-results {
     position: fixed; /* Flotante respecto a la pantalla, no al botón */
@@ -243,4 +453,35 @@ input:checked + .slider:before { transform: translateX(20px); }
     box-shadow: 0 10px 100px rgba(0,0,0,0.5);
     border: 1px solid var(--border-color);
   }
+}  
+
+/* 1. Efecto Hover General (Modo Claro por defecto) */
+.search-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Un gris muy suave en lugar de blanco sólido */
+}
+
+/* 2. Efecto Hover Específico para Modo Oscuro */
+.dark-mode .search-btn:hover {
+  /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: var(--text-main); /* Asegura que el icono mantenga su color */
+}
+
+/* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
+      forzamos a que la lupa cambie a color oscuro solo en ese instante */
+.dark-mode .search-btn:hover .search-icon-svg {
+  stroke: var(--text-main); /* O el color que prefieras para que resalte */
+}
+
+.product-count {
+  font-size: 0.85rem;
+  color: #666;
+  background: #f0f2f5;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  /* AGREGAR ESTO PARA EVITAR CAMBIOS DE TAMAÑO INTERNOS */
+  min-width: 110px; /* Un ancho suficiente para "999+ Productos" */
+  text-align: center; /* Para que el texto se vea centrado en esa cajita */
+  display: inline-block; /* Necesario para que respete el ancho */
 }
