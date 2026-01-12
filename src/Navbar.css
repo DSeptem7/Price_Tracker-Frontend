@@ -1,5 +1,5 @@
 /* ====================================================================== */
-/* === NAVBAR === */
+/* === NAVBAR (VERSIÓN MAESTRA) === */
 /* ====================================================================== */
 .navbar {
   height: 64px; /* Altura fija para el centro vertical */
@@ -55,9 +55,11 @@
   /* Eliminamos min-width raros */
 }
 
-/* --- BUSCADOR MINIMALISTA (El CSS es el mismo del paso anterior) --- */
+/* ========================================= */
+/* === BUSCADOR (ESTILOS BASE PC) === */
+/* ========================================= */
 .search-box {
-  position: relative;
+  position: relative !important;
   height: 36px;
   width: 36px;
   background: var(--input-bg) !important;
@@ -71,7 +73,7 @@
 }
 
 .search-box.expanded {
-  width: 240px;
+  width: 500px;
   border-color: var(--border-color);
   background: var(--input-bg) !important;
   box-shadow: none; /* Eliminamos el resplandor azul */
