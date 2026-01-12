@@ -28,6 +28,7 @@
     margin: 0 auto; /* Centra el contenido en pantallas muy anchas */
     padding: 0 20px; /* Mismo padding lateral que el resto de tu página */
     height: 100%;
+    overflow: visible !important;
   }
   
   /* CAMBIO 3: Título grande para PC */
@@ -48,6 +49,7 @@
   .nav-controls {
     display: flex;
     align-items: center;
+    overflow: visible !important;
     justify-content: flex-end;
     gap: 15px; /* Un gap normal es suficiente ahora */
     /* Eliminamos min-width raros */
