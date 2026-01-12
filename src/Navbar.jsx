@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
+  console.log("DATOS EN NAVBAR:", products);
   const navigate = useNavigate();
   
   const [localSearch, setLocalSearch] = useState("");
