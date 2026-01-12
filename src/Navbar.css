@@ -169,11 +169,19 @@ position: relative !important;
 }
 
 .live-search-results {
-position: absolute;
-top: 100%; /* Justo debajo del buscador */
-left: 0;
-right: 0;
-width: 100%; /* En PC sigue el ancho del input */
+  position: absolute;
+  top: 100%;
+  
+  /* --- AJUSTES DE ANCHO --- */
+  min-width: 550px; /* <--- Aquí defines el ancho fijo de la ventana */
+  width: auto;
+  
+  /* --- CENTRADO (Opcional) --- */
+  /* Si la ventana es más ancha que el buscador, esto la centra respecto a la lupa */
+  left: 50%;
+  transform: translateX(-50%); 
+  
+  background-color: var(--bg-card) !important;
 
 /* ESTILOS DE LA VENTANA */
 background-color: var(--bg-card) !important; /* Fondo sólido */
