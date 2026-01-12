@@ -91,9 +91,34 @@
   }
   
   .search-box.expanded .search-input {
+    width: 380px !important; /* <--- AQUÍ ESTÁ EL TRUCO */
+    padding: 8px 10px;
     opacity: 1;
   }
+
+  /* 2. Ajuste para pantallas medianas (Tablets/Laptops pequeñas) */
+@media (max-width: 900px) {
+  .search-box.expanded .search-input {
+    width: 250px !important; /* Un poco menos en pantallas medianas */
+  }
+}
+
+/* 3. Ajuste para Celulares (Ya lo tienes, pero confirmamos) */
+@media (max-width: 600px) {
+  .search-box.expanded {
+    position: static; /* Para que ocupe el ancho disponible del header */
+  }
   
+  .search-box.expanded .search-input {
+    width: 160px !important; /* En celular no podemos abusar del ancho */
+  }
+  
+  /* Hacemos que la lista en celular ocupe todo el ancho de la pantalla */
+  .live-search-results {
+    width: 90vw; /* 90% del ancho de la pantalla */
+    left: -50px; /* Movemos la lista a la izquierda para centrarla un poco */
+  }
+}  
   /* === B. Color del Texto "Buscar..." (Placeholder) === */
   .search-input::placeholder {
     color: var(--text-muted);
@@ -181,6 +206,8 @@
   top: 100%; /* Justo debajo del buscador */
   left: 0;
   right: 0;
+  min-width: 100%; /* Mínimo el ancho del buscador */
+  width: auto;     /* Que crezca si es necesario */
   
   /* ESTILOS DE LA VENTANA */
   background-color: var(--bg-card) !important; /* Fondo sólido */
