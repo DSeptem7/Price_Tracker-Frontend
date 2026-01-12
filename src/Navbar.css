@@ -283,3 +283,60 @@ font-size: 13px;
 }
 input:checked + .slider { background-color: #3b82f6; }
 input:checked + .slider:before { transform: translateX(20px); }
+
+/* ====================================================================== */
+/* === MEDIA QUERIES (ESPECÍFICO PARA NAVBAR MÓVIL) === */
+/* ====================================================================== */
+@media (max-width: 900px) {
+  .search-box.expanded { width: 250px; }
+}
+
+@media (max-width: 600px) {
+  .navbar-content {
+    padding: 0 15px;
+  }
+
+  /* 1. Logo responsivo */
+  .logo {
+    font-size: 1.1rem;
+    max-width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 2. Controles ajustados */
+  .nav-controls {
+    gap: 10px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  /* 3. BÚSQUEDA EN MÓVIL (El ajuste importante) */
+  .search-box {
+    /* No forzamos posición estática para mantener control */
+    transition: width 0.3s ease;
+  }
+
+  /* Cuando se expande, que ocupe un ancho decente pero sin romper */
+  .search-box.expanded {
+    width: 160px; /* Suficiente para escribir "iPhone" */
+    position: static; /* Permite que el hijo fixed se posicione relativo a la ventana */
+  }
+
+  /* === TRUCO PARA LA VENTANA GRANDE === */
+  /* Al usar position: fixed, la ventana se sale del input y flota en la pantalla */
+  .live-search-results {
+    position: fixed; /* Flotante respecto a la pantalla, no al botón */
+    top: 68px; /* Justo debajo del Navbar (64px + 4px) */
+    left: 50%;
+    transform: translateX(-50%); /* Centrado perfecto */
+    width: 94vw; /* 94% del ancho de la pantalla */
+    max-width: 400px; /* Que no sea gigante en tablets */
+    margin: 0;
+    
+    /* Sombra más fuerte para separar del fondo */
+    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+  }
+}
