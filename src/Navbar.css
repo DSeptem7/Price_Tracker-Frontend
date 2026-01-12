@@ -1,67 +1,63 @@
 /* ====================================================================== */
-/* === NAVBAR (VERSIÓN MAESTRA) === */
+/* === NAVBAR === */
 /* ====================================================================== */
 .navbar {
-    height: 64px; /* Altura fija para el centro vertical */
-    display: flex;
-    align-items: center; /* Centra todo verticalmente */
-    /* Tus otros estilos de sticky, background, z-index siguen aquí... */
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 2000;
-    background: var(--bg-navbar);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--border-color);
-    padding: 0; /* Eliminamos padding del contenedor principal */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  
-  .navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Centrado vertical crítico */
-    width: 100%;
-    /* CAMBIO 1: Ancho máximo que coincide con el resto de tu contenido (aprox. 1280px) */
-    max-width: 1400px; 
-    margin: 0 auto; /* Centra el contenido en pantallas muy anchas */
-    padding: 0 20px; /* Mismo padding lateral que el resto de tu página */
-    height: 100%;
-    overflow: visible !important;
-  }
-  
-  /* CAMBIO 3: Título grande para PC */
-  .logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    font-size: 1.5rem; /* Tamaño grande para PC */
-    font-weight: 700;
-    color: #3b82f6;
-    letter-spacing: -0.5px;
-    /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
-    flex-grow: 0;
-    margin-right: 20px; /* Un margen de seguridad */
-    cursor: pointer;
-  }
-  
-  /* CAMBIO 2: Los controles se pegan a la derecha */
-  .nav-controls {
-    display: flex;
-    align-items: center;
-    overflow: visible !important;
-    justify-content: flex-end;
-    gap: 15px; /* Un gap normal es suficiente ahora */
-    /* Eliminamos min-width raros */
-  }
+  height: 64px; /* Altura fija para el centro vertical */
+  display: flex;
+  align-items: center; /* Centra todo verticalmente */
+  /* Tus otros estilos de sticky, background, z-index siguen aquí... */
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 2000;
+  background: var(--bg-navbar);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0; /* Eliminamos padding del contenedor principal */
+}
 
-/* ========================================= */
-/* === BUSCADOR (ESTILOS BASE PC) === */
-/* ========================================= */
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Centrado vertical crítico */
+  width: 100%;
+  /* CAMBIO 1: Ancho máximo que coincide con el resto de tu contenido (aprox. 1280px) */
+  max-width: 1400px; 
+  margin: 0 auto; /* Centra el contenido en pantallas muy anchas */
+  padding: 0 20px; /* Mismo padding lateral que el resto de tu página */
+  height: 100%;
+  overflow: visible !important;
+}
+
+/* CAMBIO 3: Título grande para PC */
+.logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 1.5rem; /* Tamaño grande para PC */
+  font-weight: 700;
+  color: #3b82f6;
+  letter-spacing: -0.5px;
+  /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
+  flex-grow: 0;
+  margin-right: 20px; /* Un margen de seguridad */
+}
+
+/* CAMBIO 2: Los controles se pegan a la derecha */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  overflow: visible !important;
+  justify-content: flex-end;
+  gap: 15px; /* Un gap normal es suficiente ahora */
+  /* Eliminamos min-width raros */
+}
+
+/* --- BUSCADOR MINIMALISTA (El CSS es el mismo del paso anterior) --- */
 .search-box {
-  position: relative !important;
+  position: relative;
   height: 36px;
   width: 36px;
   background: var(--input-bg) !important;
@@ -74,91 +70,101 @@
   margin-right: 0 !important;
 }
 
-/* Cuando se expande en PC */
 .search-box.expanded {
-    width: 500px;
-    border-color: var(--border-color);
-    background: var(--input-bg) !important;
-    box-shadow: none; /* Eliminamos el resplandor azul */
-  }
+  width: 240px;
+  border-color: var(--border-color);
+  background: var(--input-bg) !important;
+  box-shadow: none; /* Eliminamos el resplandor azul */
+}
 
-  .search-input {
-    width: 100%;
-    height: 100%;
-    border: none !important;
-    background: transparent !important;
-    outline: none !important;
-    font-size: 14px;
-    color: var(--text-main) !important;
-    opacity: 0;
-    transition: opacity 0.3s ease 0.1s;
-    padding: 0 40px 0 15px;
-  }
+.search-input {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: 14px;
+  color: var(--text-main) !important;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.1s;
+  padding: 0 40px 0 15px; 
+}
 
-  search-box.expanded .search-input {
-    padding: 8px 10px;
-    opacity: 1;
-    pointer-events: auto;
-  }
+.search-box.expanded .search-input {
+  opacity: 1;
+}
 
-  /* === B. Color del Texto "Buscar..." (Placeholder) === */
-  .search-input::placeholder {
-    color: var(--text-muted);
-    opacity: 0.8; /* Esto suele dar el tono exacto de los placeholders de sistema */
-  }
-  
-  /* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
-  .search-input::-webkit-input-placeholder {
-    color: var(--text-muted);
-  }
-  
-  .search-btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--text-main);
-    z-index: 2;
-    transition: color 0.3s ease;
-    padding: 0;
-  }
-  
-  .search-box.expanded .search-btn {
-    color: var(--text-main);
-  }
-  
-  .search-icon-svg {
-    display: block;
-    width: 18px;
-    height: 18px;
-    stroke-width: 2px;
-  }
-  
-  /* 1. Efecto Hover General (Modo Claro por defecto) */
-  .search-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Un gris muy suave en lugar de blanco sólido */
-  }
-  
-  /* 2. Efecto Hover Específico para Modo Oscuro */
-  .dark-mode .search-btn:hover {
-    /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
-    background-color: rgba(255, 255, 255, 0.1); 
-    color: var(--text-main); /* Asegura que el icono mantenga su color */
-  }
-  
-  /* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
-        forzamos a que la lupa cambie a color oscuro solo en ese instante */
-  .dark-mode .search-btn:hover .search-icon-svg {
-    stroke: var(--text-main); /* O el color que prefieras para que resalte */
-  }
+/* === B. Color del Texto "Buscar..." (Placeholder) === */
+.search-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8; /* Esto suele dar el tono exacto de los placeholders de sistema */
+}
+
+/* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
+.search-input::-webkit-input-placeholder {
+  color: var(--text-muted);
+}
+
+.search-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+  z-index: 2;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.search-box.expanded .search-btn {
+  color: var(--text-main);
+}
+
+.search-icon-svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  stroke-width: 2px;
+}
+
+/* 1. Efecto Hover General (Modo Claro por defecto) */
+.search-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Un gris muy suave en lugar de blanco sólido */
+}
+
+/* 2. Efecto Hover Específico para Modo Oscuro */
+.dark-mode .search-btn:hover {
+  /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
+  background-color: rgba(255, 255, 255, 0.1); 
+  color: var(--text-main); /* Asegura que el icono mantenga su color */
+}
+
+/* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
+      forzamos a que la lupa cambie a color oscuro solo en ese instante */
+.dark-mode .search-btn:hover .search-icon-svg {
+  stroke: var(--text-main); /* O el color que prefieras para que resalte */
+}
+
+.product-count {
+  font-size: 0.85rem;
+  color: #666;
+  background: #f0f2f5;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  /* AGREGAR ESTO PARA EVITAR CAMBIOS DE TAMAÑO INTERNOS */
+  min-width: 110px; /* Un ancho suficiente para "999+ Productos" */
+  text-align: center; /* Para que el texto se vea centrado en esa cajita */
+  display: inline-block; /* Necesario para que respete el ancho */
+}
 
 /* ========================================= */
 /* === VENTANA DE RESULTADOS (LIVE SEARCH) === */
@@ -166,190 +172,105 @@
 
 /* El contenedor del input debe ser relativo para que la ventana se pegue a él */
 .search-box {
-  position: relative !important; 
-  /* Asegura que la lista sepa dónde ubicarse */
-  }
-  
-  .live-search-results {
-  position: absolute;
-  top: 100%; /* Justo debajo del buscador */
-  left: 0;
-  right: 0;
-  min-width: 100%; /* Mínimo el ancho del buscador */
-  width: auto;     /* Que crezca si es necesario */
-  
-  /* ESTILOS DE LA VENTANA */
-  background-color: var(--bg-card) !important; /* Fondo sólido */
-  border: 1px solid var(--border-color);
-  border-radius: 0 0 16px 16px; /* Bordes redondos solo abajo */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Sombra fuerte para resaltar */
-  
-  z-index: 9999; /* ¡MUY IMPORTANTE! Para que flote sobre todo */
-  overflow: hidden;
-  margin-top: 8px; /* Un pequeño espacio de separación */
-  
-  /* Animación de entrada */
-  animation: slideDown 0.2s ease-out;
-  }
-  
-  @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* CADA ELEMENTO DE LA LISTA */
-  .search-result-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  cursor: pointer;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--bg-card);
-  transition: background 0.2s;
-  }
-  
-  .search-result-item:hover {
-  background-color: rgba(59, 130, 246, 0.1); /* Azul muy clarito al pasar mouse */
-  }
-  
-  /* IMAGEN MINIATURA */
-  .mini-thumb {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-right: 12px;
-  background: #fff;
-  padding: 2px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  }
-  
-  .mini-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1; /* Ocupa el resto del espacio */
-  overflow: hidden;
-  }
-  
-  .mini-title {
-  font-size: 13px;
-  color: var(--text-main);
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Puntos suspensivos si es largo */
-  }
-  
-  .mini-price {
-  font-size: 12px;
-  color: #10b981; /* Verde esmeralda */
-  font-weight: 700;
-  margin-top: 2px;
-  }
-  
-  /* BOTÓN FINAL "VER TODOS" */
-  .view-all-results {
-  padding: 14px;
-  text-align: center;
-  font-size: 13px;
-  color: #3b82f6; 
-  font-weight: 700;
-  cursor: pointer;
-  background: var(--bg-app);
-  border-top: 1px solid var(--border-color);
-  }
-  
-  .view-all-results:hover {
-  text-decoration: underline;
-  background: rgba(59, 130, 246, 0.05);
-  }
-  
-  .no-results-item {
-  padding: 20px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  }
-
-  /* Switch de Tema */
-.theme-switch-wrapper { display: flex; align-items: center; }
-.theme-switch {
-  position: relative; display: inline-block; width: 44px; height: 24px;
-}
-.theme-switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc; transition: .4s; border-radius: 34px;
-}
-.slider:before {
-  position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-  background-color: white; transition: .4s; border-radius: 50%;
-}
-input:checked + .slider { background-color: #3b82f6; }
-input:checked + .slider:before { transform: translateX(20px); }
-
-/* ====================================================================== */
-/* === MEDIA QUERIES (ESPECÍFICO PARA NAVBAR MÓVIL) === */
-/* ====================================================================== */
-
-/* 2. Ajuste para pantallas medianas (Tablets/Laptops pequeñas) */
-@media (max-width: 900px) {
-.search-box.expanded .search-input {
-  width: 250px !important; /* Un poco menos en pantallas medianas */
-}
+position: relative !important; 
+/* Asegura que la lista sepa dónde ubicarse */
 }
 
-/* 3. Ajuste para Celulares (Ya lo tienes, pero confirmamos) */
-@media (max-width: 600px) {
-.search-box.expanded {
-  position: static; /* Para que ocupe el ancho disponible del header */
+.live-search-results {
+position: absolute;
+top: 100%; /* Justo debajo del buscador */
+left: 0;
+right: 0;
+
+/* ESTILOS DE LA VENTANA */
+background-color: var(--bg-card) !important; /* Fondo sólido */
+border: 1px solid var(--border-color);
+border-radius: 0 0 16px 16px; /* Bordes redondos solo abajo */
+box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Sombra fuerte para resaltar */
+
+z-index: 9999; /* ¡MUY IMPORTANTE! Para que flote sobre todo */
+overflow: hidden;
+margin-top: 8px; /* Un pequeño espacio de separación */
+
+/* Animación de entrada */
+animation: slideDown 0.2s ease-out;
 }
 
-.search-box.expanded .search-input {
-  width: 160px !important; /* En celular no podemos abusar del ancho */
+@keyframes slideDown {
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
 }
 
-/* 1. Logo responsivo */
-.logo {
-  font-size: 1.1rem;
-  max-width: 50%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* CADA ELEMENTO DE LA LISTA */
+.search-result-item {
+display: flex;
+align-items: center;
+padding: 12px 15px;
+cursor: pointer;
+border-bottom: 1px solid var(--border-color);
+background: var(--bg-card);
+transition: background 0.2s;
 }
 
-/* 2. Controles ajustados */
-.nav-controls {
-  gap: 10px;
-  width: auto;
-  flex-shrink: 0;
+.search-result-item:hover {
+background-color: rgba(59, 130, 246, 0.1); /* Azul muy clarito al pasar mouse */
 }
 
-/* 3. BÚSQUEDA EN MÓVIL (El ajuste importante) */
-.search-box {
-  /* No forzamos posición estática para mantener control */
-  transition: width 0.3s ease;
+/* IMAGEN MINIATURA */
+.mini-thumb {
+width: 40px;
+height: 40px;
+object-fit: contain;
+margin-right: 12px;
+background: #fff;
+padding: 2px;
+border-radius: 6px;
+border: 1px solid var(--border-color);
 }
 
-/* Cuando se expande, que ocupe un ancho decente pero sin romper */
-.search-box.expanded {
-  width: 160px; /* Suficiente para escribir "iPhone" */
-  position: static; /* Permite que el hijo fixed se posicione relativo a la ventana */
+.mini-info {
+display: flex;
+flex-direction: column;
+flex: 1; /* Ocupa el resto del espacio */
+overflow: hidden;
 }
 
-/* === TRUCO PARA LA VENTANA GRANDE === */
-  /* Al usar position: fixed, la ventana se sale del input y flota en la pantalla */
-  .live-search-results {
-    position: fixed; /* Flotante respecto a la pantalla, no al botón */
-    top: 68px; /* Justo debajo del Navbar (64px + 4px) */
-    left: 50%;
-    transform: translateX(-50%); /* Centrado perfecto */
-    width: 94vw; /* 94% del ancho de la pantalla */
-    max-width: 400px; /* Que no sea gigante en tablets */
-    margin: 0;
-    
-    /* Sombra más fuerte para separar del fondo */
-    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
-    border: 1px solid var(--border-color);
-  }
-}  
+.mini-title {
+font-size: 13px;
+color: var(--text-main);
+font-weight: 600;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis; /* Puntos suspensivos si es largo */
+}
+
+.mini-price {
+font-size: 12px;
+color: #10b981; /* Verde esmeralda */
+font-weight: 700;
+margin-top: 2px;
+}
+
+/* BOTÓN FINAL "VER TODOS" */
+.view-all-results {
+padding: 14px;
+text-align: center;
+font-size: 13px;
+color: #3b82f6; 
+font-weight: 700;
+cursor: pointer;
+background: var(--bg-app);
+border-top: 1px solid var(--border-color);
+}
+
+.view-all-results:hover {
+text-decoration: underline;
+background: rgba(59, 130, 246, 0.05);
+}
+
+.no-results-item {
+padding: 20px;
+text-align: center;
+color: var(--text-muted);
+font-size: 13px;
+}
