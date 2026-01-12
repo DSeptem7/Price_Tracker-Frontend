@@ -94,6 +94,7 @@
 
 .search-box.expanded .search-input {
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* === B. Color del Texto "Buscar..." (Placeholder) === */
