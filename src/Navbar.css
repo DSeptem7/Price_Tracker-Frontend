@@ -157,19 +157,6 @@
   stroke: var(--text-main); /* O el color que prefieras para que resalte */
 }
 
-.product-count {
-  font-size: 0.85rem;
-  color: #666;
-  background: #f0f2f5;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-weight: 600;
-  /* AGREGAR ESTO PARA EVITAR CAMBIOS DE TAMAÑO INTERNOS */
-  min-width: 110px; /* Un ancho suficiente para "999+ Productos" */
-  text-align: center; /* Para que el texto se vea centrado en esa cajita */
-  display: inline-block; /* Necesario para que respete el ancho */
-}
-
 /* ========================================= */
 /* === VENTANA DE RESULTADOS (LIVE SEARCH) === */
 /* ========================================= */
@@ -185,6 +172,7 @@ position: absolute;
 top: 100%; /* Justo debajo del buscador */
 left: 0;
 right: 0;
+width: 100%; /* En PC sigue el ancho del input */
 
 /* ESTILOS DE LA VENTANA */
 background-color: var(--bg-card) !important; /* Fondo sólido */
