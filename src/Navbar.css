@@ -1,56 +1,61 @@
 /* ====================================================================== */
-/* === NAVBAR (VERSIÓN MAESTRA UNIFICADA) === */
+/* === NAVBAR (VERSIÓN MAESTRA) === */
 /* ====================================================================== */
 .navbar {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 2000;
-  background: var(--bg-navbar);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.navbar-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1400px; 
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 100%;
-  overflow: visible !important; /* CRÍTICO PARA EL DROPDOWN */
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #3b82f6;
-  letter-spacing: -0.5px;
-  flex-grow: 0;
-  margin-right: 20px;
-  cursor: pointer;
-}
-
-/* CONTROLES (Derecha) */
-.nav-controls {
-  display: flex;
-  align-items: center;
-  overflow: visible !important;
-  justify-content: flex-end;
-  gap: 15px; /* Un gap normal es suficiente ahora */
-}
+    height: 64px; /* Altura fija para el centro vertical */
+    display: flex;
+    align-items: center; /* Centra todo verticalmente */
+    /* Tus otros estilos de sticky, background, z-index siguen aquí... */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 2000;
+    background: var(--bg-navbar);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0; /* Eliminamos padding del contenedor principal */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centrado vertical crítico */
+    width: 100%;
+    /* CAMBIO 1: Ancho máximo que coincide con el resto de tu contenido (aprox. 1280px) */
+    max-width: 1400px; 
+    margin: 0 auto; /* Centra el contenido en pantallas muy anchas */
+    padding: 0 20px; /* Mismo padding lateral que el resto de tu página */
+    height: 100%;
+    overflow: visible !important;
+  }
+  
+  /* CAMBIO 3: Título grande para PC */
+  .logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 1.5rem; /* Tamaño grande para PC */
+    font-weight: 700;
+    color: #3b82f6;
+    letter-spacing: -0.5px;
+    /* CAMBIO 2: El logo empuja el resto del contenido a la derecha */
+    flex-grow: 0;
+    margin-right: 20px; /* Un margen de seguridad */
+    cursor: pointer;
+  }
+  
+  /* CAMBIO 2: Los controles se pegan a la derecha */
+  .nav-controls {
+    display: flex;
+    align-items: center;
+    overflow: visible !important;
+    justify-content: flex-end;
+    gap: 15px; /* Un gap normal es suficiente ahora */
+    /* Eliminamos min-width raros */
+  }
 
 /* ========================================= */
 /* === BUSCADOR (ESTILOS BASE PC) === */
@@ -71,195 +76,90 @@
 
 /* Cuando se expande en PC */
 .search-box.expanded {
-  width: 380px;
-  border-color: var(--border-color);
-  background: var(--input-bg) !important;
-  box-shadow: none; /* Eliminamos el resplandor azul */
-}
+    width: 500px;
+    border-color: var(--border-color);
+    background: var(--input-bg) !important;
+    box-shadow: none; /* Eliminamos el resplandor azul */
+  }
 
-.search-input {
-  width: 100%;
-  height: 100%;
-  border: none !important;
-  background: transparent !important;
-  outline: none !important;
-  font-size: 14px;
-  color: var(--text-main) !important;
-  opacity: 0;
-  transition: opacity 0.3s ease 0.1s;
-  padding: 0 40px 0 15px; 
-  pointer-events: none; /* Evita clics cuando está cerrado */
-}
+  .search-input {
+    width: 100%;
+    height: 100%;
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    font-size: 14px;
+    color: var(--text-main) !important;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s;
+    padding: 0 40px 0 15px;
+    pointer-events: none; /* Evita clics cuando está cerrado */
+  }
 
-.search-box.expanded .search-input {
-  pointer-events: auto;
-  padding: 8px 10px;
-  opacity: 1;
-}
+  search-box.expanded .search-input {
+    padding: 8px 10px;
+    opacity: 1;
+    pointer-events: auto;
+  }
 
-/* === B. Color del Texto "Buscar..." (Placeholder) === */
-.search-input::placeholder {
-  color: var(--text-muted);
-  opacity: 0.8; /* Esto suele dar el tono exacto de los placeholders de sistema */
-}
-
-/* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
-.search-input::-webkit-input-placeholder {
-  color: var(--text-muted);
-}
-
-.search-btn {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-main);
-  z-index: 2;
-  transition: color 0.3s ease;
-  padding: 0;
-}
-
-.search-box.expanded .search-btn {
-  color: var(--text-main);
-}
-
-.search-icon-svg {
-  display: block;
-  width: 18px;
-  height: 18px;
-  stroke-width: 2px;
-}
-
-CSS
-
-/* ====================================================================== */
-/* === NAVBAR (VERSIÓN MAESTRA UNIFICADA) === */
-/* ====================================================================== */
-.navbar {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 2000;
-  background: var(--bg-navbar);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.navbar-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1400px; 
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 100%;
-  overflow: visible !important; /* CRÍTICO PARA EL DROPDOWN */
-}
-
-/* LOGO */
-.logo {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #3b82f6;
-  letter-spacing: -0.5px;
-  flex-grow: 0;
-  margin-right: 20px;
-  cursor: pointer;
-}
-
-/* CONTROLES (Derecha) */
-.nav-controls {
-  display: flex;
-  align-items: center;
-  overflow: visible !important;
-  justify-content: flex-end;
-  gap: 15px;
-}
-
-/* ========================================= */
-/* === BUSCADOR (ESTILOS BASE PC) === */
-/* ========================================= */
-.search-box {
-  position: relative !important;
-  height: 36px;
-  width: 36px; /* Empieza como un círculo */
-  background: var(--input-bg) !important;
-  border-radius: 50px;
-  border: 1px solid var(--border-color);
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
-  display: flex;
-  align-items: center;
-  overflow: visible !important;
-  margin-right: 0 !important;
-}
-
-/* Cuando se expande en PC */
-.search-box.expanded {
-  width: 380px; /* Ancho generoso en escritorio */
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.search-input {
-  width: 100%;
-  height: 100%;
-  border: none !important;
-  background: transparent !important;
-  outline: none !important;
-  font-size: 14px;
-  color: var(--text-main) !important;
-  opacity: 0;
-  padding: 0 40px 0 15px; 
-  transition: opacity 0.3s ease;
-  pointer-events: none; /* Evita clics cuando está cerrado */
-}
-
-.search-box.expanded .search-input {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Placeholder */
-.search-input::placeholder { color: var(--text-muted); opacity: 0.8; }
-
-/* Botón Lupa */
-.search-btn {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-main);
-  z-index: 2;
-}
-
-.search-icon-svg { stroke-width: 2px; }
+  /* === B. Color del Texto "Buscar..." (Placeholder) === */
+  .search-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8; /* Esto suele dar el tono exacto de los placeholders de sistema */
+  }
+  
+  /* Para navegadores basados en Webkit (Chrome, Safari, Edge) */
+  .search-input::-webkit-input-placeholder {
+    color: var(--text-muted);
+  }
+  
+  .search-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-main);
+    z-index: 2;
+    transition: color 0.3s ease;
+    padding: 0;
+  }
+  
+  .search-box.expanded .search-btn {
+    color: var(--text-main);
+  }
+  
+  .search-icon-svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    stroke-width: 2px;
+  }
+  
+  /* 1. Efecto Hover General (Modo Claro por defecto) */
+  .search-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Un gris muy suave en lugar de blanco sólido */
+  }
+  
+  /* 2. Efecto Hover Específico para Modo Oscuro */
+  .dark-mode .search-btn:hover {
+    /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
+    background-color: rgba(255, 255, 255, 0.1); 
+    color: var(--text-main); /* Asegura que el icono mantenga su color */
+  }
+  
+  /* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
+        forzamos a que la lupa cambie a color oscuro solo en ese instante */
+  .dark-mode .search-btn:hover .search-icon-svg {
+    stroke: var(--text-main); /* O el color que prefieras para que resalte */
+  }
 
 /* ========================================= */
 /* === VENTANA DE RESULTADOS (LIVE SEARCH) === */
@@ -454,21 +354,3 @@ input:checked + .slider:before { transform: translateX(20px); }
     border: 1px solid var(--border-color);
   }
 }  
-
-/* 1. Efecto Hover General (Modo Claro por defecto) */
-.search-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05); /* Un gris muy suave en lugar de blanco sólido */
-}
-
-/* 2. Efecto Hover Específico para Modo Oscuro */
-.dark-mode .search-btn:hover {
-  /* En lugar de blanco, usamos un resaltado sutil azulado o gris oscuro */
-  background-color: rgba(255, 255, 255, 0.1); 
-  color: var(--text-main); /* Asegura que el icono mantenga su color */
-}
-
-/* 3. Ajuste adicional: Si el círculo se vuelve blanco sólido por otra regla, 
-      forzamos a que la lupa cambie a color oscuro solo en ese instante */
-.dark-mode .search-btn:hover .search-icon-svg {
-  stroke: var(--text-main); /* O el color que prefieras para que resalte */
-}
