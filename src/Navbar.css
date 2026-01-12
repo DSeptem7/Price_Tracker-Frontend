@@ -472,16 +472,3 @@ input:checked + .slider:before { transform: translateX(20px); }
 .dark-mode .search-btn:hover .search-icon-svg {
   stroke: var(--text-main); /* O el color que prefieras para que resalte */
 }
-
-.product-count {
-  font-size: 0.85rem;
-  color: #666;
-  background: #f0f2f5;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-weight: 600;
-  /* AGREGAR ESTO PARA EVITAR CAMBIOS DE TAMAÑO INTERNOS */
-  min-width: 110px; /* Un ancho suficiente para "999+ Productos" */
-  text-align: center; /* Para que el texto se vea centrado en esa cajita */
-  display: inline-block; /* Necesario para que respete el ancho */
-}
