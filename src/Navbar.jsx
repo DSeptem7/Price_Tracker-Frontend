@@ -151,7 +151,7 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                     ))}
                     
                     <div className="view-all-results" onClick={handleSearchSubmit}>
-                      Ver resultados para "{localSearch}"
+                      Ver más resultados para "{localSearch}"
                     </div>
                   </>
                 ) : (
