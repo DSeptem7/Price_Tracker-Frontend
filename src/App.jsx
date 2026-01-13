@@ -85,8 +85,8 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
         {loading ? (
           <p style={{ color: textColor }}>Cargando historial...</p>
         ) : history.length > 1 ? ( 
-          <div style={{ width: "100%", height: 300, paddingRight: '20px' }}>
-            <ResponsiveContainer>
+          <div style={{ width: "100%", height: 300, paddingRight: '20px', outline: 'none' }}>
+            <ResponsiveContainer style={{ outline: 'none' }}>
               <LineChart data={history}>
                 {/* 4. Colores dinámicos en los componentes de la gráfica */}
                 <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />

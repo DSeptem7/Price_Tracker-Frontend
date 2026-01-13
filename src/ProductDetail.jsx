@@ -137,7 +137,7 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
               <div className="chart-container-pro">
                 <h3>Historial de Precios</h3>
                 <div style={{ width: '100%', height: 350 }}>
-                  <ResponsiveContainer>
+                <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
                     <AreaChart data={product.history} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
                       <defs>
                         <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
