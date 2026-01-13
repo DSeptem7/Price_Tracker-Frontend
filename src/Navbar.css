@@ -194,59 +194,104 @@ from { opacity: 0; transform: translateY(-10px); }
 to { opacity: 1; transform: translateY(0); }
 }
 
-/* CADA ELEMENTO DE LA LISTA */
+/* ========================================= */
+/* === ITEMS DE LA LISTA (DISEÑO UNIFICADO CON APP.CSS) === */
+/* ========================================= */
+
 .search-result-item {
-display: flex;
-align-items: center;
-padding: 18px 15px;
-cursor: pointer;
-border-bottom: 1px solid var(--border-color);
-background: var(--bg-card);
-transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  padding: 18px 15px;
+  cursor: pointer;
+  
+  /* Borde base transparente (para que no salte al hacer hover) */
+  border-left: 4px solid transparent; 
+  border-bottom: 1px solid var(--border-color);
+  
+  background: var(--bg-card);
+  
+  /* Transición suave para todos los cambios */
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative; /* Necesario para el z-index */
 }
 
+/* --- 1. HOVER EN MODO CLARO (Igual a .product-card:hover) --- */
 .search-result-item:hover {
-background-color: rgba(59, 130, 246, 0.1); /* Azul muy clarito al pasar mouse */
+  /* Fondo sutilmente diferente para destacar */
+  background-color: #f8fafc; /* var(--bg-app) para contraste sutil */
+  
+  /* EL MISMO AZUL DE TUS TARJETAS CLARAS (#007bff) */
+  border-left-color: #007bff; 
+  
+  /* Sombra similar a tus tarjetas */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  
+  /* Pequeño desplazamiento a la derecha en lugar de arriba (más elegante en listas) */
+  transform: translateX(4px);
+  
+  z-index: 10; /* Asegura que la sombra tape a los bordes vecinos */
+  border-bottom-color: transparent; /* Oculta la línea de abajo para que se vea limpio */
 }
 
-/* IMAGEN MINIATURA */
+/* --- 2. HOVER EN MODO OSCURO (Igual a .dark-mode .product-card:hover) --- */
+/* Asegúrate de que tu componente Navbar o body tenga la clase .dark-mode */
+.dark-mode .search-result-item:hover {
+  /* EL MISMO FONDO DE TUS TARJETAS OSCURAS (#1e293b) */
+  background-color: #1e293b !important; 
+  
+  /* EL MISMO AZUL CLARO DE MODO OSCURO (#3b82f6) */
+  border-left-color: #3b82f6; 
+  
+  /* LA MISMA SOMBRA INTENSA DE MODO OSCURO */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* --- ESTILOS DE IMAGEN Y TEXTO (Se mantienen igual pero revisados) --- */
 .mini-thumb {
-width: 65px;
-height: 65px;
-object-fit: contain;
-margin-right: 15px;
-background: #fff;
-padding: 4px;
-border-radius: 8px;
-border: 1px solid var(--border-color);
-flex-shrink: 0; /* Evita que la imagen se aplaste si el texto es largo */
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin-right: 15px;
+  background: #fff; /* Siempre blanco para que la foto resalte */
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+/* Detalle extra: al hacer hover en la fila, el borde de la foto se pinta también */
+.search-result-item:hover .mini-thumb {
+  border-color: #007bff; /* Azul claro */
+}
+.dark-mode .search-result-item:hover .mini-thumb {
+  border-color: #3b82f6; /* Azul oscuro */
 }
 
 .mini-info {
-display: flex;
-flex-direction: column;
-flex: 1; /* Ocupa el resto del espacio */
-overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
 }
 
 .mini-title {
-font-size: 14px;
-color: var(--text-main);
-font-weight: 600;
-line-height: 1.3; /* Mejor espacio entre líneas */
-white-space: normal;
-display: -webkit-box;
-  -webkit-line-clamp: 2; /* Muestra hasta 2 líneas de título */
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-overflow: hidden;
-text-overflow: ellipsis; /* Puntos suspensivos si es largo */
-margin-bottom: 4px;
+  overflow: hidden;
+  margin-bottom: 4px;
 }
 
 .mini-price {
-font-size: 14px;
-color: #10b981; /* Verde esmeralda */
-font-weight: 700;
+  font-size: 14px;
+  color: #10b981; /* Verde esmeralda (Se mantiene igual, combina bien con ambos) */
+  font-weight: 700;
 }
 
 /* BOTÓN FINAL "VER TODOS" */
