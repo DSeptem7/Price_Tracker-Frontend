@@ -297,9 +297,22 @@ const processedProducts = useMemo(() => {
   let result = [...products];
 
   if (searchTerm && !searchTerm.includes("http")) {
-    const lowerSearch = searchTerm.toLowerCase();
-    result = result.filter(p => p.title.toLowerCase().includes(lowerSearch));
-  }
+    const normalizeText = (str) => {
+      return str
+        .toLowerCase() // Minusculas
+        .normalize("NFD") // Descompone acentos
+        .replace(/[\u0300-\u036f]/g, ""); // Borra acentos
+    };
+// 2. Limpiamos lo que escribió el usuario
+const cleanSearch = normalizeText(searchTerm);
+
+// 3. Filtramos limpiando también el título del producto
+result = result.filter(p => 
+  normalizeText(p.title).includes(cleanSearch)
+);
+
+// --- CAMBIO FIN ---
+}
 
   if (filterOption === "historical_low") {
     // NUEVA LÓGICA PERMANENTE PARA EL FILTRO

@@ -17,11 +17,23 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
   const handleInputChange = (e) => {
     const text = e.target.value;
     setLocalSearch(text);
-
+  
+    // Función interna para quitar acentos y pasar a minúsculas
+    const normalizeText = (str) => {
+      return str
+        .toLowerCase()
+        .normalize("NFD") // Descompone caracteres (ej: 'á' -> 'a' + '´')
+        .replace(/[\u0300-\u036f]/g, ""); // Elimina las tildes
+    };
+  
     if (text.length > 0 && products) {
-      const matches = products.filter(p => 
-        p.title.toLowerCase().includes(text.toLowerCase())
-      );
+      const searchTextNormalized = normalizeText(text);
+  
+      const matches = products.filter(p => {
+        const titleNormalized = normalizeText(p.title);
+        return titleNormalized.includes(searchTextNormalized);
+      });
+  
       setFilteredSuggestions(matches);
     } else {
       setFilteredSuggestions([]);
