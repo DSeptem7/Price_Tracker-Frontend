@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
+import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import FeaturedProductCard from './FeaturedProductCard';
 import Footer from './Footer';
@@ -367,6 +368,9 @@ result = result.filter(p =>
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
+
+        {/* 1. Insertamos el componente aquí */}
+        <ScrollToTop />
 
         {/* === NAVBAR COMPONENTE === */}
         <Navbar 
