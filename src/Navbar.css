@@ -294,28 +294,70 @@ to { opacity: 1; transform: translateY(0); }
   font-weight: 700;
 }
 
-/* BOTÓN FINAL "VER TODOS" */
+/* ========================================= */
+/* === BOTÓN FINAL "VER TODOS" (MEJORADO) === */
+/* ========================================= */
+
 .view-all-results {
-padding: 14px;
-text-align: center;
-font-size: 13px;
-color: #3b82f6; 
-font-weight: 700;
-cursor: pointer;
-background: var(--bg-app);
-border-top: 1px solid var(--border-color);
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  
+  /* ESTADO BASE */
+  background: var(--bg-app); /* Mantiene el tono grisáceo suave */
+  color: var(--text-muted);  /* Texto discreto hasta que pasas el mouse */
+  border-top: 1px solid var(--border-color);
+  
+  /* Preparamos el borde izquierdo para la animación */
+  border-left: 4px solid transparent; 
+  
+  /* Animación suave */
+  transition: all 0.2s ease;
 }
 
+/* --- HOVER MODO CLARO (Alto Contraste) --- */
 .view-all-results:hover {
-text-decoration: underline;
-background: rgba(59, 130, 246, 0.05);
+  /* Fondo Azul Muy Claro (Visiblemente distinto al blanco) */
+  background-color: #e7f1ff; 
+  
+  /* Texto Azul Primario */
+  color: #007bff; 
+  
+  /* Borde izquierdo azul (Igual que tus tarjetas) */
+  border-left-color: #007bff;
+  
+  /* Quitamos el subrayado antiguo, el color es suficiente */
+  text-decoration: none; 
+  
+  /* Pequeño desplazamiento para indicar "Click" */
+  transform: translateX(2px);
 }
 
+/* --- HOVER MODO OSCURO (Corrección de Visibilidad) --- */
+.dark-mode .view-all-results:hover {
+  /* Fondo más claro que el negro, para que destaque */
+  background-color: #1e293b; 
+  
+  /* Texto Azul Neón (Cyan/Blue) */
+  color: #3b82f6; 
+  
+  /* Borde izquierdo azul brillante */
+  border-left-color: #3b82f6;
+  
+  /* Aseguramos que el borde superior no estorbe visualmente */
+  border-top-color: transparent;
+}
+
+/* Estado de la lista cuando no hay resultados */
 .no-results-item {
-padding: 20px;
-text-align: center;
-color: var(--text-muted);
-font-size: 13px;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  background: var(--bg-card);
+  font-style: italic;
 }
 
 /* Switch de Tema */
