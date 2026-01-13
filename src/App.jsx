@@ -101,7 +101,7 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
                 <Tooltip 
                   offset={20}
                   contentStyle={{ 
-                    backgroundColor: isDarkMode ? "rgba(30, 41, 59, 0.8)" : "rgba(255, 255, 255, 0.8)", 
+                    backgroundColor: isDarkMode ? "rgba(30, 41, 59, 0.5)" : "rgba(255, 255, 255, 0.8)", 
                     backdropFilter: 'blur(4px)',
                     color: textColor,
                     border: `1px solid ${gridColor}`,
