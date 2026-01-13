@@ -928,6 +928,26 @@ html {
   color: var(--text-color); /* Asegura que use el color del modo */
 }
 
+/* Quita el recuadro de selección en el contenedor de la gráfica */
+.recharts-responsive-container:focus,
+.recharts-wrapper:focus,
+.recharts-surface:focus {
+  outline: none !important;
+}
+
+/* Evita que se resalte el área interna de la gráfica al hacer clic */
+.recharts-rectangle:focus,
+.recharts-dot:focus,
+.recharts-curve:focus {
+  outline: none !important;
+}
+
+/* Deshabilita la selección de texto dentro de la gráfica para evitar el resaltado azulado */
+.recharts-surface {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent; /* Quita el destello al tocar en móviles */
+}
+
 /* Contenedor específico del Canvas para que no toque bordes */
 .chart-container {
   padding: 10px;
