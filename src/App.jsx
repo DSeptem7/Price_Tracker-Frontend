@@ -99,10 +99,13 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
                   tick={{ fill: textColor, fontSize: 12 }} 
                 /> 
                 <Tooltip 
+                  offset={20}
                   contentStyle={{ 
-                    backgroundColor: isDarkMode ? "#1e293b" : "#fff", 
+                    backgroundColor: isDarkMode ? "rgba(30, 41, 59, 0.8)" : "rgba(255, 255, 255, 0.8)", 
+                    backdropFilter: 'blur(4px)',
                     color: textColor,
-                    border: `1px solid ${gridColor}`
+                    border: `1px solid ${gridColor}`,
+                    borderRadius: '8px'
                   }}
                   itemStyle={{ color: isDarkMode ? "#3b82f6" : "#8884d8" }}
                   formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} 

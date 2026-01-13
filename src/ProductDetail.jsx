@@ -148,7 +148,7 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
                       <YAxis domain={['auto', 'auto']} stroke={isDarkMode ? "#94a3b8" : "#64748b"} tickFormatter={(v) => `$${v.toLocaleString()}`} fontSize={12} tickLine={false} axisLine={false} style={{ pointerEvents: 'none' }}/>
                       <XAxis dataKey="timestamp" stroke={isDarkMode ? "#94a3b8" : "#64748b"} fontSize={10} tickFormatter={(str) => str?.split(' ')[0]} tickLine={false} axisLine={false} minTickGap={30} style={{ pointerEvents: 'none' }} />
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} style={{ pointerEvents: 'none' }} />
-                      <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#1e293b' : '#fff', border: 'none', borderRadius: '8px' }} formatter={(v) => [`$${v.toLocaleString()}`, 'Precio']} />
+                      <Tooltip offset={20} contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(4px)', border: 'none', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', fontSize: '12px'}} formatter={(v) => [`$${v.toLocaleString()}`, 'Precio']} />
                       <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={1} fill="url(#colorPrice)" strokeWidth={3} />
                     </AreaChart>
                   </ResponsiveContainer>

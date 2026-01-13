@@ -989,6 +989,13 @@ svg.recharts-surface {
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); 
 }
 
+/* Hace que el Tooltip sea "invisible" para el mouse/dedo */
+/* Así el usuario siempre toca la gráfica, no el cuadro del texto */
+.recharts-tooltip-wrapper {
+  pointer-events: none !important;
+  transition: transform 0.15s ease-out !important; /* Movimiento más fluido */
+}
+
 /* ====================================================================== */
 /* === 9. SKELETON SCREEN === */
 /* ====================================================================== */
