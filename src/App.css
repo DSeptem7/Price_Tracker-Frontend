@@ -928,24 +928,30 @@ html {
   color: var(--text-color); /* Asegura que use el color del modo */
 }
 
-/* Quita el recuadro de selección en el contenedor de la gráfica */
-.recharts-responsive-container:focus,
-.recharts-wrapper:focus,
-.recharts-surface:focus {
+/*QUITAR RECUADROS EN GRÁFICO*/
+/* 1. Desactivar el recuadro de enfoque en TODOS los elementos de Recharts */
+.recharts-responsive-container *,
+.recharts-wrapper *,
+.recharts-surface *,
+.recharts-legend-wrapper * {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important; /* Elimina la banda blanca/azul en móviles */
+}
+
+/* 2. Específicamente para los ejes (que suelen causar ese recuadro parcial) */
+.recharts-cartesian-axis-tick text {
+  user-select: none; /* Evita que el texto se seleccione como si fuera un párrafo */
   outline: none !important;
 }
 
-/* Evita que se resalte el área interna de la gráfica al hacer clic */
-.recharts-rectangle:focus,
-.recharts-dot:focus,
-.recharts-curve:focus {
+/* 3. El contenedor principal SVG */
+svg.recharts-surface {
   outline: none !important;
 }
 
-/* Deshabilita la selección de texto dentro de la gráfica para evitar el resaltado azulado */
-.recharts-surface {
-  user-select: none;
-  -webkit-tap-highlight-color: transparent; /* Quita el destello al tocar en móviles */
+/* 4. Solución para el "desbordamiento" en celulares */
+.chart-container-pro, .modal-content {
+  overflow: hidden; /* Evita que cualquier borde de foco "empuje" el contenido y cree bandas blancas */
 }
 
 /* Contenedor específico del Canvas para que no toque bordes */
