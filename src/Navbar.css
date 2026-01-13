@@ -389,7 +389,6 @@ input:checked + .slider:before { transform: translateX(20px); }
     padding: 0 15px;
   }
 
-  /* 1. Logo responsivo */
   .logo {
     font-size: 1.1rem;
     max-width: 50%;
@@ -398,38 +397,45 @@ input:checked + .slider:before { transform: translateX(20px); }
     text-overflow: ellipsis;
   }
 
-  /* 2. Controles ajustados */
   .nav-controls {
     gap: 10px;
     width: auto;
     flex-shrink: 0;
   }
 
-  /* 3. BÚSQUEDA EN MÓVIL (El ajuste importante) */
-  .search-box {
-    /* No forzamos posición estática para mantener control */
-    transition: width 0.3s ease;
-  }
-
-  /* Cuando se expande, que ocupe un ancho decente pero sin romper */
   .search-box.expanded {
-    width: 160px; /* Suficiente para escribir "iPhone" */
-    position: static; /* Permite que el hijo fixed se posicione relativo a la ventana */
+    width: 160px;
+    position: static; 
   }
 
-  /* === TRUCO PARA LA VENTANA GRANDE === */
-  /* Al usar position: fixed, la ventana se sale del input y flota en la pantalla */
+  /* === VENTANA CORREGIDA PARA MÓVIL === */
   .live-search-results {
-    position: fixed; /* Flotante respecto a la pantalla, no al botón */
-    top: 68px; /* Justo debajo del Navbar (64px + 4px) */
+    position: fixed;
+    top: 68px;
     left: 50%;
-    transform: translateX(-50%); /* Centrado perfecto */
-    width: 94vw; /* 94% del ancho de la pantalla */
-    max-width: 400px; /* Que no sea gigante en tablets */
+    /* Mantenemos el -50% desde el inicio para evitar el salto */
+    transform: translateX(-50%); 
+    width: 94vw;
+    max-width: 400px;
     margin: 0;
-    
-    /* Sombra más fuerte para separar del fondo */
     box-shadow: 0 10px 100px rgba(0,0,0,0.5);
     border: 1px solid var(--border-color);
+    z-index: 9999;
+    
+    /* Usamos una animación exclusiva para móvil */
+    animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+/* === NUEVA ANIMACIÓN QUE RESPETA EL CENTRADO === */
+@keyframes slideDownMobile {
+  from { 
+    opacity: 0; 
+    /* Incluimos AMBOS valores para que no salte de un lado a otro */
+    transform: translateX(-50%) translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(-50%) translateY(0); 
   }
 }
