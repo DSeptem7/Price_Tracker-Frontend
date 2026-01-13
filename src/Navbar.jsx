@@ -47,7 +47,8 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
     setSearchTerm(localSearch); 
     setIsSearchExpanded(false);
     setFilteredSuggestions([]);
-    navigate('/'); 
+    navigate('/');
+    setLocalSearch(""); 
   };
 
   // --- CORRECCIÓN CLAVE: Lógica inteligente del botón de lupa ---
