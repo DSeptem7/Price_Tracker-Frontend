@@ -638,7 +638,17 @@ return (
       <div className={`store-header ${storeClass}`}>{storeName}</div>
       
       <div className="image-container">
-        <img src={p.image} alt={p.title} />
+      <img 
+        src={p.image} 
+        alt={p.title}
+        loading="lazy" // 1. Mejora velocidad: Solo carga cuando aparece en pantalla
+        referrerPolicy="no-referrer" // 2. Truco: Evita bloqueos de Amazon/ML
+        onError={(e) => { 
+          // 3. Fallback: Si falla, pone una imagen gris por defecto
+          e.target.onerror = null; 
+          e.target.src = "https://placehold.co/400x400/e2e8f0/1e293b?text=Imagen+No+Disponible"; 
+        }}
+      />
         {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
         {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
       </div>
