@@ -587,7 +587,24 @@ result = result.filter(p => {
     ))}
   </div>
 ) : currentProducts.length === 0 ? (
-  <p className="no-products-message">No se encontraron productos.</p>
+  <div className="no-results-container">
+    <div className="no-results-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+        <path d="M8 11h6"></path> {/* Esta es la rayita de la lupa "triste/vacía" */}
+      </svg>
+    </div>
+    <h2>No encontramos coincidencias</h2>
+    <p>Intenta ajustar tu búsqueda o eliminar los filtros aplicados.</p>
+    
+    <button 
+      className="clear-search-btn"
+      onClick={() => setSearchTerm("")}
+    >
+      Limpiar búsqueda
+    </button>
+  </div>
 ) : currentProducts.length === 1 && searchTerm !== "" ? (
   <div className="featured-product-wrapper">
     <FeaturedProductCard 
