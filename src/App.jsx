@@ -643,7 +643,9 @@ return (
         {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
       </div>
 
-      <h3>{p.title}</h3>
+      <h3 className="product-title">
+      {highlightText(p.title, searchTerm)}
+      </h3>
       
       {renderPreviousPrice()}
       
@@ -719,5 +721,28 @@ return (
     </div> /* Cierre Modo Dinámico */ 
   );
 }
+
+const highlightText = (text, query) => {
+  if (!query || !text || query.includes("http")) return text;
+
+  const normalize = (str) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const tokens = normalize(query).split(/\s+/).filter(t => t.length > 0);
+
+  if (tokens.length === 0) return text;
+
+  // Creamos el patrón para buscar los tokens
+  const pattern = new RegExp(`(${tokens.join('|')})`, 'gi');
+  const parts = text.split(pattern);
+
+  return (
+    <>
+      {parts.map((part, i) => 
+        tokens.some(t => normalize(t) === normalize(part)) ? 
+          <mark key={i} className="highlight">{part}</mark> : 
+          part
+      )}
+    </>
+  );
+};
 
 export default App;

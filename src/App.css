@@ -476,6 +476,21 @@ html {
   transition: all 0.4s ease;
 }
 
+/* Estilo para el resaltado de búsqueda */
+.highlight {
+  background-color: rgba(59, 130, 246, 0.2); /* Un azul suave */
+  color: #3b82f6; /* Texto azul brillante */
+  font-weight: bold;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* En modo oscuro, ajustamos los colores para que resalten mejor */
+.dark-mode .highlight {
+  background-color: rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
+}
+
 /* ====================================================================== */
 /* === 5. GRILLA Y TARJETAS === */
 /* ====================================================================== */

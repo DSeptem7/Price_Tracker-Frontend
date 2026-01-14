@@ -149,7 +149,9 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                       >
                         <img src={p.image} alt="" className="mini-thumb" />
                         <div className="mini-info">
-                          <span className="mini-title">{p.title}</span>
+                        <span className="mini-title">
+                        {highlightText(p.title, localSearch)}
+                        </span>
                           <span className="mini-price">{p.price}</span>
                         </div>
                       </div>
@@ -180,6 +182,32 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
         </div>
       </div>
     </nav>
+  );
+};
+
+const highlightText = (text, query) => {
+  if (!query || !text) return text;
+
+  // 1. Normalizamos y obtenemos los tokens (palabras)
+  const normalize = (str) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const tokens = normalize(query).split(/\s+/).filter(t => t.length > 0);
+
+  if (tokens.length === 0) return text;
+
+  // 2. Creamos una expresión regular que busque todos los tokens a la vez
+  // El flag 'gi' es para Global e Ignore Case.
+  // Usamos un truco: buscamos las palabras pero escapando caracteres raros.
+  const pattern = new RegExp(`(${tokens.join('|')})`, 'gi');
+  const parts = text.split(pattern);
+
+  return (
+    <span>
+      {parts.map((part, i) => 
+        tokens.some(t => normalize(t) === normalize(part)) ? 
+          <mark key={i} className="highlight">{part}</mark> : 
+          part
+      )}
+    </span>
   );
 };
 
