@@ -28,10 +28,14 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
   
     if (text.length > 0 && products) {
       const searchTextNormalized = normalizeText(text);
-  
+
+      // .split(" ") divide por espacios, .filter verifica que no sean espacios vacíos
+      const searchTokens = searchTextNormalized.split(/\s+/).filter(token => token.length > 0);
+
       const matches = products.filter(p => {
         const titleNormalized = normalizeText(p.title);
-        return titleNormalized.includes(searchTextNormalized);
+        // Verificamos que TODOS los tokens de búsqueda estén incluidos en el título
+        return searchTokens.every(token => titleNormalized.includes(token));
       });
   
       setFilteredSuggestions(matches);

@@ -302,18 +302,22 @@ const processedProducts = useMemo(() => {
 
   if (searchTerm && !searchTerm.includes("http")) {
     const normalizeText = (str) => {
+      if (!str) return "";
       return str
-        .toLowerCase() // Minusculas
-        .normalize("NFD") // Descompone acentos
-        .replace(/[\u0300-\u036f]/g, ""); // Borra acentos
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
     };
-// 2. Limpiamos lo que escribió el usuario
+// 2. Limpiamos lo que escribió el usuario y la convertimos en TOKENS
 const cleanSearch = normalizeText(searchTerm);
+const searchTokens = cleanSearch.split(/\s+/).filter(token => token.length > 0);
 
 // 3. Filtramos limpiando también el título del producto
-result = result.filter(p => 
-  normalizeText(p.title).includes(cleanSearch)
-);
+result = result.filter(p => {
+  const titleNormalized = normalizeText(p.title);
+  // Solo incluimos el producto si cada palabra de la búsqueda existe en el título
+  return searchTokens.every(token => titleNormalized.includes(token));
+});
 
 // --- CAMBIO FIN ---
 }
