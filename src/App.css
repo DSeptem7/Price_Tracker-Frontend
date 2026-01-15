@@ -585,11 +585,6 @@ html {
   border-color: transparent; /* Opcional: Quitar borde si quieres que sea muy sutil */
 }
 
-.icon-reset {
-  font-size: 16px;
-  display: inline-block;
-}
-
 /* ====================================================================== */
 /* === 5. GRILLA Y TARJETAS === */
 /* ====================================================================== */
