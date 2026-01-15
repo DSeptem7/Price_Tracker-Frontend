@@ -278,7 +278,12 @@ html {
 
 /* Fila de filtros (Selects) */
 .filter-row {
-  justify-content: center; /* En PC los mantiene agrupados al centro */
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite que el botón baje en pantallas pequeñas */
+  align-items: flex-end; /* Alinea los selects y el botón por la base */
 }
 
 .simulate-panel input, .simulate-panel select {
@@ -547,6 +552,35 @@ html {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nuevo Botón: Restablecer filtros (Lado de los selects) */
+.btn-reset-filters {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  height: 42px; /* Altura igual a tus selects */
+  white-space: nowrap;
+}
+
+.btn-reset-filters:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.icon-reset {
+  font-size: 16px;
+  display: inline-block;
 }
 
 /* ====================================================================== */
@@ -890,6 +924,15 @@ html {
     display: flex !important;
     gap: 10px !important;
     justify-content: space-between !important;
+  }
+
+  /* El botón de reset ocupa todo el ancho abajo de los selects */
+  .btn-reset-filters {
+    width: 100% !important;
+    order: 3; /* Asegura que siempre vaya al final */
+    justify-content: center;
+    border-style: dashed; /* Un toque visual diferente */
+    margin-top: 5px;
   }
 
   /* Aseguramos que cada selector ocupe el 50% del espacio disponible */

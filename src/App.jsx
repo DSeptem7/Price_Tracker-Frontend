@@ -524,6 +524,17 @@ const handleResetAll = () => {
                         <option value="price_drop">Solo Ofertas</option>
                     </select>
                 </div>
+
+                {/* BOTÓN DE LIMPIAR (Solo aparece si hay cambios) */}
+        {(filterOption !== "all" || sortOption !== "date_desc") && (
+            <button 
+                className="btn-reset-filters" 
+                onClick={handleResetAll}
+                title="Restablecer vista original"
+            >
+                <span className="icon-reset">↺</span> Limpiar filtros
+            </button>
+        )}
             </div>
             
     {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
