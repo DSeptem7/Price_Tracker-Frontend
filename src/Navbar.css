@@ -399,13 +399,6 @@ to { opacity: 1; transform: translateY(0); }
   color: var(--text-muted);
 }
 
-/* Ajuste para que el dropdown no se vea cortado */
-.live-search-results {
-  min-width: 300px;
-  max-height: 450px;
-  overflow-y: auto;
-}
-
 /* Switch de Tema */
 .theme-switch-wrapper { display: flex; align-items: center; }
 .theme-switch {
