@@ -285,7 +285,7 @@ html {
   flex-wrap: wrap;
   align-items: flex-end;
   min-height: 65px; /* CLAVE: Reserva espacio para que los selects no bailen */
-  transition: all 0.3s ease;
+  transition: gap 0.3s ease, padding 0.3s ease;
 }
 
 .simulate-panel input, .simulate-panel select {
