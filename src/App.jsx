@@ -528,12 +528,14 @@ const handleResetAll = () => {
                 {/* BOTÓN DE LIMPIAR: Aparece si hay texto O si los selectores no están en default */}
         {(searchTerm !== "" || filterOption !== "all" || sortOption !== "date_desc") && (
             <button 
-                className="btn-reset-filters" 
-                onClick={handleResetAll}
-                title="Restablecer todo"
-            >
-                <span className="icon-reset">↺</span> Limpiar todo
-            </button>
+            className="btn-reset-filters" 
+            onClick={handleResetAll}
+            title="Restablecer todo"
+            /* Se desactiva si NO hay texto Y el filtro es 'all' Y el orden es 'date_desc' */
+            disabled={searchTerm === "" && filterOption === "all" && sortOption === "date_desc"}
+        >
+            <span className="icon-reset">↺</span> Limpiar todo
+        </button>
         )}
             </div>
             
