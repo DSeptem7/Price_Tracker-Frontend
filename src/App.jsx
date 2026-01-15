@@ -525,18 +525,16 @@ const handleResetAll = () => {
                     </select>
                 </div>
 
-                {/* BOTÓN DE LIMPIAR: Aparece si hay texto O si los selectores no están en default */}
-        {(searchTerm !== "" || filterOption !== "all" || sortOption !== "date_desc") && (
-            <button 
-            className="btn-reset-filters" 
-            onClick={handleResetAll}
-            title="Restablecer todo"
-            /* Se desactiva si NO hay texto Y el filtro es 'all' Y el orden es 'date_desc' */
-            disabled={searchTerm === "" && filterOption === "all" && sortOption === "date_desc"}
-        >
-            <span className="icon-reset">↺</span> Limpiar todo
-        </button>
-        )}
+                {/* BOTÓN DE LIMPIAR: Siempre presente en el DOM */}
+              <button 
+                  className="btn-reset-filters" 
+                  onClick={handleResetAll}
+                  title="Restablecer todo"
+                  /* El botón se desactiva (se pone gris) cuando no hay nada que limpiar */
+                  disabled={searchTerm === "" && filterOption === "all" && sortOption === "date_desc"}
+              >
+                  <span className="icon-reset">↺</span> Limpiar todo
+              </button>
             </div>
             
     {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
