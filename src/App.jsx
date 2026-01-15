@@ -372,6 +372,14 @@ result = result.filter(p => {
     return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
   };
 
+  // Función para limpiar todos los filtros, búsquedas y ordenamientos
+const handleResetAll = () => {
+  setSearchTerm("");       // Limpia la barra de búsqueda
+  setFilterOption("all");  // Restablece el "Filtrar estado" a la opción por defecto
+  setSortOption("date_desc"); // Restablece "Ordenar por" (ajusta según tu default)
+  setCurrentPage(1);       // Vuelve a la página 1
+};
+
   return (
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
@@ -598,11 +606,12 @@ result = result.filter(p => {
     <h2>No encontramos coincidencias</h2>
     <p>Intenta ajustar tu búsqueda o eliminar los filtros aplicados.</p>
     
+    {/* ACTUALIZACIÓN: Ahora llama a handleResetAll */}
     <button 
       className="clear-search-btn"
-      onClick={() => setSearchTerm("")}
+      onClick={handleResetAll}
     >
-      Limpiar búsqueda
+      Restablecer filtros y búsqueda
     </button>
   </div>
 ) : currentProducts.length === 1 && searchTerm !== "" ? (
