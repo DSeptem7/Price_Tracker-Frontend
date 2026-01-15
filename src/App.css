@@ -284,8 +284,6 @@ html {
   justify-content: center;
   flex-wrap: wrap;
   align-items: flex-end;
-  min-height: 65px; /* CLAVE: Reserva espacio para que los selects no bailen */
-  transition: gap 0.3s ease, padding 0.3s ease;
 }
 
 .simulate-panel input, .simulate-panel select {
@@ -571,33 +569,20 @@ html {
   gap: 6px;
   height: 42px;
   white-space: nowrap;
-  
-  /* ANIMACIÓN DE ENTRADA */
-  animation: slideInRotate 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition: all 0.2s ease;
+  transition: all 0.2s ease; /* Solo transición de color suave */
 }
 
-.btn-reset-filters:hover {
-  border-style: solid;
-  border-color: #ef4444; /* Un rojo suave al pasar el mouse */
+.btn-reset-filters:hover:not(:disabled) {
+  border-color: #ef4444; /* Rojo suave */
   color: #ef4444;
   background-color: rgba(239, 68, 68, 0.05);
 }
 
-/* Definición de la animación: Aparece, escala y sube un poquito */
-@keyframes slideInRotate {
-  0% {
-    opacity: 0;
-    transform: scale(0.8) translateY(10px);
-    max-width: 0; /* Empieza sin ocupar espacio */
-    margin-left: -12px; /* Compensa el gap */
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    max-width: 200px; /* Se expande suavemente */
-    margin-left: 0;
-  }
+/* Estado Deshabilitado (Cuando está limpio) */
+.btn-reset-filters:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: transparent; /* Opcional: Quitar borde si quieres que sea muy sutil */
 }
 
 .icon-reset {
