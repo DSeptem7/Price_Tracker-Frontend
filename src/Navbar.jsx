@@ -124,6 +124,23 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
               onKeyDown={handleKeyDown}
             />
             
+            {/* NUEVO: Botón X para limpiar. Solo aparece si localSearch tiene contenido */}
+              {localSearch && (
+                <button 
+                  className="clear-search-x" 
+                  onClick={() => {
+                    setLocalSearch("");
+                    inputRef.current?.focus(); // Mantiene el teclado abierto
+                  }}
+                  type="button"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              )}
+
             {/* CORRECCIÓN: Usamos la nueva función handleSearchIconClick */}
             <button className="search-btn" onClick={handleSearchIconClick}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

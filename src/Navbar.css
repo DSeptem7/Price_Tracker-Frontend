@@ -89,7 +89,7 @@
   color: var(--text-main) !important;
   opacity: 0;
   transition: opacity 0.3s ease 0.1s;
-  padding: 0 40px 0 15px;
+  padding: 0 70px 0 15px !important;
   pointer-events: none; /* Evita clics cuando está cerrado */
 }
 
@@ -97,6 +97,27 @@
   width: 100%;
   opacity: 1;
   pointer-events: auto;
+}
+
+/* El botón X de limpieza */
+.clear-search-x {
+  position: absolute;
+  right: 36px; /* Se coloca justo a la izquierda de la lupa (que mide 36px) */
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 5px;
+  z-index: 2;
+  transition: color 0.2s ease;
+}
+
+.clear-search-x:hover {
+  color: #ef4444;
 }
 
 /* === B. Color del Texto "Buscar..." (Placeholder) === */
@@ -429,9 +450,20 @@ input:checked + .slider:before { transform: translateX(20px); }
   }
 
   .search-box.expanded {
-    width: 160px;
+    width: 210px !important;
     position: static; 
   }
+
+  .search-input {
+    /* En móvil el espacio es crítico, aseguramos que el texto no pase de la X */
+    padding: 0 65px 0 12px !important;
+    font-size: 16px !important; /* Evita el zoom de iOS */
+  }
+
+  .clear-search-x {
+    right: 32px; /* Ajuste fino para la pantalla táctil */
+  }
+}
 
   /* === VENTANA CORREGIDA PARA MÓVIL === */
   .live-search-results {
