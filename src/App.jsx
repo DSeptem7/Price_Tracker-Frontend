@@ -526,15 +526,15 @@ const handleResetAll = () => {
                 </div>
 
                 {/* BOTÓN DE LIMPIAR: Siempre presente en el DOM */}
-              <button 
-                  className="btn-reset-filters" 
-                  onClick={handleResetAll}
-                  title="Restablecer todo"
-                  /* El botón se desactiva (se pone gris) cuando no hay nada que limpiar */
-                  disabled={searchTerm === "" && filterOption === "all" && sortOption === "date_desc"}
-              >
-                  <span className="icon-reset">↺</span> Limpiar todo
-              </button>
+            <button 
+                className="btn-reset-filters" 
+                onClick={handleResetAll}
+                title="Restablecer todo"
+                /* El botón se desactiva (se pone gris) cuando no hay nada que limpiar */
+                disabled={searchTerm === "" && filterOption === "all" && sortOption === "date_desc"}
+            >
+                <span className="icon-reset">↺</span> Limpiar todo
+            </button>
             </div>
             
     {/* ZONA DE MENSAJES ÚNICA: Solo aparece si está cargando O si hay un mensaje que mostrar */}
