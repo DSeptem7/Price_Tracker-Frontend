@@ -350,14 +350,39 @@ to { opacity: 1; transform: translateY(0); }
   border-top-color: transparent;
 }
 
-/* Estado de la lista cuando no hay resultados */
-.no-results-item {
-  padding: 20px;
+/* Contenedor del estado vacío en el buscador del Navbar */
+.no-results-live {
+  padding: 30px 15px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icono con la misma animación de rebote que el principal */
+.no-results-icon-mini {
+  color: #94a3b8;
+  animation: bounce-sad 2s ease-in-out infinite; /* Reutilizamos la animación de App.css */
+}
+
+.no-results-live p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.search-tip {
+  font-size: 12px;
   color: var(--text-muted);
-  font-size: 13px;
-  background: var(--bg-card);
-  font-style: italic;
+}
+
+/* Ajuste para que el dropdown no se vea cortado */
+.live-search-results {
+  min-width: 300px;
+  max-height: 450px;
+  overflow-y: auto;
 }
 
 /* Switch de Tema */

@@ -162,7 +162,17 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                     </div>
                   </>
                 ) : (
-                  <div className="no-results-item">Sin resultados</div>
+                  <div className="no-results-live">
+                    <div className="no-results-icon-mini">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                        <path d="M8 11h6"></path>
+                      </svg>
+                    </div>
+                    <p>No hay coincidencias para tu búsqueda</p>
+                    <span className="search-tip">Prueba con palabras más generales</span>
+                  </div>
                 )}
               </div>
             )}
