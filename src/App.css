@@ -282,8 +282,10 @@ html {
   gap: 12px;
   width: 100%;
   justify-content: center;
-  flex-wrap: wrap; /* Permite que el botón baje en pantallas pequeñas */
-  align-items: flex-end; /* Alinea los selects y el botón por la base */
+  flex-wrap: wrap;
+  align-items: flex-end;
+  min-height: 65px; /* CLAVE: Reserva espacio para que los selects no bailen */
+  transition: all 0.3s ease;
 }
 
 .simulate-panel input, .simulate-panel select {
@@ -557,7 +559,7 @@ html {
 /* Nuevo Botón: Restablecer filtros (Lado de los selects) */
 .btn-reset-filters {
   background-color: transparent;
-  border: 1px solid var(--border-color);
+  border: 1px dashed var(--border-color); /* Estilo dashed para que parezca secundario */
   color: var(--text-muted);
   padding: 10px 15px;
   border-radius: 10px;
@@ -567,15 +569,35 @@ html {
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s ease;
-  height: 42px; /* Altura igual a tus selects */
+  height: 42px;
   white-space: nowrap;
+  
+  /* ANIMACIÓN DE ENTRADA */
+  animation: slideInRotate 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.2s ease;
 }
 
 .btn-reset-filters:hover {
-  border-color: #3b82f6;
-  color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.05);
+  border-style: solid;
+  border-color: #ef4444; /* Un rojo suave al pasar el mouse */
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Definición de la animación: Aparece, escala y sube un poquito */
+@keyframes slideInRotate {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+    max-width: 0; /* Empieza sin ocupar espacio */
+    margin-left: -12px; /* Compensa el gap */
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    max-width: 200px; /* Se expande suavemente */
+    margin-left: 0;
+  }
 }
 
 .icon-reset {
