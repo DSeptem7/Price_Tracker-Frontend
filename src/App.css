@@ -507,10 +507,31 @@ html {
   min-height: 400px;
 }
 
+/* El contenedor del icono */
 .no-results-icon {
-  color: #94a3b8; /* Gris azulado suave */
+  color: #94a3b8;
   margin-bottom: 20px;
-  animation: fadeIn 0.5s ease;
+  /* Aplicamos la animación: dura 2 segundos y se repite infinitamente */
+  animation: bounce-sad 2s ease-in-out infinite;
+  display: inline-block; /* Importante para que la transformación funcione */
+}
+
+/* Definición de los pasos del rebote "triste" */
+@keyframes bounce-sad {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05); /* Sube y se estira un poco */
+  }
+  70% {
+    transform: translateY(0) scale(0.95); /* Cae y se "aplasta" sutilmente */
+  }
+}
+
+/* Opcional: Hacer que la lupa "tiemble" un poco al aparecer */
+.no-results-container h2 {
+  animation: fadeIn 0.8s ease-out;
 }
 
 .no-results-container h2 {
