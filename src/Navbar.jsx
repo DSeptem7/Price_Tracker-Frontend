@@ -125,7 +125,7 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
             />
             
             {/* NUEVO: Botón X para limpiar. Solo aparece si localSearch tiene contenido */}
-            {isSearchExpanded && localSearch && (
+            {localSearch && (
               <button 
                 className="clear-search-x" 
                 onClick={() => {
@@ -239,3 +239,4 @@ const highlightText = (text, query) => {
 };
 
 export default Navbar;
+
