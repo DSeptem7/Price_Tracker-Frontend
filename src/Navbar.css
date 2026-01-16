@@ -434,6 +434,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 @media (max-width: 600px) {
   .navbar-content {
     padding: 0 15px;
+    position: relative; /* Necesario para que la barra absoluta sepa dónde está el límite */
   }
 
   .logo {
@@ -445,14 +446,25 @@ input:checked + .slider:before { transform: translateX(20px); }
   }
 
   .nav-controls {
+    display: flex;
+    align-items: center;
     gap: 10px;
-    width: auto;
-    flex-shrink: 0;
+    /* No tocamos el ancho para que el switch se quede en su lugar */
   }
 
+  /* === COMPORTAMIENTO DE EXPANSIÓN === */
   .search-box.expanded {
-    width: 320px !important;
-    position: static; 
+    position: absolute; /* Al ser absoluta, no empuja al switch hacia arriba */
+    right: 15px;       /* Se alinea con el borde derecho de los controles */
+    top: 50%;
+    transform: translateY(-50%); /* Centrado vertical sin saltos */
+    
+    /* El ancho que tú prefieras (puedes subirlo a 250px o 280px para tapar el logo) */
+    width: 250px !important; 
+    
+    background: var(--input-bg) !important;
+    z-index: 10;
+    margin: 0 !important; /* Evita cualquier empuje por margen */
   }
 
   .search-input {
