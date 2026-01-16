@@ -427,17 +427,23 @@ input:checked + .slider:before { transform: translateX(20px); }
 /* ====================================================================== */
 /* === MEDIA QUERIES (ESPECÍFICO PARA NAVBAR MÓVIL) === */
 /* ====================================================================== */
+
+/* Ajuste intermedio (Tablets) */
 @media (max-width: 900px) {
   .search-box.expanded { width: 250px; }
 }
 
+/* AJUSTES MÓVIL (Celulares < 600px) */
 @media (max-width: 600px) {
+  
+  /* 1. EL CONTENEDOR PRINCIPAL ES LA REFERENCIA */
   .navbar-content {
-    position: relative;
-    /* Aseguramos que los controles no se muevan al expandir */
+    position: relative; /* Este será el ancla real */
+    padding: 0 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 60px; /* Asegura una altura fija para evitar saltos verticales */
   }
 
   .logo {
@@ -446,79 +452,83 @@ input:checked + .slider:before { transform: translateX(20px); }
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 1; /* El logo queda abajo cuando se expanda la barra */
   }
 
-  /* 2. Cuando la barra se expande, toma el control total */
-  .search-box.expanded {
-    position: absolute; /* Se sale del flujo normal */
-    top: 50%;
-    right: 15px; /* Un pequeño margen a los lados se ve más elegante que pegado al borde */
-    transform: translateY(-50%); /* Centrado vertical perfecto */
-    
-    /* CÁLCULO MÁGICO: 100% del ancho menos 20px (10px de cada lado) */
-    width: calc(100% - 30px) !important; 
-    
-    background-color: var(--bg-card) !important; /* OBLIGATORIO: Fondo sólido para tapar el logo */
-    z-index: 100; /* Asegura que quede encima del logo */
-    
-    /* Opcional: una pequeña sombra para que se note que está flotando */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border-radius: 50px; /* Mantiene tu estilo redondeado */ 
-  }
-
-  /* 3. Evitar que el Switch y otros botones brillen a través o empujen */
+  /* 2. TRUCO MAESTRO: HACER 'TRANSPARENTE' AL CONTENEDOR DE CONTROLES */
   .nav-controls {
-    /* Mantenemos los botones en su sitio pero la barra pasará por encima */
-    z-index: 1; 
+    /* position: static es la clave: hace que el hijo (search-box) 
+       ignore a este div y busque al .navbar-content para medir su ancho */
+    position: static; 
+    gap: 10px;
+    width: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
-  /* 3. Ajuste del Input para aprovechar el nuevo espacio gigante */
+  /* 3. BARRA EXPANDIDA: AHORA SÍ OCUPA TODO EL ANCHO */
+  .search-box.expanded {
+    position: absolute;
+    top: 50%;
+    /* Al poner left: 15px y right: 15px, forzamos a que se estire */
+    left: 15px; 
+    right: 15px;
+    transform: translateY(-50%); /* Centrado vertical exacto */
+    
+    width: auto !important; /* Dejamos que left y right definan el ancho */
+    height: 45px; /* Altura fija para que no 'baile' */
+    
+    background-color: var(--bg-card) !important;
+    z-index: 100; /* Encima de todo */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    margin: 0 !important; /* Resetea cualquier margen que lo empuje hacia arriba */
+  }
+
+  /* 4. Ajustes internos de la barra expandida */
   .search-box.expanded .search-input {
-    padding-right: 75px !important; /* Espacio para X + Lupa */
-    padding-left: 15px !important;
+    padding: 0 50px 0 15px !important; /* Espacio ajustado */
     font-size: 16px !important;
     opacity: 1;
-  }
-
-  .search-input {
-    /* En móvil el espacio es crítico, aseguramos que el texto no pase de la X */
-    padding: 0 65px 0 12px !important;
-    font-size: 16px !important; /* Evita el zoom de iOS */
+    width: 100%;
+    height: 100%;
   }
 
   .clear-search-x {
-    right: 32px; /* Ajuste fino para la pantalla táctil */
+    right: 50px; /* Ajustado para no chocar con la lupa */
+    height: 100%; /* Centrado vertical automático */
+    top: 0;
   }
   
-  /* === VENTANA CORREGIDA PARA MÓVIL === */
+  /* El botón de la lupa en modo expandido */
+  .search-box.expanded .search-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* === VENTANA DE RESULTADOS (Dropdown) === */
   .live-search-results {
     position: fixed;
-    top: 68px;
-    left: 50%;
-    /* Mantenemos el -50% desde el inicio para evitar el salto */
-    transform: translateX(-50%); 
-    width: 94vw;
-    max-width: 400px;
+    top: 65px; /* Justo debajo del navbar */
+    left: 15px; 
+    right: 15px; /* Usamos left/right para centrar sin transform */
+    width: auto;
+    max-width: none;
+    transform: none; /* Quitamos el translate que causaba conflictos */
+    
     margin: 0;
     box-shadow: 0 10px 100px rgba(0,0,0,0.5);
     border: 1px solid var(--border-color);
     z-index: 9999;
-    
-    /* Usamos una animación exclusiva para móvil */
     animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
 
-/* === NUEVA ANIMACIÓN QUE RESPETA EL CENTRADO === */
+/* Animación simplificada */
 @keyframes slideDownMobile {
-  from { 
-    opacity: 0; 
-    /* Incluimos AMBOS valores para que no salte de un lado a otro */
-    transform: translateX(-50%) translateY(-10px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateX(-50%) translateY(0); 
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
