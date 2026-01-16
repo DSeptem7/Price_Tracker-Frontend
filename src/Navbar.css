@@ -445,33 +445,45 @@ input:checked + .slider:before { transform: translateX(20px); }
     text-overflow: ellipsis;
   }
 
-  .nav-controls {
-    gap: 10px;
-    width: auto;
-    flex-shrink: 0;
-  }
+  @media (max-width: 600px) {
+    .navbar-content {
+      position: relative;
+      /* Aseguramos que los controles no se muevan al expandir */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
   /* 2. Cuando la barra se expande, toma el control total */
   .search-box.expanded {
     position: absolute; /* Se sale del flujo normal */
     top: 50%;
-    left: 10px; /* Un pequeño margen a los lados se ve más elegante que pegado al borde */
+    right: 15px; /* Un pequeño margen a los lados se ve más elegante que pegado al borde */
     transform: translateY(-50%); /* Centrado vertical perfecto */
     
     /* CÁLCULO MÁGICO: 100% del ancho menos 20px (10px de cada lado) */
-    width: calc(100% - 20px) !important; 
+    width: calc(100% - 30px) !important; 
     
     background-color: var(--bg-card) !important; /* OBLIGATORIO: Fondo sólido para tapar el logo */
     z-index: 100; /* Asegura que quede encima del logo */
     
     /* Opcional: una pequeña sombra para que se note que está flotando */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 50px; /* Mantiene tu estilo redondeado */ 
+  }
+
+  /* 3. Evitar que el Switch y otros botones brillen a través o empujen */
+  .nav-controls {
+    /* Mantenemos los botones en su sitio pero la barra pasará por encima */
+    z-index: 1; 
   }
 
   /* 3. Ajuste del Input para aprovechar el nuevo espacio gigante */
   .search-box.expanded .search-input {
-    padding-right: 80px !important; /* Espacio para X + Lupa */
+    padding-right: 75px !important; /* Espacio para X + Lupa */
+    padding-left: 15px !important;
     font-size: 16px !important;
+    opacity: 1;
   }
 
   .search-input {
