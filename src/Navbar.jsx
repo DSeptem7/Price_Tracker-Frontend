@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
@@ -155,24 +156,25 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                 {filteredSuggestions.length > 0 ? (
                   <>
                     {filteredSuggestions.slice(0, 5).map((p) => (
-                      <div 
-                        key={p.id} 
-                        className="search-result-item"
-                        onClick={() => {
-                          navigate(`/producto/${p.id}`);
-                          setIsSearchExpanded(false);
-                          setLocalSearch(""); 
-                        }}
-                      >
-                        <img src={p.image} alt="" className="mini-thumb" />
-                        <div className="mini-info">
-                        <span className="mini-title">
+                  <Link 
+                    key={p.id} 
+                    to={`/producto/${p.id}`} // Permite que el navegador lo reconozca como un enlace real
+                    className="search-result-item"
+                    onClick={() => {
+                      // Mantenemos la limpieza de la barra al hacer clic normal
+                      setIsSearchExpanded(false);
+                      setLocalSearch(""); 
+                    }}
+                  >
+                    <img src={p.image} alt="" className="mini-thumb" />
+                    <div className="mini-info">
+                      <span className="mini-title">
                         {highlightText(p.title, localSearch)}
-                        </span>
-                          <span className="mini-price">{p.price}</span>
-                        </div>
-                      </div>
-                    ))}
+                      </span>
+                      <span className="mini-price">{p.price}</span>
+                    </div>
+                  </Link>
+                ))}
                     
                     <div className="view-all-results" onClick={handleSearchSubmit}>
                       Ver más resultados para "{localSearch}"
