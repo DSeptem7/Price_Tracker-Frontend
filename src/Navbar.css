@@ -495,7 +495,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   .clear-search-x {
     right: 32px; /* Ajuste fino para la pantalla táctil */
   }
-  
+}
   /* === VENTANA CORREGIDA PARA MÓVIL === */
   .live-search-results {
     position: fixed;
