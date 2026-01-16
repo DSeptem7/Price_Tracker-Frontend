@@ -433,12 +433,11 @@ input:checked + .slider:before { transform: translateX(20px); }
 
 @media (max-width: 600px) {
   .navbar-content {
-    position: relative; /* Este será el ancla real */
-    padding: 0 15px;
+    position: relative;
+    /* Aseguramos que los controles no se muevan al expandir */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px; /* Asegura una altura fija para evitar saltos verticales */
   }
 
   .logo {
@@ -447,19 +446,6 @@ input:checked + .slider:before { transform: translateX(20px); }
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    z-index: 1; /* El logo queda abajo cuando se expanda la barra */
-  }
-
-  /* 2. TRUCO MAESTRO: HACER 'TRANSPARENTE' AL CONTENEDOR DE CONTROLES */
-  .nav-controls {
-    /* position: static es la clave: hace que el hijo (search-box) 
-       ignore a este div y busque al .navbar-content para medir su ancho */
-    position: static; 
-    gap: 10px;
-    width: auto;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
   }
 
   /* 2. Cuando la barra se expande, toma el control total */
@@ -470,37 +456,38 @@ input:checked + .slider:before { transform: translateX(20px); }
     transform: translateY(-50%); /* Centrado vertical perfecto */
     
     /* CÁLCULO MÁGICO: 100% del ancho menos 20px (10px de cada lado) */
-    width: calc(100% - 30px) !important;
-    height: 45px; /* Altura fija para que no 'baile' */
+    width: calc(100% - 30px) !important; 
     
-    background-color: var(--bg-card) !important;
-    z-index: 100; /* Encima de todo */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    border-radius: 12px;
-    margin: 0 !important; /* Resetea cualquier margen que lo empuje hacia arriba */
+    background-color: var(--bg-card) !important; /* OBLIGATORIO: Fondo sólido para tapar el logo */
+    z-index: 100; /* Asegura que quede encima del logo */
+    
+    /* Opcional: una pequeña sombra para que se note que está flotando */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 50px; /* Mantiene tu estilo redondeado */ 
+  }
+
+  /* 3. Evitar que el Switch y otros botones brillen a través o empujen */
+  .nav-controls {
+    /* Mantenemos los botones en su sitio pero la barra pasará por encima */
+    z-index: 1; 
   }
 
   /* 3. Ajuste del Input para aprovechar el nuevo espacio gigante */
   .search-box.expanded .search-input {
-    padding: 0 50px 0 15px !important; /* Espacio ajustado */
+    padding-right: 75px !important; /* Espacio para X + Lupa */
+    padding-left: 15px !important;
     font-size: 16px !important;
     opacity: 1;
-    width: 100%;
-    height: 100%;
+  }
+
+  .search-input {
+    /* En móvil el espacio es crítico, aseguramos que el texto no pase de la X */
+    padding: 0 65px 0 12px !important;
+    font-size: 16px !important; /* Evita el zoom de iOS */
   }
 
   .clear-search-x {
-    right: 32px; /* Ajustado para no chocar con la lupa */
-    height: 100%; /* Centrado vertical automático */
-    top: 0;
-  }
-
-  /* El botón de la lupa en modo expandido */
-  .search-box.expanded .search-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 32px; /* Ajuste fino para la pantalla táctil */
   }
   
   /* === VENTANA CORREGIDA PARA MÓVIL === */
