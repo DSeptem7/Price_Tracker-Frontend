@@ -491,7 +491,7 @@ input:checked + .slider:before { transform: translateX(20px); }
     top: 68px; /* Altura del navbar */
     left: 10px;
     right: 10px;
-    width: auto;
+    width: 94vw;
     transform: none; /* Eliminamos el -50% porque ya estamos usando left/right */
     max-width: 400px;
     margin: 0;
