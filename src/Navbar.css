@@ -448,36 +448,26 @@ input:checked + .slider:before { transform: translateX(20px); }
 
   /* === EXPANSIÓN HACIA LA IZQUIERDA SIN SALTOS === */
   .search-box.expanded {
-    /* IMPORTANTE: position absolute para que no empuje al switch ni al logo */
-    position: absolute !important; 
+    position: absolute !important;
     
-    /* Anclaje a la derecha: 
-       65px es la suma aproximada del switch (40px) + gap (10px) + padding (15px).
-       Esto hace que la barra NUNCA toque el switch. */
-    right: 65px; 
+    /* === 1. EXPANSIÓN HORIZONTAL (Correcta) === */
+    left: 15px;    /* Cubre el logo */
+    right: 65px;   /* Respeta el switch */
+    width: auto !important;
     
-    /* Anclaje a la izquierda: 
-       15px coincide con el padding del navbar. Al fijar left y right, 
-       la barra se estira automáticamente cubriendo el logo. */
-    left: 15px; 
+    /* === 2. EL CENTRADO SIN "CÁRCEL" (Aquí está la magia) === */
+    height: 40px;      /* Definimos una altura fija para el móvil */
+    top: 50%;          /* Ponemos el borde superior justo a la mitad */
+    margin-top: -20px; /* Lo subimos exactamente la mitad de su altura (40px / 2) */
+    margin-bottom: 0;
     
-    width: auto !important; /* El ancho lo definen left y right */
+    /* IMPORTANTE: Aseguramos que NO haya transform */
+    transform: none !important; 
     
-   /* --- CAMBIO CRÍTICO: NUEVO CENTRADO VERTICAL --- */
-  /* Quitamos top: 50% y el transform para romper la "cárcel" */
-  top: 0;
-  bottom: 0;
-  margin-top: auto;
-  margin-bottom: auto;
-  /* Asegúrate de que la altura sea la misma que tu input (aprox 40-42px) */
-  height: 42px; 
-  
-  transform: none !important; /* Importante: Asegurar que NO haya transform */
-    
-    /* Respetamos tu diseño de PC */
+    /* Estilos visuales */
     background: var(--input-bg) !important;
     z-index: 100;
-    margin: 0 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Sombra suave opcional */
   }
 
   .search-input {
@@ -494,32 +484,30 @@ input:checked + .slider:before { transform: translateX(20px); }
   
   /* === VENTANA DE RESULTADOS (OCUPANDO TODO EL ANCHO) === */
   .live-search-results {
+    /* Al no haber transform en el padre, 'fixed' obedece a la pantalla */
     position: fixed;
-    top: 64px; /* Ajusta según la altura de tu Navbar */
+    top: 64px; /* Altura de tu navbar */
     
-    /* TÉCNICA DE CENTRADO TOTAL */
+    /* Centrado horizontal perfecto */
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
     
-    /* Definimos el ancho exacto */
-    width: 94%; /* Usar % es más estable que vw para evitar el "salto" del scrollbar */
+    /* Ancho seguro */
+    width: 94%; 
     max-width: 480px; 
     
-    /* IMPORTANTE: Quitamos el transform anterior para que no interfiera */
     transform: none !important; 
     
-    /* Estilos visuales */
-   /* Estilos visuales */
-  box-shadow: 0 10px 100px rgba(0,0,0,0.5);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card); /* Asegúrate que tenga fondo definido */
-  border-radius: 0 0 12px 12px; /* Redondeamos solo abajo */
-  z-index: 9999;
-  
-  animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
+    /* Estilos */
+    background: var(--bg-card);
+    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+    z-index: 9999;
+    
+    animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
 }
 
 /* Animación simplificada para evitar tirones */
