@@ -489,14 +489,16 @@ input:checked + .slider:before { transform: translateX(20px); }
   .live-search-results {
     position: fixed;
     top: 68px;
-    left: 50%;
-    /* Mantenemos el -50% desde el inicio para evitar el salto */
-    transform: translateX(-50%); 
-    width: 94vw;
-    max-width: 400px;
-    margin: 0;
-    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
-    border: 1px solid var(--border-color);
+    left: 50% !important;
+  transform: translateX(-50%) !important; 
+  
+  /* Tu diseño original */
+  width: 94vw !important;
+  max-width: 500px; /* Un poco más ancho para que luzca en móviles grandes */
+  margin: 0;
+  box-shadow: 0 10px 100px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card); /* Asegura que tenga fondo sólido */
     z-index: 9999;
     
     /* Usamos una animación exclusiva para móvil */
