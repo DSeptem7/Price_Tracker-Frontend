@@ -108,7 +108,7 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
             setLocalSearch(""); 
             navigate('/');
           }} 
-          style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px', visibility: isSearchExpanded ? 'hidden' : 'visible' }}
+          style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px' }}
         >
           🛒 Price Tracker
         </span>
