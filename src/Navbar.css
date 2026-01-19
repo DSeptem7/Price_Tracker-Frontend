@@ -488,16 +488,21 @@ input:checked + .slider:before { transform: translateX(20px); }
   /* === RESULTADOS (Ajuste para que coincidan con la barra absoluta) === */
   .live-search-results {
     position: fixed;
-    top: 68px; /* Altura del navbar */
-    left: 10px;
-    right: 10px;
+    top: 68px;
+    left: 50%;
+    /* Mantenemos el -50% desde el inicio para evitar el salto */
+    transform: translateX(-50%); 
     width: 94vw;
-    transform: none; /* Eliminamos el -50% porque ya estamos usando left/right */
     max-width: 400px;
     margin: 0;
+    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
     z-index: 9999;
+    
+    /* Usamos una animación exclusiva para móvil */
     animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
 }
 
 /* Animación simplificada para evitar tirones */
