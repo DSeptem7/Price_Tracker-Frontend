@@ -424,67 +424,74 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 600px) {
+  /* 1. El contenedor padre debe ser relativo para que la barra no flote a cualquier lado */
   .navbar-content {
+    position: relative;
     padding: 0 15px;
+    height: 64px; /* Ajusta a la altura real de tu navbar */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .logo {
     font-size: 1.1rem;
-    max-width: 50%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    z-index: 1; /* El logo queda atrás */
   }
 
   .nav-controls {
+    display: flex;
+    align-items: center;
     gap: 10px;
-    width: auto;
-    flex-shrink: 0;
   }
 
+  /* 2. LA CLAVE: El search-box base mantiene el espacio para que el switch no se mueva */
+  .search-box {
+    width: 40px; /* Ancho del icono cuando está cerrado */
+    height: 40px;
+    transition: all 0.3s ease;
+  }
+
+  /* 3. BARRA EXPANDIDA: Se posiciona absolutamente respecto a .navbar-content */
   .search-box.expanded {
-    width: 200px !important;
-    position: static; 
+    position: absolute;
+    /* Dejamos un espacio a la derecha (60px aprox) para que NO tape el switch */
+    right: 65px; 
+    /* Empezamos desde la izquierda del navbar */
+    left: 10px;
+    
+    /* Centrado vertical perfecto para que NO "suba" */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    width: auto !important; /* El ancho lo definen 'left' y 'right' */
+    max-width: none;
+    z-index: 100;
+    background-color: var(--bg-card) !important;
+    border-radius: 8px; /* O el radius que uses */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
 
+  /* 4. Ajustes del Input interno */
   .search-input {
-    /* En móvil el espacio es crítico, aseguramos que el texto no pase de la X */
+    width: 100%;
+    height: 42px;
     padding: 0 65px 0 12px !important;
-    font-size: 16px !important; /* Evita el zoom de iOS */
+    font-size: 16px !important;
   }
 
   .clear-search-x {
-    right: 32px; /* Ajuste fino para la pantalla táctil */
+    right: 35px; /* Ajuste para que no choque con la lupa */
   }
-  
-  /* === VENTANA CORREGIDA PARA MÓVIL === */
+
+  /* 5. Asegurar que los resultados también se ajusten al ancho de la barra */
   .live-search-results {
     position: fixed;
     top: 68px;
-    left: 50%;
-    /* Mantenemos el -50% desde el inicio para evitar el salto */
-    transform: translateX(-50%); 
-    width: 94vw;
-    max-width: 400px;
-    margin: 0;
-    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
-    border: 1px solid var(--border-color);
-    z-index: 9999;
-    
-    /* Usamos una animación exclusiva para móvil */
-    animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-}
-
-/* === NUEVA ANIMACIÓN QUE RESPETA EL CENTRADO === */
-@keyframes slideDownMobile {
-  from { 
-    opacity: 0; 
-    /* Incluimos AMBOS valores para que no salte de un lado a otro */
-    transform: translateX(-50%) translateY(-10px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateX(-50%) translateY(0); 
+    left: 10px;
+    right: 10px;
+    width: auto;
+    transform: none; /* Quitamos el translateX(-50%) para que use left/right */
+    max-width: none;
   }
 }
