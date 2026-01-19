@@ -142,6 +142,14 @@ const [searchParams, setSearchParams] = useSearchParams();
 // 2. Creamos la variable searchTerm DERIVADA de la URL.
 // Si hay ?q=algo, searchTerm vale "algo". Si no, vale "".
 const searchTerm = searchParams.get("q") || "";
+// --- AGREGA ESTA FUNCIÓN "PUENTE" ---
+const setSearchTerm = (value) => {
+  if (!value || value.trim() === "") {
+    setSearchParams({}); // Si mandan vacío, limpia la URL
+  } else {
+    setSearchParams({ q: value }); // Si mandan texto, actualiza ?q=...
+  }
+};
   const [trackingMessage, setTrackingMessage] = useState(""); 
   const [chartProductTitle, setChartProductTitle] = useState(null);
   const [sortOption, setSortOption] = useState("date_desc");
