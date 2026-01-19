@@ -488,7 +488,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   /* === VENTANA DE RESULTADOS (OCUPANDO TODO EL ANCHO) === */
   .live-search-results {
     position: fixed;
-    top: 68px; /* Ajusta según la altura de tu Navbar */
+    top: 64px; /* Ajusta según la altura de tu Navbar */
     
     /* TÉCNICA DE CENTRADO TOTAL */
     left: 0;
