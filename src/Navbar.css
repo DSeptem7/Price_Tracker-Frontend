@@ -487,23 +487,30 @@ input:checked + .slider:before { transform: translateX(20px); }
   
   /* === VENTANA DE RESULTADOS (OCUPANDO TODO EL ANCHO) === */
   .live-search-results {
-    position: fixed; /* Mantenemos fixed para que se base en la pantalla */
-    top: 64px;       /* Altura exacta de tu navbar */
+    position: fixed;
+    top: 68px; /* Ajusta según la altura de tu Navbar */
     
-    /* Centrado horizontal perfecto */
-    left: 50% !important;
-    transform: translateX(-50%) !important; 
+    /* TÉCNICA DE CENTRADO TOTAL */
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     
-    /* Ancho casi total de la pantalla */
-    width: 95vw !important; 
-    max-width: 500px; /* Un tope para que no se vea gigante en tablets pequeñas */
+    /* Definimos el ancho exacto */
+    width: 94%; /* Usar % es más estable que vw para evitar el "salto" del scrollbar */
+    max-width: 480px; 
     
-    margin: 0;
-    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
+    /* IMPORTANTE: Quitamos el transform anterior para que no interfiera */
+    transform: none !important; 
+    
+    /* Estilos visuales */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     border: 1px solid var(--border-color);
+    background: var(--bg-card); /* Asegura que no sea transparente */
+    border-radius: 12px;
     z-index: 9999;
-    
-    /* Animación */
+    overflow: hidden; /* Para que los bordes de los items no se salgan */
+
     animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
