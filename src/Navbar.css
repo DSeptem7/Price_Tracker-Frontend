@@ -424,68 +424,84 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 600px) {
+  /* Contenedor principal relativo para que la barra absoluta sepa dónde alinearse */
   .navbar-content {
     padding: 0 15px;
+    position: relative; 
+    display: flex;
+    align-items: center;
   }
 
   .logo {
     font-size: 1.1rem;
     max-width: 50%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* No tocamos el logo, la barra lo cubrirá por encima */
   }
 
   .nav-controls {
     gap: 10px;
     width: auto;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
+  /* === EXPANSIÓN HACIA LA IZQUIERDA SIN SALTOS === */
   .search-box.expanded {
-    width: 200px !important;
-    position: static; 
+    /* IMPORTANTE: position absolute para que no empuje al switch ni al logo */
+    position: absolute !important; 
+    
+    /* Anclaje a la derecha: 
+       65px es la suma aproximada del switch (40px) + gap (10px) + padding (15px).
+       Esto hace que la barra NUNCA toque el switch. */
+    right: 65px; 
+    
+    /* Anclaje a la izquierda: 
+       15px coincide con el padding del navbar. Al fijar left y right, 
+       la barra se estira automáticamente cubriendo el logo. */
+    left: 15px; 
+    
+    width: auto !important; /* El ancho lo definen left y right */
+    
+    /* Centrado vertical matemático para evitar el "brinco" */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    /* Respetamos tu diseño de PC */
+    background: var(--input-bg) !important;
+    z-index: 100;
+    margin: 0 !important;
   }
 
   .search-input {
-    /* En móvil el espacio es crítico, aseguramos que el texto no pase de la X */
-    padding: 0 65px 0 12px !important;
-    font-size: 16px !important; /* Evita el zoom de iOS */
+    /* Mantenemos tus estilos de texto y padding interno */
+    padding: 0 70px 0 15px !important;
+    font-size: 16px !important; 
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   .clear-search-x {
-    right: 32px; /* Ajuste fino para la pantalla táctil */
+    right: 36px; /* Mismo que en PC para mantener consistencia */
   }
   
-  /* === VENTANA CORREGIDA PARA MÓVIL === */
+  /* === RESULTADOS (Ajuste para que coincidan con la barra absoluta) === */
   .live-search-results {
     position: fixed;
-    top: 68px;
-    left: 50%;
-    /* Mantenemos el -50% desde el inicio para evitar el salto */
-    transform: translateX(-50%); 
-    width: 94vw;
-    max-width: 400px;
+    top: 68px; /* Altura del navbar */
+    left: 10px;
+    right: 10px;
+    width: auto;
+    transform: none; /* Eliminamos el -50% porque ya estamos usando left/right */
+    max-width: none;
     margin: 0;
-    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
-    border: 1px solid var(--border-color);
     z-index: 9999;
-    
-    /* Usamos una animación exclusiva para móvil */
     animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
 
-/* === NUEVA ANIMACIÓN QUE RESPETA EL CENTRADO === */
+/* Animación simplificada para evitar tirones */
 @keyframes slideDownMobile {
-  from { 
-    opacity: 0; 
-    /* Incluimos AMBOS valores para que no salte de un lado a otro */
-    transform: translateX(-50%) translateY(-10px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateX(-50%) translateY(0); 
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
