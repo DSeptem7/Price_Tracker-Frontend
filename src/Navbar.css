@@ -318,59 +318,57 @@ to { opacity: 1; transform: translateY(0); }
 }
 
 /* ========================================= */
-/* === BOTÓN FINAL "VER TODOS" (MEJORADO) === */
+/* === BOTÓN FINAL "VER TODOS" (CORREGIDO) === */
 /* ========================================= */
 
 .view-all-results {
+  /* 1. CAMBIO VITAL: Forzamos a que se comporte como un bloque */
+  display: block; 
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no "infle" el ancho */
+  
   padding: 14px;
   text-align: center;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   
+  /* 2. RESET DE ENLACE: Evitamos el azul y el subrayado de navegador */
+  text-decoration: none !important; 
+  
   /* ESTADO BASE */
-  background: var(--bg-app); /* Mantiene el tono grisáceo suave */
-  color: var(--text-muted);  /* Texto discreto hasta que pasas el mouse */
+  background: var(--bg-app); 
+  color: var(--text-muted);  
   border-top: 1px solid var(--border-color);
   
-  /* Preparamos el borde izquierdo para la animación */
+  /* Preparamos el borde izquierdo */
   border-left: 4px solid transparent; 
   
-  /* Animación suave */
   transition: all 0.2s ease;
 }
 
-/* --- HOVER MODO CLARO (Alto Contraste) --- */
+/* --- HOVER MODO CLARO --- */
 .view-all-results:hover {
-  /* Fondo Azul Muy Claro (Visiblemente distinto al blanco) */
   background-color: #e7f1ff; 
-  
-  /* Texto Azul Primario */
   color: #007bff; 
-  
-  /* Borde izquierdo azul (Igual que tus tarjetas) */
   border-left-color: #007bff;
   
-  /* Quitamos el subrayado antiguo, el color es suficiente */
+  /* Aseguramos que no aparezca subrayado al pasar el mouse */
   text-decoration: none; 
   
-  /* Pequeño desplazamiento para indicar "Click" */
+  /* El desplazamiento suave */
   transform: translateX(2px);
 }
 
-/* --- HOVER MODO OSCURO (Corrección de Visibilidad) --- */
+/* --- HOVER MODO OSCURO --- */
 .dark-mode .view-all-results:hover {
-  /* Fondo más claro que el negro, para que destaque */
   background-color: #1e293b; 
-  
-  /* Texto Azul Neón (Cyan/Blue) */
   color: #3b82f6; 
-  
-  /* Borde izquierdo azul brillante */
   border-left-color: #3b82f6;
-  
-  /* Aseguramos que el borde superior no estorbe visualmente */
   border-top-color: transparent;
+  
+  /* Refuerzo para modo oscuro */
+  text-decoration: none;
 }
 
 /* Contenedor del estado vacío en el buscador del Navbar */
