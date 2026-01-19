@@ -424,7 +424,7 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 600px) {
-  /* Contenedor principal relativo para que la barra absoluta sepa dónde alinearse */
+  /* 1. Contenedor Navbar */
   .navbar-content {
     padding: 0 15px;
     position: relative; 
@@ -435,7 +435,6 @@ input:checked + .slider:before { transform: translateX(20px); }
   .logo {
     font-size: 1.1rem;
     max-width: 50%;
-    /* No tocamos el logo, la barra lo cubrirá por encima */
   }
 
   .nav-controls {
@@ -445,62 +444,74 @@ input:checked + .slider:before { transform: translateX(20px); }
     display: flex;
     align-items: center;
   }
+  
+  /* 2. AJUSTE DE LA CAJA CERRADA (Para que coincida con la abierta) */
+  .search-box {
+    /* Forzamos que en móvil mida 40px desde el inicio para evitar el salto de altura */
+    height: 40px !important; 
+    width: 40px !important;
+  }
 
-  /* === EXPANSIÓN HACIA LA IZQUIERDA SIN SALTOS === */
+  /* 3. BARRA EXPANDIDA (Ajustada para no pegarse al switch) */
   .search-box.expanded {
     position: absolute !important;
     
-    /* === 1. EXPANSIÓN HORIZONTAL (Correcta) === */
-    left: 15px;    /* Cubre el logo */
-    right: 65px;   /* Respeta el switch */
+    /* CAMBIO: Aumentamos a 75px para separarlo del switch y que coincida con la posición original */
+    right: 75px; 
+    left: 15px;
+    
     width: auto !important;
     
-    /* === 2. EL CENTRADO SIN "CÁRCEL" (Aquí está la magia) === */
-    height: 40px;      /* Definimos una altura fija para el móvil */
-    top: 50%;          /* Ponemos el borde superior justo a la mitad */
-    margin-top: -20px; /* Lo subimos exactamente la mitad de su altura (40px / 2) */
+    /* Centrado Vertical (Técnica del Margen Negativo) */
+    height: 40px !important;
+    top: 50%;
+    margin-top: -20px; 
     margin-bottom: 0;
     
-    /* IMPORTANTE: Aseguramos que NO haya transform */
     transform: none !important; 
     
-    /* Estilos visuales */
     background: var(--input-bg) !important;
     z-index: 100;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Sombra suave opcional */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
+  /* 4. INPUT INTERNO */
   .search-input {
-    /* Mantenemos tus estilos de texto y padding interno */
     padding: 0 70px 0 15px !important;
     font-size: 16px !important; 
     opacity: 1 !important;
     pointer-events: auto !important;
   }
+  
+  /* 5. NUEVO: LUPA (SEARCH BTN) CENTRADA PERFECTAMENTE */
+  /* Esto soluciona que el icono "baile" verticalmente */
+  .search-box .search-btn {
+    top: 0 !important;
+    bottom: 0 !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    right: 2px !important; /* Pequeño ajuste fino horizontal */
+  }
 
   .clear-search-x {
-    right: 36px; /* Mismo que en PC para mantener consistencia */
+    right: 40px; /* La movemos un poco a la izquierda para que no choque con la lupa nueva */
   }
   
-  /* === VENTANA DE RESULTADOS (OCUPANDO TODO EL ANCHO) === */
+  /* 6. VENTANA DE RESULTADOS (INTACTA - SIGUE FUNCIONANDO BIEN) */
   .live-search-results {
-    /* Al no haber transform en el padre, 'fixed' obedece a la pantalla */
     position: fixed;
-    top: 64px; /* Altura de tu navbar */
+    top: 64px; 
     
-    /* Centrado horizontal perfecto */
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
     
-    /* Ancho seguro */
     width: 94%; 
     max-width: 480px; 
     
     transform: none !important; 
     
-    /* Estilos */
     background: var(--bg-card);
     box-shadow: 0 10px 100px rgba(0,0,0,0.5);
     border: 1px solid var(--border-color);
@@ -510,7 +521,6 @@ input:checked + .slider:before { transform: translateX(20px); }
   }
 }
 
-/* Animación simplificada para evitar tirones */
 @keyframes slideDownMobile {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
