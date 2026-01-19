@@ -49,10 +49,14 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
   const handleSearchSubmit = () => {
     if (localSearch.trim() === "") return; // No buscar si está vacío
     
-    setSearchTerm(localSearch); 
+    // 1. Cerramos la barra y limpiamos sugerencias visuales
     setIsSearchExpanded(false);
     setFilteredSuggestions([]);
-    navigate('/');
+    
+    // 2. CAMBIO CLAVE: Navegamos poniendo la búsqueda en la URL
+    // encodeURIComponent asegura que espacios y tildes no rompan el link
+    navigate(`/?q=${encodeURIComponent(localSearch)}`);
+    
     setLocalSearch(""); 
   };
 
@@ -176,9 +180,19 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                   </Link>
                 ))}
                     
-                    <div className="view-all-results" onClick={handleSearchSubmit}>
+                    <Link
+                      /* Apuntamos a la URL con el parámetro 'q' */
+                      to={`/?q=${encodeURIComponent(localSearch)}`}
+                      className="view-all-results"
+                      onClick={() => {
+                        setIsSearchExpanded(false);
+                        setFilteredSuggestions([]);
+                        setLocalSearch("");
+                        /* Ya no llamamos a setSearchTerm ni navigate aquí, el 'to' hace el trabajo */
+                      }}
+                    >
                       Ver más resultados para "{localSearch}"
-                    </div>
+                    </Link>
                   </>
                 ) : (
                   <div className="no-results-live">

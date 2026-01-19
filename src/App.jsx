@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -136,7 +137,11 @@ function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); 
+  // 1. Obtenemos los parámetros de la URL
+const [searchParams, setSearchParams] = useSearchParams();
+// 2. Creamos la variable searchTerm DERIVADA de la URL.
+// Si hay ?q=algo, searchTerm vale "algo". Si no, vale "".
+const searchTerm = searchParams.get("q") || "";
   const [trackingMessage, setTrackingMessage] = useState(""); 
   const [chartProductTitle, setChartProductTitle] = useState(null);
   const [sortOption, setSortOption] = useState("date_desc");
@@ -274,7 +279,7 @@ useEffect(() => {
       if (!res.ok) throw new Error(result.detail || "Error desconocido.");
       
       setTrackingMessage(result.message); 
-      setSearchTerm("");
+      setSearchParams({});
       await fetchProducts(); 
       
       // INICIO DE LA DESAPARICIÓN SUAVE
@@ -292,7 +297,7 @@ useEffect(() => {
       setTrackingMessage(`Error: ${err.message}`); 
       // Los errores no los animamos para que el usuario los lea bien
     } finally {
-      setRefreshing(false); 
+      setRefreshing(false);
     }
 };
 
@@ -374,7 +379,7 @@ result = result.filter(p => {
 
   // Función para limpiar todos los filtros, búsquedas y ordenamientos
 const handleResetAll = () => {
-  setSearchTerm("");       // Limpia la barra de búsqueda
+  setSearchParams({}); // <-- PONER ESTO (Limpia la URL)
   setFilterOption("available");  // Restablece el "Filtrar estado" a la opción por defecto
   setSortOption("date_desc"); // Restablece "Ordenar por" (ajusta según tu default)
   setCurrentPage(1);       // Vuelve a la página 1
