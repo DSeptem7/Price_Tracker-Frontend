@@ -488,20 +488,14 @@ input:checked + .slider:before { transform: translateX(20px); }
   /* === RESULTADOS (Ajuste para que coincidan con la barra absoluta) === */
   .live-search-results {
     position: fixed;
-    top: 68px;
-    left: 50% !important;
-  transform: translateX(-50%) !important; 
-  
-  /* Tu diseño original */
-  width: 94vw !important;
-  max-width: 500px; /* Un poco más ancho para que luzca en móviles grandes */
-  margin: 0;
-  box-shadow: 0 10px 100px rgba(0,0,0,0.5);
-  border: 1px solid var(--border-color);
-  background: var(--bg-card); /* Asegura que tenga fondo sólido */
+    top: 68px; /* Altura del navbar */
+    left: 10px;
+    right: 10px;
+    width: auto;
+    transform: none; /* Eliminamos el -50% porque ya estamos usando left/right */
+    max-width: none;
+    margin: 0;
     z-index: 9999;
-    
-    /* Usamos una animación exclusiva para móvil */
     animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
