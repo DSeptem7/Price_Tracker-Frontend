@@ -1,9 +1,8 @@
+// src/lib/supabase.js
 import { createClient } from '@supabase/supabase-js';
 
-// Estas variables las tomaremos de tu archivo .env
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-console.log("URL de Supabase:", supabaseUrl);
+// Reemplaza esto temporalmente con tus strings reales (con comillas)
+const supabaseUrl = "https://tu-url.supabase.co"; 
+const supabaseAnonKey = "tu-llave-anon-larga";
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
