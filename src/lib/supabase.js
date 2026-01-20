@@ -1,8 +1,7 @@
 // src/lib/supabase.js
-import { createClient } from '@supabase/supabase-js';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// Reemplaza esto temporalmente con tus strings reales (con comillas)
-const supabaseUrl = "https://tu-url.supabase.co"; 
-const supabaseAnonKey = "tu-llave-anon-larga";
+console.log("URL de Supabase:", supabaseUrl); // Si esto sale 'undefined', el problema es el .env
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
