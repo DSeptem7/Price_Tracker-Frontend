@@ -457,7 +457,7 @@ input:checked + .slider:before { transform: translateX(20px); }
     position: absolute !important;
     
     /* CAMBIO: Aumentamos a 75px para separarlo del switch y que coincida con la posición original */
-    right: 75px; 
+    right: 65px; 
     left: 15px;
     
     width: auto !important;
