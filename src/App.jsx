@@ -6,6 +6,7 @@ import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import FeaturedProductCard from './FeaturedProductCard';
 import Footer from './Footer';
+import { AuthProvider } from './context/AuthContext';
 import {
   LineChart,
   Line,
@@ -394,6 +395,7 @@ const handleResetAll = () => {
 };
 
   return (
+    <AuthProvider>
     <div className={isDarkMode ? "dark-mode" : "light-mode"}>
       <div className="App">
 
@@ -781,6 +783,7 @@ return (
         )}
       </div> {/* Cierre App */}
     </div> /* Cierre Modo Dinámico */ 
+    </AuthProvider>
   );
 }
 
