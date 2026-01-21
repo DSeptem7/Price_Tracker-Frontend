@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     loginWithGoogle, // Asegúrate de que se llame así
-    logout,          // Y que aquí diga logout o signOut, según uses en Navbar
+    logout: signOut,         // Y que aquí diga logout o signOut, según uses en Navbar
     isAdmin,
     loading,
     isDevMode: DEV_MODE
