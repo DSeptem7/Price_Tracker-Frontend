@@ -47,9 +47,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Función para iniciar sesión con Google
-  const signInWithGoogle = async () => {
-    // Pedimos el correo al usuario
-    const email = window.prompt("Introduce tu correo para recibir un enlace de acceso:");
+  const loginWithGoogle = async () => {
+    console.log("🚀 El botón ha sido presionado"); // Chivato para ver en consola
+    const email = window.prompt("Introduce tu correo para entrar:");
     
     if (!email) return;
   
@@ -57,19 +57,17 @@ export const AuthProvider = ({ children }) => {
       const { error } = await supabase.auth.signInWithOtp({
         email: email,
         options: {
-          // Esto le dice a Supabase a dónde enviar al usuario tras el clic
-          emailRedirectTo: window.location.origin, 
+          emailRedirectTo: window.location.origin,
         },
       });
   
       if (error) throw error;
-      alert("¡Enlace enviado! Revisa tu correo (mira también en SPAM).");
+      alert("¡Enlace enviado! Revisa tu bandeja de entrada.");
     } catch (error) {
-      console.error("Error:", error.message);
-      alert("Error al enviar el enlace: " + error.message);
+      console.error("Error completo:", error);
+      alert("Error: " + error.message);
     }
   };
-
   // Función para cerrar sesión
   const signOut = async () => {
     if (DEV_MODE) {
@@ -81,8 +79,9 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    signInWithGoogle,
-    signOut,
+    loginWithGoogle, // Asegúrate de que se llame así
+    logout,          // Y que aquí diga logout o signOut, según uses en Navbar
+    isAdmin,
     loading,
     isDevMode: DEV_MODE
   };
