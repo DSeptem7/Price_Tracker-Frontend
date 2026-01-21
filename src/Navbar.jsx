@@ -214,6 +214,17 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
             )}
           </div>
 
+          <div className="theme-switch-wrapper">
+            <label className="theme-switch">
+              <input 
+                type="checkbox" 
+                checked={isDarkMode} 
+                onChange={() => setIsDarkMode(!isDarkMode)} 
+              />
+              <div className="slider"></div>
+            </label>
+          </div>
+
           {/* --- NUEVO: SECCIÓN DE USUARIO --- */}
           <div className="auth-section">
             {user ? (
@@ -241,17 +252,6 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
                 Iniciar Sesión
               </button>
             )}
-          </div>
-
-          <div className="theme-switch-wrapper">
-            <label className="theme-switch">
-              <input 
-                type="checkbox" 
-                checked={isDarkMode} 
-                onChange={() => setIsDarkMode(!isDarkMode)} 
-              />
-              <div className="slider"></div>
-            </label>
           </div>
 
         </div>
