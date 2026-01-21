@@ -6,7 +6,7 @@ const AuthContext = createContext();
 // === MODO DESARROLLADOR ===
 // true = Eres Premium automáticamente sin loguearte (para trabajar rápido)
 // false = Sistema real (requiere Login con Google)
-const DEV_MODE = true; 
+const DEV_MODE = false; 
 
 const MOCK_USER = {
   id: 'dev-admin-123',
