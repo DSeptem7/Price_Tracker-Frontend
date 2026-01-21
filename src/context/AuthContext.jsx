@@ -47,17 +47,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Función para iniciar sesión con Google
-  const signInWithGoogle = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-            redirectTo: window.location.origin // Vuelve a la página actual después del login
-        }
-      });
-      if (error) throw error;
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
+  const loginWithGoogle = async () => {
+    const email = window.prompt("Introduce tu correo para recibir un enlace de acceso:");
+    
+    if (email) {
+      try {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email,
+          options: {
+            // Asegúrate de que esta URL sea la de tu Stackblitz o Vercel
+            emailRedirectTo: window.location.origin, 
+          },
+        });
+  
+        if (error) throw error;
+        alert("¡Revisa tu bandeja de entrada! Te hemos enviado un enlace mágico.");
+      } catch (error) {
+        console.error("Error con Magic Link:", error.message);
+        alert("No se pudo enviar el correo: " + error.message);
+      }
     }
   };
 
