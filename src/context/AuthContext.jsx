@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Función para iniciar sesión con Google
-  const loginWithGoogle = async () => {
+  const signInWithGoogle = async () => {
     // Pedimos el correo al usuario
     const email = window.prompt("Introduce tu correo para recibir un enlace de acceso:");
     
