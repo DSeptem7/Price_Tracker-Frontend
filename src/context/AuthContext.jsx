@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loginWithGoogle, // Asegúrate de que se llame así
     logout: signOut,         // Y que aquí diga logout o signOut, según uses en Navbar
-    isAdmin,
+    isAdmin: user?.email === 'airdropsdedan@gmail.com',
     loading,
     isDevMode: DEV_MODE
   };
