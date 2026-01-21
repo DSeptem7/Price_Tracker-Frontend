@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
+  const { user, loginWithGoogle, logout, isAdmin } = useAuth();
+
   console.log("DATOS EN NAVBAR:", products);
   const navigate = useNavigate();
   
@@ -211,6 +214,35 @@ const Navbar = ({ products, setSearchTerm, isDarkMode, setIsDarkMode }) => {
             )}
           </div>
 
+          {/* --- NUEVO: SECCIÓN DE USUARIO --- */}
+          <div className="auth-section">
+            {user ? (
+              <div className="user-menu">
+                {/* Si es admin, mostramos un distintivo o botón extra */}
+                {isAdmin && <span className="admin-badge">Admin</span>}
+                
+                <img 
+                  src={user.user_metadata?.avatar_url || 'https://via.placeholder.com/32'} 
+                  alt="Perfil" 
+                  className="user-avatar"
+                  title={user.email}
+                />
+                
+                <button className="logout-btn" onClick={logout} title="Cerrar sesión">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <button className="login-btn" onClick={loginWithGoogle}>
+                Iniciar Sesión
+              </button>
+            )}
+          </div>
+
           <div className="theme-switch-wrapper">
             <label className="theme-switch">
               <input 
@@ -255,4 +287,3 @@ const highlightText = (text, query) => {
 };
 
 export default Navbar;
-
