@@ -1,11 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { supabase } from '../lib/supabase'; // Asegúrate que esta ruta coincida con tu archivo creado
+import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext();
 
-// === MODO DESARROLLADOR ===
-// true = Eres Premium automáticamente sin loguearte (para trabajar rápido)
-// false = Sistema real (requiere Login con Google)
 const DEV_MODE = false; 
 
 const MOCK_USER = {
@@ -15,63 +12,81 @@ const MOCK_USER = {
     avatar_url: 'https://ui-avatars.com/api/?name=Admin+Dev&background=0D8ABC&color=fff',
     full_name: 'Desarrollador (Modo Test)'
   },
-  role: 'premium' // Simula que eres premium
+  role: 'premium'
 };
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null); // Estado para la suscripción real
   const [loading, setLoading] = useState(true);
 
+  // Función para obtener el nivel de suscripción desde la tabla 'profiles'
+  const fetchProfile = async (userId) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('subscription_tier')
+        .eq('id', userId)
+        .single();
+      
+      if (error) throw error;
+      setProfile(data);
+    } catch (err) {
+      console.error("Error al obtener perfil de la DB:", err.message);
+    }
+  };
+
   useEffect(() => {
-    // 1. Si estamos en modo desarrollo, cargamos el usuario falso y salimos
     if (DEV_MODE) {
       setUser(MOCK_USER);
+      setProfile({ subscription_tier: 'admin' });
       setLoading(false);
       return;
     }
 
-    // 2. Lógica Real de Supabase
-    // Verificar sesión actual
+    // 1. Verificar sesión actual al cargar
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      if (currentUser) fetchProfile(currentUser.id);
       setLoading(false);
     });
 
-    // Escuchar cambios (login/logout en tiempo real)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    // 2. Escuchar cambios de autenticación
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      
+      if (event === 'SIGNED_IN' && currentUser) {
+        fetchProfile(currentUser.id);
+      } else if (event === 'SIGNED_OUT') {
+        setProfile(null);
+      }
       setLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Función para iniciar sesión con Google
   const loginWithGoogle = async () => {
-    console.log("🚀 El botón ha sido presionado"); // Chivato para ver en consola
     const email = window.prompt("Introduce tu correo para entrar:");
-    
     if (!email) return;
   
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email: email,
-        options: {
-          emailRedirectTo: window.location.origin,
-        },
+        options: { emailRedirectTo: window.location.origin },
       });
-  
       if (error) throw error;
       alert("¡Enlace enviado! Revisa tu bandeja de entrada.");
     } catch (error) {
-      console.error("Error completo:", error);
       alert("Error: " + error.message);
     }
   };
-  // Función para cerrar sesión
+
   const signOut = async () => {
     if (DEV_MODE) {
-        alert("Estás en modo desarrollador. Para cerrar sesión cambia DEV_MODE a false.");
+        alert("Modo Dev: Cambia DEV_MODE a false para salir.");
         return;
     }
     await supabase.auth.signOut();
@@ -79,9 +94,12 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
-    loginWithGoogle, // Asegúrate de que se llame así
-    logout: signOut,         // Y que aquí diga logout o signOut, según uses en Navbar
-    isAdmin: user?.email === 'airdropsdedan@gmail.com',
+    profile,
+    // Ahora isAdmin es más seguro: verifica el correo Y que en la DB diga 'admin'
+    isAdmin: user?.email === 'airdropsdedan@gmail.com' || profile?.subscription_tier === 'admin',
+    tier: profile?.subscription_tier || 'free', // 'free', 'standard', 'professional', 'admin'
+    loginWithGoogle,
+    logout: signOut,
     loading,
     isDevMode: DEV_MODE
   };
@@ -89,7 +107,4 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Hook personalizado para usar el usuario en cualquier componente
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
