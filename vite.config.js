@@ -3,17 +3,18 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // AGREGAMOS ESTO:
   define: {
     'process.env': {} 
   },
   build: {
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+        manualChunks: {
+          // Separamos las librerías pesadas en archivos distintos
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          charts: ['recharts'],
+          supabase: ['@supabase/supabase-js'],
         }
       }
     }
