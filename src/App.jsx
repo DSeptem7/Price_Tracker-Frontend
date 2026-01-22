@@ -222,14 +222,33 @@ useEffect(() => {
 
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
-  const fetchProducts = async () => {
+  const fetchProducts = async (page = 1, searchQuery = "") => {
     setLoading(true); 
     try {
-      const res = await fetch(`${API_BASE}/product_history`); 
+      // 1. Construimos la URL base con paginación
+      let url = `${API_BASE}/product_history?page=${page}&limit=20`;
+      
+      // 2. Si hay búsqueda, la agregamos de forma segura a la URL
+      if (searchQuery) {
+        url += `&search=${encodeURIComponent(searchQuery)}`;
+      }
+
+      const res = await fetch(url); 
       const data = await res.json();
-      if (Array.isArray(data)) setProducts(data);
+      
+      // 3. Verificación de seguridad
+      // Ahora el backend devuelve { total: ..., products: [...] }
+      if (data.products && Array.isArray(data.products)) {
+        setProducts(data.products);
+        
+        // (Opcional Futuro) Aquí podrías guardar data.total para saber cuántas páginas dibujar
+        // setTotalProducts(data.total); 
+      } else {
+        // Fallback por si la lista viene vacía
+        setProducts([]);
+      }
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error al cargar productos:", err);
     } finally {
       setLoading(false);
       setRefreshing(false); 
