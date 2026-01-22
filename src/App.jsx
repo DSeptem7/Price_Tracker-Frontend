@@ -7,7 +7,6 @@ import ProductDetail from './ProductDetail';
 import FeaturedProductCard from './FeaturedProductCard';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
-const [totalDocs, setTotalDocs] = useState(0);
 import {
   LineChart,
   Line,
@@ -223,34 +222,14 @@ useEffect(() => {
 
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
   
-  const fetchProducts = async (page = 1, searchQuery = "") => {
+  const fetchProducts = async () => {
     setLoading(true); 
     try {
-      // 1. Construimos la URL base con paginación
-      let url = `${API_BASE}/product_history?page=${page}&limit=20`;
-      
-      // 2. Si hay búsqueda, la agregamos de forma segura a la URL
-      if (searchQuery) {
-        url += `&search=${encodeURIComponent(searchQuery)}`;
-      }
-
-      const res = await fetch(url); 
+      const res = await fetch(`${API_BASE}/product_history`); 
       const data = await res.json();
-      
-      // 3. Verificación de seguridad
-      // Ahora el backend devuelve { total: ..., products: [...] }
-      if (data.products && Array.isArray(data.products)) {
-        setProducts(data.products);
-        setTotalDocs(data.total);
-        // (Opcional Futuro) Aquí podrías guardar data.total para saber cuántas páginas dibujar
-        // setTotalProducts(data.total); 
-      } else {
-        // Fallback por si la lista viene vacía
-        setProducts([]);
-        setTotalDocs(0);
-      }
+      if (Array.isArray(data)) setProducts(data);
     } catch (err) {
-      console.error("Error al cargar productos:", err);
+      console.error("Error:", err);
     } finally {
       setLoading(false);
       setRefreshing(false); 
@@ -335,6 +314,28 @@ useEffect(() => {
 const processedProducts = useMemo(() => {
   let result = [...products];
 
+  if (searchTerm && !searchTerm.includes("http")) {
+    const normalizeText = (str) => {
+      if (!str) return "";
+      return str
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    };
+// 2. Limpiamos lo que escribió el usuario y la convertimos en TOKENS
+const cleanSearch = normalizeText(searchTerm);
+const searchTokens = cleanSearch.split(/\s+/).filter(token => token.length > 0);
+
+// 3. Filtramos limpiando también el título del producto
+result = result.filter(p => {
+  const titleNormalized = normalizeText(p.title);
+  // Solo incluimos el producto si cada palabra de la búsqueda existe en el título
+  return searchTokens.every(token => titleNormalized.includes(token));
+});
+
+// --- CAMBIO FIN ---
+}
+
   if (filterOption === "historical_low") {
     // NUEVA LÓGICA PERMANENTE PARA EL FILTRO
     result = result.filter(p => {
@@ -366,19 +367,15 @@ const processedProducts = useMemo(() => {
       }
     });
     return result;
-  }, [products, sortOption, filterOption]);
+  }, [products, searchTerm, sortOption, filterOption]);
 
-  useEffect(() => {
-    setCurrentPage(1); // Siempre volvemos a la página 1 al buscar algo nuevo
-    fetchProducts(1, searchTerm); 
-  }, [searchTerm]); // Cada vez que el usuario escriba, se dispara la petición al Backend
+  useEffect(() => { setCurrentPage(1); }, [searchTerm, filterOption, sortOption]);
 
-  const totalPages = Math.ceil(totalDocs / itemsPerPage);
-  const currentProducts = processedProducts;
+  const totalPages = Math.ceil(processedProducts.length / itemsPerPage);
+  const currentProducts = processedProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    fetchProducts(page, searchTerm);
     window.scrollTo({ top: 100, behavior: 'smooth' });
   };
 
@@ -412,7 +409,7 @@ const handleResetAll = () => {
         setSearchTerm={setSearchTerm}
         isDarkMode={isDarkMode}
         setIsDarkMode={setIsDarkMode}
-        productCount={totalDocs}
+        productCount={processedProducts.length} 
       />
 
         {/* === INICIO DE RUTAS === */}
@@ -608,7 +605,7 @@ const handleResetAll = () => {
 {!loading && (
   <div style={{ marginBottom: '15px', textAlign: 'right' }}>
     <span style={{ color: 'var(--text-muted, #666)', fontWeight: '600', fontSize: '0.9rem' }}>
-    {totalDocs} Productos encontrados
+      {processedProducts.length} Productos encontrados
     </span>
   </div>
 )}
@@ -814,3 +811,4 @@ const highlightText = (text, query) => {
 };
 
 export default App;
+
