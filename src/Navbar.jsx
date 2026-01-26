@@ -78,8 +78,6 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
           style={{ cursor: 'pointer', flexGrow: 0, marginRight: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}
         >
           🛒 Price Tracker
-          {/* Opcional: Mostrar el total de productos global si lo deseas */}
-          {productCount > 0 && <span className="badge-count" title="Total productos en BD">{productCount}</span>}
         </span>
         
         <div style={{ flexGrow: 1 }}></div>

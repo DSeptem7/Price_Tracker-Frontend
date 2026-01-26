@@ -373,7 +373,13 @@ function App() {
                       <div className="filter-row">
                           <div className="select-wrapper">
                               <label>Ordenar por</label>
-                              <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                              <select 
+                                    value={sortOption} 
+                                    onChange={(e) => {
+                                      setSortOption(e.target.value); // Guarda la opción
+                                      setCurrentPage(1);            // Regresa al inicio
+                                    }}
+                                  >
                                   <option value="date_desc">Más recientes</option>
                                   <option value="date_asc">Más antiguos</option>
                                   <option value="price_asc">Precio: Menor</option>
@@ -382,7 +388,13 @@ function App() {
                           </div>
                           <div className="select-wrapper">
                               <label>Filtrar</label>
-                              <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                              <select 
+                                    value={filterOption} 
+                                    onChange={(e) => {
+                                      setFilterOption(e.target.value); // Guarda el filtro
+                                      setCurrentPage(1);               // Regresa al inicio
+                                    }}
+                                  >
                                   <option value="available">Disponibles</option>
                                   <option value="all">Todos</option>
                                   <option value="out_of_stock">Agotados</option>
