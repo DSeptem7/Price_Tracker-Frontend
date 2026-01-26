@@ -631,3 +631,52 @@ input:checked + .slider:before { transform: translateX(20px); }
     font-size: 0.8rem;
   }
 }
+
+/* ====================================================================== */
+/* === nueva actualización === */
+/* ====================================================================== */
+/* --- ESTILOS EXTRA NAVBAR --- */
+.badge-count {
+  background-color: var(--primary-color, #3b82f6);
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+/* Ajuste para el botón X de limpiar búsqueda */
+.clear-search-x {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.clear-search-x:hover {
+  color: var(--text-color, #333);
+}
+
+/* Ajuste para el Dropdown Informativo */
+.live-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #eee);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* En modo oscuro */
+body.dark-mode .live-search-results {
+  background: #1e293b;
+  border-color: #334155;
+}
