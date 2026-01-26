@@ -140,16 +140,23 @@ function App() {
   }, []);
 
   // --- LÓGICA DE CARGA DE PRODUCTOS (BACKEND PAGINATION) ---
-  const fetchProducts = async (pageToLoad = 1, searchToUse = "") => {
+  const fetchProducts = async (pageToLoad = 1) => {
     setLoading(true);
     try {
-      // Construimos la URL con paginación y búsqueda
-      let url = `${API_BASE}/product_history?page=${pageToLoad}&limit=${itemsPerPage}`;
-      
-      // Si hay búsqueda, la agregamos (el backend debe soportar &search=...)
-      if (searchToUse) {
-        url += `&search=${encodeURIComponent(searchToUse)}`;
+      // Construimos la URL con TODOS los parámetros actuales
+      const params = new URLSearchParams({
+        page: pageToLoad,
+        limit: itemsPerPage,
+        sort: sortOption,      // <--- ENVIAMOS EL ORDENAMIENTO
+        filter: filterOption,  // <--- ENVIAMOS EL FILTRO
+      });
+
+      // Si hay búsqueda, la agregamos
+      if (searchTerm) {
+        params.append("q", searchTerm);
       }
+  
+      const url = `${API_BASE}/product_history?${params.toString()}`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -175,15 +182,15 @@ function App() {
     }
   };
 
-  // --- EFECTO MAESTRO: Detecta cambios en Búsqueda o Página ---
+  // --- EFECTO MAESTRO ---
   useEffect(() => {
-    // Si cambia el término de búsqueda, reseteamos a página 1 automáticamente
-    // Nota: Esto se maneja implícitamente al cambiar URL, pero aseguramos la carga aquí.
-    fetchProducts(currentPage, searchTerm);
+    // Cada vez que cambie la página, el filtro, el orden o la búsqueda:
+    // pedimos datos nuevos al servidor.
+    fetchProducts(currentPage);
     
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchTerm, itemsPerPage]); 
-  // Nota: Quitamos fetchProducts de dependencias para evitar loops
+    // NOTA: Si cambias filtros/orden, deberías resetear la página a 1 primero.
+    // Eso lo haremos en los "onChange" de los selectores más abajo.
+  }, [currentPage, searchTerm, sortOption, filterOption, itemsPerPage]);
 
   // --- HANDLERS ---
   const handlePageChange = (page) => {
@@ -222,37 +229,9 @@ function App() {
 
   // --- PROCESAMIENTO VISUAL (Solo ordena/filtra los 20 visibles) ---
   const processedProducts = useMemo(() => {
-    let result = [...products];
 
-    // NOTA: Ya NO filtramos por texto aquí, el servidor ya nos dio los resultados correctos.
-
-    // Filtros visuales sobre los resultados actuales
-    if (filterOption === "historical_low") {
-      result = result.filter(p => {
-        const curr = parsePrice(p.price);
-        const minH = parsePrice(p.min_historical_price);
-        const modeP = parsePrice(p.mode_price);
-        return curr > 0 && Math.abs(curr - minH) < 0.01 && curr < modeP && !isOutOfStock(p);
-      });
-    } else if (filterOption === "price_drop") {
-      result = result.filter(p => p.status === "down" && !isOutOfStock(p));
-    } else if (filterOption === "available") {
-      result = result.filter(p => !isOutOfStock(p));
-    } else if (filterOption === "out_of_stock") {
-      result = result.filter(p => isOutOfStock(p));
-    }
-
-    // Ordenamiento visual
-    result.sort((a, b) => {
-      switch (sortOption) {
-        case "price_asc": return parsePrice(a.price) - parsePrice(b.price);
-        case "price_desc": return parsePrice(b.price) - parsePrice(a.price);
-        case "date_asc": return new Date(a.timestamp) - new Date(b.timestamp);
-        default: return new Date(b.timestamp) - new Date(a.timestamp); // date_desc
-      }
-    });
     return result;
-  }, [products, sortOption, filterOption]); // Eliminamos searchTerm de dependencias
+  }, [products]);
 
   // --- CÁLCULO DE PÁGINAS (Usando totalDocs del servidor) ---
   const totalPages = Math.ceil(totalDocs / itemsPerPage);
