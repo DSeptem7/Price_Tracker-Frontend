@@ -1,22 +1,19 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Routes, Route, useNavigate, Link } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
+import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
 import Navbar from './Navbar'; 
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
-import FeaturedProductCard from './FeaturedProductCard';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
-import "./App.css"; 
+import "./App.css";
 
 // --- COMPONENTE MODAL (Sin cambios mayores, solo optimización visual) ---
 function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const textColor = isDarkMode ? "#f1f5f9" : "#333";
   const gridColor = isDarkMode ? "rgba(255, 255, 255, 0.1)" : "#ccc";
 
@@ -53,8 +50,7 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
         setLoading(false);
       }
     };
-
-    if (productTitle) { fetchHistory(); }
+    fetchHistory();
   }, [productTitle, apiBase]);
 
   return (
@@ -100,8 +96,14 @@ function App() {
   const [totalDocs, setTotalDocs] = useState(0); // <--- NUEVO: Total real en la DB (ej. 911)
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
   
+  // Router Params
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlQuery = searchParams.get("q") || ""; // Fuente de verdad para búsqueda en BD
+  
+  // Estado Local del Input (Separado de la URL para permitir pegar links sin buscar)
+  const [inputValue, setInputValue] = useState(urlQuery);
+
   // 2. CONFIGURACIÓN Y UX
   const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 600 ? 8 : 20); // Ajustado a 20 para backend
   const [currentPage, setCurrentPage] = useState(1);
@@ -109,7 +111,6 @@ function App() {
   const [filterOption, setFilterOption] = useState("available");
   
   // 3. VARIABLES DERIVADAS
-  const searchTerm = searchParams.get("q") || "";
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
 
   // Helpers de estado visual
@@ -139,14 +140,16 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Sincronizar input local si la URL cambia externamente (navegación atrás/adelante)
+  useEffect(() => {
+    setInputValue(urlQuery);
+  }, [urlQuery]);
+
   // --- LÓGICA DE CARGA DE PRODUCTOS (BACKEND PAGINATION) ---
   const fetchProducts = async (pageToLoad = 1, searchToUse = "") => {
     setLoading(true);
     try {
-      // Construimos la URL con paginación y búsqueda
       let url = `${API_BASE}/product_history?page=${pageToLoad}&limit=${itemsPerPage}`;
-      
-      // Si hay búsqueda, la agregamos (el backend debe soportar &search=...)
       if (searchToUse) {
         url += `&search=${encodeURIComponent(searchToUse)}`;
       }
@@ -175,16 +178,13 @@ function App() {
     }
   };
 
-  // --- EFECTO MAESTRO: Detecta cambios en Búsqueda o Página ---
+  // --- EFECTO MAESTRO: Detecta cambios en URL Query (Búsqueda Real) o Página ---
   useEffect(() => {
-    // Si cambia el término de búsqueda, reseteamos a página 1 automáticamente
-    // Nota: Esto se maneja implícitamente al cambiar URL, pero aseguramos la carga aquí.
-    fetchProducts(currentPage, searchTerm);
-    
+    // Solo buscamos en la BD lo que esté en la URL (?q=...), no lo que esté en el input local
+    fetchProducts(currentPage, urlQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchTerm, itemsPerPage]); 
-  // Nota: Quitamos fetchProducts de dependencias para evitar loops
-
+  }, [currentPage, urlQuery, itemsPerPage]);
+    
   // --- HANDLERS ---
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -192,22 +192,33 @@ function App() {
   };
 
   const handleResetAll = () => {
-    setSearchParams({}); // Limpia URL -> searchTerm se vuelve "" -> Effect dispara fetch
+    setSearchParams({}); // Limpia URL
+    setInputValue("");   // Limpia Input Local
     setFilterOption("available");
     setSortOption("date_desc");
     setCurrentPage(1);
   };
 
-  const setSearchTerm = (value) => {
-    // Al escribir, actualizamos la URL. 
-    // setCurrentPage(1) es importante para no quedarse en página 10 de una búsqueda nueva
-    setCurrentPage(1); 
-    if (!value || value.trim() === "") {
+ // MANEJO INTELIGENTE DEL INPUT
+ const handleInputChange = (e) => {
+  const val = e.target.value;
+  setInputValue(val);
+
+  // LÓGICA CRÍTICA:
+  // Si es una URL, NO actualizamos la búsqueda (searchParams). Solo guardamos en local.
+  // Si es texto normal, actualizamos searchParams para filtrar.
+  const isUrl = val.includes("http") || val.includes(".com");
+  
+  if (!isUrl) {
+    setCurrentPage(1);
+    if (val.trim() === "") {
       setSearchParams({});
     } else {
-      setSearchParams({ q: value });
+      setSearchParams({ q: val });
     }
-  };
+  }
+  // Si es URL, no hacemos nada con setSearchParams, esperamos al botón "Rastrear"
+};
 
   const parsePrice = (priceStr) => {
     if (!priceStr) return 0;
@@ -216,17 +227,15 @@ function App() {
   };
 
   const isOutOfStock = (p) => {
-      const priceNum = parsePrice(p.price);
-      return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
-  };
+    const priceNum = parsePrice(p.price);
+    return !p.price || priceNum === 0 || p.price.toString().toLowerCase().includes("no posible");
+};
 
-  // --- PROCESAMIENTO VISUAL (Solo ordena/filtra los 20 visibles) ---
+  // --- PROCESAMIENTO VISUAL ---
   const processedProducts = useMemo(() => {
     let result = [...products];
-
-    // NOTA: Ya NO filtramos por texto aquí, el servidor ya nos dio los resultados correctos.
-
-    // Filtros visuales sobre los resultados actuales
+    // NOTA: El filtrado de texto ya lo hizo el backend.
+    
     if (filterOption === "historical_low") {
       result = result.filter(p => {
         const curr = parsePrice(p.price);
@@ -242,22 +251,19 @@ function App() {
       result = result.filter(p => isOutOfStock(p));
     }
 
-    // Ordenamiento visual
     result.sort((a, b) => {
       switch (sortOption) {
         case "price_asc": return parsePrice(a.price) - parsePrice(b.price);
         case "price_desc": return parsePrice(b.price) - parsePrice(a.price);
         case "date_asc": return new Date(a.timestamp) - new Date(b.timestamp);
-        default: return new Date(b.timestamp) - new Date(a.timestamp); // date_desc
+        default: return new Date(b.timestamp) - new Date(a.timestamp); 
       }
     });
     return result;
-  }, [products, sortOption, filterOption]); // Eliminamos searchTerm de dependencias
+  }, [products, sortOption, filterOption]);
 
   // --- CÁLCULO DE PÁGINAS (Usando totalDocs del servidor) ---
   const totalPages = Math.ceil(totalDocs / itemsPerPage);
-  
-  // Ya no usamos .slice() porque el array ya viene paginado
   const currentProducts = processedProducts; 
 
   const getPaginationGroup = () => {
@@ -267,9 +273,12 @@ function App() {
     return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
   };
 
-  // --- ESTADÍSTICAS (Nota: Ahora son solo sobre la página actual, para hacerlas globales se necesita otro endpoint) ---
+  // --- ESTADÍSTICAS BLINDADAS ---
   const stats = useMemo(() => {
-    const available = products.filter(p => !isOutOfStock(p));
+    // Validar que products sea array
+    const safeProducts = Array.isArray(products) ? products : [];
+    
+    const available = safeProducts.filter(p => p && !isOutOfStock(p));
     const drops = available.filter(p => p.status === "down");
     const highs = available.filter(p => p.status === "up");
     
@@ -281,8 +290,13 @@ function App() {
 
     let bestDiscount = { title: "Ninguna", percent: 0 };
     drops.forEach(p => {
-      const pValue = parseFloat(p.change_percentage?.replace(/[()%-]/g, '') || 0);
-      if (pValue > bestDiscount.percent) bestDiscount = { title: p.title, percent: pValue };
+      // BLINDAJE: Verificamos existencia antes de operar
+      const pValue = parseFloat(p?.change_percentage?.replace(/[()%-]/g, '') || 0);
+      const pTitle = p?.title || "Producto";
+      
+      if (pValue > bestDiscount.percent) {
+        bestDiscount = { title: pTitle, percent: pValue };
+      }
     });
 
     return { dropCount: drops.length, upCount: highs.length, totalSavings, bestDiscount };
@@ -290,7 +304,8 @@ function App() {
 
   // --- MANEJO DE RASTREO (Agregar producto) ---
   const handleTrackProduct = async () => {
-    const isUrl = searchTerm && searchTerm.includes("http") && searchTerm.includes("mercadolibre.com");
+    // Usamos inputValue (local) en lugar de searchTerm (URL)
+    const isUrl = inputValue && inputValue.includes("http") && inputValue.includes("mercadolibre.com");
     if (!isUrl) return; 
     
     setRefreshing(true); 
@@ -298,15 +313,16 @@ function App() {
     setIsExiting(false);
     
     try {
-      const url = `${API_BASE}/products?url=${encodeURIComponent(searchTerm)}`;
+      const url = `${API_BASE}/products?url=${encodeURIComponent(inputValue)}`;
       const res = await fetch(url);
       const result = await res.json();
       
       if (!res.ok) throw new Error(result.detail || "Error desconocido.");
       
       setTrackingMessage(result.message); 
-      setSearchParams({}); // Limpiamos búsqueda
-      await fetchProducts(1, ""); // Recargamos lista completa pag 1
+      setInputValue(""); // Limpiamos input local
+      setSearchParams({}); // Limpiamos URL si había algo
+      await fetchProducts(1, ""); // Recargamos
       
       setTimeout(() => {
         setIsExiting(true);
@@ -320,15 +336,48 @@ function App() {
     }
   };
 
-  // Helpers de texto
+  // --- HIGHLIGHT TEXT BLINDADO (El arreglo del error de pantalla blanca) ---
   const highlightText = (text, query) => {
-    if (!query || !text || query.includes("http")) return text;
-    const normalize = (str) => str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const tokens = normalize(query).split(/\s+/).filter(t => t.length > 0);
+    // 1. Validaciones iniciales estrictas
+    if (!text || typeof text !== 'string') return "";
+    if (!query || typeof query !== 'string') return text;
+    
+    // Si la query es una URL, NO intentamos resaltar nada (evita romper regex)
+    if (query.includes("http") || query.includes(".com")) return text;
+
+    const normalize = (str) => {
+      try {
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      } catch (e) { return ""; }
+    };
+
+    const normalizedQuery = normalize(query);
+    if (!normalizedQuery) return text;
+
+    const tokens = normalizedQuery.split(/\s+/).filter(t => t.length > 0);
     if (tokens.length === 0) return text;
-    const pattern = new RegExp(`(${tokens.join('|')})`, 'gi');
-    const parts = text.split(pattern);
-    return <>{parts.map((part, i) => tokens.some(t => normalize(t) === normalize(part)) ? <mark key={i} className="highlight">{part}</mark> : part)}</>;
+
+    try {
+      // Escapar caracteres especiales para evitar crash en RegExp (ej. paréntesis en el nombre)
+      const escapedTokens = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      const pattern = new RegExp(`(${escapedTokens.join('|')})`, 'gi');
+      
+      const parts = text.split(pattern);
+      return (
+        <>
+          {parts.map((part, i) => {
+             // Verificación extra dentro del map
+             if (!part) return null;
+             return tokens.some(t => normalize(t) === normalize(part)) 
+                ? <mark key={i} className="highlight">{part}</mark> 
+                : part;
+          })}
+        </>
+      );
+    } catch (e) {
+      // Si falla el Regex por alguna razón rara, devolvemos texto plano
+      return text;
+    }
   };
 
   const loadingMessages = ["Conectando...", "Extrayendo información...", "Analizando precios...", "Verificando stock...", "¡Casi listo!"];
@@ -348,19 +397,21 @@ function App() {
           <ScrollToTop />
           <Navbar 
             products={products} 
-            searchTerm={searchTerm} 
-            setSearchTerm={setSearchTerm}
+            searchTerm={urlQuery} // Navbar ve la URL real
+            setSearchTerm={setSearchParams} // Navbar actualiza URL (si tiene su propia barra)
             isDarkMode={isDarkMode}
             setIsDarkMode={setIsDarkMode}
-            productCount={totalDocs} // <--- CLAVE: Pasamos el total real
+            productCount={totalDocs} 
           />
           
           <Routes>
             <Route path="/" element={
               <>
-                <main className="main-content">
-                  {/* Grid de Estadísticas (Simplificado para brevedad, misma lógica) */}
-                  <div className="stats-grid">
+                {/* === CONTENEDOR PRINCIPAL === */}
+        <main className="main-content">
+          
+          {/* === PANEL DE ESTADÍSTICAS === */}
+          <div className="stats-grid">
                      <div className="stat-card">
                         <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
@@ -368,9 +419,32 @@ function App() {
                            <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `${stats.dropCount}`}</span>
                         </div>
                      </div>
-                     {/* ... (Resto de cards se mantienen igual, usan stats) ... */}
+                     {/* ... Resto de cards ... */}
+                     <div className="stat-card">
+                        <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
+                        <div className="stat-info">
+                           <span className="stat-label">Subieron</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `${stats.upCount}`}</span>
+                        </div>
+                     </div>
+                      <div className="stat-card">
+                        <div className={`stat-indicator savings ${loading ? 'loading-pulse' : ''}`}></div>
+                        <div className="stat-info">
+                           <span className="stat-label">Ahorro detectado</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `$${stats.totalSavings.toFixed(2)}`}</span>
+                        </div>
+                     </div>
+                      <div className="stat-card">
+                        <div className={`stat-indicator star ${loading ? 'loading-pulse' : ''}`}></div>
+                        <div className="stat-info">
+                           <span className="stat-label">Mejor oferta</span>
+                           <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
+                             {loading ? "..." : (stats.bestDiscount.percent > 0 ? `-${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
+                           </span>
+                        </div>
+                     </div>
                   </div>
-
+ 
                   {/* Panel de Gestión */}
                   <div className="simulate-panel">
                       <div className="panel-header-row">
@@ -380,10 +454,10 @@ function App() {
                           <input
                               type="text"
                               placeholder="Pega URL o busca por nombre..."
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
+                              value={inputValue} // Usamos estado local
+                              onChange={handleInputChange} // Usamos handler inteligente
                           />
-                          <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !searchTerm}>
+                          <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !inputValue}>
                               {refreshing ? "Procesando..." : "Rastrear"}
                           </button>
                           <button className="btn-secondary" onClick={() => { handleResetAll(); }} disabled={refreshing}>
@@ -392,6 +466,7 @@ function App() {
                       </div>
 
                       <div className="filter-row">
+                          {/* ... Selects iguales ... */}
                           <div className="select-wrapper">
                               <label>Ordenar por</label>
                               <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
@@ -413,7 +488,7 @@ function App() {
                           </div>
                           <button className="btn-reset-filters" onClick={handleResetAll}>Limpiar</button>
                       </div>
-                      
+
                       {/* Mensajes de Estado */}
                       {(refreshing || trackingMessage) && (
                         <div className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`}>
@@ -460,7 +535,7 @@ function App() {
                     <div className="product-grid">
                       {currentProducts.map((p, index) => {
                         const outOfStock = isOutOfStock(p);
-                        const isAtHistoricalLow = parsePrice(p.price) > 0 && Math.abs(parsePrice(p.price) - parsePrice(p.min_historical_price)) < 0.01 && !outOfStock;
+                        const isAtHistoricalLow = parsePrice(p.price) > 0 && Math.abs(parsePrice(p.price) - parsePrice(p.min_historical_price)) < 0.01 && !outOfStock;           
                         
                         return (
                           <Link key={p.id || index} to={`/producto/${p.id}`} className="product-card" style={{ opacity: outOfStock ? 0.7 : 1 }}>
@@ -480,7 +555,33 @@ function App() {
                             
                             {/* Tags de estado */}
                             <div className="status-row">
-                               {!outOfStock && p.status === "down" && <span className="percentage-tag down">↓ -{p.change_percentage?.replace(/[()%-]/g, '')}%</span>}
+                              {!outOfStock && (
+                                <>
+                                  {/* BAJÓ: Muestra porcentaje y flecha abajo */}
+                                  {p.status === "down" && (
+                                    <span className="percentage-tag down">
+                                      ↓ -{p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
+                                    </span>
+                                  )}
+
+                                  {/* SUBIÓ: Muestra porcentaje y flecha arriba */}
+                                  {p.status === "up" && (
+                                    <span className="percentage-tag up">
+                                      ↑ +{p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
+                                    </span>
+                                  )}
+
+                                  {/* ESTABLE: Se activará si el status es same, stable, equal o viene vacío pero no es nuevo */}
+                                  {(["equal", "same", "stable"].includes(p.status) || (!p.status && p.status !== "new")) && (
+                                    <span className="status-stable">Sin cambios</span>
+                                  )}
+
+                                  {/* NUEVO: Producto recién ingresado al sistema */}
+                                  {p.status === "new" && (
+                                    <span className="status-new">Recién añadido</span>
+                                  )}
+                                </>
+                              )}
                             </div>
 
                             <div className="card-action-button">{outOfStock ? "Consultar" : "Ver producto"}</div>
