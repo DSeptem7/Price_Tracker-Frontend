@@ -547,9 +547,8 @@ function App() {
                                {outOfStock && <div className="alert-badge stock-badge">🚫 SIN STOCK</div>}
                                {isAtHistoricalLow && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
                             </div>
-                            <h3 className="product-title">{highlightText(p.title, searchTerm)}</h3>
+                            <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
-                            {/* Precios */}
                             {!outOfStock && p.previous_price && <p className="previous-price">Antes: <s>{p.previous_price}</s></p>}
                             <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
                             
