@@ -345,7 +345,7 @@ const highlightText = (text, query) => {
                         <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Con descuento</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `${stats.dropCount}`}</span>
+                           <span className="stat-value">{loading ? "..." : (globalStats?.dropCount || "0")}</span>
                         </div>
                      </div>
                      {/* ... Resto de cards ... */}
@@ -353,14 +353,14 @@ const highlightText = (text, query) => {
                         <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Subieron</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `${stats.upCount}`}</span>
+                           <span className="stat-value">{loading ? "..." : (globalStats?.upCount || "0")}</span>
                         </div>
                      </div>
                       <div className="stat-card">
                         <div className={`stat-indicator savings ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Ahorro detectado</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `$${stats.totalSavings.toFixed(2)}`}</span>
+                           <span className="stat-value">{loading ? "..." : `$${(globalStats?.totalSavings || 0).toFixed(2)}`}</span>
                         </div>
                      </div>
                       <div className="stat-card">
