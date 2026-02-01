@@ -513,7 +513,7 @@ const highlightText = (text, query) => {
 
                             {/* 2. Botón de acción corregido */}
                           <div className="card-action-button">
-                            {isAgotado ? "Consultar" : "Ver producto"}
+                            {"out_of_stock" ? "Consultar" : "Ver producto"}
                           </div>
                             <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p>
                           </Link>
