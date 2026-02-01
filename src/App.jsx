@@ -363,15 +363,7 @@ const highlightText = (text, query) => {
                            <span className="stat-value">{loading ? "..." : `$${(globalStats?.totalSavings || 0).toFixed(2)}`}</span>
                         </div>
                      </div>
-                      <div className="stat-card">
-                        <div className={`stat-indicator star ${loading ? 'loading-pulse' : ''}`}></div>
-                        <div className="stat-info">
-                           <span className="stat-label">Mejor oferta</span>
-                           <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
-                             {loading ? "..." : (stats.bestDiscount.percent > 0 ? `-${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
-                           </span>
-                        </div>
-                     </div>
+                     
                   </div>
  
                   {/* Panel de Gestión */}
