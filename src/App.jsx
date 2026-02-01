@@ -467,17 +467,21 @@ const highlightText = (text, query) => {
                         // LÓGICA DE ESTADO (Usando la verdad del Backend)
                       const isOutOfStock = p.status === "out_of_stock";
                       const isLowHistorical = p.alert_type === "low_historical"; // Viene del backend        
-                        
+                      const isNew = p.status === "new";  
+
                         return (
                           <Link key={p.id} to={`/producto/${p.id}`} className={`product-card ${isOutOfStock ? 'card-disabled' : ''}`}>
                             <div className={`store-header ${p.url.includes("mercadolibre") ? "store-ml" : "store-default"}`}>
                               {p.url.includes("mercadolibre") ? "Mercado Libre" : "Tienda"}
                             </div>
+
                             <div className="image-container">
                                <img src={p.image} alt={p.title} loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400?text=No+Img"; }} />
                                {isOutOfStock && <div className="alert-badge stock-badge">AGOTADO</div>}
                              {isLowHistorical && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
+                             {isNew && <div className="alert-badge new-badge">NUEVO</div>}
                             </div>
+
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
                             <div className="price-section">
@@ -490,36 +494,22 @@ const highlightText = (text, query) => {
                             </span>
                           </div>
                             
-                            {/* Tags de estado */}
+                           {/* Etiquetas de cambio de precio */}
+                          {!isOutOfStock && (
                             <div className="status-row">
-                              {!outOfStock && (
-                                <>
-                                  {/* BAJÓ: Muestra porcentaje y flecha abajo */}
-                                  {p.status === "down" && (
-                                    <span className="percentage-tag down">
-                                      ↓ -{p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
-                                    </span>
-                                  )}
-
-                                  {/* SUBIÓ: Muestra porcentaje y flecha arriba */}
-                                  {p.status === "up" && (
-                                    <span className="percentage-tag up">
-                                      ↑ +{p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
-                                    </span>
-                                  )}
-
-                                  {/* ESTABLE: Se activará si el status es same, stable, equal o viene vacío pero no es nuevo */}
-                                  {(["equal", "same", "stable"].includes(p.status) || (!p.status && p.status !== "new")) && (
-                                    <span className="status-stable">Sin cambios</span>
-                                  )}
-
-                                  {/* NUEVO: Producto recién ingresado al sistema */}
-                                  {p.status === "new" && (
-                                    <span className="status-new">Recién añadido</span>
-                                  )}
-                                </>
+                              {p.status === "down" && (
+                                <span className="percentage-tag down">
+                                  ↓ {p.change_percentage}
+                                </span>
                               )}
+                              {p.status === "up" && (
+                                <span className="percentage-tag up">
+                                  ↑ {p.change_percentage}
+                                </span>
+                              )}
+                              {p.status === "same" && <span className="status-stable">Sin cambios</span>}
                             </div>
+                          )}
 
                             <div className="card-action-button">{outOfStock ? "Consultar" : "Ver producto"}</div>
                             <p className="timestamp">{new Date(p.timestamp).toLocaleString()}</p>
