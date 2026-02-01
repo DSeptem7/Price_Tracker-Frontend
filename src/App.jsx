@@ -466,8 +466,7 @@ const highlightText = (text, query) => {
                       {processedProducts.map((p) => {
                         // LÓGICA DE ESTADO (Usando la verdad del Backend)
                       const isOutOfStock = p.status === "out_of_stock";
-                      const isLowHistorical = p.alert_type === "low_historical"; // Viene del backend
-                      const isNew = p.status === "new";          
+                      const isLowHistorical = p.alert_type === "low_historical"; // Viene del backend        
                         
                         return (
                           <Link key={p.id} to={`/producto/${p.id}`} className={`product-card ${isOutOfStock ? 'card-disabled' : ''}`}>
@@ -481,8 +480,15 @@ const highlightText = (text, query) => {
                             </div>
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
-                            {!outOfStock && p.previous_price && <p className="previous-price">Antes: <s>{p.previous_price}</s></p>}
-                            <p className="current-price"><strong>{outOfStock ? "No disponible" : p.price}</strong></p>
+                            <div className="price-section">
+                            {/* Precio Anterior solo si existe y no es igual al actual */}
+                            {!isOutOfStock && p.previous_price && parsePrice(p.previous_price) > parsePrice(p.price) && (
+                              <span className="previous-price">{p.previous_price}</span>
+                            )}
+                            <span className="current-price">
+                              {isOutOfStock ? "No disponible" : p.price}
+                            </span>
+                          </div>
                             
                             {/* Tags de estado */}
                             <div className="status-row">
