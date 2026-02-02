@@ -5,18 +5,11 @@ import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
+import { formatCurrency } from './utility/Utils';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
 import "./App.css";
-
-// --- HELPERS GLOBALES (Blindaje de datos) ---
-const parsePrice = (priceStr) => {
-  if (!priceStr) return 0;
-  if (typeof priceStr === 'number') return priceStr;
-  const cleanStr = priceStr.toString().replace(/[^0-9.]/g, "");
-  return parseFloat(cleanStr) || 0;
-};
 
 // --- COMPONENTE MODAL (Optimizado y seguro) ---
 function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
@@ -40,15 +33,18 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
         
         if (data && Array.isArray(data.history)) {
           const formattedData = data.history.map((item) => {
-              const priceValue = parseFloat(item.price);
-              if (isNaN(priceValue) || priceValue <= 0) return null; 
-              return {
-                price: priceValue,
-                date: new Date(item.timestamp).toLocaleString("es-MX", {
-                  day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
-                }),
-              };
-            }).filter(item => item !== null); 
+            // CAMBIO: item.price ya viene como número del nuevo endpoint /history/{id}
+            // Pero por seguridad mantenemos parseFloat o simplemente asignamos
+            const priceValue = typeof item.price === 'number' ? item.price : parseFloat(item.price);
+            
+            if (isNaN(priceValue) || priceValue <= 0) return null; 
+            return {
+              price: priceValue,
+              date: new Date(item.timestamp).toLocaleString("es-MX", {
+                day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
+              }),
+            };
+        }).filter(item => item !== null);
           setHistory(formattedData);
         } else {
           setHistory([]);
@@ -83,7 +79,8 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
                     backgroundColor: isDarkMode ? "rgba(30, 41, 59, 0.9)" : "rgba(255, 255, 255, 0.9)", 
                     color: textColor, border: `1px solid ${gridColor}`, borderRadius: '8px'
                   }}
-                  formatter={(value) => [`$${value.toFixed(2)}`, "Precio"]} 
+                  // CAMBIO AQUÍ: Usar formatCurrency en lugar de f-string manual
+                  formatter={(value) => [formatCurrency(value), "Precio"]}
                 />
                 <Legend />
                 <Line type="monotone" dataKey="price" stroke={isDarkMode ? "#3b82f6" : "#8884d8"} dot={false} strokeWidth={2} />
@@ -194,16 +191,18 @@ function App() {
         const ups = currentProducts.filter(p => p.status === "up");
         
         const totalSavings = drops.reduce((acc, p) => {
-            const curr = parsePrice(p.price);
-            const prev = parsePrice(p.previous_price);
-            return acc + (prev > curr ? prev - curr : 0);
-        }, 0);
-
-        let best = { title: "Ninguna", percent: 0 };
-        drops.forEach(p => {
-             const pVal = parseFloat(p.change_percentage?.replace(/[^\d.]/g, '') || 0);
-             if (pVal > best.percent) best = { title: p.title, percent: pVal };
-        });
+          // CAMBIO: Ya no usamos parsePrice porque p.price ya es número
+          const curr = p.price; 
+          const prev = p.previous_price || 0; // El backend manda float o null
+          return acc + (prev > curr ? prev - curr : 0);
+      }, 0);
+      
+      let best = { title: "Ninguna", percent: 0 };
+      drops.forEach(p => {
+           // CAMBIO: Ya no hay replace de %, p.change_percentage es un float (ej: 15.5)
+           const pVal = p.change_percentage || 0; 
+           if (pVal > best.percent) best = { title: p.title, percent: pVal };
+      });
 
         setStats({ 
             dropCount: drops.length, 
@@ -357,21 +356,21 @@ function App() {
                         <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Con descuento</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `${stats.dropCount}`}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : formatCurrency(stats.dropCount)}</span>
                         </div>
                      </div>
                      <div className="stat-card">
                         <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Subieron</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `${stats.upCount}`}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : formatCurrency(stats.upCount)}</span>
                         </div>
                      </div>
                       <div className="stat-card">
                         <div className={`stat-indicator savings ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Ahorro detectado</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `$${stats.totalSavings.toFixed(2)}`}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : formatCurrency(stats.totalSavings)}</span>
                         </div>
                      </div>
                       <div className="stat-card">
@@ -494,11 +493,14 @@ function App() {
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
                             <div className="price-section">
-                                {!isAgotado && p.previous_price && parsePrice(p.previous_price) > parsePrice(p.price) && (
-                                  <span className="previous-price">{p.previous_price}</span>
+                                {/* CAMBIO: Usamos formatCurrency y comparación directa numérica */}
+                                {!isAgotado && p.previous_price && p.previous_price > p.price && (
+                                  <span className="previous-price">
+                                      {formatCurrency(p.previous_price)}
+                                  </span>
                                 )}
                                 <span className="current-price">
-                                  {isAgotado ? "No disponible" : p.price}
+                                  {isAgotado ? "No disponible" : formatCurrency(p.price)}
                                 </span>
                             </div>
                             
@@ -507,12 +509,13 @@ function App() {
                                 <div className="status-row">
                                 {p.status === "down" && (
                                     <span className="percentage-tag down">
-                                    ↓ {p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
+                                    {/* CAMBIO: .toFixed(2) para limitar decimales + "%" manual */}
+                                    ↓ {p.change_percentage?.toFixed(2)}% 
                                     </span>
                                 )}
                                 {p.status === "up" && (
                                     <span className="percentage-tag up">
-                                    ↑ {p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
+                                    ↑ {p.change_percentage?.toFixed(2)}%
                                     </span>
                                 )}
                                 {(["equal", "same", "stable"].includes(p.status) || (!p.status && !isNew)) && 
