@@ -5,7 +5,6 @@ import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
-import { formatCurrency } from './utility/Utils';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
@@ -195,18 +194,16 @@ function App() {
         const ups = currentProducts.filter(p => p.status === "up");
         
         const totalSavings = drops.reduce((acc, p) => {
-          // p.price y p.previous_price ya son números (floats)
-          const curr = p.price || 0;
-          const prev = p.previous_price || 0;
-          return acc + (prev > curr ? prev - curr : 0);
-      }, 0);
-      
-      // Para la mejor oferta:
-      drops.forEach(p => {
-           // p.change_percentage ya es un número (ej: 12.5)
-           const pVal = Math.abs(p.change_percentage || 0); 
-           if (pVal > best.percent) best = { title: p.title, percent: pVal };
-      });
+            const curr = parsePrice(p.price);
+            const prev = parsePrice(p.previous_price);
+            return acc + (prev > curr ? prev - curr : 0);
+        }, 0);
+
+        let best = { title: "Ninguna", percent: 0 };
+        drops.forEach(p => {
+             const pVal = parseFloat(p.change_percentage?.replace(/[^\d.]/g, '') || 0);
+             if (pVal > best.percent) best = { title: p.title, percent: pVal };
+        });
 
         setStats({ 
             dropCount: drops.length, 
@@ -373,10 +370,8 @@ function App() {
                       <div className="stat-card">
                         <div className={`stat-indicator savings ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
-                        <span className="stat-label">Ahorro detectado</span>
-                          <span className={`stat-value ${loading ? 'loading-text' : ''}`}>
-                              {loading ? "..." : formatCurrency(stats.totalSavings)} {/* <--- Cambio aquí */}
-                          </span>
+                           <span className="stat-label">Ahorro detectado</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : `$${stats.totalSavings.toFixed(2)}`}</span>
                         </div>
                      </div>
                       <div className="stat-card">
@@ -499,30 +494,26 @@ function App() {
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
                             <div className="price-section">
-                                {/* CAMBIO: Usamos formatCurrency y comparación directa numérica */}
-                                {!isAgotado && p.previous_price && p.previous_price > p.price && (
-                                    <span className="previous-price">
-                                        {formatCurrency(p.previous_price)} {/* <--- Uso de tu utilidad */}
-                                    </span>
-                                  )}
-                                  <span className="current-price">
-                                    {isAgotado ? "No disponible" : formatCurrency(p.price)}
-                                  </span>
-                              </div>
+                                {!isAgotado && p.previous_price && parsePrice(p.previous_price) > parsePrice(p.price) && (
+                                  <span className="previous-price">{p.previous_price}</span>
+                                )}
+                                <span className="current-price">
+                                  {isAgotado ? "No disponible" : p.price}
+                                </span>
+                            </div>
                             
                             {/* Etiquetas de cambio de precio */}
                             {!isAgotado && (
-                              <div className="status-row">
-                              {p.status === "down" && (
-                                  <span className="percentage-tag down">
-                                  {/* CAMBIO: .toFixed(2) para limitar decimales + "%" manual */}
-                                  ↓ {p.change_percentage?.toFixed(2)}% 
-                                  </span>
-                              )}
-                              {p.status === "up" && (
-                                  <span className="percentage-tag up">
-                                  ↑ {p.change_percentage?.toFixed(2)}%
-                                  </span>
+                                <div className="status-row">
+                                {p.status === "down" && (
+                                    <span className="percentage-tag down">
+                                    ↓ {p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
+                                    </span>
+                                )}
+                                {p.status === "up" && (
+                                    <span className="percentage-tag up">
+                                    ↑ {p.change_percentage?.replace(/[()%-]/g, '') || "0"}%
+                                    </span>
                                 )}
                                 {(["equal", "same", "stable"].includes(p.status) || (!p.status && !isNew)) && 
                                     <span className="status-stable">Sin cambios</span>
