@@ -1,6 +1,6 @@
 // Utilería Profesional de Formato
 // Maneja nulos, ceros y tipos de dato incorrectos sin romper la app
-const formatCurrency = (value) => {
+export const formatCurrency = (value) => {
     if (value === null || value === undefined || value === '') return '$0.00';
     
     // Aseguramos que sea número
@@ -15,7 +15,7 @@ const formatCurrency = (value) => {
     }).format(num);
   };
   
-  const formatPercentage = (value) => {
+  export const formatPercentage = (value) => {
       if (value === null || value === undefined) return '0%';
       const num = typeof value === 'string' ? parseFloat(value) : value;
       return `${num.toFixed(2)}%`; // Agregamos el % visualmente aquí

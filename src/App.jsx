@@ -356,14 +356,14 @@ function App() {
                         <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Con descuento</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : formatCurrency(stats.dropCount)}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : stats.dropCount}</span>
                         </div>
                      </div>
                      <div className="stat-card">
                         <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Subieron</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : formatCurrency(stats.upCount)}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : stats.upCount}</span>
                         </div>
                      </div>
                       <div className="stat-card">
