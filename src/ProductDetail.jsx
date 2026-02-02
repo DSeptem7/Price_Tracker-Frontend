@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar'; // <--- IMPORTANTE: Importamos el componente
+import { formatCurrency } from './utility/Utils';
 import './ProductDetail.css';
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
@@ -20,7 +20,7 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
         const data = await response.json();
         setProduct(data);
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error al obtener detalle:", error);
       } finally {
         setLoading(false);
       }
@@ -62,25 +62,23 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
   }
   if (!product) return <div>Producto no encontrado.</div>;
 
-  // --- LÓGICA DE CORRECCIÓN DE ANÁLISIS ---
-    const currentPrice = product.current_price;
-    const modePrice = product.mode_price;
-    const minPrice = product.min_historical;
+  // --- LÓGICA DE ANÁLISIS (Ahora 100% numérica y segura) ---
+  const currentPrice = product.current_price || 0;
+  const modePrice = product.mode_price || 0;
+  const minPrice = product.min_historical || 0;
 
-    let finalRecommendation = product.recommendation;
-    let finalColor = product.rec_color;
+  let finalRecommendation = product.recommendation;
+  let finalColor = product.rec_color;
 
-    // CASO DE ERROR: El producto es estable (Precio Actual == Precio Frecuente)
-    // pero se marca como Mínimo Histórico erróneamente.
-    if (currentPrice === modePrice) {
-        finalRecommendation = "Precio Estable. Es el precio habitual de este producto.";
-        finalColor = "#64748b"; // Gris azulado (puedes usar el que prefieras)
-    } 
-    // CASO REAL: El precio actual es menor al frecuente (bajó de verdad)
-    else if (currentPrice <= minPrice && currentPrice < modePrice) {
-        finalRecommendation = "¡PRECIO MÍNIMO! Compra altamente recomendada.";
-        finalColor = "#16a34a"; // Verde
-    }
+  // Ajuste de lógica de recomendación basado en números puros
+  if (currentPrice === modePrice && modePrice > 0) {
+      finalRecommendation = "Precio Estable. Es el precio habitual de este producto.";
+      finalColor = "#64748b"; 
+  } 
+  else if (currentPrice <= minPrice && currentPrice < modePrice && currentPrice > 0) {
+      finalRecommendation = "¡PRECIO MÍNIMO! Compra altamente recomendada.";
+      finalColor = "#16a34a"; 
+  }
     // ---------------------------------------
 
   return (
@@ -104,20 +102,30 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
               <h1>{product.title}</h1>
               
               <div className="price-focus">
-                {product.previous_price && (
+                {product.previous_price && product.previous_price > currentPrice && (
                   <div className="old-price-container">
                     <span className="label-small">Precio anterior</span>
-                    <span className="old-price-value"><s>${product.previous_price.toLocaleString()}</s></span>
+                    {/* CAMBIO: Uso de formatCurrency en lugar de toLocaleString manual */}
+                    <span className="old-price-value"><s>{formatCurrency(product.previous_price)}</s></span>
                   </div>
                 )}
                 <div className="current-price-container">
                   <span className="label-main">Precio Actual</span>
-                  <span className="current-price-value">${product.current_price.toLocaleString()}</span>
+                  {/* CAMBIO: Uso de formatCurrency */}
+                  <span className="current-price-value">{formatCurrency(currentPrice)}</span>
                 </div>
                 
                 <div className="status-badge-container">
-                  {product.status === "down" && <span className="percentage-tag down">↓ -{product.change_percentage}</span>}
-                  {product.status === "up" && <span className="percentage-tag up">↑ +{product.change_percentage}</span>}
+                  {product.status === "down" && (
+                    <span className="percentage-tag down">
+                      ↓ -{product.change_percentage?.toFixed(2)}%
+                    </span>
+                  )}
+                  {product.status === "up" && (
+                    <span className="percentage-tag up">
+                      ↑ +{product.change_percentage?.toFixed(2)}%
+                    </span>
+                  )}
                   {product.status === "stable" && <span className="status-stable">Sin cambios</span>}
                   {product.status === "new" && <span className="status-new">Recién añadido</span>}
                 </div>
@@ -145,10 +153,26 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
                           <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      <YAxis domain={['auto', 'auto']} stroke={isDarkMode ? "#94a3b8" : "#64748b"} tickFormatter={(v) => `$${v.toLocaleString()}`} fontSize={12} tickLine={false} axisLine={false} style={{ pointerEvents: 'none' }}/>
-                      <XAxis dataKey="timestamp" stroke={isDarkMode ? "#94a3b8" : "#64748b"} fontSize={10} tickFormatter={(str) => str?.split(' ')[0]} tickLine={false} axisLine={false} minTickGap={30} style={{ pointerEvents: 'none' }} />
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} style={{ pointerEvents: 'none' }} />
-                      <Tooltip offset={20} contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(4px)', border: 'none', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', fontSize: '12px'}} formatter={(v) => [`$${v.toLocaleString()}`, 'Precio']} />
+                      {/* CAMBIO: tickFormatter ahora usa formatCurrency para coherencia visual */}
+                      <YAxis 
+                        domain={['auto', 'auto']} 
+                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
+                        tickFormatter={(v) => formatCurrency(v)} 
+                        fontSize={12} tickLine={false} axisLine={false} 
+                      />
+                      <XAxis 
+                        dataKey="timestamp" 
+                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
+                        fontSize={10} 
+                        tickFormatter={(str) => str?.split(' ')[0]} 
+                        tickLine={false} axisLine={false} minTickGap={30} 
+                      />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
+                      {/* CAMBIO: formatter del Tooltip usa formatCurrency */}
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', border: 'none', borderRadius: '8px'}} 
+                        formatter={(v) => [formatCurrency(v), 'Precio']} 
+                      />
                       <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={1} fill="url(#colorPrice)" strokeWidth={3} />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -158,15 +182,15 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
               <div className="stats-grid-detail">
                 <div className="stat-card-mini green">
                   <span>Mínimo Histórico</span>
-                  <strong>{product.is_new ? "---" : `$${product.min_historical?.toLocaleString()}`}</strong>
+                  <strong>{product.is_new ? "---" : formatCurrency(product.min_historical)}</strong>
                 </div>
                 <div className="stat-card-mini red">
                   <span>Máximo Histórico</span>
-                  <strong>{product.is_new ? "---" : `$${product.max_historical?.toLocaleString()}`}</strong>
+                  <strong>{product.is_new ? "---" : formatCurrency(product.max_historical)}</strong>
                 </div>
                 <div className="stat-card-mini">
                   <span>Precio Frecuente</span>
-                  <strong>{product.is_new ? "---" : `$${product.mode_price?.toLocaleString()}`}</strong>
+                  <strong>{product.is_new ? "---" : formatCurrency(product.mode_price)}</strong>
                 </div>
               </div>
 
