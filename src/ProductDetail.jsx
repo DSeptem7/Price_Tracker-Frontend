@@ -14,6 +14,10 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
 
   useEffect(() => {
     const fetchFullDetail = async () => {
+// Log para verificar que el ID y la URL son correctos
+console.log("Intentando cargar producto ID:", id);
+console.log("URL generada:", `${API_BASE}/product/${id}`);
+
       try {
         setLoading(true);
         const response = await fetch(`${API_BASE}/product/${id}`);
