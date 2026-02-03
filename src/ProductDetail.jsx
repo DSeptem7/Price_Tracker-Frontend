@@ -14,32 +14,18 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
 
   useEffect(() => {
     const fetchFullDetail = async () => {
-      // Log para verificar que el ID y la URL son correctos
-      console.log("Intentando cargar producto ID:", id);
-      console.log("URL generada:", `${API_BASE}/product/${id}`);
-  
       try {
         setLoading(true);
         const response = await fetch(`${API_BASE}/product/${id}`);
-        
-        if (!response.ok) {
-          console.error("Respuesta de API no exitosa:", response.status);
-          setProduct(null);
-          return;
-        }
-  
         const data = await response.json();
-        console.log("Datos recibidos del Backend:", data); // Esto nos dirá si los números vienen bien
         setProduct(data);
       } catch (error) {
-        console.error("Error crítico en el fetch:", error);
-        setProduct(null);
+        console.error("Error al obtener detalle:", error);
       } finally {
         setLoading(false);
       }
     };
-  
-    if (id) fetchFullDetail(); // Solo ejecutar si existe el ID
+    fetchFullDetail();
   }, [id, API_BASE]);
 
   if (loading) {
