@@ -1,15 +1,16 @@
 /* ====================================================================== */
-/* === 0. REINICIO Y ESTABILIDAD GLOBAL === */
+/* === 0. REINICIO GLOBAL Y FIX GLOBAL DE ESTABILIDAD=== */
 /* ====================================================================== */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box; /* Evita que el padding y el borde aumenten el ancho de los elementos */
   margin: 0;
   padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 html {
-  scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
+  /* Opción Moderna: Reserva el espacio del scrollbar siempre */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -19,7 +20,7 @@ body {
 }
 
 /* ====================================================================== */
-/* === 1. VARIABLES Y MICRO-INTERACCIONES === */
+/* === 1. CONFIGURACIÓN DE COLORES DINÁMICOS Y MICRO INTERACCIONES === */
 /* ====================================================================== */
 :root {
   --bg-app: #f1f5f9;
@@ -47,17 +48,32 @@ body {
   --bg-skeleton: #1e293b;
 }
 
-/* MICRO-INTERACCIONES */
-.btn-primary, .btn-secondary, .product-card, .pagination-container button {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+/* === MICRO-INTERACCIONES === */
+
+/* 1. Entrada suave para las tarjetas de productos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-primary:active, .btn-secondary:active {
+/* 2. Transiciones suaves para botones y paginación */
+.btn-primary, .btn-secondary, .pagination-number, .pagination-arrow {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3. Feedback visual al presionar botones (efecto de hundimiento) */
+.btn-primary:active, .btn-secondary:active, .pagination-number:active {
   transform: scale(0.96);
 }
 
 /* ====================================================================== */
-/* === 2. ESTRUCTURA GLOBAL Y DASHBOARD (STATS) === */
+/* === 2. NAVBAR Y ESTRUCTURA GLOBAL === */
 /* ====================================================================== */
 .main-content {
   max-width: 1400px;
@@ -67,19 +83,20 @@ body {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
 .stat-card {
   background: var(--bg-card);
-  padding: 20px;
-  border-radius: 16px;
+  padding: 15px;
+  border-radius: 12px;
   border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  transition: all 0.3s ease;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
@@ -108,6 +125,7 @@ body {
 .stat-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .stat-value {
@@ -122,10 +140,10 @@ body {
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
-  font-weight: 600;
   text-transform: uppercase;
+  font-weight: 700;
   letter-spacing: 0.025em;
 }
 
@@ -140,571 +158,1063 @@ body {
 }
 
 /* ====================================================================== */
-/* === 3. CONTENEDOR BASE (.App) === */
+/* === 3. ESTILOS BASE (.App) === */
 /* ====================================================================== */
 .App {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  text-align: center;
   background-color: var(--bg-app);
+  color: var(--text-main);
+  transition: background-color 0.3s ease;
+  min-height: 100vh;
 }
 
 /* ====================================================================== */
-/* === 4. PANEL DE GESTIÓN (INPUTS Y FILTROS) === */
+/* === 4. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO RESPONSIVE) === */
 /* ====================================================================== */
 .simulate-panel {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 16px;
+  padding: 24px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
-.panel-header-row h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
+.simulate-panel h3 {
+  margin: 0;
+  font-size: 1.1rem;
   color: var(--text-main);
-  letter-spacing: -0.025em;
-  margin-bottom: 5px;
+  font-weight: 700;
+  text-align: center; /* Centramos el título para mayor equilibrio visual */
 }
 
-/* FILAS DE CONTROL */
+/* Contenedor del encabezado para alinear h3 e icono */
+.panel-header-row {
+  display: flex;
+  align-items: center; 
+  justify-content: center; /* ESTA LÍNEA centra el grupo (h3 + ?) en el panel */
+  gap: 10px;           
+  margin-bottom: 15px; 
+  width: 100%;             /* Asegura que ocupe todo el ancho para poder centrar */
+}
+
+/* Quitamos el margen por defecto del h3 para que no descuadre el centro */
+.panel-header-row h3 {
+  margin: 0;
+}
+
+/* El círculo con la "i" */
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--text-muted);
+  color: var(--text-muted);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: help;
+  transition: all 0.3s ease;
+}
+
+/* Contenedor del icono de información (i) */
+.info-tooltip-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.info-icon:hover {
+  background: var(--text-muted);
+  color: var(--bg-card);
+}
+
+/* El recuadro que aparece (Tooltip) */
+.tooltip-content {
+  visibility: hidden;
+  width: 260px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  text-align: left;
+  border: 1px solid #10b981;
+  border-radius: 12px;
+  padding: 15px;
+  position: absolute;
+  z-index: 2100;
+  top: 50%;
+  left: 130%; 
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-size: 13px;
+  line-height: 1.5;
+  pointer-events: none; /* Evita que el cuadro interfiera si no está visible */
+}
+
+.tooltip-content strong {
+  color: #10b981; /* Resalta "Buscar", "Añadir", etc. en verde */
+  font-weight: 700;
+}
+
+/* Triangulito del tooltip */
+.tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* Posicionado a la izquierda del cuadro */
+  margin-top: -8px;
+  border-width: 8px;
+  border-style: solid;
+  /* El color del triangulito debe ser el del borde verde */
+  border-color: transparent #10b981 transparent transparent;
+}
+
+/* Mostrar al pasar el mouse */
+.info-tooltip-wrapper:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+  left: 140%; /* Desplazamiento suave hacia afuera */
+}
+
+.tooltip-content ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.tooltip-content li {
+  margin-bottom: 6px;
+}
+
+/* Filas base */
 .control-row, .filter-row {
   display: flex;
   gap: 12px;
   width: 100%;
+}
+
+/* Fila de controles (Input y botones) */
+.control-row {
+  justify-content: center;
+}
+
+/* Fila de filtros (Selects) */
+.filter-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
   align-items: flex-end;
+}
+
+.simulate-panel input, .simulate-panel select {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+}
+
+.simulate-panel input:focus {
+  border-color: #007bff;
 }
 
 .control-row input[type="text"] {
   flex-grow: 1;
-  background-color: var(--input-bg);
-  border: 2px solid var(--border-color);
-  padding: 12px 18px;
-  border-radius: 12px;
-  color: var(--text-main);
-  font-size: 15px;
-  transition: all 0.2s ease;
+  max-width: 500px;
 }
 
-.control-row input:focus {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-  outline: none;
+.btn-primary { 
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  font-weight: 600; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  padding: 12px 20px; 
+  transition: transform 0.2s;
 }
 
-/* BOTONES PROFESIONALES */
-.btn-primary {
-  background-color: var(--accent-blue);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background-color: var(--bg-app);
-  color: var(--text-main);
+.btn-secondary { 
+  background-color: var(--input-bg); 
+  color: var(--text-muted); 
   border: 1px solid var(--border-color);
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
+  font-weight: 600; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  padding: 12px 20px; 
 }
 
-/* SELECTORES Y WRAPPERS */
-.select-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background-color: #0056b3;
 }
 
-.select-wrapper label {
-  font-size: 11px;
-  font-weight: 800;
+.simulate-panel input::placeholder {
   color: var(--text-muted);
-  text-transform: uppercase;
-  margin-left: 4px;
+  opacity: 0.8;
+}
+
+/* Ajuste de los selectores para PC */
+.select-wrapper { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 4px; 
+  /* 0 = no crece, 1 = puede encogerse, 200px = tamaño base cómodo */
+  flex: 0 1 200px; 
+  min-width: 0; 
+}
+
+.select-wrapper label { 
+  font-size: 10px; 
+  text-transform: uppercase; 
+  color: var(--text-muted);; 
+  font-weight: 800; 
+  margin-left: 4px; 
 }
 
 .select-wrapper select {
-  background-color: var(--input-bg);
-  border: 2px solid var(--border-color);
-  padding: 11px 15px;
-  border-radius: 12px;
-  color: var(--text-main);
-  font-weight: 600;
-  cursor: pointer;
+  width: 100%;
 }
 
-/* BOTÓN RESET (LIMPIAR) */
-.btn-reset-filters {
-  background-color: transparent;
-  border: 2px dashed var(--border-color);
-  color: var(--text-muted);
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  height: 46px;
-  transition: all 0.2s;
+/* 📱 AJUSTES ESPECÍFICOS PARA MÓVIL */
+@media (max-width: 600px) {
+  .simulate-panel {
+    padding: 16px;
+    gap: 15px;
+  }
+
+  .control-row {
+    flex-direction: column;
+  }
+
+  /* FORZAMOS que en móvil SI usen el 50/50 del ancho */
+  .filter-row {
+    flex-direction: row !important; 
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .select-wrapper {
+    flex: 1; /* En móvil sí crecen para llenar la fila */
+    max-width: none; /* Quitamos el límite de 200px */
+  }
+
+  .simulate-panel input, .simulate-panel select {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
-.btn-reset-filters:hover {
-  border-color: var(--accent-red);
-  color: var(--accent-red);
-  background: rgba(239, 68, 68, 0.05);
+  /* === ANIMACIONES DE CARGA (BOTÓN Y MENSAJES) Y RASTREO === */
+
+/* 1. Animación para los puntos suspensivos (efecto ola) */
+@keyframes loading-dots-bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
-/* MENSAJES DE ESTADO (RASTREO) */
+.dot-flashing {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: white; /* Color de los puntos */
+  margin-left: 5px;
+  animation: loading-dots-bounce 1.4s infinite ease-in-out both;
+}
+
+.dot-flashing:nth-child(1) { animation-delay: -0.32s; }
+.dot-flashing:nth-child(2) { animation-delay: -0.16s; }
+.dot-flashing:nth-child(3) { animation-delay: 0s; }
+
+/* 2. Estilo para el mensaje rotativo de abajo */
 .status-message-container {
-  padding: 15px;
-  border-radius: 12px;
-  background-color: var(--bg-app);
-  color: var(--accent-blue);
-  font-weight: 700;
-  text-align: center;
-  font-size: 14px;
-  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-/* HIGHLIGHT (BÚSQUEDA) */
+.status-message-text {
+  font-size: 1.1rem; /* Antes era 0.9rem, aquí lo agrandamos */
+  color: #94a3b8; 
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; /* Aumentamos un poco el espacio con el spinner */
+  font-weight: 500; /* Le damos un poquito más de cuerpo */
+  animation: fadeInOut 0.5s ease-in-out;
+  margin-bottom: 10px; /* Separación extra */
+}
+
+/* Animación de entrada suave para el texto */
+@keyframes fadeInOut {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icono giratorio pequeño para acompañar el texto */
+.spinner-icon {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(148, 163, 184, 0.3);
+  border-top-color: #10b981; /* Verde éxito o el azul de tu marca */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* RASTRO Clase para la salida orgánica */
+.fade-out-message {
+  opacity: 0 !important;
+  transform: translateY(-8px) scale(0.98); /* Ligero encogimiento */
+  max-height: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  
+  /* Cubic-bezier es la clave para que no sea robótico */
+  transition: 
+    opacity 0.5s ease, 
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    margin 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Base del contenedor para que soporte la transición */
+.status-message-container {
+  transition: all 0.4s ease;
+}
+
+/* Estilo para el resaltado de búsqueda */
 .highlight {
-  background-color: #fef08a; /* Amarillo suave */
-  color: #854d0e;
+  background-color: rgba(59, 130, 246, 0.2); /* Un azul suave */
+  color: #3b82f6; /* Texto azul brillante */
+  font-weight: bold;
   padding: 0 2px;
-  border-radius: 4px;
-  font-weight: 700;
+  border-radius: 2px;
 }
 
+/* En modo oscuro, ajustamos los colores para que resalten mejor */
 .dark-mode .highlight {
-  background-color: #854d0e;
-  color: #fef08a;
+  background-color: rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
 }
 
-/* NO RESULTS STATE */
+/* Contenedor del Estado Vacío */
 .no-results-container {
-  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
   text-align: center;
-  color: var(--text-muted);
+  min-height: 400px;
+}
+
+/* El contenedor del icono */
+.no-results-icon {
+  color: #94a3b8;
+  margin-bottom: 20px;
+  /* Aplicamos la animación: dura 2 segundos y se repite infinitamente */
+  animation: bounce-sad 2s ease-in-out infinite;
+  display: inline-block; /* Importante para que la transformación funcione */
+}
+
+/* Definición de los pasos del rebote "triste" */
+@keyframes bounce-sad {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05); /* Sube y se estira un poco */
+  }
+  70% {
+    transform: translateY(0) scale(0.95); /* Cae y se "aplasta" sutilmente */
+  }
+}
+
+/* Opcional: Hacer que la lupa "tiemble" un poco al aparecer */
+.no-results-container h2 {
+  animation: fadeIn 0.8s ease-out;
 }
 
 .no-results-container h2 {
-  color: var(--text-main);
+  font-size: 1.5rem;
   margin-bottom: 10px;
+  color: var(--text-color); /* Asegúrate de usar tu variable de color de texto */
 }
 
-/* RESPONSIVE MÓVIL (PUNTO 4) */
-@media (max-width: 600px) {
-  .simulate-panel { padding: 20px; gap: 16px; }
-  .control-row { flex-direction: column; }
-  .control-row input, .btn-primary, .btn-secondary { width: 100%; }
-  .filter-row { display: grid; grid-template-columns: 1fr 1fr; }
-  .btn-reset-filters { grid-column: span 2; width: 100%; }
+.no-results-container p {
+  color: #64748b;
+  margin-bottom: 25px;
+  max-width: 300px;
+}
+
+/* Botón de Limpiar */
+.clear-search-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+}
+
+.clear-search-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
+}
+
+.clear-search-btn:active {
+  transform: translateY(0);
+}
+
+/* Animación simple */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nuevo Botón: Restablecer filtros (Lado de los selects) */
+.btn-reset-filters {
+  background-color: transparent;
+  border: 1px dashed var(--border-color); /* Estilo dashed para que parezca secundario */
+  color: var(--text-muted);
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  white-space: nowrap;
+  transition: all 0.2s ease; /* Solo transición de color suave */
+}
+
+.btn-reset-filters:hover:not(:disabled) {
+  border-color: #ef4444; /* Rojo suave */
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Estado Deshabilitado (Cuando está limpio) */
+.btn-reset-filters:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: transparent; /* Opcional: Quitar borde si quieres que sea muy sutil */
 }
 
 /* ====================================================================== */
-/* === 5. GRILLA Y TARJETAS (ESTRUCTURA PREMIUM) === */
+/* === 5. GRILLA Y TARJETAS === */
 /* ====================================================================== */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+  /* El auto-fill con 1fr está bien si limitamos la fila */
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); 
+  
+  /* ESTO ES LA CLAVE: Evita que las filas crezcan para llenar los 800px */
   grid-auto-rows: max-content; 
-  align-items: stretch; /* Estira las tarjetas para que todas midan lo mismo en la fila */
-  gap: 24px; 
-  padding: 20px 0;
-  min-height: 600px;
+  
+  /* Alinea las tarjetas al principio de su celda, no permite que se estiren */
+  align-items: start; 
+  
+  gap: 35px 20px; 
+  padding: 30px 0;
+  min-height: 800px; /* Mantenemos esto para que el footer no suba demasiado */
 }
 
 .product-card {
   background: var(--bg-card); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
-  border-radius: 20px; 
+  border-radius: 18px; 
   padding: 16px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   position: relative; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none; /* Quita subrayado del Link */
+  transition: all 0.3s ease;
+  overflow: visible;
+  /* === AJUSTES DE SIMETRÍA AGREGADOS === */
+  justify-content: space-between; 
   height: 100%;
 }
 
+/* EFECTO HOVER UNIFICADO (MODO CLARO POR DEFECTO) */
 .product-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--accent-blue);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  border-color: #007bff; /* Azul primario en modo claro */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* AJUSTES DE COLOR ESPECÍFICOS PARA HOVER EN MODO OSCURO */
 .dark-mode .product-card:hover {
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
-  background: #1e293b;
+  background-color: #1e293b; 
+  border-color: #3b82f6;     
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 /* --- ENCABEZADO DE TIENDA --- */
 .store-header {
   font-size: 10px;
   font-weight: 800;
-  padding: 6px 12px;
+  padding: 7px 0;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-radius: 20px 20px 0 0;
-  margin: -16px -16px 12px -16px; /* Full bleed */
+  border-radius: 16px 16px 0 0;
+  margin: -16px -16px 12px -16px; 
 }
 
-.store-ml { background-color: #ffe600; color: #333; }
+.store-ml { background-color: #FFE600; color: #333; }
 .store-amazon { background-color: #232f3e; color: white; }
-.store-default { background-color: var(--border-color); color: var(--text-muted); }
+.store-default { background-color: #475569; color: white; }
 
-/* --- IMAGEN Y BADGES --- */
+/* --- IMAGEN Y BADGES FLOTANTES --- */
 .image-container {
   position: relative; 
   width: 100%;
-  height: 180px; 
-  background-color: #fff; 
-  border-radius: 14px;
+  height: 160px; /* Altura fija para dar simetría */
+  margin-bottom: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px;
-  margin-bottom: 12px;
+  background-color: white; /* Esto crea el marco uniforme */
+  border-radius: 12px;     /* Bordes redondeados para el marco */
+  overflow: hidden;        /* Para que nada se salga del marco */
+  padding: 8px;            /* Espacio interno para que la foto no toque los bordes */
 }
 
 .product-card img { 
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%; 
+  height: 100%;
+  object-fit: contain; /* Esto asegura que la foto se vea completa sin deformarse */
+  border-radius: 8px;
 }
 
 .alert-badge {
   position: absolute;
-  top: 8px;
-  padding: 4px 10px;
-  border-radius: 8px;
+  top: 5px; 
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 12px;
+  border-radius: 30px; 
   font-size: 10px;
   font-weight: 900;
-  color: white;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 5;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  color: white !important;
 }
 
-.alert-badge.stock-badge { background: #64748b; }
-.alert-badge.new-badge { background: var(--accent-blue); }
+.alert-badge.stock-badge { 
+  background-color: #6c757d; 
+}
+
 .alert-badge.low_historical {
-  background: linear-gradient(135deg, #22c55e, #15803d);
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 45%, #14532d 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
   animation: pulse-badge 2s infinite;
 }
 
 @keyframes pulse-badge { 
-  0%, 100% { opacity: 1; } 
-  50% { opacity: 0.8; } 
+  0% { transform: translateX(-50%) scale(1); } 
+  50% { transform: translateX(-50%) scale(1.05); } 
+  100% { transform: translateX(-50%) scale(1); } 
 }
 
-/* ====================================================================== */
-/* === 6. PRECIOS Y ESTADOS (SISTEMA VERTICAL) === */
-/* ====================================================================== */
-
-.product-title { 
-  font-size: 14px; 
-  font-weight: 600;
+/* --- TÍTULO Y BOTÓN --- */
+.product-card h3 { 
+  font-size: 15px; 
   color: var(--text-main); 
-  margin-bottom: 12px;
-  height: 38px; /* Forzamos 2 líneas */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.price-section {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 12px;
-  min-height: 52px; /* Evita saltos si no hay precio anterior */
-}
-
-/* Contenedor "Antes" */
-.previous-price-container {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.strike-through {
-  text-decoration: line-through;
-  opacity: 0.7;
-}
-
-.current-price { 
-  font-size: 22px; 
-  font-weight: 800; 
-  color: var(--text-main);
-}
-
-/* FILA DE ESTADO (Down, Up, Stable) */
-.status-row {
-  display: flex;
-  gap: 8px;
-  margin-top: auto; /* Empuja hacia abajo */
-  padding-top: 10px;
-  border-top: 1px solid var(--border-color);
-}
-
-.percentage-tag {
-  font-size: 12px;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-.percentage-tag.down { background: #dcfce7; color: #15803d; }
-.percentage-tag.up { background: #fee2e2; color: #b91c1c; }
-
-.status-stable {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  background: var(--bg-app);
-  padding: 4px 8px;
-  border-radius: 6px;
+  margin: 4px 0 8px 0; 
+  height: 40px; 
+  line-height: 1.3; 
+  overflow: hidden; 
+  display: -webkit-box; 
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical; 
 }
 
 .card-action-button {
-  background: var(--accent-blue);
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #3b82f6; /* Azul botón */
   color: white;
   text-align: center;
-  padding: 10px;
-  border-radius: 10px;
-  font-weight: 700;
-  margin-top: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+/* Efecto hover sobre la tarjeta completa afecta al botón */
+.product-card:hover .card-action-button {
+  background-color: #2563eb;
+}
+
+.dark-mode .card-action-button {
+  background-color: #3b82f6; /* Ajusta si quieres otro tono en oscuro */
+}
+
+/* ====================================================================== */
+/* === 6. PRECIOS Y ESTADOS (ESTRUCTURA FIJA) === */
+/* ====================================================================== */
+
+/* Altura fija para evitar saltos si no hay precio anterior */
+.previous-price { 
+  font-size: 13px; 
+  color: var(--text-muted);
+  margin: 0 !important;
+  height: 18px; /* ALINEACIÓN CRÍTICA */
+  line-height: 18px;
+}
+
+.current-price { 
+  font-size: 20px; 
+  font-weight: 800; 
+  color: var(--text-main) !important;
+  margin: 4px 0 !important; 
+}
+
+/* Fila de Estado (Flechas y Porcentajes) */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 0;
+  height: 26px; /* ALINEACIÓN CRÍTICA */
+}
+
+.percentage-tag {
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.percentage-tag.down {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.percentage-tag.up {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.status-stable {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--input-bg);
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-new {
+  font-size: 11px !important; /* Forzamos tamaño pequeño */
+  color: #0369a1 !important;  /* Azul oscuro */
+  background: #e0f2fe !important; /* Azul cielo suave */
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid #bae6fd; /* Borde sutil para que no se vea plano */
+  display: inline-flex;
+  align-items: center;
+  height: 22px; /* Altura controlada */
+}
+
+/* Caja de Contexto (Precios frecuentes) */
+.context-box { 
+  background: var(--bg-skeleton); 
+  border-radius: 12px; 
+  padding: 10px; 
+  margin: 10px 0; 
+  font-size: 12px; 
+  color: var(--text-muted);
+}
+
+.context-box p:last-child { 
+  background: transparent;
+  border: 1px dashed #16a34a; 
+  color: #16a34a; 
+  padding: 3px 8px; 
+  border-radius: 6px; 
+  margin-top: 4px; 
+  display: inline-block; 
+  font-weight: 700; 
 }
 
 .timestamp {
-  font-size: 10px;
-  color: var(--text-muted);
-  text-align: center;
-  margin-top: 8px;
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
 }
 
 /* ====================================================================== */
-/* === 7. MEDIA QUERIES (MÓVIL - 2 COLUMNAS) === */
+/* === 7. MEDIA QUERIES (MÓVIL) === */
 /* ====================================================================== */
 @media (max-width: 600px) {
-  /* Reseteo de estabilidad para evitar scroll horizontal */
+
+  /* 1. Reparación Maestra de Scroll y Sticky */
   html, body {
-    overflow-x: hidden;
-    width: 100%;
+    overflow-x: visible !important;
+    overflow-y: visible !important; /* Asegura que el scroll principal mande */
+    height: auto !important;
+    width: 100% !important;
+    position: relative !important;
   }
 
-  /* Grilla: 2 columnas exactas */
+  .App {
+    overflow: visible !important; /* Eliminamos el hidden aquí también temporalmente */
+    display: block !important;
+  }
+
+  /* 2. Ajuste de Grilla: 2 columnas perfectas */
   .product-grid {
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 12px; 
-    padding: 15px 10px;
+    display: grid !important;
+    /* El secreto está aquí: minmax evita que crezcan infinitamente */
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important; 
+    gap: 12px !important; 
+    padding: 15px 10px !important;
+    align-items: stretch !important;
   }
 
+  /* 3. Ajuste de Tarjeta */
   .product-card {
-    padding: 12px;
-    border-radius: 16px;
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
   }
 
-  /* Ajuste de imagen en móvil */
+  .product-card h3 {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    margin: 8px 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    height: 32px !important;
+  }
+
+  /* 4. Contenedor de Imagen */
   .image-container {
-    height: 140px;
-    padding: 10px;
+    height: 120px !important;
+    padding: 8px !important;
+    margin-bottom: 5px !important;
   }
 
-  /* Título más compacto */
-  .product-title {
-    font-size: 13px;
-    height: 34px; /* Ajuste para 2 líneas en móvil */
-    margin-bottom: 8px;
+  .product-card img {
+    object-fit: contain !important;
+    height: 100% !important;
   }
 
-  /* Precios en móvil */
-  .current-price {
-    font-size: 18px;
+  /* 1. Quitamos el espaciador invisible en móvil para que no empuje */
+  .navbar-content div[style*="flex-grow: 1"] {
+    flex-grow: 0 !important;
+    width: 0 !important;
   }
 
-  .previous-price-container {
-    font-size: 11px;
+  /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
+  .control-row { 
+    flex-direction: column !important; 
+    gap: 10px !important;
   }
 
-  /* Panel de Gestión en móvil */
-  .control-row {
-    flex-direction: column;
+  /* LA SOLUCIÓN: La fila de filtros vuelve a ser horizontal (2 columnas) */
+  .filter-row { 
+    flex-direction: row !important; /* Volvemos a horizontal */
+    display: flex !important;
+    gap: 10px !important;
+    justify-content: space-between !important;
   }
 
-  .filter-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Selects lado a lado */
-    gap: 8px;
-  }
-
+  /* El botón de reset ocupa todo el ancho abajo de los selects */
   .btn-reset-filters {
-    grid-column: span 2; /* El botón limpiar ocupa todo el ancho abajo */
-    height: 40px;
+    width: 100% !important;
+    order: 3; /* Asegura que siempre vaya al final */
+    justify-content: center;
+    border-style: dashed; /* Un toque visual diferente */
+    margin-top: 5px;
   }
 
-  /* Paginación más amigable al pulgar */
+  /* Aseguramos que cada selector ocupe el 50% del espacio disponible */
+  .filter-row .select-wrapper {
+    flex: 1 !important;
+    min-width: 0 !important; /* Evita que el texto largo los desalinee */
+  }
+
+  .filter-row select {
+    width: 100% !important;
+    font-size: 12px !important; /* Letra un poco más pequeña para que quepa todo */
+    padding: 8px 4px !important;
+  }
+
+  .product-count { display: none; }
+
+  /* 6. Paginación Compacta */
   .pagination-container {
-    gap: 5px;
+    gap: 4px !important;
+    padding: 15px 5px !important;
+    justify-content: center !important;
   }
 
   .pagination-number, .pagination-arrow {
-    padding: 8px 12px;
-    font-size: 13px;
-    min-width: 35px;
+    padding: 5px 8px !important;
+    font-size: 12px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+  }
+
+  .price-before, .update-date {
+    font-size: 10px !important;
+  }
+
+  /* --- AJUSTE DE GUÍA (TOOLTIP) EN MÓVIL --- */
+  .tooltip-content {
+    /* Reposicionamos: ABAJO y CENTRADO */
+    top: 140% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 220px !important; /* Evitamos que se salga de la pantalla */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Cambiamos el triangulito para que apunte hacia ARRIBA */
+  .tooltip-content::after {
+    top: auto !important;
+    bottom: 100% !important; 
+    left: 50% !important;
+    right: auto !important;
+    margin-left: -8px !important;
+    border-color: transparent transparent #10b981 transparent !important;
+  }
+
+  /* Animación de entrada en móvil al tocar el icono */
+  .info-tooltip-wrapper:hover .tooltip-content {
+    top: 150% !important;
+    left: 50% !important;
   }
 }
 
 /* ====================================================================== */
-/* === 8. MODAL Y PAGINACIÓN (NATIVO MODO OSCURO) === */
+/* === 8. MODAL Y PAGINACIÓN === */
 /* ====================================================================== */
-
-/* BACKDROP */
 .modal-backdrop {
   position: fixed; 
-  top: 0; left: 0; 
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); 
-  backdrop-filter: blur(8px);
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); 
+  backdrop-filter: blur(5px);
   display: flex; 
   justify-content: center; 
   align-items: center; 
   z-index: 2000;
-  padding: 20px;
 }
 
-/* CONTENIDO DEL MODAL */
 .modal-content {
   background-color: var(--bg-card);
   color: var(--text-main);
   padding: 30px; 
-  border-radius: 24px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  width: 100%; 
-  max-width: 800px; 
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  width: 90%; 
+  max-width: 750px; 
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .close-button { 
   position: absolute; 
-  top: 20px; right: 20px; 
-  font-size: 32px; 
+  top: 15px; 
+  right: 20px; 
+  font-size: 28px; 
   background: none; 
   border: none; 
   cursor: pointer; 
-  color: var(--text-muted); 
-  line-height: 1;
+  color: #666; 
 }
 
-.close-button:hover { color: var(--accent-red); }
+/* El título de la gráfica dentro del modal */
+.modal-content h3 {
+  margin-top: 10px;    /* Espacio extra arriba */
+  margin-bottom: 20px; /* Espacio antes de la gráfica */
+  font-size: 1.2rem;
+  color: var(--text-color); /* Asegura que use el color del modo */
+}
 
-/* PAGINACIÓN */
+/*QUITAR RECUADROS EN GRÁFICO*/
+/* 1. Desactivar el recuadro de enfoque en TODOS los elementos de Recharts */
+.recharts-responsive-container *,
+.recharts-wrapper *,
+.recharts-surface *,
+.recharts-legend-wrapper * {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important; /* Elimina la banda blanca/azul en móviles */
+}
+
+/* 2. Específicamente para los ejes (que suelen causar ese recuadro parcial) */
+.recharts-cartesian-axis-tick text {
+  user-select: none; /* Evita que el texto se seleccione como si fuera un párrafo */
+  outline: none !important;
+}
+
+/* 3. El contenedor principal SVG */
+svg.recharts-surface {
+  outline: none !important;
+}
+
+/* 4. Solución para el "desbordamiento" en celulares */
+.chart-container-pro, .modal-content {
+  overflow: hidden; /* Evita que cualquier borde de foco "empuje" el contenido y cree bandas blancas */
+}
+
+/* Contenedor específico del Canvas para que no toque bordes */
+.chart-container {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
 .pagination-container {
   display: flex; 
   justify-content: center; 
   align-items: center; 
   gap: 8px; 
-  margin: 40px 0;
+  margin-top: 30px;    /* Margen superior constante */
+  margin-bottom: 10px; /* Reducido para que no se sume tanto al margen del footer */
+  min-height: 50px; 
+  width: 100%;
 }
 
 .pagination-number, .pagination-arrow {
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
-  padding: 10px 18px; 
-  border-radius: 12px; 
-  font-weight: 700; 
-  cursor: pointer;
-}
-
-.pagination-number:hover:not(.active) {
-  border-color: var(--accent-blue);
-  background-color: var(--bg-app);
+  padding: 10px 16px; 
+  border: 1px solid #e2e8f0; 
+  background-color: white;
+  color: #333; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  font-weight: 600; 
+  transition: all 0.2s;
 }
 
 .pagination-number.active { 
-  background-color: var(--accent-blue); 
+  background-color: #007bff; 
   color: white; 
-  border-color: var(--accent-blue); 
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); 
+  border-color: #007bff; 
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3); 
 }
 
-/* FIXES PARA RECHARTS (Gráficas) */
-.recharts-responsive-container * {
-  outline: none !important;
-}
-
+/* Hace que el Tooltip sea "invisible" para el mouse/dedo */
+/* Así el usuario siempre toca la gráfica, no el cuadro del texto */
 .recharts-tooltip-wrapper {
   pointer-events: none !important;
+  transition: transform 0.15s ease-out !important; /* Movimiento más fluido */
 }
 
 /* ====================================================================== */
-/* === 9. SKELETON SCREEN (CARGA INTELIGENTE) === */
+/* === 9. SKELETON SCREEN === */
 /* ====================================================================== */
 .skeleton-card {
-  height: 100%; /* Se adapta a la grilla, no fija px */
-  min-height: 350px; /* Altura mínima de seguridad */
-  background: var(--bg-card);
+  height: 415px; 
+  background: var(--bg-card) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
-  border-radius: 20px; 
+  border-radius: 16px; 
   padding: 16px; 
   display: flex; 
   flex-direction: column;
+  margin-bottom: 5px;
 }
 
-/* Animación optimizada con variables */
 .skeleton-img, .skeleton-title, .skeleton-text, .skeleton-button {
   background: linear-gradient(90deg, 
-    var(--bg-app) 25%, 
-    var(--bg-skeleton) 50%, 
-    var(--bg-app) 75%);
+    var(--input-bg) 25%, 
+    var(--bg-app) 50%, 
+    var(--input-bg) 75%);
   background-size: 200% 100%; 
   animation: skeleton-loading 1.5s infinite ease-in-out;
-  border-radius: 8px;
 }
 
 .skeleton-img { 
   width: 100%; 
-  height: 180px; /* Misma altura que la imagen real */
-  margin-bottom: 12px; 
+  height: 150px; 
+  border-radius: 10px; 
+  margin-bottom: 8px; 
 }
 
 .skeleton-title { 
   height: 20px; 
-  width: 80%; 
-  margin-bottom: 8px;
+  width: 85%; 
+  margin: 8px auto; 
+  border-radius: 4px; 
 }
 
 .skeleton-text { 
-  flex-grow: 1; /* Ocupa el espacio vacío */
+  height: 80px; 
   width: 100%; 
   margin: 10px 0; 
+  background: var(--bg-skeleton) !important;
+  border-radius: 10px; 
 }
 
 .skeleton-button { 
-  height: 40px; 
+  height: 35px; 
   width: 100%; 
   margin-top: auto; 
+  border-radius: 8px; 
 }
 
 @keyframes skeleton-loading { 
@@ -713,88 +1223,143 @@ body {
 }
 
 /* ====================================================================== */
-/* === 10. PANEL DE ESTADÍSTICAS Y SWITCH (FINAL) === */
+/* === 10. PANEL DE ESTADÍSTICAS, BOTON MODO OSCURO (LOOK PROFESIONAL) === */
 /* ====================================================================== */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reducido de 220px a 180px */
+  gap: 12px; /* Espacio más compacto */
+  margin-bottom: 25px;
 }
 
 .stat-card {
   background: var(--bg-card);
-  padding: 16px; 
-  border-radius: 16px;
+  padding: 12px 16px; /* Padding más ajustado */
+  border-radius: 10px;
   border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 12px;
   position: relative;
-  transition: all 0.3s ease;
+  cursor: default; /* Por defecto, no parece un botón */
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card.highlight {
+  background: #1e293b;
+  border: 1px solid var(--border-color);
+  cursor: pointer !important; /* Cambia a la mano al pasar el mouse */
+  position: relative;
   overflow: hidden;
 }
 
-/* Hover sutil para todas las tarjetas */
-.stat-card:hover {
-  border-color: var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
+/* Efecto visual solo para la tarjeta con descuento */
+.stat-card.highlight:hover {
+  border-color: #3b82f6; /* El azul que querías */
+  transform: translateY(-4px); /* Se eleva un poquito */
+  background: #1e293b;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); /* Sombra azul tenue */
 }
 
-/* Los indicadores (barras de color laterales) */
-.stat-indicator {
-  width: 4px;
-  height: 32px;
-  border-radius: 4px;
-  flex-shrink: 0;
+/* El texto del porcentaje también cambia a verde al hacer hover */
+.stat-card.highlight:hover .stat-value {
+  color: #10b981;
+  transition: color 0.3s ease;
 }
-.stat-indicator.down { background-color: var(--accent-green); }
-.stat-indicator.up { background-color: var(--accent-red); }
-.stat-indicator.savings { background-color: var(--accent-blue); }
-.stat-indicator.star { background-color: var(--accent-orange); }
+
+.stat-card.highlight:hover::after {
+  opacity: 1;
+  right: 10px;
+}
+
+/* Eliminamos efectos de hover para las tarjetas normales (1, 2 y 4) */
+.stat-card:not(.highlight):hover {
+  transform: none;
+  border-color: var(--border-color);
+  box-shadow: none;
+}
+
+.stat-indicator {
+  width: 3px; /* Más sutil */
+  height: 24px;
+  border-radius: 2px;
+}
+
+.stat-indicator.down { background-color: #22c55e; }
+.stat-indicator.up { background-color: #ef4444; }
+.stat-indicator.savings { background-color: #3b82f6; }
 
 .stat-info {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  text-align: left;
+  overflow: hidden; /* Evita que el texto largo rompa el diseño */
 }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 9px; /* Fuente más pequeña para el label */
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  color: #64748b;
   font-weight: 700;
-  margin-bottom: 2px;
 }
 
 .stat-value {
-  font-size: 18px;
+  font-size: 1rem; /* Tamaño balanceado */
   font-weight: 800;
   color: var(--text-main);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* SWITCH DE MODO OSCURO (Toggle) */
+.stat-card.highlight .stat-label { color: #94a3b8; }
+.stat-card.highlight .stat-value { color: #f8fafc; }
+
+/* 📱 AJUSTE ESPECÍFICO PARA MÓVILES (CRÍTICO) */
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* Fuerza 2 columnas exactamente */
+    gap: 8px; /* Espacio mínimo para aprovechar el ancho */
+  }
+
+  .stat-card {
+    padding: 10px; /* Aún más pequeño en móvil */
+    gap: 8px;
+  }
+
+  .stat-value {
+    font-size: 0.9rem; /* Fuente más pequeña para que quepan los números largos */
+  }
+
+  .stat-label {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+  
+  .stat-indicator {
+    height: 18px; /* Indicador más discreto */
+  }
+}
+
+/* SWITCH ELEGANTE */
 .theme-switch-wrapper {
+  margin: 0 !important;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
 .theme-switch {
   display: inline-block;
-  height: 26px;
+  height: 24px;
   position: relative;
-  width: 48px;
+  width: 45px;
 }
 
 .theme-switch input { display: none; }
 
 .slider {
-  background-color: #cbd5e1; /* Gris suave apagado */
+  background-color: #ccc;
   bottom: 0;
   cursor: pointer;
   left: 0;
@@ -806,58 +1371,48 @@ body {
 }
 
 .slider:before {
-  background-color: white;
-  bottom: 3px;
+  background-color: #ffffff;
+  bottom: 4px;
   content: "";
-  height: 20px;
-  left: 3px;
+  height: 16px;
+  left: 4px;
   position: absolute;
   transition: .4s;
-  width: 20px;
+  width: 16px;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Estado Activo (Modo Oscuro) */
-input:checked + .slider { background-color: var(--accent-blue); }
-input:checked + .slider:before { transform: translateX(22px); }
+input:checked + .slider { background-color: #3b82f6; }
+input:checked + .slider:before { transform: translateX(21px); }
 
 /* ====================================================================== */
-/* === 11. ANIMACIONES DE CARGA Y RESPONSIVE FINAL === */
+/* === 11. ANIMACIONES DE CARGA (ESTADÍSTICAS) === */
 /* ====================================================================== */
 
-/* Pulso para los indicadores cuando carga */
+/* Definición de la animación de pulso */
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.9); }
+  0% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
 }
 
+/* Clase que activa la animación en los indicadores */
 .loading-pulse {
-  animation: pulse-dot 1.2s infinite ease-in-out;
+  animation: pulse-dot 1.5s infinite ease-in-out;
 }
 
+/* Opcional: Un color de texto más sutil para el "Cargando..." */
 .stat-value.loading-text {
-  font-size: 14px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* 📱 AJUSTES FINALES PARA MÓVIL (PUNTO 11 EXTRA) */
-@media (max-width: 600px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas forzadas */
-    gap: 10px;
-  }
-
-  .stat-card {
-    padding: 12px;
-    gap: 8px;
-  }
-
-  .stat-indicator {
-    height: 24px; /* Más pequeño en móvil */
-  }
-
-  .stat-value { font-size: 15px; }
-  .stat-label { font-size: 9px; }
+  font-size: 0.9rem;
+  opacity: 0.7;
+  font-style: italic;
 }
