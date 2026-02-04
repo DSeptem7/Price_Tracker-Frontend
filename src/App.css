@@ -155,164 +155,464 @@ body {
 .simulate-panel {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 16px;
+  padding: 24px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
-.panel-header-row h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
+.simulate-panel h3 {
+  margin: 0;
+  font-size: 1.1rem;
   color: var(--text-main);
-  letter-spacing: -0.025em;
-  margin-bottom: 5px;
+  font-weight: 700;
+  text-align: center; /* Centramos el título para mayor equilibrio visual */
 }
 
-/* FILAS DE CONTROL */
+/* Contenedor del encabezado para alinear h3 e icono */
+.panel-header-row {
+  display: flex;
+  align-items: center; 
+  justify-content: center; /* ESTA LÍNEA centra el grupo (h3 + ?) en el panel */
+  gap: 10px;           
+  margin-bottom: 15px; 
+  width: 100%;             /* Asegura que ocupe todo el ancho para poder centrar */
+}
+
+/* Quitamos el margen por defecto del h3 para que no descuadre el centro */
+.panel-header-row h3 {
+  margin: 0;
+}
+
+/* El círculo con la "i" */
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--text-muted);
+  color: var(--text-muted);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: help;
+  transition: all 0.3s ease;
+}
+
+/* Contenedor del icono de información (i) */
+.info-tooltip-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.info-icon:hover {
+  background: var(--text-muted);
+  color: var(--bg-card);
+}
+
+/* El recuadro que aparece (Tooltip) */
+.tooltip-content {
+  visibility: hidden;
+  width: 260px;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  text-align: left;
+  border: 1px solid #10b981;
+  border-radius: 12px;
+  padding: 15px;
+  position: absolute;
+  z-index: 2100;
+  top: 50%;
+  left: 130%; 
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-size: 13px;
+  line-height: 1.5;
+  pointer-events: none; /* Evita que el cuadro interfiera si no está visible */
+}
+
+.tooltip-content strong {
+  color: #10b981; /* Resalta "Buscar", "Añadir", etc. en verde */
+  font-weight: 700;
+}
+
+/* Triangulito del tooltip */
+.tooltip-content::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* Posicionado a la izquierda del cuadro */
+  margin-top: -8px;
+  border-width: 8px;
+  border-style: solid;
+  /* El color del triangulito debe ser el del borde verde */
+  border-color: transparent #10b981 transparent transparent;
+}
+
+/* Mostrar al pasar el mouse */
+.info-tooltip-wrapper:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+  left: 140%; /* Desplazamiento suave hacia afuera */
+}
+
+.tooltip-content ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.tooltip-content li {
+  margin-bottom: 6px;
+}
+
+/* Filas base */
 .control-row, .filter-row {
   display: flex;
   gap: 12px;
   width: 100%;
+}
+
+/* Fila de controles (Input y botones) */
+.control-row {
+  justify-content: center;
+}
+
+/* Fila de filtros (Selects) */
+.filter-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
   align-items: flex-end;
+}
+
+.simulate-panel input, .simulate-panel select {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: var(--input-bg);
+  color: var(--text-main);
+}
+
+.simulate-panel input:focus {
+  border-color: #007bff;
 }
 
 .control-row input[type="text"] {
   flex-grow: 1;
-  background-color: var(--input-bg);
-  border: 2px solid var(--border-color);
-  padding: 12px 18px;
-  border-radius: 12px;
-  color: var(--text-main);
-  font-size: 15px;
-  transition: all 0.2s ease;
+  max-width: 500px;
 }
 
-.control-row input:focus {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-  outline: none;
+.btn-primary { 
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  font-weight: 600; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  padding: 12px 20px; 
+  transition: transform 0.2s;
 }
 
-/* BOTONES PROFESIONALES */
-.btn-primary {
-  background-color: var(--accent-blue);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background-color: var(--bg-app);
-  color: var(--text-main);
+.btn-secondary { 
+  background-color: var(--input-bg); 
+  color: var(--text-muted); 
   border: 1px solid var(--border-color);
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
+  font-weight: 600; 
+  cursor: pointer; 
+  border-radius: 10px; 
+  padding: 12px 20px; 
 }
 
-/* SELECTORES Y WRAPPERS */
-.select-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background-color: #0056b3;
 }
 
-.select-wrapper label {
-  font-size: 11px;
-  font-weight: 800;
+.simulate-panel input::placeholder {
   color: var(--text-muted);
-  text-transform: uppercase;
-  margin-left: 4px;
+  opacity: 0.8;
+}
+
+/* Ajuste de los selectores para PC */
+.select-wrapper { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 4px; 
+  /* 0 = no crece, 1 = puede encogerse, 200px = tamaño base cómodo */
+  flex: 0 1 200px; 
+  min-width: 0; 
+}
+
+.select-wrapper label { 
+  font-size: 10px; 
+  text-transform: uppercase; 
+  color: var(--text-muted);; 
+  font-weight: 800; 
+  margin-left: 4px; 
 }
 
 .select-wrapper select {
-  background-color: var(--input-bg);
-  border: 2px solid var(--border-color);
-  padding: 11px 15px;
-  border-radius: 12px;
-  color: var(--text-main);
-  font-weight: 600;
-  cursor: pointer;
+  width: 100%;
 }
 
-/* BOTÓN RESET (LIMPIAR) */
-.btn-reset-filters {
-  background-color: transparent;
-  border: 2px dashed var(--border-color);
-  color: var(--text-muted);
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  height: 46px;
-  transition: all 0.2s;
+/* 📱 AJUSTES ESPECÍFICOS PARA MÓVIL */
+@media (max-width: 600px) {
+  .simulate-panel {
+    padding: 16px;
+    gap: 15px;
+  }
+
+  .control-row {
+    flex-direction: column;
+  }
+
+  /* FORZAMOS que en móvil SI usen el 50/50 del ancho */
+  .filter-row {
+    flex-direction: row !important; 
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .select-wrapper {
+    flex: 1; /* En móvil sí crecen para llenar la fila */
+    max-width: none; /* Quitamos el límite de 200px */
+  }
+
+  .simulate-panel input, .simulate-panel select {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 
-.btn-reset-filters:hover {
-  border-color: var(--accent-red);
-  color: var(--accent-red);
-  background: rgba(239, 68, 68, 0.05);
+  /* === ANIMACIONES DE CARGA (BOTÓN Y MENSAJES) Y RASTREO === */
+
+/* 1. Animación para los puntos suspensivos (efecto ola) */
+@keyframes loading-dots-bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
-/* MENSAJES DE ESTADO (RASTREO) */
+.dot-flashing {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: white; /* Color de los puntos */
+  margin-left: 5px;
+  animation: loading-dots-bounce 1.4s infinite ease-in-out both;
+}
+
+.dot-flashing:nth-child(1) { animation-delay: -0.32s; }
+.dot-flashing:nth-child(2) { animation-delay: -0.16s; }
+.dot-flashing:nth-child(3) { animation-delay: 0s; }
+
+/* 2. Estilo para el mensaje rotativo de abajo */
 .status-message-container {
-  padding: 15px;
-  border-radius: 12px;
-  background-color: var(--bg-app);
-  color: var(--accent-blue);
-  font-weight: 700;
-  text-align: center;
-  font-size: 14px;
-  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-/* HIGHLIGHT (BÚSQUEDA) */
+.status-message-text {
+  font-size: 1.1rem; /* Antes era 0.9rem, aquí lo agrandamos */
+  color: #94a3b8; 
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; /* Aumentamos un poco el espacio con el spinner */
+  font-weight: 500; /* Le damos un poquito más de cuerpo */
+  animation: fadeInOut 0.5s ease-in-out;
+  margin-bottom: 10px; /* Separación extra */
+}
+
+/* Animación de entrada suave para el texto */
+@keyframes fadeInOut {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Icono giratorio pequeño para acompañar el texto */
+.spinner-icon {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(148, 163, 184, 0.3);
+  border-top-color: #10b981; /* Verde éxito o el azul de tu marca */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* RASTRO Clase para la salida orgánica */
+.fade-out-message {
+  opacity: 0 !important;
+  transform: translateY(-8px) scale(0.98); /* Ligero encogimiento */
+  max-height: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  
+  /* Cubic-bezier es la clave para que no sea robótico */
+  transition: 
+    opacity 0.5s ease, 
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    margin 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Base del contenedor para que soporte la transición */
+.status-message-container {
+  transition: all 0.4s ease;
+}
+
+/* Estilo para el resaltado de búsqueda */
 .highlight {
-  background-color: #fef08a; /* Amarillo suave */
-  color: #854d0e;
+  background-color: rgba(59, 130, 246, 0.2); /* Un azul suave */
+  color: #3b82f6; /* Texto azul brillante */
+  font-weight: bold;
   padding: 0 2px;
-  border-radius: 4px;
-  font-weight: 700;
+  border-radius: 2px;
 }
 
+/* En modo oscuro, ajustamos los colores para que resalten mejor */
 .dark-mode .highlight {
-  background-color: #854d0e;
-  color: #fef08a;
+  background-color: rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
 }
 
-/* NO RESULTS STATE */
+/* Contenedor del Estado Vacío */
 .no-results-container {
-  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
   text-align: center;
-  color: var(--text-muted);
+  min-height: 400px;
+}
+
+/* El contenedor del icono */
+.no-results-icon {
+  color: #94a3b8;
+  margin-bottom: 20px;
+  /* Aplicamos la animación: dura 2 segundos y se repite infinitamente */
+  animation: bounce-sad 2s ease-in-out infinite;
+  display: inline-block; /* Importante para que la transformación funcione */
+}
+
+/* Definición de los pasos del rebote "triste" */
+@keyframes bounce-sad {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05); /* Sube y se estira un poco */
+  }
+  70% {
+    transform: translateY(0) scale(0.95); /* Cae y se "aplasta" sutilmente */
+  }
+}
+
+/* Opcional: Hacer que la lupa "tiemble" un poco al aparecer */
+.no-results-container h2 {
+  animation: fadeIn 0.8s ease-out;
 }
 
 .no-results-container h2 {
-  color: var(--text-main);
+  font-size: 1.5rem;
   margin-bottom: 10px;
+  color: var(--text-color); /* Asegúrate de usar tu variable de color de texto */
 }
 
-/* RESPONSIVE MÓVIL (PUNTO 4) */
-@media (max-width: 600px) {
-  .simulate-panel { padding: 20px; gap: 16px; }
-  .control-row { flex-direction: column; }
-  .control-row input, .btn-primary, .btn-secondary { width: 100%; }
-  .filter-row { display: grid; grid-template-columns: 1fr 1fr; }
-  .btn-reset-filters { grid-column: span 2; width: 100%; }
+.no-results-container p {
+  color: #64748b;
+  margin-bottom: 25px;
+  max-width: 300px;
+}
+
+/* Botón de Limpiar */
+.clear-search-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+}
+
+.clear-search-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
+}
+
+.clear-search-btn:active {
+  transform: translateY(0);
+}
+
+/* Animación simple */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nuevo Botón: Restablecer filtros (Lado de los selects) */
+.btn-reset-filters {
+  background-color: transparent;
+  border: 1px dashed var(--border-color); /* Estilo dashed para que parezca secundario */
+  color: var(--text-muted);
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  white-space: nowrap;
+  transition: all 0.2s ease; /* Solo transición de color suave */
+}
+
+.btn-reset-filters:hover:not(:disabled) {
+  border-color: #ef4444; /* Rojo suave */
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Estado Deshabilitado (Cuando está limpio) */
+.btn-reset-filters:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: transparent; /* Opcional: Quitar borde si quieres que sea muy sutil */
 }
 
 /* ====================================================================== */
