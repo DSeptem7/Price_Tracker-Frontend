@@ -495,13 +495,18 @@ function App() {
                             <div className="price-section">
                                 {/* CAMBIO: Usamos formatCurrency y comparación directa numérica */}
                                 {!isAgotado && p.previous_price && p.previous_price > p.price && (
-                                  <span className="previous-price">
+                                  <div className="previous-price-container">
+                                  <span className="previous-price-label">Antes:</span>
+                                  <span className="previous-price-value strike-through">
                                       {formatCurrency(p.previous_price)}
                                   </span>
-                                )}
-                                <span className="current-price">
-                                  {isAgotado ? "No disponible" : formatCurrency(p.price)}
-                                </span>
+                              </div>
+                          )}
+                                <div className="current-price-container">
+                                  <span className={`current-price ${isAgotado ? 'text-muted' : ''}`}>
+                                      {isAgotado ? "No disponible" : formatCurrency(p.price)}
+                                  </span>
+                              </div>
                             </div>
                             
                             {/* Etiquetas de cambio de precio */}
