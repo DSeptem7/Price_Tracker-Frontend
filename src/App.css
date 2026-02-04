@@ -16,14 +16,18 @@ html {
 /* === 1. CONFIGURACIÓN DE COLORES DINÁMICOS Y MICRO INTERACCIONES === */
 /* ====================================================================== */
 :root {
-  --bg-app: #f8fafc;
+  --bg-app: #f1f5f9;
   --bg-card: #ffffff;
-  --bg-navbar: rgba(255, 255, 255, 0.85);
-  --text-main: #1e293b;
+  --bg-navbar: rgba(255, 255, 255, 0.9);
+  --text-main: #0f172a;
   --text-muted: #64748b;
-  --border-color: rgba(0, 0, 0, 0.08);
+  --border-color: #e2e8f0;
   --input-bg: #ffffff;
-  --bg-skeleton: rgba(0, 0, 0, 0.05); /* Nuevo */
+  --bg-skeleton: #e2e8f0;
+  --accent-blue: #3b82f6;
+  --accent-green: #22c55e;
+  --accent-red: #ef4444;
+  --accent-orange: #f59e0b;
 }
 
 .dark-mode {
@@ -32,9 +36,9 @@ html {
   --bg-navbar: rgba(15, 23, 42, 0.9);
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: #1e293b;
   --input-bg: #1e293b;
-  --bg-skeleton: rgba(255, 255, 255, 0.05); /* Nuevo */
+  --bg-skeleton: #1e293b;
 }
 
 /* === MICRO-INTERACCIONES === */
