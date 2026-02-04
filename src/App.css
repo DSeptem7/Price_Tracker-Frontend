@@ -154,12 +154,15 @@ html {
 /* ====================================================================== */
 /* === 3. ESTILOS BASE (.App) === */
 /* ====================================================================== */
-.App {
+App {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  text-align: center;
   background-color: var(--bg-app);
+  color: var(--text-main);
+  transition: background-color 0.3s ease;
 }
+
 
 /* ====================================================================== */
 /* === 4. PANEL DE BÚSQUEDA Y FILTROS (OPTIMIZADO RESPONSIVE) === */
