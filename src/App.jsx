@@ -493,20 +493,27 @@ function App() {
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
                             <div className="price-section">
-                                {/* CAMBIO: Usamos formatCurrency y comparación directa numérica */}
-                                {!isAgotado && p.previous_price && p.previous_price > p.price && (
-                                  <div className="previous-price-container">
-                                  <span className="previous-price-label">Antes:</span>
-                                  <span className="previous-price-value strike-through">
-                                      {formatCurrency(p.previous_price)}
-                                  </span>
-                              </div>
-                          )}
+                                {/* CAMBIO PROFESIONAL: 
+                                  Mostramos el precio anterior solo si:
+                                  1. No está agotado.
+                                  2. Existe un previous_price válido (> 0).
+                                  3. El estado es "down" (Bajó) O "up" (Subió).
+                                  4. El precio anterior es distinto al actual (Evita tachados idénticos).
+                                */}
+                                {!isAgotado && p.previous_price > 0 && (p.status === "down" || p.status === "up") && p.previous_price !== p.price && (
+                                    <div className="previous-price-container">
+                                        <span className="previous-price-label">Antes:</span>
+                                        <span className="previous-price-value strike-through">
+                                            {formatCurrency(p.previous_price)}
+                                        </span>
+                                    </div>
+                                )}
+
                                 <div className="current-price-container">
-                                  <span className={`current-price ${isAgotado ? 'text-muted' : ''}`}>
-                                      {isAgotado ? "No disponible" : formatCurrency(p.price)}
-                                  </span>
-                              </div>
+                                    <span className={`current-price ${isAgotado ? 'text-muted' : ''}`}>
+                                        {isAgotado ? "No disponible" : formatCurrency(p.price)}
+                                    </span>
+                                </div>
                             </div>
                             
                             {/* Etiquetas de cambio de precio */}
