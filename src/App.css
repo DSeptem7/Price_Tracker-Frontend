@@ -730,18 +730,24 @@ body {
 .price-section {
   display: flex;
   flex-direction: column;
+  align-items: center; /* CENTRADO de precios */
   gap: 2px;
   margin-bottom: 12px;
-  min-height: 52px; /* Evita saltos si no hay precio anterior */
+  /* Reservamos el espacio para el precio anterior aunque no exista */
+  min-height: 60px; 
+  justify-content: flex-end; /* Empuja el precio actual hacia abajo */
 }
 
 /* Contenedor "Antes" */
 .previous-price-container {
   display: flex;
   align-items: center;
+  justify-content: center; /* CENTRADO del contenido interno */
   gap: 4px;
   font-size: 12px;
   color: var(--text-muted);
+  height: 18px; /* Altura fija para que el espacio siempre exista */
+  width: 100%;
 }
 
 .strike-through {
@@ -750,18 +756,22 @@ body {
 }
 
 .current-price { 
-  font-size: 22px; 
+  font-size: 24px; /* Un poco más grande para destacar */
   font-weight: 800; 
   color: var(--text-main);
+  text-align: center;
+  display: block;
 }
 
 /* FILA DE ESTADO (Down, Up, Stable) */
 .status-row {
   display: flex;
+  justify-content: center; /* CENTRADO de las etiquetas de porcentaje/sin cambios */
   gap: 8px;
-  margin-top: auto; /* Empuja hacia abajo */
+  margin-top: auto;
   padding-top: 10px;
   border-top: 1px solid var(--border-color);
+  width: 100%; /* Asegura que ocupe todo el ancho para centrar bien */
 }
 
 .percentage-tag {
