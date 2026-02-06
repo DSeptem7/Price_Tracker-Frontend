@@ -519,20 +519,16 @@ function App() {
                             {/* Etiquetas de cambio de precio */}
                             {!isAgotado && (
                                 <div className="status-row">
-                                {p.status === "down" && (
-                                    <span className="percentage-tag down">
-                                    {/* CAMBIO: .toFixed(2) para limitar decimales + "%" manual */}
-                                    ↓ {p.change_percentage?.toFixed(2)}% 
-                                    </span>
-                                )}
-                                {p.status === "up" && (
-                                    <span className="percentage-tag up">
-                                    ↑ {p.change_percentage?.toFixed(2)}%
-                                    </span>
-                                )}
-                                {(["equal", "same", "stable"].includes(p.status) || (!p.status && !isNew)) && 
-                                    <span className="status-stable">Sin cambios</span>
-                                }
+                                    {/* REGLA: Si bajó o subió Y la diferencia es visible (>= 0.1%) */}
+                                    {(p.status === "down" || p.status === "up") && p.change_percentage >= 0.1 ? (
+                                        <span className={`percentage-tag ${p.status}`}>
+                                            {p.status === "down" ? "↓" : "↑"} {p.change_percentage?.toFixed(2)}%
+                                        </span>
+                                    ) : (
+                                        /* FALLBACK: Para cualquier otra situación, mostramos 'Sin cambios' 
+                                          (excepto si es un producto NUEVO, para no confundir) */
+                                        !isNew && <span className="status-stable">Sin cambios</span>
+                                    )}
                                 </div>
                             )}
 
