@@ -688,6 +688,7 @@ body {
   object-fit: contain;
 }
 
+/* Base de los Badges */
 .alert-badge {
   position: absolute;
   top: 8px;
@@ -696,19 +697,42 @@ body {
   font-size: 10px;
   font-weight: 900;
   color: white;
+  text-transform: uppercase;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 
-.alert-badge.stock-badge { background: #64748b; }
-.alert-badge.new-badge { background: var(--accent-blue); }
-.alert-badge.low_historical {
+/* --- VARIANTES DE COLOR --- */
+
+/* 1. Agotado: Gris neutro */
+.alert-badge.stock-badge { 
+  background: #64748b; 
+}
+
+/* 2. Nuevo: Azul vibrante */
+.alert-badge.new-badge { 
+  background: var(--accent-blue, #3b82f6); 
+}
+
+/* 3. Mínimo Histórico: Verde con pulsación (CORREGIDO EL NOMBRE) */
+.alert-badge.low-historical {
   background: linear-gradient(135deg, #22c55e, #15803d);
   animation: pulse-badge 2s infinite;
 }
 
+/* 4. Máximo Histórico: Ámbar/Rojo para precaución (NUEVO) */
+.alert-badge.max-historical {
+  background: linear-gradient(135deg, #f59e0b, #b45309); /* Color naranja/quemado */
+}
+
+/* 5. Recién Surtido: Cian/Morado para destacar disponibilidad (NUEVO) */
+.alert-badge.restock-badge {
+  background: linear-gradient(135deg, #06b6d4, #0891b2); /* Color cian energético */
+}
+
 @keyframes pulse-badge { 
-  0%, 100% { opacity: 1; } 
-  50% { opacity: 0.8; } 
+  0%, 100% { transform: scale(1); opacity: 1; } 
+  50% { transform: scale(1.05); opacity: 0.9; } 
 }
 
 /* ====================================================================== */
