@@ -723,6 +723,7 @@ body {
 /* 4. Máximo Histórico: Ámbar/Rojo para precaución (NUEVO) */
 .alert-badge.max-historical {
   background: linear-gradient(135deg, #f59e0b, #b45309); /* Color naranja/quemado */
+  animation: pulse-badge 2s infinite;
 }
 
 /* 5. Recién Surtido: Cian/Morado para destacar disponibilidad (NUEVO) */
