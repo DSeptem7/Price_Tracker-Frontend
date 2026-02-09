@@ -475,6 +475,8 @@ function App() {
                         // Lógica de visualización segura
                         const isAgotado = p.status === "out_of_stock";
                         const isLowHistorical = p.alert_type === "low_historical";      
+                        const isMaxHistorical = p.alert_type === "max_historical"; // Nuevo
+                        const isRestock = p.alert_type === "restock"; // Nuevo
                         const isNew = p.status === "new";  
 
                         return (
@@ -485,9 +487,13 @@ function App() {
 
                             <div className="image-container">
                                <img src={p.image} alt={p.title} loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400?text=No+Img"; }} />
-                               {isAgotado && <div className="alert-badge stock-badge">AGOTADO</div>}
-                               {isLowHistorical && <div className="alert-badge low_historical">MÍNIMO HISTÓRICO</div>}
-                               {isNew && <div className="alert-badge new-badge">NUEVO</div>}
+                               
+                               {/* ORDEN DE PRIORIDAD DE ETIQUETAS */}
+                              {isAgotado && <div className="alert-badge stock-badge">AGOTADO</div>}
+                              {isLowHistorical && <div className="alert-badge low-historical">MÍNIMO HISTÓRICO</div>}
+                              {isMaxHistorical && <div className="alert-badge max-historical">MÁXIMO HISTÓRICO</div>}
+                              {isRestock && <div className="alert-badge restock-badge">RECIÉN SURTIDO</div>}
+                              {isNew && <div className="alert-badge new-badge">NUEVO</div>}
                             </div>
 
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
