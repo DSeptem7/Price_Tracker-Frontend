@@ -3,10 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { formatCurrency } from './utility/Utils';
 import './ProductDetail.css';
 import {
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
+  ReferenceLine, Label
 } from 'recharts';
 
-const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSearchTerm }) => {
+const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
@@ -62,27 +63,11 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
   }
   if (!product) return <div>Producto no encontrado.</div>;
 
-  // --- LÓGICA DE ANÁLISIS (Ahora 100% numérica y segura) ---
+ // Ya no necesitamos calcular nada aquí. 
+  // Usamos product.recommendation y product.rec_color directamente del Backend.
   const currentPrice = product.current_price || 0;
-  const modePrice = product.mode_price || 0;
-  const minPrice = product.min_historical || 0;
-
-  let finalRecommendation = product.recommendation;
-  let finalColor = product.rec_color;
-
-  // Ajuste de lógica de recomendación basado en números puros
-  if (currentPrice === modePrice && modePrice > 0) {
-      finalRecommendation = "Precio Estable. Es el precio habitual de este producto.";
-      finalColor = "#64748b"; 
-  } 
-  else if (currentPrice <= minPrice && currentPrice < modePrice && currentPrice > 0) {
-      finalRecommendation = "¡PRECIO MÍNIMO! Compra altamente recomendada.";
-      finalColor = "#16a34a"; 
-  }
-    // ---------------------------------------
 
   return (
-    /* CORRECCIÓN: El wrapper abre aquí y NO se cierra con /> */
     <div className="product-detail-wrapper">
 
       <div className={`detail-page ${isDarkMode ? 'dark' : 'light'}`}>
@@ -104,14 +89,12 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
               <div className="price-focus">
                 {product.previous_price && product.previous_price > currentPrice && (
                   <div className="old-price-container">
-                    <span className="label-small">Precio anterior</span>
-                    {/* CAMBIO: Uso de formatCurrency en lugar de toLocaleString manual */}
+                    <span className="label-small">Precio habitual</span>
                     <span className="old-price-value"><s>{formatCurrency(product.previous_price)}</s></span>
                   </div>
                 )}
                 <div className="current-price-container">
                   <span className="label-main">Precio Actual</span>
-                  {/* CAMBIO: Uso de formatCurrency */}
                   <span className="current-price-value">{formatCurrency(currentPrice)}</span>
                 </div>
                 
@@ -126,8 +109,9 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
                       ↑ +{product.change_percentage?.toFixed(2)}%
                     </span>
                   )}
-                  {product.status === "stable" && <span className="status-stable">Sin cambios</span>}
                   {product.status === "new" && <span className="status-new">Recién añadido</span>}
+                  {product.status === "same" && <span className="status-stable">Precio estable</span>}
+                  {product.status === "out_of_stock" && <span className="status-out">Agotado</span>}
                 </div>
               </div>
 
@@ -153,7 +137,6 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
                           <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
-                      {/* CAMBIO: tickFormatter ahora usa formatCurrency para coherencia visual */}
                       <YAxis 
                         domain={['auto', 'auto']} 
                         stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
@@ -168,7 +151,25 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
                         tickLine={false} axisLine={false} minTickGap={30} 
                       />
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
-                      {/* CAMBIO: formatter del Tooltip usa formatCurrency */}
+                      
+                      {/* --- LÍNEA DE REFERENCIA: LA MODA (ANCLA) --- */}
+                      {!product.is_new && product.mode_price > 0 && (
+                        <ReferenceLine 
+                          y={product.mode_price} 
+                          stroke="#94a3b8" 
+                          strokeDasharray="5 5"
+                          strokeWidth={1.5}
+                        >
+                          <Label 
+                            value="Precio Habitual" 
+                            position="insideBottomRight" 
+                            fill="#94a3b8" 
+                            fontSize={10}
+                            dy={-5}
+                          />
+                        </ReferenceLine>
+                      )}
+
                       <Tooltip 
                         contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', border: 'none', borderRadius: '8px'}} 
                         formatter={(v) => [formatCurrency(v), 'Precio']} 
@@ -194,10 +195,11 @@ const ProductDetail = ({ API_BASE, isDarkMode, setIsDarkMode, searchTerm, setSea
                 </div>
               </div>
 
+             {/* RECOMENDACIÓN DIRECTA DEL BACKEND */}
               <div className="stat-card-mini full-width-mobile" 
-                  style={{ borderTop: `3px solid ${finalColor}`, background: `${finalColor}10` }}>
+                  style={{ borderTop: `4px solid ${product.rec_color}`, background: `${product.rec_color}10` }}>
                 <span>Análisis de Mercado</span>
-                <strong style={{ color: finalColor }}>{finalRecommendation}</strong>
+                <strong style={{ color: product.rec_color }}>{product.recommendation}</strong>
               </div>
           
               <div className="time-info-row">
