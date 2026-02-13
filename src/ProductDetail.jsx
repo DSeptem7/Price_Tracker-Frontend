@@ -190,7 +190,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                   <strong>{product.is_new ? "---" : formatCurrency(product.max_historical)}</strong>
                 </div>
                 <div className="stat-card-mini">
-                  <span>Precio Histórico Frecuente</span>
+                  <span>Precio Base 30 días</span>
                   <strong>{product.is_new ? "---" : formatCurrency(product.baseline_price)}</strong>
                 </div>
               </div>
