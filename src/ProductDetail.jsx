@@ -153,15 +153,15 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
                       
                       {/* --- LÍNEA DE REFERENCIA: LA MODA (ANCLA) --- */}
-                      {!product.is_new && product.mode_price > 0 && (
+                      {!product.is_new && product.baseline_price > 0 && (
                         <ReferenceLine 
-                          y={product.mode_price} 
+                          y={product.baseline_price} 
                           stroke="#94a3b8" 
                           strokeDasharray="5 5"
-                          strokeWidth={1.5}
+                          strokeWidth={2}
                         >
                           <Label 
-                            value="Precio Habitual" 
+                            value="Precio Mercado (30d)"
                             position="insideBottomRight" 
                             fill="#94a3b8" 
                             fontSize={10}
@@ -190,8 +190,8 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                   <strong>{product.is_new ? "---" : formatCurrency(product.max_historical)}</strong>
                 </div>
                 <div className="stat-card-mini">
-                  <span>Precio Frecuente</span>
-                  <strong>{product.is_new ? "---" : formatCurrency(product.mode_price)}</strong>
+                  <span>Precio Histórico Frecuente</span>
+                  <strong>{product.is_new ? "---" : formatCurrency(product.baseline_price)}</strong>
                 </div>
               </div>
 
