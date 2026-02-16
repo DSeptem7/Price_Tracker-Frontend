@@ -499,14 +499,11 @@ function App() {
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
                             <div className="price-section">
-                                {/* CAMBIO PROFESIONAL: 
-                                  Mostramos el precio anterior solo si:
-                                  1. No está agotado.
-                                  2. Existe un previous_price válido (> 0).
-                                  3. El estado es "down" (Bajó) O "up" (Subió).
-                                  4. El precio anterior es distinto al actual (Evita tachados idénticos).
-                                */}
-                                {!isAgotado && p.previous_price > 0 && (p.status === "down" || p.status === "up") && p.previous_price !== p.price && (
+                            {!isAgotado &&
+                              typeof p.previous_price === "number" &&
+                              p.previous_price > 0 &&
+                              (p.status === "down" || p.status === "up") &&
+                              p.previous_price !== p.price && (
                                     <div className="previous-price-container">
                                         <span className="previous-price-label">Antes:</span>
                                         <span className="previous-price-value strike-through">
@@ -526,7 +523,9 @@ function App() {
                             {!isAgotado && (
                                 <div className="status-row">
                                     {/* REGLA: Si bajó o subió Y la diferencia es visible (>= 0.1%) */}
-                                    {(p.status === "down" || p.status === "up") && p.change_percentage >= 0.1 ? (
+                                    {(p.status === "down" || p.status === "up") &&
+                                        typeof p.change_percentage === "number" &&
+                                        p.change_percentage >= 1 ? (
                                         <span className={`percentage-tag ${p.status}`}>
                                             {p.status === "down" ? "↓" : "↑"} {p.change_percentage?.toFixed(2)}%
                                         </span>

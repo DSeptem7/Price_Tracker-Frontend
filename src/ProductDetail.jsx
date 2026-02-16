@@ -87,7 +87,8 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
               <h1>{product.title}</h1>
               
               <div className="price-focus">
-                {product.previous_price && product.previous_price > currentPrice && (
+              {typeof product.previous_price === "number" &&
+               product.previous_price > currentPrice && (
                   <div className="old-price-container">
                     <span className="label-small">Precio habitual</span>
                     <span className="old-price-value"><s>{formatCurrency(product.previous_price)}</s></span>
@@ -153,7 +154,9 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
                       
                       {/* --- LÍNEA DE REFERENCIA: LA MODA (ANCLA) --- */}
-                      {!product.is_new && product.baseline_price > 0 && (
+                      {!product.is_new &&
+                        typeof product.baseline_price === "number" &&
+                        product.baseline_price > 0 && (
                         <ReferenceLine 
                           y={product.baseline_price} 
                           stroke="#94a3b8" 
@@ -191,7 +194,11 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                 </div>
                 <div className="stat-card-mini">
                   <span>Precio Base 30 días</span>
-                  <strong>{product.is_new ? "---" : formatCurrency(product.baseline_price)}</strong>
+                  <strong>
+                  {product.is_new || !product.baseline_price
+                    ? "---"
+                    : formatCurrency(product.baseline_price)}
+                </strong>
                 </div>
               </div>
 
