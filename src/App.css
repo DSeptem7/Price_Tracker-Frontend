@@ -187,92 +187,6 @@ body {
   margin: 0;
 }
 
-/* El círculo con la "i" */
-.info-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border: 1.5px solid var(--text-muted);
-  color: var(--text-muted);
-  border-radius: 50%;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: help;
-  transition: all 0.3s ease;
-}
-
-/* Contenedor del icono de información (i) */
-.info-tooltip-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.info-icon:hover {
-  background: var(--text-muted);
-  color: var(--bg-card);
-}
-
-/* El recuadro que aparece (Tooltip) */
-.tooltip-content {
-  visibility: hidden;
-  width: 260px;
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  text-align: left;
-  border: 1px solid #10b981;
-  border-radius: 12px;
-  padding: 15px;
-  position: absolute;
-  z-index: 2100;
-  top: 50%;
-  left: 130%; 
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  font-size: 13px;
-  line-height: 1.5;
-  pointer-events: none; /* Evita que el cuadro interfiera si no está visible */
-}
-
-.tooltip-content strong {
-  color: #10b981; /* Resalta "Buscar", "Añadir", etc. en verde */
-  font-weight: 700;
-}
-
-/* Triangulito del tooltip */
-.tooltip-content::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 100%; /* Posicionado a la izquierda del cuadro */
-  margin-top: -8px;
-  border-width: 8px;
-  border-style: solid;
-  /* El color del triangulito debe ser el del borde verde */
-  border-color: transparent #10b981 transparent transparent;
-}
-
-/* Mostrar al pasar el mouse */
-.info-tooltip-wrapper:hover .tooltip-content {
-  visibility: visible;
-  opacity: 1;
-  left: 140%; /* Desplazamiento suave hacia afuera */
-}
-
-.tooltip-content ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 8px;
-}
-
-.tooltip-content li {
-  margin-bottom: 6px;
-}
-
 /* Filas base */
 .control-row, .filter-row {
   display: flex;
@@ -688,54 +602,6 @@ body {
   object-fit: contain;
 }
 
-/* Base de los Badges */
-.alert-badge {
-  position: absolute;
-  top: 8px;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 900;
-  color: white;
-  text-transform: uppercase;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  z-index: 10;
-}
-
-/* --- VARIANTES DE COLOR --- */
-
-/* 1. Agotado: Gris neutro */
-.alert-badge.stock-badge { 
-  background: #64748b; 
-}
-
-/* 2. Nuevo: Azul vibrante */
-.alert-badge.new-badge { 
-  background: var(--accent-blue, #3b82f6); 
-}
-
-/* 3. Mínimo Histórico: Verde con pulsación (CORREGIDO EL NOMBRE) */
-.alert-badge.low-historical {
-  background: linear-gradient(135deg, #22c55e, #15803d);
-  animation: pulse-badge 2s infinite;
-}
-
-/* 4. Máximo Histórico: Ámbar/Rojo para precaución (NUEVO) */
-.alert-badge.max-historical {
-  background: linear-gradient(135deg, #f59e0b, #b45309); /* Color naranja/quemado */
-  animation: pulse-badge 2s infinite;
-}
-
-/* 5. Recién Surtido: Cian/Morado para destacar disponibilidad (NUEVO) */
-.alert-badge.restock-badge {
-  background: linear-gradient(135deg, #06b6d4, #0891b2); /* Color cian energético */
-}
-
-@keyframes pulse-badge { 
-  0%, 100% { transform: scale(1); opacity: 1; } 
-  50% { transform: scale(1.05); opacity: 0.9; } 
-}
-
 /* ====================================================================== */
 /* === 6. PRECIOS Y ESTADOS (SISTEMA VERTICAL) === */
 /* ====================================================================== */
@@ -788,35 +654,61 @@ body {
   display: block;
 }
 
-/* FILA DE ESTADO (Down, Up, Stable) */
-.status-row {
-  display: flex;
-  justify-content: center; /* CENTRADO de las etiquetas de porcentaje/sin cambios */
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid var(--border-color);
-  width: 100%; /* Asegura que ocupe todo el ancho para centrar bien */
-}
+/* NUEVO SISTEMA DE ESTADO INTELIGENTE */
 
-.percentage-tag {
-  font-size: 12px;
+.state-badge {
+  font-size: 11px;
   font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
-.percentage-tag.down { background: #dcfce7; color: #15803d; }
-.percentage-tag.up { background: #fee2e2; color: #b91c1c; }
+/* PRIORIDAD 1-2 → Verde fuerte (mínimos históricos) */
+.priority-1,
+.priority-2 {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  color: white;
+}
 
-.status-stable {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-muted);
+/* PRIORIDAD 3-4 → Verde suave (precio bajo) */
+.priority-3,
+.priority-4 {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* PRIORIDAD 5 → Cian (restock) */
+.priority-5 {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: white;
+}
+
+/* PRIORIDAD 6 → Neutral */
+.priority-6 {
   background: var(--bg-app);
-  padding: 4px 8px;
-  border-radius: 6px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+/* PRIORIDAD 7-8 → Naranja */
+.priority-7,
+.priority-8 {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+/* PRIORIDAD 9 → Amarillo */
+.priority-9 {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* PRIORIDAD 10 → Rojo fuerte */
+.priority-10 {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .card-action-button {

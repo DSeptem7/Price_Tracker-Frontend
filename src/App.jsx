@@ -474,10 +474,6 @@ function App() {
                       {products.map((p, index) => {
                         // Lógica de visualización segura
                         const isAgotado = p.status === "out_of_stock";
-                        const isLowHistorical = p.alert_type === "low_historical";      
-                        const isMaxHistorical = p.alert_type === "max_historical"; // Nuevo
-                        const isRestock = p.alert_type === "restock"; // Nuevo
-                        const isNew = p.status === "new";  
 
                         return (
                           <Link key={p.id || index} to={`/producto/${p.id}`} className={`product-card ${isAgotado ? 'card-disabled' : ''}`}>
@@ -490,10 +486,7 @@ function App() {
                                
                                {/* ORDEN DE PRIORIDAD DE ETIQUETAS */}
                               {isAgotado && <div className="alert-badge stock-badge">AGOTADO</div>}
-                              {isLowHistorical && <div className="alert-badge low-historical">MÍNIMO HISTÓRICO</div>}
-                              {isMaxHistorical && <div className="alert-badge max-historical">MÁXIMO HISTÓRICO</div>}
-                              {isRestock && <div className="alert-badge restock-badge">RECIÉN SURTIDO</div>}
-                              {isNew && <div className="alert-badge new-badge">NUEVO</div>}
+                              
                             </div>
 
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
@@ -522,19 +515,10 @@ function App() {
                             {/* Etiquetas de cambio de precio */}
                             {!isAgotado && (
                                 <div className="status-row">
-                                    {/* REGLA: Si bajó o subió Y la diferencia es visible (>= 0.1%) */}
-                                    {(p.status === "down" || p.status === "up") &&
-                                        typeof p.change_percentage === "number" &&
-                                        p.change_percentage >= 1 ? (
-                                        <span className={`percentage-tag ${p.status}`}>
-                                            {p.status === "down" ? "↓" : "↑"} {p.change_percentage?.toFixed(2)}%
-                                        </span>
-                                    ) : (
-                                        /* FALLBACK: Para cualquier otra situación, mostramos 'Sin cambios' 
-                                          (excepto si es un producto NUEVO, para no confundir) */
-                                        !isNew && <span className="status-stable">Sin cambios</span>
-                                    )}
-                                </div>
+                                <span className={`state-badge priority-${p.state_priority}`}>
+                                    {p.alert_type}
+                                </span>
+                            </div>                            
                             )}
 
                             <div className="card-action-button">{isAgotado ? "Consultar" : "Ver producto"}</div>
