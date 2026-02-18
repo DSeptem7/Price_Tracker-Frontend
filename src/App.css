@@ -655,60 +655,66 @@ body {
 }
 
 /* NUEVO SISTEMA DE ESTADO INTELIGENTE */
+/* 1. EL CONTENEDOR (Recuperamos la línea y el centrado) */
+.status-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color); /* Aquí vuelve la línea */
+  width: 100%;
+}
 
+/* 2. EL BADGE BASE (Copiado de tu estilo original) */
 .state-badge {
-  font-size: 11px;
-  font-weight: 800;
-  padding: 6px 10px;
-  border-radius: 8px;
+  font-size: 10px;        /* Más pequeño como el 'stable' original */
+  font-weight: 700;
+  padding: 4px 8px;       /* Padding original */
+  border-radius: 6px;     /* Border radius original */
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
+  display: inline-block;
 }
 
-/* PRIORIDAD 1-2 → Verde fuerte (mínimos históricos) */
-.priority-1,
-.priority-2 {
-  background: linear-gradient(135deg, #22c55e, #15803d);
-  color: white;
+/* 3. COLORES POR PRIORIDAD (Usando tus variables :root) */
+
+/* PRIORIDAD 1-4: VERDE (Mínimo histórico / Bajada) */
+.priority-1, .priority-2, .priority-3, .priority-4 {
+  background: #dcfce7;    /* El verde clarito que te gustaba */
+  color: #15803d;         /* El texto verde oscuro */
 }
 
-/* PRIORIDAD 3-4 → Verde suave (precio bajo) */
-.priority-3,
-.priority-4 {
-  background: #dcfce7;
-  color: #166534;
-}
-
-/* PRIORIDAD 5 → Cian (restock) */
+/* PRIORIDAD 5: CIAN (Restock / Nuevo) */
 .priority-5 {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  color: white;
+  background: #e0f2fe;    /* Azul muy suave */
+  color: #0369a1;
 }
 
-/* PRIORIDAD 6 → Neutral */
+/* PRIORIDAD 6: NEUTRAL (Sin cambios / Estable) */
 .priority-6 {
   background: var(--bg-app);
   color: var(--text-muted);
-  border: 1px solid var(--border-color);
+  font-weight: 700;
 }
 
-/* PRIORIDAD 7-8 → Naranja */
-.priority-7,
-.priority-8 {
-  background: #fed7aa;
+/* PRIORIDAD 7-9: NARANJA (Precio elevado / Subida) */
+.priority-7, .priority-8, .priority-9 {
+  background: #ffedd5;    /* Naranja suave */
   color: #9a3412;
 }
 
-/* PRIORIDAD 9 → Amarillo */
-.priority-9 {
-  background: #fef3c7;
-  color: #92400e;
+/* PRIORIDAD 10: ROJO (Máximo histórico) */
+.priority-10 {
+  background: #fee2e2;    /* El rojo clarito de tu código anterior */
+  color: #b91c1c;
 }
 
-/* PRIORIDAD 10 → Rojo fuerte */
-.priority-10 {
-  background: #fee2e2;
-  color: #991b1b;
+/* AJUSTE PARA MODO OSCURO AUTOMÁTICO */
+.dark-mode .state-badge {
+  opacity: 0.9;
+  /* En modo oscuro, los fondos muy claros pueden brillar mucho, 
+     puedes ajustarlos aquí si lo deseas */
 }
 
 .card-action-button {
