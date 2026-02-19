@@ -630,16 +630,6 @@ body {
 }
 
 /* Contenedor "Antes" */
-.previous-price-container {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* CENTRADO del contenido interno */
-  gap: 4px;
-  font-size: 12px;
-  color: var(--text-muted);
-  height: 18px; /* Altura fija para que el espacio siempre exista */
-  width: 100%;
-}
 
 .strike-through {
   text-decoration: line-through;
