@@ -949,6 +949,19 @@ body {
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); 
 }
 
+/* Estado de espera para la paginación */
+.pagination-pending {
+  opacity: 0.6;
+  pointer-events: none; /* Evita que el usuario haga múltiples clics accidentales */
+  filter: grayscale(0.5);
+  transition: opacity 0.3s ease;
+}
+
+/* Opcional: un efecto suave de transición para los números */
+.pagination-number {
+  transition: all 0.2s ease-in-out;
+}
+
 /* FIXES PARA RECHARTS (Gráficas) */
 .recharts-responsive-container * {
   outline: none !important;
