@@ -842,47 +842,29 @@ body {
   /* 6. Paginación Compacta */
   .pagination-container {
     gap: 4px !important;
-    padding: 15px 5px !important;
+    padding: 20px 5px !important;
     justify-content: center !important;
   }
 
   .pagination-number, .pagination-arrow {
-    padding: 5px 8px !important;
-    font-size: 12px !important;
-    min-width: 28px !important;
-    height: 28px !important;
+    padding: 0 !important; /* Quitamos padding lateral para control total con min-width */
+    font-size: 13px !important;
+    min-width: 32px !important; /* Tamaño táctil mínimo recomendado */
+    height: 32px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px !important; /* Un poco más redondeado y moderno */
   }
 
+  /* Ajuste para el botón activo en móvil para que resalte sin ser tosco */
+  .pagination-number.active {
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+  }
+}
   .price-before, .update-date {
     font-size: 10px !important;
   }
-
-  /* --- AJUSTE DE GUÍA (TOOLTIP) EN MÓVIL --- */
-  .tooltip-content {
-    /* Reposicionamos: ABAJO y CENTRADO */
-    top: 140% !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 220px !important; /* Evitamos que se salga de la pantalla */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
-  }
-
-  /* Cambiamos el triangulito para que apunte hacia ARRIBA */
-  .tooltip-content::after {
-    top: auto !important;
-    bottom: 100% !important; 
-    left: 50% !important;
-    right: auto !important;
-    margin-left: -8px !important;
-    border-color: transparent transparent #10b981 transparent !important;
-  }
-
-  /* Animación de entrada en móvil al tocar el icono */
-  .info-tooltip-wrapper:hover .tooltip-content {
-    top: 150% !important;
-    left: 50% !important;
-  }
-}
 
 /* ====================================================================== */
 /* === 8. MODAL Y PAGINACIÓN (NATIVO MODO OSCURO) === */
