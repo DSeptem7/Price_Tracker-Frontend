@@ -434,6 +434,9 @@ function App() {
                       )}
                   </div>
                   
+                  {/* Contenedor de seguridad para evitar saltos de layout */}
+                  <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column' }}></div>
+
                   {/* Paginación Superior */}
                   {totalPages > 1 && (
                     <div className={`pagination-container ${loading ? 'pagination-pending' : ''}`}>
@@ -485,7 +488,7 @@ function App() {
 
                   {/* GRID DE PRODUCTOS */}
                   {loading ? (
-                    <div className="product-grid">
+                    <div className="product-grid" style={{ flexGrow: 1 }}>
                       {Array.from({ length: itemsPerPage }).map((_, index) => (
                         <div key={index} className="product-card skeleton-card">
                           <div className="skeleton-img"></div><div className="skeleton-title"></div>
