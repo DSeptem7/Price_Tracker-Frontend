@@ -407,7 +407,13 @@ function App() {
                       <div className="filter-row">
                           <div className="select-wrapper">
                               <label>Ordenar por</label>
-                              <select value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+                              <select 
+                                    value={sortOption} 
+                                    onChange={(e) => {
+                                      setSortOption(e.target.value);
+                                      setCurrentPage(1); // <--- AGREGAR ESTO
+                                    }}
+                                  >
                                   <option value="date_desc">Más recientes</option>
                                   <option value="date_asc">Más antiguos</option>
                                   <option value="price_asc">Precio: Menor</option>
@@ -416,7 +422,13 @@ function App() {
                           </div>
                           <div className="select-wrapper">
                               <label>Filtrar</label>
-                              <select value={filterOption} onChange={(e) => setFilterOption(e.target.value)}>
+                              <select 
+                                    value={filterOption} 
+                                    onChange={(e) => {
+                                      setFilterOption(e.target.value);
+                                      setCurrentPage(1); // <--- AGREGAR ESTO
+                                    }}
+                                  >
                                   <option value="available">Disponibles</option>
                                   <option value="all">Todos</option>
                                   <option value="out_of_stock">Agotados</option>
@@ -466,20 +478,27 @@ function App() {
                     </div>
                   )}
 
-                  {/* Contador de Resultados persistente */}
+                  {/* Contador de Resultados persistente con lógica selectiva */}
                   <div style={{ 
                     marginBottom: '15px', 
                     textAlign: 'right', 
-                    minHeight: '24px', // Reserva el espacio vertical siempre
-                    visibility: totalDocs > 0 ? 'visible' : 'hidden' // Solo se oculta si realmente no hay productos
+                    minHeight: '24px',
+                    visibility: totalDocs > 0 || loading ? 'visible' : 'hidden' 
                   }}>
                     <span style={{ 
                       color: 'var(--text-muted)', 
                       fontWeight: '600',
-                      opacity: loading ? 0.5 : 1, // Se atenúa durante la carga pero no desaparece
+                      /* Si estamos cargando una página > 1, mantenemos la opacidad completa 
+                        para que no parezca que algo cambió en el contador */
+                      opacity: (loading && currentPage === 1) ? 0.6 : 1, 
                       transition: 'opacity 0.2s ease'
                     }}>
-                      {loading ? "Buscando..." : `${totalDocs} Productos encontrados`}
+                      {/* REGLA: Solo muestra "Buscando..." si es carga inicial (página 1) 
+                          Si es página 2, 3, etc., mantendrá el número de totalDocs anterior */}
+                      {(loading && currentPage === 1) 
+                        ? "Buscando..." 
+                        : `${totalDocs} Productos encontrados`
+                      }
                     </span>
                   </div>
 
