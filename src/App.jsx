@@ -437,11 +437,32 @@ function App() {
                   {/* Paginación Superior */}
                   {totalPages > 1 && !loading && (
                     <div className="pagination-container">
-                       <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>‹</button>
-                       {getPaginationGroup().map((item, i) => (
-                           <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={currentPage === item ? 'active' : ''} disabled={item === '...'}>{item}</button>
-                       ))}
-                       <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>›</button>
+                      <button 
+                        className="pagination-arrow"
+                        onClick={() => handlePageChange(currentPage - 1)} 
+                        disabled={currentPage === 1}
+                      >
+                        ‹
+                      </button>
+                      
+                      {getPaginationGroup().map((item, i) => (
+                        <button 
+                          key={i} 
+                          onClick={() => typeof item === 'number' && handlePageChange(item)} 
+                          className={`pagination-number ${currentPage === item ? 'active' : ''}`} 
+                          disabled={item === '...'}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                      
+                      <button 
+                        className="pagination-arrow"
+                        onClick={() => handlePageChange(currentPage + 1)} 
+                        disabled={currentPage === totalPages}
+                      >
+                        ›
+                      </button>
                     </div>
                   )}
 
@@ -531,13 +552,34 @@ function App() {
 
                   {/* Paginación Inferior */}
                   {totalPages > 1 && !loading && (
-                     <div className="pagination-container">
-                        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>‹</button>
-                        {getPaginationGroup().map((item, i) => (
-                            <button key={i} onClick={() => typeof item === 'number' && handlePageChange(item)} className={currentPage === item ? 'active' : ''} disabled={item === '...'}>{item}</button>
-                        ))}
-                        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>›</button>
-                     </div>
+                    <div className="pagination-container">
+                      <button 
+                        className="pagination-arrow"
+                        onClick={() => handlePageChange(currentPage - 1)} 
+                        disabled={currentPage === 1}
+                      >
+                        ‹
+                      </button>
+                      
+                      {getPaginationGroup().map((item, i) => (
+                        <button 
+                          key={i} 
+                          onClick={() => typeof item === 'number' && handlePageChange(item)} 
+                          className={`pagination-number ${currentPage === item ? 'active' : ''}`} 
+                          disabled={item === '...'}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                      
+                      <button 
+                        className="pagination-arrow"
+                        onClick={() => handlePageChange(currentPage + 1)} 
+                        disabled={currentPage === totalPages}
+                      >
+                        ›
+                      </button>
+                    </div>
                   )}
                 </main>
               </>
