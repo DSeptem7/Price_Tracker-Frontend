@@ -526,26 +526,13 @@ function App() {
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
                             
                             <div className="price-section">
-                            {!isAgotado &&
-                              typeof p.previous_price === "number" &&
-                              p.previous_price > 0 &&
-                              (p.status === "down" || p.status === "up") &&
-                              p.previous_price !== p.price && (
-                                    <div className="previous-price-container">
-                                        <span className="previous-price-label">Antes:</span>
-                                        <span className="previous-price-value strike-through">
-                                            {formatCurrency(p.previous_price)}
-                                        </span>
-                                    </div>
-                                )}
-
-                                <div className="current-price-container">
-                                    <span className={`current-price ${isAgotado ? 'text-muted' : ''}`}>
-                                        {isAgotado ? "No disponible" : formatCurrency(p.price)}
-                                    </span>
-                                </div>
+                              <div className="current-price-container">
+                                <span className={`current-price ${isAgotado ? 'text-muted' : ''}`}>
+                                  {isAgotado ? "No disponible" : formatCurrency(p.price)}
+                                </span>
+                              </div>
                             </div>
-                            
+                    
                             {/* Etiquetas de cambio de precio */}
                             {!isAgotado && (
                                 <div className="status-row">
