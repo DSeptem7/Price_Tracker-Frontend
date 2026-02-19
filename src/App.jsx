@@ -488,12 +488,31 @@ function App() {
                     <div className="product-grid">
                       {Array.from({ length: itemsPerPage }).map((_, index) => (
                         <div key={index} className="product-card skeleton-card">
-                          <div className="skeleton-header"></div> {/* Nuevo: llena el espacio de la marca */}
+                          {/* 1. Header de tienda */}
+                          <div className="skeleton-header"></div> 
+                          
+                          {/* 2. Imagen */}
                           <div className="skeleton-img"></div>
-                          <div className="skeleton-title"></div>
-                          <div className="skeleton-title" style={{ width: '70%' }}></div> {/* Doble línea de título */}
-                          <div className="skeleton-price"></div>
+                          
+                          {/* 3. Título (Dos líneas robustas) */}
+                          <div className="skeleton-title-container">
+                            <div className="skeleton-title"></div>
+                            <div className="skeleton-title" style={{ width: '60%' }}></div>
+                          </div>
+                          
+                          {/* 4. Sección de Precio (Centrada) */}
+                          <div className="price-section" style={{ minHeight: 'auto' }}>
+                            <div className="skeleton-price"></div>
+                          </div>
+                          
+                          {/* 5. Estado del producto (Con línea divisoria) */}
+                          <div className="status-row">
+                            <div className="skeleton-badge"></div>
+                          </div>
+                          
+                          {/* 6. Botón y Timestamp */}
                           <div className="skeleton-button"></div>
+                          <div className="skeleton-timestamp"></div>
                         </div>
                       ))}
                     </div>
