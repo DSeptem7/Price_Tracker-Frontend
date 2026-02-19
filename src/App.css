@@ -764,6 +764,14 @@ body {
     align-items: stretch !important;
   }
 
+  .product-grid:has(.skeleton-card) {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .skeleton-card {
+    height: 280px !important; /* Altura fija para que no salten los elementos al cargar */
+  }
+
   /* 3. Ajuste de Tarjeta */
   .product-card {
     padding: 10px !important;

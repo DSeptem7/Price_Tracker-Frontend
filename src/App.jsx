@@ -435,12 +435,12 @@ function App() {
                   </div>
                   
                   {/* Paginación Superior */}
-                  {totalPages > 1 && !loading && (
-                    <div className="pagination-container">
+                  {totalPages > 1 && (
+                    <div className={`pagination-container ${loading ? 'pagination-pending' : ''}`}>
                       <button 
                         className="pagination-arrow"
                         onClick={() => handlePageChange(currentPage - 1)} 
-                        disabled={currentPage === 1}
+                        disabled={currentPage === 1 || loading} // Bloqueamos clics durante la carga
                       >
                         ‹
                       </button>
@@ -450,7 +450,7 @@ function App() {
                           key={i} 
                           onClick={() => typeof item === 'number' && handlePageChange(item)} 
                           className={`pagination-number ${currentPage === item ? 'active' : ''}`} 
-                          disabled={item === '...'}
+                          disabled={item === '...' || loading} // Bloqueamos clics durante la carga
                         >
                           {item}
                         </button>
@@ -459,7 +459,7 @@ function App() {
                       <button 
                         className="pagination-arrow"
                         onClick={() => handlePageChange(currentPage + 1)} 
-                        disabled={currentPage === totalPages}
+                        disabled={currentPage === totalPages || loading}
                       >
                         ›
                       </button>
@@ -551,12 +551,12 @@ function App() {
                   )}
 
                   {/* Paginación Inferior */}
-                  {totalPages > 1 && !loading && (
-                    <div className="pagination-container">
+                  {totalPages > 1 && (
+                    <div className={`pagination-container ${loading ? 'pagination-pending' : ''}`}>
                       <button 
                         className="pagination-arrow"
                         onClick={() => handlePageChange(currentPage - 1)} 
-                        disabled={currentPage === 1}
+                        disabled={currentPage === 1 || loading} // Bloqueamos clics durante la carga
                       >
                         ‹
                       </button>
@@ -566,7 +566,7 @@ function App() {
                           key={i} 
                           onClick={() => typeof item === 'number' && handlePageChange(item)} 
                           className={`pagination-number ${currentPage === item ? 'active' : ''}`} 
-                          disabled={item === '...'}
+                          disabled={item === '...' || loading} // Bloqueamos clics durante la carga
                         >
                           {item}
                         </button>
@@ -575,7 +575,7 @@ function App() {
                       <button 
                         className="pagination-arrow"
                         onClick={() => handlePageChange(currentPage + 1)} 
-                        disabled={currentPage === totalPages}
+                        disabled={currentPage === totalPages || loading}
                       >
                         ›
                       </button>
