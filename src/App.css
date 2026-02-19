@@ -111,14 +111,32 @@ body {
 }
 
 .stat-value {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--text-main);
-  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  /* --- SOLUCIÓN AL BRINCO --- */
+  height: 24px;       /* Forzamos una altura fija suficiente para los 18px */
+  display: flex;      /* Usamos flex para alinear el contenido internamente */
+  align-items: center; /* Centramos verticalmente los "..." o los números */
+  line-height: 1;     /* Evitamos espacios extra por interlineado */
 }
 
+/* Ajuste para el estado de carga */
+.stat-value.loading-text {
+  font-size: 14px; /* Mantienes tu tamaño pequeño */
+  color: var(--text-muted);
+  font-weight: 500;
+  /* La altura seguirá siendo 24px gracias a la regla anterior */
+}
+
+/* Ajuste para la tarjeta de 'Mejor Oferta' que es más pequeña */
 .stat-value.small-text {
   font-size: 14px;
+  height: 24px; /* Mantenemos la misma altura para que la tarjeta no sea distinta */
 }
 
 .stat-label {
