@@ -497,7 +497,7 @@ function App() {
                           {/* 3. Título (Dos líneas robustas) */}
                           <div className="skeleton-title-container">
                             <div className="skeleton-title"></div>
-                            <div className="skeleton-title" style={{ width: '60%' }}></div>
+                            <div className="skeleton-title" style={{ width: '95%' }}></div>
                           </div>
                           
                           {/* 4. Sección de Precio (Centrada) */}
