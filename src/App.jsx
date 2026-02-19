@@ -434,8 +434,13 @@ function App() {
                       )}
                   </div>
                   
-                  {/* Contenedor de seguridad para evitar saltos de layout */}
-                  <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column' }}></div>
+                  {/* Contenedor con altura mínima razonable para evitar el colapso total */}
+                  <div style={{ 
+                    minHeight: loading ? '600px' : 'auto', 
+                    display: 'flex', 
+                    flexDirection: 'column',
+                    transition: 'min-height 0.3s ease' 
+                  }}></div>
 
                   {/* Paginación Superior */}
                   {totalPages > 1 && (
