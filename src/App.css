@@ -610,7 +610,7 @@ body {
   font-size: 14px; 
   font-weight: 600;
   color: var(--text-main); 
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   height: 38px; /* Forzamos 2 líneas */
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -622,11 +622,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center; /* CENTRADO de precios */
-  gap: 2px;
+  gap: 0px;
   margin-bottom: 12px;
-  /* Reservamos el espacio para el precio anterior aunque no exista */
-  min-height: 60px; 
-  justify-content: flex-end; /* Empuja el precio actual hacia abajo */
 }
 
 /* Contenedor "Antes" */
@@ -642,6 +639,7 @@ body {
   color: var(--text-main);
   text-align: center;
   display: block;
+  line-height: 1; /* Asegura que no haya espacio extra arriba/abajo del texto */
 }
 
 /* NUEVO SISTEMA DE ESTADO INTELIGENTE */
