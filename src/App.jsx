@@ -466,14 +466,22 @@ function App() {
                     </div>
                   )}
 
-                  {/* Contador de Resultados */}
-                  {!loading && (
-                    <div style={{ marginBottom: '15px', textAlign: 'right' }}>
-                      <span style={{ color: 'var(--text-muted)', fontWeight: '600' }}>
-                        {totalDocs} Productos encontrados
-                      </span>
-                    </div>
-                  )}
+                  {/* Contador de Resultados persistente */}
+                  <div style={{ 
+                    marginBottom: '15px', 
+                    textAlign: 'right', 
+                    minHeight: '24px', // Reserva el espacio vertical siempre
+                    visibility: totalDocs > 0 ? 'visible' : 'hidden' // Solo se oculta si realmente no hay productos
+                  }}>
+                    <span style={{ 
+                      color: 'var(--text-muted)', 
+                      fontWeight: '600',
+                      opacity: loading ? 0.5 : 1, // Se atenúa durante la carga pero no desaparece
+                      transition: 'opacity 0.2s ease'
+                    }}>
+                      {loading ? "Buscando..." : `${totalDocs} Productos encontrados`}
+                    </span>
+                  </div>
 
                   {/* GRID DE PRODUCTOS */}
                   {loading ? (
