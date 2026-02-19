@@ -975,15 +975,14 @@ body {
 /* === 9. SKELETON SCREEN (CARGA INTELIGENTE) === */
 /* ====================================================================== */
 .skeleton-card {
-  /* Eliminamos min-height fijo y dejamos que lo determine el contenido interno */
-  height: 100%;
+  height: 100%; /* Se adapta a la grilla, no fija px */
+  min-height: 350px; /* Altura mínima de seguridad */
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 20px; 
   padding: 16px; 
   display: flex; 
   flex-direction: column;
-  box-sizing: border-box;
 }
 
 /* Animación optimizada con variables */
