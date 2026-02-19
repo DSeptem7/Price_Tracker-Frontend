@@ -488,7 +488,12 @@ function App() {
                     <div className="product-grid">
                       {Array.from({ length: itemsPerPage }).map((_, index) => (
                         <div key={index} className="product-card skeleton-card">
-                          <div className="skeleton-img"></div><div className="skeleton-title"></div>
+                          <div className="skeleton-header"></div> {/* Nuevo: llena el espacio de la marca */}
+                          <div className="skeleton-img"></div>
+                          <div className="skeleton-title"></div>
+                          <div className="skeleton-title" style={{ width: '70%' }}></div> {/* Doble línea de título */}
+                          <div className="skeleton-price"></div>
+                          <div className="skeleton-button"></div>
                         </div>
                       ))}
                     </div>
