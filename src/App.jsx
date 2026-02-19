@@ -466,29 +466,23 @@ function App() {
                     </div>
                   )}
 
-                  {/* Contador de Resultados persistente con lógica selectiva */}
+                  {/* Contador de Resultados persistente */}
                   <div style={{ 
                     marginBottom: '15px', 
                     textAlign: 'right', 
-                    minHeight: '24px',
-                    visibility: totalDocs > 0 || loading ? 'visible' : 'hidden' 
+                    minHeight: '24px', // Reserva el espacio vertical siempre
+                    visibility: totalDocs > 0 ? 'visible' : 'hidden' // Solo se oculta si realmente no hay productos
                   }}>
                     <span style={{ 
                       color: 'var(--text-muted)', 
                       fontWeight: '600',
-                      /* Si estamos cargando una página > 1, mantenemos la opacidad completa 
-                        para que no parezca que algo cambió en el contador */
-                      opacity: (loading && currentPage === 1) ? 0.6 : 1, 
+                      opacity: loading ? 0.5 : 1, // Se atenúa durante la carga pero no desaparece
                       transition: 'opacity 0.2s ease'
                     }}>
-                      {/* REGLA: Solo muestra "Buscando..." si es carga inicial (página 1) 
-                          Si es página 2, 3, etc., mantendrá el número de totalDocs anterior */}
-                      {(loading && currentPage === 1) 
-                        ? "Buscando..." 
-                        : `${totalDocs} Productos encontrados`
-                      }
+                      {loading ? "Buscando..." : `${totalDocs} Productos encontrados`}
                     </span>
                   </div>
+
                   {/* GRID DE PRODUCTOS */}
                   {loading ? (
                     <div className="product-grid">
