@@ -886,6 +886,22 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* Mejora para el estado deshabilitado en paginación única */
+.pagination-arrow:disabled, 
+.pagination-number:disabled {
+  opacity: 0.3; /* Un poco más tenue que antes */
+  cursor: not-allowed;
+  filter: grayscale(1); /* Las flechas pierden fuerza visual cuando no sirven */
+  border-color: var(--border-color);
+  background-color: var(--bg-app); /* Fondo más discreto */
+}
+
+/* Evitamos que el botón activo "tiemble" o cambie si es el único que hay */
+.pagination-number.active:disabled {
+  opacity: 1; /* El número activo debe verse claro aunque esté "disabled" por carga */
+  filter: none;
+}
+
 /* FIXES PARA RECHARTS (Gráficas) */
 .recharts-responsive-container * {
   outline: none !important;
