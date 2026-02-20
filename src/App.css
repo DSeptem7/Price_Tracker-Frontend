@@ -300,14 +300,15 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px; /* Aumentamos un poquito el gap para el icono */
   transition: all 0.2s ease;
   font-size: 0.9rem;
 }
 
-.btn-clear-premium span {
-    font-size: 0.8rem;
-    opacity: 0.7;
+/* Estilo para el nuevo icono SVG */
+.trash-icon {
+  opacity: 0.7;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .btn-clear-premium:hover {
@@ -315,6 +316,12 @@ body {
   color: var(--accent-red);
   background: rgba(239, 68, 68, 0.05);
   transform: translateY(-1px);
+}
+
+/* Micro-interacción: el bote de basura se mueve un poco al hacer hover */
+.btn-clear-premium:hover .trash-icon {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 /* Barra de Estado */
