@@ -356,21 +356,21 @@ function App() {
                         <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Con descuento</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : stats.dropCount}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "Cargando..." : stats.dropCount}</span>
                         </div>
                      </div>
                      <div className="stat-card">
                         <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Subieron</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : stats.upCount}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "Cargando..." : stats.upCount}</span>
                         </div>
                      </div>
                       <div className="stat-card">
                         <div className={`stat-indicator savings ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Ahorro detectado</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "..." : formatCurrency(stats.totalSavings)}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "Cargando..." : formatCurrency(stats.totalSavings)}</span>
                         </div>
                      </div>
                       <div className="stat-card">
@@ -378,7 +378,7 @@ function App() {
                         <div className="stat-info">
                            <span className="stat-label">Mejor oferta</span>
                            <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
-                             {loading ? "..." : (stats.bestDiscount.percent > 0 ? `-${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
+                             {loading ? "Cargando..." : (stats.bestDiscount.percent > 0 ? `-${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
                            </span>
                         </div>
                      </div>
