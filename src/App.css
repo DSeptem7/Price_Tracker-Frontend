@@ -242,12 +242,34 @@ body {
   border-radius: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  /* Añadimos transform a la transición para que sea fluida */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  outline: none; /* Eliminamos cualquier borde de enfoque nativo */
 }
 
 .btn-track-premium:hover:not(:disabled) {
-  background: #2563eb;
-  transform: scale(1.02);
+  /* En lugar de un azul genérico, usamos uno que aporte profundidad */
+  background-color: #1d4ed8; 
+  transform: translateY(-1px) scale(1.02);
+  
+  /* Creamos un brillo pero basado en el color de la marca, no en blanco */
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-track-premium:active:not(:disabled) {
+  transform: scale(0.98); /* Feedback de "clic" real */
+}
+
+/* IMPORTANTE: Evitar el resalte blanco al hacer clic o foco */
+.btn-track-premium:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.btn-track-premium:disabled {
+  background-color: var(--border-color);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* Fila de Filtros */
