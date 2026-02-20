@@ -776,9 +776,12 @@ body {
 
   .input-group-premium input {
     width: 100% !important;
-    text-align: center; /* Centramos el texto para mantener la estética */
+    text-align: left;
+    padding: 12px 15px !important;
     font-size: 0.95rem !important;
-    padding: 8px 0 !important;
+    background: var(--bg-app); /* Un fondo sutil para diferenciarlo del contenedor */
+    border-radius: 10px;
+    color: var(--text-main);
   }
 
   .btn-track-premium {
