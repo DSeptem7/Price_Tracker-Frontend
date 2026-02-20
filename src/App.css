@@ -461,6 +461,88 @@ body {
   object-fit: contain;
 }
 
+/* === CONTENEDOR DE ESTADO VACÍO === */
+.no-results-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--bg-card);
+  border-radius: 24px;
+  border: 1px dashed var(--border-color); /* Borde discontinuo para indicar 'zona vacía' */
+  margin: 20px 0;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.no-results-icon {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  display: inline-block;
+  /* Aplicamos el rebote suave */
+  animation: bounce-sad 2.5s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+/* Animación de Rebote Orgánico */
+@keyframes bounce-sad {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(-5deg); /* Sube y se inclina un poco */
+  }
+}
+
+.no-results-container h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.no-results-container p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 350px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+/* Botón de Restablecer (Coherente con el estilo Premium) */
+.clear-search-btn {
+  background-color: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.clear-search-btn:hover {
+  transform: translateY(-2px);
+  background-color: #2563eb;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajuste para móvil */
+@media (max-width: 600px) {
+  .no-results-container {
+    padding: 40px 15px;
+  }
+  .no-results-container h2 { font-size: 1.25rem; }
+}
+
 /* ====================================================================== */
 /* === 6. PRECIOS Y ESTADOS (SISTEMA VERTICAL) === */
 /* ====================================================================== */
