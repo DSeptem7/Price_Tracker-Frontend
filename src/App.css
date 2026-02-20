@@ -911,7 +911,7 @@ body {
   justify-content: center; 
   align-items: center; 
   gap: 8px; 
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 /* Aplicamos la base y la transición a AMBOS (Números y Flechas) */
