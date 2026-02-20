@@ -965,6 +965,15 @@ body {
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); 
 }
 
+/* Estilo para flechas o números deshabilitados */
+.pagination-number:disabled, 
+.pagination-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none; /* Evita que salten si están bloqueados */
+  border-color: var(--border-color);
+}
+
 /* Estado de espera para la paginación */
 .pagination-pending {
   opacity: 0.6;
