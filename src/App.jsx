@@ -385,21 +385,9 @@ function App() {
                   </div>
  
                   {/* === DASHBOARD CONTROL PANEL === */}
-                    <div className="dashboard-control-panel">
+                  <div className="dashboard-control-panel">
                       <div className="panel-header">
-                        <div className="header-title-group">
-                          <h3>Gestión de Catálogo</h3>
-                        </div>
-                        <div className="header-actions">
-                          <button 
-                            className="action-icon-btn" 
-                            onClick={handleResetAll} 
-                            disabled={refreshing}
-                            title="Actualizar base de datos"
-                          >
-                            <span className={refreshing ? "spin" : ""}>↻</span>
-                          </button>
-                        </div>
+                        <h3>Gestión de Catálogo</h3>
                       </div>
 
                       <div className="search-main-container">
@@ -447,8 +435,8 @@ function App() {
                           </div>
                         </div>
 
-                        <button className="btn-clear-ghost" onClick={handleResetAll}>
-                          Limpiar filtros
+                        <button className="btn-clear-premium" onClick={handleResetAll}>
+                          <span>✕</span> Limpiar filtros
                         </button>
                       </div>
 
