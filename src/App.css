@@ -924,7 +924,7 @@ body {
 
 .close-button:hover { color: var(--accent-red); }
 
-/* PAGINACIÓN */
+/* PAGINACIÓN UNIFICADA */
 .pagination-container {
   display: flex; 
   justify-content: center; 
@@ -933,7 +933,9 @@ body {
   margin: 40px 0;
 }
 
-.pagination-number, .pagination-arrow {
+/* Aplicamos la base y la transición a AMBOS (Números y Flechas) */
+.pagination-number, 
+.pagination-arrow {
   background-color: var(--bg-card);
   color: var(--text-main);
   border: 1px solid var(--border-color);
@@ -941,11 +943,19 @@ body {
   border-radius: 12px; 
   font-weight: 700; 
   cursor: pointer;
+  transition: all 0.2s ease-in-out; /* Animación unificada */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.pagination-number:hover:not(.active) {
+/* Efecto Hover Unificado (Excepto para el activo o deshabilitado) */
+.pagination-number:hover:not(.active):not(:disabled), 
+.pagination-arrow:hover:not(:disabled) {
   border-color: var(--accent-blue);
   background-color: var(--bg-app);
+  transform: translateY(-2px); /* Pequeño salto sutil igual que los números */
+  color: var(--accent-blue);
 }
 
 .pagination-number.active { 
