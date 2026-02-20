@@ -388,7 +388,6 @@ function App() {
                     <div className="dashboard-control-panel">
                       <div className="panel-header">
                         <div className="header-title-group">
-                          <span className="header-badge">Admin</span>
                           <h3>Gestión de Catálogo</h3>
                         </div>
                         <div className="header-actions">

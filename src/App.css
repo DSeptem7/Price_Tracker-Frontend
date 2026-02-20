@@ -168,9 +168,8 @@ body {
 }
 
 /* ====================================================================== */
-/* === 4. PANEL DE GESTIÓN (INPUTS Y FILTROS) === */
+/* === 4. DASHBOARD CONTROL PANEL PREMIUM === */
 /* ====================================================================== */
-/* === DASHBOARD CONTROL PANEL PREMIUM === */
 .dashboard-control-panel {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -196,19 +195,9 @@ body {
   gap: 12px;
 }
 
-.header-badge {
-  background: rgba(59, 130, 246, 0.1);
-  color: var(--accent-blue);
-  font-size: 10px;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 6px;
-  text-transform: uppercase;
-}
-
 .panel-header h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.50rem;
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--text-main);
