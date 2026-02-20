@@ -184,10 +184,10 @@ body {
 /* Header del Panel */
 .panel-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 24px;
-  width: 100%;
+  text-align: center;
 }
 
 .panel-header h3 {
@@ -196,7 +196,11 @@ body {
   font-weight: 800;
   letter-spacing: -1px;
   color: var(--text-main);
-  text-align: center;
+  /* Un pequeño truco de diseño: un gradiente sutil lo hace ver más premium */
+  background: linear-gradient(180deg, var(--text-main) 0%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Buscador Principal */
