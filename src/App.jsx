@@ -466,7 +466,7 @@ function App() {
                     </div>
                   
                   {/* Paginación Superior */}
-                  {totalPages > 1 && (
+                  {totalPages >= 1 && (
                     <div className={`pagination-container ${loading ? 'pagination-pending' : ''}`}>
                       <button 
                         className="pagination-arrow"
