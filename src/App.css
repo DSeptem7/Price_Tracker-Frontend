@@ -663,37 +663,95 @@ body {
     gap: 10px !important;
   }
 
-  /* LA SOLUCIÓN: La fila de filtros vuelve a ser horizontal (2 columnas) */
-  .filter-row { 
-    flex-direction: row !important; /* Volvemos a horizontal */
+  /* === AJUSTE DEL PANEL PREMIUM EN MÓVIL === */
+  .dashboard-control-panel {
+    padding: 20px 16px !important; /* Reducimos padding lateral */
+    margin-bottom: 25px !important;
+    border-radius: 20px !important; /* Bordes ligeramente más suaves */
+  }
+
+  .panel-header {
+    margin-bottom: 20px !important;
+  }
+
+  .panel-header h3 {
+    font-size: 1.4rem !important; /* Bajamos un poco de 1.65 para evitar cortes */
+    line-height: 1.1;
+  }
+
+  /* Buscador Principal en Móvil */
+  .input-group-premium {
+    flex-direction: column !important; /* Apilamos input y botón */
+    gap: 12px !important;
+    padding: 10px !important;
+    background: var(--bg-card) !important; /* Fondo sólido para resaltar */
+  }
+
+  .search-icon-wrapper {
+    display: none; /* Quitamos la lupa en móvil para ganar espacio horizontal */
+  }
+
+  .input-group-premium input {
+    width: 100% !important;
+    text-align: center; /* Centramos el texto para mantener la estética */
+    font-size: 0.95rem !important;
+    padding: 8px 0 !important;
+  }
+
+  .btn-track-premium {
+    width: 100% !important; /* Botón a todo lo ancho */
+    padding: 14px !important; /* Más alto para facilitar el toque con el dedo */
+    font-size: 1rem !important;
+  }
+
+  /* Filtros y Herramientas en Móvil */
+  .filters-and-tools {
+    flex-direction: column !important;
+    gap: 15px !important;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px !important;
+  }
+
+  .filter-group {
     display: flex !important;
+    flex-direction: row !important; /* Selects uno al lado del otro */
     gap: 10px !important;
-    justify-content: space-between !important;
-  }
-
-  /* El botón de reset ocupa todo el ancho abajo de los selects */
-  .btn-reset-filters {
     width: 100% !important;
-    order: 3; /* Asegura que siempre vaya al final */
-    justify-content: center;
-    border-style: dashed; /* Un toque visual diferente */
-    margin-top: 5px;
   }
 
-  /* Aseguramos que cada selector ocupe el 50% del espacio disponible */
-  .filter-row .select-wrapper {
-    flex: 1 !important;
-    min-width: 0 !important; /* Evita que el texto largo los desalinee */
+  .custom-select-container {
+    flex: 1 !important; /* 50% cada uno */
+    min-width: 0 !important;
   }
 
-  .filter-row select {
+  .custom-select-container label {
+    font-size: 9px !important; /* Etiquetas mini para no robar espacio */
+    text-align: center;
+  }
+
+  .custom-select-container select {
+    font-size: 12px !important;
+    padding: 10px 5px !important;
+    text-align: center;
+  }
+
+  /* Botón Limpiar (Basura) en Móvil */
+  .btn-clear-premium {
     width: 100% !important;
-    font-size: 12px !important; /* Letra un poco más pequeña para que quepa todo */
-    padding: 8px 4px !important;
+    justify-content: center !important;
+    order: 3; /* Siempre al final */
+    background-color: var(--bg-app) !important;
+    padding: 12px !important;
   }
 
-  .product-count { display: none; }
-
+  /* Barra de estado premium en móvil */
+  .status-bar-premium {
+    margin-top: 15px !important;
+    justify-content: center !important;
+    font-size: 0.8rem !important;
+    text-align: center;
+  }
+  
   /* 6. Paginación Compacta */
   .pagination-container {
     gap: 4px !important;
@@ -716,11 +774,11 @@ body {
   .pagination-number.active {
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
   }
-}
+
   .price-before, .update-date {
     font-size: 10px !important;
   }
-
+}
 /* ====================================================================== */
 /* === 8. MODAL Y PAGINACIÓN (NATIVO MODO OSCURO) === */
 /* ====================================================================== */
