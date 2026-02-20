@@ -384,67 +384,83 @@ function App() {
                      </div>
                   </div>
  
-                  {/* === PANEL DE GESTIÓN (Input y Filtros) === */}
-                  <div className="simulate-panel">
-                      <div className="panel-header-row">
+                  {/* === DASHBOARD CONTROL PANEL === */}
+                    <div className="dashboard-control-panel">
+                      <div className="panel-header">
+                        <div className="header-title-group">
+                          <span className="header-badge">Admin</span>
                           <h3>Gestión de Catálogo</h3>
+                        </div>
+                        <div className="header-actions">
+                          <button 
+                            className="action-icon-btn" 
+                            onClick={handleResetAll} 
+                            disabled={refreshing}
+                            title="Actualizar base de datos"
+                          >
+                            <span className={refreshing ? "spin" : ""}>↻</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="control-row"> 
+
+                      <div className="search-main-container">
+                        <div className="input-group-premium">
+                          <div className="search-icon-wrapper">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                          </div>
                           <input
-                              type="text"
-                              placeholder="Pega URL o busca por nombre..."
-                              value={inputValue} 
-                              onChange={handleInputChange} 
+                            type="text"
+                            placeholder="Pega URL de producto o busca por nombre..."
+                            value={inputValue}
+                            onChange={handleInputChange}
                           />
-                          <button className="btn-primary" onClick={handleTrackProduct} disabled={refreshing || !inputValue}>
-                              {refreshing ? "Procesando..." : "Rastrear"}
+                          <button 
+                            className="btn-track-premium" 
+                            onClick={handleTrackProduct} 
+                            disabled={refreshing || !inputValue}
+                          >
+                            {refreshing ? "Procesando..." : "Rastrear Producto"}
                           </button>
-                          <button className="btn-secondary" onClick={() => { handleResetAll(); }} disabled={refreshing}>
-                              Actualizar
-                          </button>
+                        </div>
                       </div>
 
-                      <div className="filter-row">
-                          <div className="select-wrapper">
-                              <label>Ordenar por</label>
-                              <select 
-                                    value={sortOption} 
-                                    onChange={(e) => {
-                                      setSortOption(e.target.value);
-                                      setCurrentPage(1); // <--- AGREGAR ESTO
-                                    }}
-                                  >
-                                  <option value="date_desc">Más recientes</option>
-                                  <option value="date_asc">Más antiguos</option>
-                                  <option value="price_asc">Precio: Menor</option>
-                                  <option value="price_desc">Precio: Mayor</option>
-                              </select>
+                      <div className="filters-and-tools">
+                        <div className="filter-group">
+                          <div className="custom-select-container">
+                            <label>Ordenar por</label>
+                            <select value={sortOption} onChange={(e) => { setSortOption(e.target.value); setCurrentPage(1); }}>
+                              <option value="date_desc">Más recientes</option>
+                              <option value="date_asc">Más antiguos</option>
+                              <option value="price_asc">Precio: Menor</option>
+                              <option value="price_desc">Precio: Mayor</option>
+                            </select>
                           </div>
-                          <div className="select-wrapper">
-                              <label>Filtrar</label>
-                              <select 
-                                    value={filterOption} 
-                                    onChange={(e) => {
-                                      setFilterOption(e.target.value);
-                                      setCurrentPage(1); // <--- AGREGAR ESTO
-                                    }}
-                                  >
-                                  <option value="available">Disponibles</option>
-                                  <option value="all">Todos</option>
-                                  <option value="out_of_stock">Agotados</option>
-                                  <option value="historical_low">Mín. Histórico</option>
-                                  <option value="price_drop">Ofertas</option>
-                              </select>
+
+                          <div className="custom-select-container">
+                            <label>Filtrar Estado</label>
+                            <select value={filterOption} onChange={(e) => { setFilterOption(e.target.value); setCurrentPage(1); }}>
+                              <option value="available">Disponibles</option>
+                              <option value="all">Todos los registros</option>
+                              <option value="out_of_stock">Agotados</option>
+                              <option value="historical_low">Mín. Histórico</option>
+                              <option value="price_drop">Ofertas activas</option>
+                            </select>
                           </div>
-                          <button className="btn-reset-filters" onClick={handleResetAll}>Limpiar</button>
+                        </div>
+
+                        <button className="btn-clear-ghost" onClick={handleResetAll}>
+                          Limpiar filtros
+                        </button>
                       </div>
 
+                      {/* Mensajes de estado integrados */}
                       {(refreshing || trackingMessage) && (
-                        <div className={`status-message-container ${isExiting ? 'fade-out-message' : ''}`}>
-                             {refreshing ? loadingText : trackingMessage}
+                        <div className={`status-bar-premium ${isExiting ? 'fade-out' : ''}`}>
+                          <div className="spinner-sml"></div>
+                          <span>{refreshing ? loadingText : trackingMessage}</span>
                         </div>
                       )}
-                  </div>
+                    </div>
                   
                   {/* Paginación Superior */}
                   {totalPages > 1 && (
