@@ -497,29 +497,27 @@ function App() {
                     </div>
                   )}
 
-                  {/* Contador de Resultados persistente con lógica selectiva */}
-                  <div style={{ 
-                    marginBottom: '15px', 
-                    textAlign: 'right', 
-                    minHeight: '24px',
-                    visibility: totalDocs > 0 || loading ? 'visible' : 'hidden' 
-                  }}>
-                    <span style={{ 
-                      color: 'var(--text-muted)', 
-                      fontWeight: '600',
-                      /* Si estamos cargando una página > 1, mantenemos la opacidad completa 
-                        para que no parezca que algo cambió en el contador */
-                      opacity: (loading && currentPage === 1) ? 0.6 : 1, 
-                      transition: 'opacity 0.2s ease'
-                    }}>
-                      {/* REGLA: Solo muestra "Buscando..." si es carga inicial (página 1) 
-                          Si es página 2, 3, etc., mantendrá el número de totalDocs anterior */}
-                      {(loading && currentPage === 1) 
-                        ? "Buscando..." 
-                        : `${totalDocs} Productos encontrados`
-                      }
-                    </span>
-                  </div>
+                  {/* Contador de Resultados - Ahora desaparece físicamente si no hay resultados */}
+                    {(totalDocs > 0 || (loading && currentPage === 1)) && (
+                      <div style={{ 
+                        marginBottom: '15px', 
+                        textAlign: 'right', 
+                        minHeight: '24px'
+                        // Eliminamos visibility: hidden porque el renderizado condicional se encarga
+                      }}>
+                        <span style={{ 
+                          color: 'var(--text-muted)', 
+                          fontWeight: '600',
+                          opacity: (loading && currentPage === 1) ? 0.6 : 1, 
+                          transition: 'opacity 0.2s ease'
+                        }}>
+                          {(loading && currentPage === 1) 
+                            ? "Buscando..." 
+                            : `${totalDocs} Productos encontrados`
+                          }
+                        </span>
+                      </div>
+                    )}
 
                   {/* GRID DE PRODUCTOS */}
                   {loading ? (
