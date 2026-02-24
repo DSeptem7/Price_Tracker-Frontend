@@ -103,7 +103,7 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
               ref={inputRef} 
               type="text" 
               className="search-input" 
-              placeholder="Buscar en todo el catálogo..." 
+              placeholder="Buscar productos..." 
               value={localSearch}
               onClick={() => setIsSearchExpanded(true)}
               onChange={handleInputChange}
