@@ -53,13 +53,14 @@
   .product-summary {
     text-align: center;
     background: var(--card-bg); 
-    padding: 30px;
-    border-radius: 20px;
+    padding: 40px 30px; /* Aumentamos padding superior/inferior */
+    border-radius: 24px;
     border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 600px;
+    /* Eliminamos el min-height fijo y dejamos que el contenido respire */
+    height: 100%; 
+    justify-content: flex-start; 
   }
   
   /* Badge de tienda en el detalle */
@@ -90,57 +91,59 @@
   
   .detail-img {
     width: 100%;
-    height: 300px;
+    height: 280px; /* Altura fija para consistencia visual */
     object-fit: contain;
-    background: white; 
-    padding: 10px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: #fff; 
+    padding: 20px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    flex-shrink: 0; /* Evita que la imagen se encoja */
   }
   
   .product-summary h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 800;
     color: var(--text-main);
-    margin: 10px 0;
+    margin-bottom: 20px;
+    line-height: 1.3;
+    /* Mantenemos el límite de líneas pero bajamos un poco la altura fija */
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;  
     overflow: hidden;
-    height: 4.2em;
+    min-height: 3.9em; 
   }
   
-  .price-focus {
-    width: 100%;
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+  /* Agrupamos precio y estados para que siempre estén juntos */
+.price-focus {
+  width: 100%;
+  margin-top: 10px; /* Espacio constante después del título */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1; /* Esto hace que este bloque ocupe el espacio sobrante */
+  justify-content: center; /* Centra el precio verticalmente en el espacio disponible */
+}
   
-  .current-price-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 5px;
-  }
+.current-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
   
   .label-main { font-size: 0.9rem; color: var(--text-main); font-weight: 600; text-transform: uppercase; }
   
   .current-price-value {
-    font-size: 2.8rem;
-    font-weight: 800;
+    font-size: 3rem; /* Un poco más grande para impacto */
+    font-weight: 900;
     color: #3b82f6;
     line-height: 1;
+    margin: 5px 0;
   }
   
-  /* El badge de estado (Sin cambios / Bajó / Subió) */
-  .status-badge-container.detail-status {
-    margin-top: 5px; 
-    margin-bottom: 20px; /* Este es el "renglón" de espacio hacia el botón */
-    display: flex;
-    justify-content: center;
+  .status-badge-container {
+    margin-bottom: 25px; /* Espacio garantizado antes del botón */
   }
   
   .buy-btn-main {
@@ -149,7 +152,7 @@
     justify-content: center;
     background-color: #3b82f6 !important;
     color: #ffffff !important;
-    padding: 16px 20px; /* Botón ligeramente más alto */
+    padding: 18px; /* Botón ligeramente más alto */
     border-radius: 12px;
     text-decoration: none;
     font-weight: 700;
@@ -157,7 +160,7 @@
     width: 100%;
     border: none;
     /* Separación clara del badge de estado */
-    margin-top: 20px; 
+    margin-top: auto; 
     box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
   }
   
