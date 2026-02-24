@@ -119,6 +119,13 @@
     gap: 20px;
   }
   
+  .current-price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+  }
+  
   .label-main { font-size: 0.9rem; color: var(--text-main); font-weight: 600; text-transform: uppercase; }
   
   .current-price-value {
