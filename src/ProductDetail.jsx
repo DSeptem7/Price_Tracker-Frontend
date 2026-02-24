@@ -87,13 +87,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
               <h1>{product.title}</h1>
               
               <div className="price-focus">
-              {typeof product.previous_price === "number" &&
-               product.previous_price > currentPrice && (
-                  <div className="old-price-container">
-                    <span className="label-small">Precio habitual</span>
-                    <span className="old-price-value"><s>{formatCurrency(product.previous_price)}</s></span>
-                  </div>
-                )}
+        
                 <div className="current-price-container">
                   <span className="label-main">Precio Actual</span>
                   <span className="current-price-value">{formatCurrency(currentPrice)}</span>
