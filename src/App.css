@@ -722,6 +722,20 @@ body {
     height: 32px !important;
   }
 
+  /* CORRECCIÓN DE ASIMETRÍA EN TARJETAS */
+  .store-header {
+    /* Ajustamos el margen negativo para que coincida con el padding de 10px */
+    margin: -10px -10px 12px -10px !important; 
+    border-radius: 20px 20px 0 0 !important; /* Asegura que las esquinas sigan la curva de la tarjeta */
+    width: calc(100% + 20px) !important; /* Fuerza el ancho total exacto */
+  }
+
+  /* Aseguramos que la tarjeta no corte las esquinas redondeadas del header */
+  .product-card {
+    padding: 10px !important;
+    overflow: hidden !important; /* Esto "recorta" cualquier exceso y alinea los bordes */
+  }
+
   /* 4. Contenedor de Imagen */
   .image-container {
     height: 120px !important;
