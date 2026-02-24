@@ -519,6 +519,52 @@ input:checked + .slider:before { transform: translateX(20px); }
     
     animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
+  /* 7. BOTÓN DE REGRESO (BACK) */
+  .back-search-btn {
+    position: absolute;
+    left: 8px; /* Lo pegamos al inicio de la barra expandida */
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px;
+    cursor: pointer;
+    z-index: 101; /* Por encima del input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInBack 0.2s ease;
+  }
+
+  .back-search-btn:active {
+    color: var(--accent-blue);
+    transform: translateY(-50%) scale(0.9);
+  }
+
+  /* Ajustamos el padding del input para que no pise el botón de atrás */
+  .search-box.expanded .search-input {
+    padding: 0 75px 0 45px !important; /* 45px a la izquierda para el botón back */
+  }
+
+  /* Animación sutil de entrada para la flecha */
+  @keyframes fadeInBack {
+    from { opacity: 0; transform: translateY(-50%) translateX(5px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+  }
+  
+  /* Ajuste fino para la "X" cuando hay flecha de regreso */
+  .search-box.expanded .clear-search-x {
+    right: 42px;
+  }
+}
+
+/* Ocultar el botón de regreso en PC (donde la barra no es absoluta) */
+@media (min-width: 601px) {
+  .back-search-btn {
+    display: none;
+  }
 }
 
 @keyframes slideDownMobile {
