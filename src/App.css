@@ -596,15 +596,23 @@ body {
   width: 100%;
 }
 
-/* 2. EL BADGE BASE (Copiado de tu estilo original) */
+/* 2. EL BADGE BASE (Actualizado para simetría perfecta) */
 .state-badge {
-  font-size: 10px;        /* Más pequeño como el 'stable' original */
+  font-size: 10px;
   font-weight: 700;
-  padding: 4px 8px;       /* Padding original */
-  border-radius: 6px;     /* Border radius original */
+  padding: 4px 12px;       /* Un poco más de padding lateral para que respire */
+  border-radius: 8px;     
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  display: inline-block;
+  
+  /* --- MAGIA DE SIMETRÍA --- */
+  display: inline-flex;    /* Usamos flexbox internamente */
+  align-items: center;     /* Centra el texto verticalmente si es de 1 línea */
+  justify-content: center; /* Centra el texto horizontalmente */
+  text-align: center;
+  min-height: 32px;        /* ¡El secreto! Reserva espacio exacto para 2 líneas */
+  line-height: 1.1;        /* Interlineado ajustado para que 2 líneas quepan bien */
+  max-width: 100%;         /* Evita que desborde el contenedor */
 }
 
 /* 3. COLORES POR PRIORIDAD (Usando tus variables :root) */
