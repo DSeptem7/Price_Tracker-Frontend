@@ -777,6 +777,11 @@ body {
   }
 
   /* Buscador Principal en Móvil */
+  .search-main-container {
+    margin-bottom: 16px !important; /* Espacio más ajustado en móvil */
+    width: 100%;
+  }
+
   .input-group-premium {
     flex-direction: column !important; /* Apilamos input y botón */
     gap: 12px !important;

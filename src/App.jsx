@@ -397,7 +397,7 @@ function App() {
                           </div>
                           <input
                             type="text"
-                            placeholder="Pega URL de producto o busca por nombre..."
+                            placeholder={window.innerWidth < 600 ? "pega URL o busca por nombre..." : "Pega URL de producto o busca por nombre..."}
                             value={inputValue}
                             onChange={handleInputChange}
                           />
