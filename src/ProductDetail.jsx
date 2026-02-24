@@ -87,7 +87,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
               <h1>{product.title}</h1>
               
               <div className="price-focus">
-        
+              
                 <div className="current-price-container">
                   <span className="label-main">Precio Actual</span>
                   <span className="current-price-value">{formatCurrency(currentPrice)}</span>
