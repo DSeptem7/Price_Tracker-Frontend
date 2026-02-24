@@ -704,7 +704,7 @@ body {
 
   /* 3. Ajuste de Tarjeta */
   .product-card {
-    padding: 10px !important;
+    padding: 0px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
