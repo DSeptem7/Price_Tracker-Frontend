@@ -504,12 +504,27 @@
     width: 100%; /* Botón de volver a ancho completo para facilitar el clic */
     justify-content: center;
   }
-}
 
-/* Ajuste para que el título no quede pegado en móvil */
-@media (max-width: 600px) {
   .chart-header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: column; /* Apila título y botones */
+    align-items: center;    /* CENTRA ambos elementos horizontalmente */
+    text-align: center;     /* Centra el texto del h3 */
+    gap: 15px;              /* Espacio constante entre título y botones */
+  }
+
+  .chart-header h3 {
+    margin: 0;              /* Quitamos márgenes extraños que muevan el título */
+  }
+
+  .range-selector {
+    width: auto;            /* Permite que el selector mantenga su tamaño contenido */
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Opcional: Si los botones se ven muy pequeños para el dedo en móvil */
+  .range-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
   }
 }
