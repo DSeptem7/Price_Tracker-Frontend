@@ -300,10 +300,34 @@ const filteredData = getFilteredData();
             <div className="chart-modal-overlay" onClick={toggleModal}>
               <div className="chart-modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                  <h4>Análisis Detallado: {product.title}</h4>
+                <div className="modal-title-group">
+                  <h4>Análisis Detallado</h4>
+                  <span className="modal-product-name">{product.title}</span>
+                </div>
+                
+                {/* Agregamos los botones aquí también */}
+                <div className="range-selector modal-ranges">
+                  {['1m', '3m', '6m', '1y', 'all'].map((range) => (
+                    <button
+                      key={range}
+                      onClick={() => handleRangeChange(range)}
+                      className={`range-btn ${timeRange === range ? 'active' : ''}`}
+                    >
+                      {range === 'all' ? 'Todo' : range.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+                  
                   <button className="close-modal" onClick={toggleModal}>&times;</button>
                 </div>
+
                 <div className="modal-chart-container">
+                  {/* El spinner también debe verse en el modal si el usuario cambia el rango */}
+                  {isChanging && (
+                    <div className="chart-spinner-overlay">
+                      <div className="chart-spinner"></div>
+                    </div>
+                  )}
                 {renderPriceChart()} {/* Reutilizamos la misma gráfica aquí */}
                 </div>
               </div>

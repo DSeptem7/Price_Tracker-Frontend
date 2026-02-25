@@ -444,6 +444,26 @@
       cursor: pointer;
     }
 
+    .modal-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .modal-product-name {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    /* Ajuste para los botones dentro del modal */
+    .modal-ranges {
+      margin: 0 20px;
+    }
+
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
 .skeleton {
   background: linear-gradient(90deg, 
@@ -605,5 +625,28 @@
     width: 100%;
     height: 90vh;
     padding: 15px;
+  }
+
+  .modal-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .modal-ranges {
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-product-name {
+    max-width: 100%;
+    white-space: normal;
+  }
+  
+  .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
   }
 }
