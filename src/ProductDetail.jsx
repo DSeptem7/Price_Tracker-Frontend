@@ -12,6 +12,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState('all');
 
   useEffect(() => {
     const fetchFullDetail = async () => {
@@ -66,6 +67,31 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
  // Ya no necesitamos calcular nada aquí. 
   // Usamos product.recommendation y product.rec_color directamente del Backend.
   const currentPrice = product.current_price || 0;
+
+  // 2. Función para filtrar los datos
+const getFilteredData = () => {
+  if (!product.history) return [];
+  if (timeRange === 'all') return product.history;
+
+  const now = new Date();
+  const ranges = {
+    '1m': 30,
+    '3m': 90,
+    '6m': 180,
+    '1y': 365
+  };
+
+  const daysLimit = ranges[timeRange];
+  const cutoffDate = new Date();
+  cutoffDate.setDate(now.getDate() - daysLimit);
+
+  return product.history.filter(item => {
+    const itemDate = new Date(item.timestamp);
+    return itemDate >= cutoffDate;
+  });
+};
+
+const filteredData = getFilteredData();
 
   return (
     <div className="product-detail-wrapper">
@@ -122,7 +148,23 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
 
             <section className="analysis-section">
               <div className="chart-container-pro">
-                <h3>Historial de Precios</h3>
+                <div className="chart-header">
+                  <h3>Historial de Precios</h3>
+                  
+                  {/* Botones de temporalidad */}
+                  <div className="range-selector">
+                    {['1m', '3m', '6m', '1y', 'all'].map((range) => (
+                      <button
+                        key={range}
+                        onClick={() => setTimeRange(range)}
+                        className={`range-btn ${timeRange === range ? 'active' : ''}`}
+                      >
+                        {range === 'all' ? 'Todo' : range.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div style={{ width: '100%', height: 350 }}>
                 <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
                     <AreaChart data={product.history} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
@@ -147,7 +189,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
                       />
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
                       
-                      {/* --- LÍNEA DE REFERENCIA: LA MODA (ANCLA) --- */}
+                      {/* --- LÍNEA DE REFERENCIA: BASELINE (ANCLA) --- */}
                       {!product.is_new &&
                         typeof product.baseline_price === "number" &&
                         product.baseline_price > 0 && (
