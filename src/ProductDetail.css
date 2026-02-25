@@ -481,24 +481,31 @@
     }
 
     .close-modal {
-      background: var(--border-color);
-      border: none;
-      color: var(--text-main);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.1); /* Un gris muy suave y traslúcido */
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px; /* Bordes redondeados pero no circulares, más moderno */
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0;
+      flex-shrink: 0; /* Evita que se deforme si el título es largo */
     }
     
     .close-modal:hover {
-      background: var(--accent-red);
-      color: white;
-      transform: rotate(90deg);
+      background: rgba(239, 68, 68, 0.1); /* Un rojo MUY sutil de fondo */
+      color: var(--accent-red);           /* Solo el icono se vuelve rojo */
+      border-color: rgba(239, 68, 68, 0.2);
+      transform: translateY(-2px);        /* Elevación sutil en lugar de rotación */
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+    }
+    
+    .close-modal:active {
+      transform: translateY(0);
     }
 
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
