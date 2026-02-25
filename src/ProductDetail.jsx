@@ -14,6 +14,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('all');
   const [isChanging, setIsChanging] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchFullDetail = async () => {
@@ -100,6 +101,70 @@ const getFilteredData = () => {
   });
 };
 
+// Función para alternar el modal
+const toggleModal = () => {
+  setIsModalOpen(!isModalOpen);
+  // Tip profesional: Bloqueamos el scroll del cuerpo cuando el modal está abierto
+  if (!isModalOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'unset';
+  }
+};
+
+const PriceChart = (
+  <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
+                <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
+                      <defs>
+                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <YAxis 
+                        domain={['auto', 'auto']} 
+                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
+                        tickFormatter={(v) => formatCurrency(v)} 
+                        fontSize={12} tickLine={false} axisLine={false} 
+                      />
+                      <XAxis 
+                        dataKey="timestamp" 
+                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
+                        fontSize={10} 
+                        tickFormatter={(str) => str?.split(' ')[0]} 
+                        tickLine={false} axisLine={false} minTickGap={30} 
+                      />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
+                      
+                      {/* --- LÍNEA DE REFERENCIA: BASELINE (ANCLA) --- */}
+                      {!product.is_new &&
+                        typeof product.baseline_price === "number" &&
+                        product.baseline_price > 0 && (
+                        <ReferenceLine 
+                          y={product.baseline_price} 
+                          stroke="#94a3b8" 
+                          strokeDasharray="5 5"
+                          strokeWidth={2}
+                        >
+                          <Label 
+                            value="Precio Mercado (30d)"
+                            position="insideBottomRight" 
+                            fill="#94a3b8" 
+                            fontSize={10}
+                            dy={-5}
+                          />
+                        </ReferenceLine>
+                      )}
+
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', border: 'none', borderRadius: '8px'}} 
+                        formatter={(v) => [formatCurrency(v), 'Precio']} 
+                      />
+                      <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={isChanging ? 0.1 : 1} fill="url(#colorPrice)" strokeWidth={3} animationDuration={500} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                  );
+
 const filteredData = getFilteredData();
 
   return (
@@ -157,8 +222,18 @@ const filteredData = getFilteredData();
 
             <section className="analysis-section">
               <div className="chart-container-pro">
-                <div className="chart-header">
+              <div className="chart-header">
+                <div className="title-group">
                   <h3>Historial de Precios</h3>
+                  <button onClick={toggleModal} className="expand-btn" title="Agrandar gráfica">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <polyline points="9 21 3 21 3 15"></polyline>
+                      <line x1="21" y1="3" x2="14" y2="10"></line>
+                      <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                  </button>
+                </div>
                   
                   {/* Botones de temporalidad */}
                   <div className="range-selector">
@@ -175,65 +250,10 @@ const filteredData = getFilteredData();
                 </div>
 
                 <div className="chart-relative-wrapper" style={{ width: '100%', height: 350, position: 'relative' }}>
-                  {/* SPINNER INTERNO */}
-                  {isChanging && (
-                    <div className="chart-spinner-overlay">
-                      <div className="chart-spinner"></div>
-                    </div>
-                  )}
-
-                <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
-                <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
-                      <defs>
-                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <YAxis 
-                        domain={['auto', 'auto']} 
-                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
-                        tickFormatter={(v) => formatCurrency(v)} 
-                        fontSize={12} tickLine={false} axisLine={false} 
-                      />
-                      <XAxis 
-                        dataKey="timestamp" 
-                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
-                        fontSize={10} 
-                        tickFormatter={(str) => str?.split(' ')[0]} 
-                        tickLine={false} axisLine={false} minTickGap={30} 
-                      />
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
-                      
-                      {/* --- LÍNEA DE REFERENCIA: BASELINE (ANCLA) --- */}
-                      {!product.is_new &&
-                        typeof product.baseline_price === "number" &&
-                        product.baseline_price > 0 && (
-                        <ReferenceLine 
-                          y={product.baseline_price} 
-                          stroke="#94a3b8" 
-                          strokeDasharray="5 5"
-                          strokeWidth={2}
-                        >
-                          <Label 
-                            value="Precio Mercado (30d)"
-                            position="insideBottomRight" 
-                            fill="#94a3b8" 
-                            fontSize={10}
-                            dy={-5}
-                          />
-                        </ReferenceLine>
-                      )}
-
-                      <Tooltip 
-                        contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', border: 'none', borderRadius: '8px'}} 
-                        formatter={(v) => [formatCurrency(v), 'Precio']} 
-                      />
-                      <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={isChanging ? 0.1 : 1} fill="url(#colorPrice)" strokeWidth={3} animationDuration={500} />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
+                {isChanging && <div className="chart-spinner-overlay"><div className="chart-spinner"></div></div>}
+                {PriceChart} {/* Llamamos a la gráfica aquí */}
               </div>
+            </div>
 
               <div className="stats-grid-detail">
                 <div className="stat-card-mini green">
@@ -269,7 +289,22 @@ const filteredData = getFilteredData();
           </div>
         </div>
       </div>
-    </div> /* Aquí cierra correctamente el wrapper */
+
+      {/* MODAL DE GRÁFICA EXPANDIDA (Fuera del layout principal pero dentro del wrapper) */}
+      {isModalOpen && (
+            <div className="chart-modal-overlay" onClick={toggleModal}>
+              <div className="chart-modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h4>Análisis Detallado: {product.title}</h4>
+                  <button className="close-modal" onClick={toggleModal}>&times;</button>
+                </div>
+                <div className="modal-chart-container">
+                  {PriceChart} {/* Reutilizamos la misma gráfica aquí */}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
   );
 };
 

@@ -372,6 +372,78 @@
     margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
   }
   
+    /* css para gráfica expandida */
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .expand-btn {
+      background: rgba(59, 130, 246, 0.1);
+      border: none;
+      color: #3b82f6;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    
+    .expand-btn:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: scale(1.1);
+    }
+    
+    /* --- ESTILOS DEL MODAL --- */
+    .chart-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .chart-modal-content {
+      background: var(--card-bg);
+      width: 95%;
+      max-width: 1200px;
+      height: 80vh;
+      border-radius: 24px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .modal-chart-container {
+      flex-grow: 1; /* Ocupa todo el espacio restante del modal */
+      width: 100%;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
 .skeleton {
   background: linear-gradient(90deg, 
@@ -526,5 +598,12 @@
   .range-btn {
     padding: 8px 14px;
     font-size: 0.8rem;
+  }
+
+  /* En Móvil, el modal ocupa casi todo (gráfica expandido) */
+  .chart-modal-content {
+    width: 100%;
+    height: 90vh;
+    padding: 15px;
   }
 }
