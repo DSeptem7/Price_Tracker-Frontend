@@ -74,16 +74,12 @@ const getFilteredData = () => {
   if (timeRange === 'all') return product.history;
 
   const now = new Date();
-  const ranges = {
-    '1m': 30,
-    '3m': 90,
-    '6m': 180,
-    '1y': 365
-  };
+  const ranges = { '1m': 30, '3m': 90, '6m': 180, '1y': 365 };
 
   const daysLimit = ranges[timeRange];
   const cutoffDate = new Date();
   cutoffDate.setDate(now.getDate() - daysLimit);
+  cutoffDate.setHours(0, 0, 0, 0);
 
   return product.history.filter(item => {
     const itemDate = new Date(item.timestamp);
@@ -167,7 +163,7 @@ const filteredData = getFilteredData();
 
                 <div style={{ width: '100%', height: 350 }}>
                 <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
-                    <AreaChart data={product.history} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
+                <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
                       <defs>
                         <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
