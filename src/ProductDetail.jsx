@@ -13,6 +13,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('all');
+  const [isChanging, setIsChanging] = useState(false);
 
   useEffect(() => {
     const fetchFullDetail = async () => {
@@ -67,6 +68,18 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
  // Ya no necesitamos calcular nada aquí. 
   // Usamos product.recommendation y product.rec_color directamente del Backend.
   const currentPrice = product.current_price || 0;
+
+  // 1. Función para manejar el cambio de rango con un pequeño delay para el spinner
+const handleRangeChange = (range) => {
+  setIsChanging(true);
+  setTimeRange(range);
+  
+  // Simulamos un breve procesamiento (300ms) para que el spinner sea visible 
+  // y la transición no sea brusca
+  setTimeout(() => {
+    setIsChanging(false);
+  }, 300);
+};
 
   // 2. Función para filtrar los datos
 const getFilteredData = () => {
@@ -161,7 +174,14 @@ const filteredData = getFilteredData();
                   </div>
                 </div>
 
-                <div style={{ width: '100%', height: 350 }}>
+                <div className="chart-relative-wrapper" style={{ width: '100%', height: 350, position: 'relative' }}>
+                  {/* SPINNER INTERNO */}
+                  {isChanging && (
+                    <div className="chart-spinner-overlay">
+                      <div className="chart-spinner"></div>
+                    </div>
+                  )}
+
                 <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
                 <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
                       <defs>
@@ -209,7 +229,7 @@ const filteredData = getFilteredData();
                         contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', border: 'none', borderRadius: '8px'}} 
                         formatter={(v) => [formatCurrency(v), 'Precio']} 
                       />
-                      <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={1} fill="url(#colorPrice)" strokeWidth={3} />
+                      <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={isChanging ? 0.1 : 1} fill="url(#colorPrice)" strokeWidth={3} animationDuration={500} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
