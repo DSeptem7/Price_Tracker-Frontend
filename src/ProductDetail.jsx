@@ -112,7 +112,11 @@ const toggleModal = () => {
   }
 };
 
-const PriceChart = (
+// Definimos una función de renderizado en lugar de una constante
+const renderPriceChart = () => {
+  if (!product || !product.history) return null;
+
+  return (
   <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
                 <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
                       <defs>
@@ -164,6 +168,7 @@ const PriceChart = (
                     </AreaChart>
                   </ResponsiveContainer>
                   );
+                };
 
 const filteredData = getFilteredData();
 
@@ -251,7 +256,7 @@ const filteredData = getFilteredData();
 
                 <div className="chart-relative-wrapper" style={{ width: '100%', height: 350, position: 'relative' }}>
                 {isChanging && <div className="chart-spinner-overlay"><div className="chart-spinner"></div></div>}
-                {PriceChart} {/* Llamamos a la gráfica aquí */}
+                {renderPriceChart()} {/* Llamamos a la gráfica aquí */}
               </div>
             </div>
 
@@ -299,7 +304,7 @@ const filteredData = getFilteredData();
                   <button className="close-modal" onClick={toggleModal}>&times;</button>
                 </div>
                 <div className="modal-chart-container">
-                  {PriceChart} {/* Reutilizamos la misma gráfica aquí */}
+                {renderPriceChart()} {/* Reutilizamos la misma gráfica aquí */}
                 </div>
               </div>
             </div>
