@@ -32,6 +32,47 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
     fetchFullDetail();
   }, [id, API_BASE]);
 
+  // Añade este useEffect en tu ProductDetail.jsx
+  useEffect(() => {
+    // Función para manejar la orientación en móviles
+    const handleOrientation = async () => {
+      // Solo intentamos esto si la pantalla es pequeña (típicamente móvil)
+      if (window.innerWidth <= 768 && isModalOpen) {
+        try {
+          // Intentamos forzar landscape
+          if (screen.orientation && screen.orientation.lock) {
+            await screen.orientation.lock('landscape');
+          }
+        } catch (error) {
+          console.warn('La API de bloqueo de orientación no es soportada o fue denegada.', error);
+          // NOTA: En iOS Safari (iPhone), esta API suele requerir que la app
+          // esté instalada como PWA o estar en fullscreen puro para funcionar.
+          // En Android (Chrome) suele funcionar mejor.
+        }
+      } else {
+        try {
+          // Desbloqueamos cuando se cierra el modal
+          if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+          }
+        } catch (error) {
+          // Ignoramos errores de desbloqueo si no estaba bloqueado
+        }
+      }
+    };
+
+    handleOrientation();
+
+    // Limpieza en caso de que el componente se desmonte mientras el modal está abierto
+    return () => {
+      try {
+        if (screen.orientation && screen.orientation.unlock) {
+          screen.orientation.unlock();
+        }
+      } catch (e) {}
+    };
+  }, [isModalOpen]);
+
   if (loading) {
     return (
       <div className="product-detail-wrapper">
