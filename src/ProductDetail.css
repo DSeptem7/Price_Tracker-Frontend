@@ -53,13 +53,13 @@
   .product-summary {
     text-align: center;
     background: var(--card-bg); 
-    padding: 40px 30px;
+    padding: 40px 30px; /* Aumentamos padding superior/inferior */
     border-radius: 24px;
     border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    /* Eliminamos el min-height fijo y dejamos que el contenido respire */
     height: 100%; 
-    /* Alineamos todo al inicio para que el flujo sea de arriba hacia abajo */
     justify-content: flex-start; 
   }
   
@@ -105,26 +105,25 @@
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--text-main);
+    margin-bottom: 20px;
     line-height: 1.3;
-    margin-bottom: 0; /* Eliminamos el margen inferior para controlarlo en el siguiente bloque */
+    /* Mantenemos el límite de líneas pero bajamos un poco la altura fija */
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;  
     overflow: hidden;
-    /* Esta reserva de espacio es vital para la simetría */
     min-height: 3.9em; 
   }
   
-/* EL CAMBIO CLAVE: Quitamos flex-grow y justify-content */
+  /* Agrupamos precio y estados para que siempre estén juntos */
 .price-focus {
   width: 100%;
+  margin-top: 10px; /* Espacio constante después del título */
   display: flex;
   flex-direction: column;
   gap: 8px;
-  /* Establecemos un margen superior fijo y constante */
-  margin-top: 25px; 
-  /* Eliminamos flex-grow: 1; para que no se estire */
-  flex-grow: 0; 
+  flex-grow: 1; /* Esto hace que este bloque ocupe el espacio sobrante */
+  justify-content: center; /* Centra el precio verticalmente en el espacio disponible */
 }
   
 .current-price-container {
@@ -136,7 +135,7 @@
   .label-main { font-size: 0.9rem; color: var(--text-main); font-weight: 600; text-transform: uppercase; }
   
   .current-price-value {
-    font-size: 3rem;
+    font-size: 3rem; /* Un poco más grande para impacto */
     font-weight: 900;
     color: #3b82f6;
     line-height: 1;
@@ -144,20 +143,25 @@
   }
   
   .status-badge-container {
-    /* Espacio constante debajo de las etiquetas de estado */
-    margin-bottom: 10px; 
+    margin-bottom: 25px; /* Espacio garantizado antes del botón */
   }
   
   .buy-btn-main {
-    /* Solo el botón tiene permiso de "empujar" hacia arriba */
-    margin-top: auto; 
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 18px;
+    background-color: #3b82f6 !important;
+    color: #ffffff !important;
+    padding: 18px; /* Botón ligeramente más alto */
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
     width: 100%;
-    /* Añadimos un margen superior mínimo para que nunca toque el precio en pantallas pequeñas */
-    margin-top: 30px; 
+    border: none;
+    /* Separación clara del badge de estado */
+    margin-top: auto; 
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
   }
   
   .buy-btn-main:hover {
