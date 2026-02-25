@@ -165,7 +165,7 @@ const filteredData = getFilteredData();
                     {['1m', '3m', '6m', '1y', 'all'].map((range) => (
                       <button
                         key={range}
-                        onClick={() => setTimeRange(range)}
+                        onClick={() => handleRangeChange(range)}
                         className={`range-btn ${timeRange === range ? 'active' : ''}`}
                       >
                         {range === 'all' ? 'Todo' : range.toUpperCase()}
