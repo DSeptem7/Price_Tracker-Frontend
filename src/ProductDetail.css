@@ -403,7 +403,8 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
+      /* El fondo del overlay ahora es dinámico */
+      background: var(--is-dark, rgba(0, 0, 0, 0.85)); 
       backdrop-filter: blur(8px);
       z-index: 1000;
       display: flex;
@@ -412,8 +413,24 @@
       padding: 20px;
     }
     
+    /* Agregamos una pequeña lógica a tu :root para el overlay */
+    :root {
+      --overlay-bg: rgba(241, 245, 249, 0.8); /* Claro */
+      --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dark-mode {
+      --overlay-bg: rgba(2, 6, 23, 0.85); /* Oscuro */
+      --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    
+    .chart-modal-overlay {
+      background: var(--overlay-bg);
+    }
+    
     .chart-modal-content {
-      background: var(--card-bg);
+      background: var(--bg-card); /* Corregido: antes decía --card-bg */
+      color: var(--text-main);    /* Forzamos el color de texto según el tema */
       width: 95%;
       max-width: 1200px;
       height: 80vh;
@@ -421,7 +438,14 @@
       padding: 30px;
       display: flex;
       flex-direction: column;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border-color); /* Usamos tu variable de borde */
+      box-shadow: var(--modal-shadow);
+    }
+
+    .modal-header h4 {
+      color: var(--text-main);
+      margin: 0;
+      font-size: 1.4rem;
     }
     
     .modal-header {
@@ -435,14 +459,6 @@
       flex-grow: 1; /* Ocupa todo el espacio restante del modal */
       width: 100%;
     }
-    
-    .close-modal {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 2rem;
-      cursor: pointer;
-    }
 
     .modal-title-group {
       display: flex;
@@ -452,8 +468,8 @@
     
     .modal-product-name {
       font-size: 0.9rem;
-      color: var(--text-muted);
-      max-width: 300px;
+      color: var(--text-muted); /* Color suave para el nombre del producto */
+      max-width: 400px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -462,6 +478,27 @@
     /* Ajuste para los botones dentro del modal */
     .modal-ranges {
       margin: 0 20px;
+    }
+
+    .close-modal {
+      background: var(--border-color);
+      border: none;
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .close-modal:hover {
+      background: var(--accent-red);
+      color: white;
+      transform: rotate(90deg);
     }
 
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
