@@ -2,607 +2,605 @@
 /* === SUBLINK (VERSIÓN FINAL UNIFICADA) === */
 /* ====================================================================== */
 .detail-page {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 0 20px 20px 20px; /* Quitamos el padding superior de 20px */
-    min-height: 100vh;
-  }
-  
-  /* === AJUSTE DE NAVEGACIÓN (ALINEACIÓN) === */
-  .detail-nav {
-    display: flex;
-    justify-content: flex-start; /* Alinea el botón al inicio (izquierdo) */
-    max-width: 1200px;           /* MISMO ancho que .detail-layout */
-    margin: 0 auto 20px auto;    /* Centra el contenedor y da espacio abajo */
-    padding: 0;                  /* Elimina paddings que desalineen */
-  }
-  
-  /* === BOTÓN VOLVER (ESTILO AZUL) === */
-  .back-btn {
-    background-color: #3b82f6;   /* El azul de 'Rastrear' */
-    border: none;                /* Quitamos el borde anterior */
-    color: white;                /* Texto siempre blanco */
-    padding: 10px 24px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;            /* Más grueso para que no se pierda */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
-  }
-  
-  /* === EFECTO HOVER (OSCURECIDO Y DESPLAZADO) === */
-  .back-btn:hover {
-    background-color: #2563eb;   /* Azul más oscuro (Darker Blue) */
-    color: white;
-    transform: translateX(-5px); /* Mantenemos tu efecto de desplazamiento */
-    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
-  }
-  
-  .detail-layout {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* --- PANEL IZQUIERDO: PRODUCT SUMMARY --- */
-  .product-summary {
-    text-align: center;
-    background: var(--bg-card); 
-    padding: 40px 30px; /* Aumentamos padding superior/inferior */
-    border-radius: 24px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    /* Eliminamos el min-height fijo y dejamos que el contenido respire */
-    height: 100%; 
-    justify-content: flex-start; 
-  }
-  
-  /* Badge de tienda en el detalle */
-  .shop-badge-detail {
-    align-self: flex-start; /* Lo alinea a la izquierda */
-    padding: 6px 15px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 15px; /* Espacio antes de la foto */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .shop-icon {
-    font-size: 1rem;
-  }
-  
-  /* Ajuste a la imagen para que no quede pegada al badge */
-  .detail-img {
-    /* Mantén tus estilos anteriores, solo asegúrate del margen */
-    margin-top: 5px;
-  }
-  
-  .detail-img {
-    width: 100%;
-    height: 280px; /* Altura fija para consistencia visual */
-    object-fit: contain;
-    background: #fff; 
-    padding: 20px;
-    border-radius: 18px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    flex-shrink: 0; /* Evita que la imagen se encoja */
-  }
-  
-  .product-summary h1 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-main);
-    margin-bottom: 20px;
-    line-height: 1.3;
-    /* Mantenemos el límite de líneas pero bajamos un poco la altura fija */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
-    min-height: 3.9em; 
-  }
-  
-  /* Agrupamos precio y estados para que siempre estén juntos */
-.price-focus {
-  width: 100%;
-  margin-top: 10px; /* Espacio constante después del título */
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex-grow: 1; /* Esto hace que este bloque ocupe el espacio sobrante */
-  justify-content: center; /* Centra el precio verticalmente en el espacio disponible */
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px; /* Quitamos el padding superior de 20px */
+  min-height: 100vh;
 }
-  
-.current-price-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-  
-  .label-main { font-size: 0.9rem; color: var(--text-main); font-weight: 600; text-transform: uppercase; }
-  
-  .current-price-value {
-    font-size: 3rem; /* Un poco más grande para impacto */
-    font-weight: 900;
-    color: #3b82f6;
-    line-height: 1;
-    margin: 5px 0;
-  }
-  
-  .status-badge-container {
-    margin-bottom: 25px; /* Espacio garantizado antes del botón */
-  }
-  
-  .buy-btn-main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #3b82f6 !important;
-    color: #ffffff !important;
-    padding: 18px; /* Botón ligeramente más alto */
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: all 0.3s ease;
-    width: 100%;
-    border: none;
-    /* Separación clara del badge de estado */
-    margin-top: auto; 
-    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-  }
-  
-  .buy-btn-main:hover {
-    background-color: #1d4ed8 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(29, 78, 216, 0.4);
-  }
 
-  /* --- ESTILOS PARA LA ETIQUETA DE PORCENTAJE EN EL DETALLE --- */
+/* === AJUSTE DE NAVEGACIÓN (ALINEACIÓN) === */
+.detail-nav {
+  display: flex;
+  justify-content: flex-start; /* Alinea el botón al inicio (izquierdo) */
+  max-width: 1200px;           /* MISMO ancho que .detail-layout */
+  margin: 0 auto 20px auto;    /* Centra el contenedor y da espacio abajo */
+  padding: 0;                  /* Elimina paddings que desalineen */
+}
+
+/* === BOTÓN VOLVER (ESTILO AZUL) === */
+.back-btn {
+  background-color: #3b82f6;   /* El azul de 'Rastrear' */
+  border: none;                /* Quitamos el borde anterior */
+  color: white;                /* Texto siempre blanco */
+  padding: 10px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;            /* Más grueso para que no se pierda */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+/* === EFECTO HOVER (OSCURECIDO Y DESPLAZADO) === */
+.back-btn:hover {
+  background-color: #2563eb;   /* Azul más oscuro (Darker Blue) */
+  color: white;
+  transform: translateX(-5px); /* Mantenemos tu efecto de desplazamiento */
+  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- PANEL IZQUIERDO: PRODUCT SUMMARY --- */
+.product-summary {
+  text-align: center;
+  background: var(--bg-card); 
+  padding: 40px 30px; /* Aumentamos padding superior/inferior */
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  /* Eliminamos el min-height fijo y dejamos que el contenido respire */
+  height: 100%; 
+  justify-content: flex-start; 
+}
+
+/* Badge de tienda en el detalle */
+.shop-badge-detail {
+  align-self: flex-start; /* Lo alinea a la izquierda */
+  padding: 6px 15px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px; /* Espacio antes de la foto */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.shop-icon {
+  font-size: 1rem;
+}
+
+/* Ajuste a la imagen para que no quede pegada al badge */
+.detail-img {
+  /* Mantén tus estilos anteriores, solo asegúrate del margen */
+  margin-top: 5px;
+}
+
+.detail-img {
+  width: 100%;
+  height: 280px; /* Altura fija para consistencia visual */
+  object-fit: contain;
+  background: #fff; 
+  padding: 20px;
+  border-radius: 18px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  flex-shrink: 0; /* Evita que la imagen se encoja */
+}
+
+.product-summary h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 20px;
+  line-height: 1.3;
+  /* Mantenemos el límite de líneas pero bajamos un poco la altura fija */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  min-height: 3.9em; 
+}
+
+/* Agrupamos precio y estados para que siempre estén juntos */
+.price-focus {
+width: 100%;
+margin-top: 10px; /* Espacio constante después del título */
+display: flex;
+flex-direction: column;
+gap: 8px;
+flex-grow: 1; /* Esto hace que este bloque ocupe el espacio sobrante */
+justify-content: center; /* Centra el precio verticalmente en el espacio disponible */
+}
+
+.current-price-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.label-main { font-size: 0.9rem; color: var(--text-main); font-weight: 600; text-transform: uppercase; }
+
+.current-price-value {
+  font-size: 3rem; /* Un poco más grande para impacto */
+  font-weight: 900;
+  color: #3b82f6;
+  line-height: 1;
+  margin: 5px 0;
+}
+
+.status-badge-container {
+  margin-bottom: 25px; /* Espacio garantizado antes del botón */
+}
+
+.buy-btn-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  padding: 18px; /* Botón ligeramente más alto */
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  width: 100%;
+  border: none;
+  /* Separación clara del badge de estado */
+  margin-top: auto; 
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.buy-btn-main:hover {
+  background-color: #1d4ed8 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(29, 78, 216, 0.4);
+}
+
+/* --- ESTILOS PARA LA ETIQUETA DE PORCENTAJE EN EL DETALLE --- */
 
 /* Clase base de la etiqueta */
 .percentage-tag {
-  font-size: 12px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+font-size: 12px;
+font-weight: 800;
+padding: 4px 10px;
+border-radius: 6px;
+display: inline-flex;
+align-items: center;
+gap: 4px;
 }
 
 /* Estado: Bajada de precio (Verde como en la imagen 2) */
 .percentage-tag.down {
-  background: #dcfce7 !important; /* Fondo verde suave */
-  color: #15803d !important;    /* Texto verde fuerte */
+background: #dcfce7 !important; /* Fondo verde suave */
+color: #15803d !important;    /* Texto verde fuerte */
 }
 
 /* Estado: Subida de precio (Rojo suave) */
 .percentage-tag.up {
-  background: #fee2e2 !important; /* Fondo rojo suave */
-  color: #b91c1c !important;    /* Texto rojo fuerte */
+background: #fee2e2 !important; /* Fondo rojo suave */
+color: #b91c1c !important;    /* Texto rojo fuerte */
 }
 
 /* Estado: Sin cambios o Estable */
 .percentage-tag.same {
-  background: var(--bg-app) !important;
-  color: var(--text-muted) !important;
-  border: 1px solid var(--border-color);
+background: var(--bg-app) !important;
+color: var(--text-muted) !important;
+border: 1px solid var(--border-color);
 }
-  
-  /* --- PANEL DERECHO: ANÁLISIS --- */
-  .chart-container-pro {
-    background: rgba(255,255,255,0.03);
-    padding: 25px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 20px;
-  }
-  
-  .chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .range-selector {
-    display: flex;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 4px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .range-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .range-btn:hover {
-    color: var(--text-main);
-  }
-  
-  .range-btn.active {
-    background: #3b82f6;
-    color: white;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-  }
 
-  .chart-relative-wrapper {
-    position: relative;
-    transition: opacity 0.3s ease;
-  }
-  
-  .chart-spinner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    background: rgba(15, 23, 42, 0.1); /* Sutil velo oscuro */
-    backdrop-filter: blur(2px); /* Efecto de desenfoque moderno */
-    border-radius: 15px;
-  }
-  
-  .chart-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(59, 130, 246, 0.1);
-    border-top: 3px solid #3b82f6; /* El azul de tu marca */
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Efecto para que la gráfica se vea "cargando" */
-  .recharts-responsive-container {
-    transition: filter 0.3s ease, opacity 0.3s ease;
-  }
+/* --- PANEL DERECHO: ANÁLISIS --- */
+.chart-container-pro {
+  background: rgba(255,255,255,0.03);
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
 
-  .stats-grid-detail {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
-  }
-  
-  .stat-card-mini {
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-  }
-  
-  .stat-card-mini span {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-  
-  .stat-card-mini strong {
-    display: block;
-    font-size: 1.2rem;
-    margin-top: 5px;
-    color: var(--text-main);
-  }
-  
-  .stat-card-mini.green strong { color: #10b981; }
-  .stat-card-mini.red strong { color: #ef4444; }
-  
-  /* Semáforo / Estado del Mercado */
-  .stat-card-mini.full-width-mobile {
-    grid-column: span 3;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 25px;
-    margin-top: 10px;
-  }
-  
-  /* Tiempos de rastreo */
-  .time-info-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 15px;
-  }
-  
-  .time-badge {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 10px 15px;
-    border-radius: 10px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    flex: 1;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-  }
-  
-  .time-badge strong {
-    color: var(--text-main);
-    margin-left: 5px;
-  }
-  
-  /* Etiqueta Recién Añadido */
-  .status-new {
-    background: rgba(148, 163, 184, 0.1);
-    color: #94a3b8;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  
-  /* Aseguramos que el contenedor del detalle baje lo suficiente */
-  .detail-container {
-    padding-top: 20px; /* Ajusta este valor según la altura de tu Navbar */
-    max-width: 1300px;
-    margin: 0 auto;
-    margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
-  }
-  
-  /* css para gráfica expandida */
-  .title-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .expand-btn {
-    background: rgba(59, 130, 246, 0.1);
-    border: none;
-    color: #3b82f6;
-    padding: 6px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: all 0.2s;
-  }
-  
-  .expand-btn:hover {
-    background: rgba(59, 130, 246, 0.2);
-    transform: scale(1.1);
-  }
-  
-  /* --- ESTILOS DEL MODAL --- */
-  .chart-modal-overlay {
-    position: fixed;
-    /* Usamos inset en lugar de top/left para asegurar cobertura total */
-    inset: 0; 
-    width: 100vw;
-    /* CAMBIO CLAVE: Usamos dvh para altura dinámica */
-    height: 100dvh; 
-    background: var(--overlay-bg);
-    backdrop-filter: blur(8px);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* Evitamos que el overlay mismo haga scroll */
-    overflow: hidden; 
-    padding: 20px;
-  }
-  
-  /* Agregamos una pequeña lógica a tu :root para el overlay */
-  :root {
-    --overlay-bg: rgba(241, 245, 249, 0.8); /* Claro */
-    --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .dark-mode {
-    --overlay-bg: rgba(2, 6, 23, 0.85); /* Oscuro */
-    --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-  }
-  
-  .chart-modal-overlay {
-    background: var(--overlay-bg);
-  }
-  
-  .chart-modal-content {
-    background: var(--bg-card); /* Corregido: antes decía --card-bg */
-    color: var(--text-main);    /* Forzamos el color de texto según el tema */
-    width: 95%;
-    max-width: 1200px;
-    height: 80vh;
-    border-radius: 24px;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border-color); /* Usamos tu variable de borde */
-    box-shadow: var(--modal-shadow);
-  }
-  
-  .modal-header {
-    display: grid;
-    /* Creamos 3 columnas: 
-       1. El título (1fr)
-       2. Los botones (auto-ajustable al contenido)
-       3. El cierre (1fr) 
-    */
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    margin-bottom: 25px;
-    gap: 20px;
-  }
-  
-  .modal-chart-container {
-    flex-grow: 1; /* Ocupa todo el espacio restante del modal */
-    width: 100%;
-  }
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
 
-  .modal-title-group {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0; /* Vital para que el truncado de texto funcione en Grid */
-  }
+.range-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  .modal-header h4 {
-    color: var(--text-main);
-    margin: 0;
-    font-size: 1.2rem;
-    white-space: nowrap;
-  }
-  
-  .modal-product-name {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    /* Permitimos que crezca pero manteniendo el truncado */
-    max-width: 100%; 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  /* Ajuste para los botones dentro del modal */
-  .modal-ranges {
-    margin: 0 !important; 
-    justify-self: center;
-  }
+.range-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-  .close-modal {
-    justify-self: end;
-    background: rgba(148, 163, 184, 0.1); /* Un gris muy suave y traslúcido */
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
-    width: 36px;
-    height: 36px;
-    border-radius: 10px; /* Bordes redondeados pero no circulares, más moderno */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 0;
-    flex-shrink: 0; /* Evita que se deforme si el título es largo */
-  }
-  
-  .close-modal:hover {
-    background: rgba(239, 68, 68, 0.1); /* Un rojo MUY sutil de fondo */
-    color: var(--accent-red);           /* Solo el icono se vuelve rojo */
-    border-color: rgba(239, 68, 68, 0.2);
-    transform: translateY(-2px);        /* Elevación sutil en lugar de rotación */
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
-  }
-  
-  .close-modal:active {
-    transform: translateY(0);
-  }
-    
-  /* --- SUGERENCIA DE ROTACIÓN --- */
-.rotation-suggestion {
-  display: none; /* Oculto por defecto en PC */
+.range-btn:hover {
+  color: var(--text-main);
+}
+
+.range-btn.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.chart-relative-wrapper {
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.chart-spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.1); /* Sutil velo oscuro */
+  backdrop-filter: blur(2px); /* Efecto de desenfoque moderno */
+  border-radius: 15px;
+}
+
+.chart-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(59, 130, 246, 0.1);
+  border-top: 3px solid #3b82f6; /* El azul de tu marca */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Efecto para que la gráfica se vea "cargando" */
+.recharts-responsive-container {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.stats-grid-detail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat-card-mini {
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-card-mini span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.stat-card-mini strong {
+  display: block;
+  font-size: 1.2rem;
+  margin-top: 5px;
+  color: var(--text-main);
+}
+
+.stat-card-mini.green strong { color: #10b981; }
+.stat-card-mini.red strong { color: #ef4444; }
+
+/* Semáforo / Estado del Mercado */
+.stat-card-mini.full-width-mobile {
+  grid-column: span 3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 25px;
+  margin-top: 10px;
+}
+
+/* Tiempos de rastreo */
+.time-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.time-badge {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.time-badge strong {
+  color: var(--text-main);
+  margin-left: 5px;
+}
+
+/* Etiqueta Recién Añadido */
+.status-new {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Aseguramos que el contenedor del detalle baje lo suficiente */
+.detail-container {
+  padding-top: 20px; /* Ajusta este valor según la altura de tu Navbar */
+  max-width: 1300px;
+  margin: 0 auto;
+  margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
+}
+
+/* css para gráfica expandida */
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.expand-btn {
+  background: rgba(59, 130, 246, 0.1);
+  border: none;
+  color: #3b82f6;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.expand-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  transform: scale(1.1);
+}
+
+/* --- ESTILOS DEL MODAL --- */
+.chart-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* El fondo del overlay ahora es dinámico */
+  background: var(--is-dark, rgba(0, 0, 0, 0.85)); 
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Agregamos una pequeña lógica a tu :root para el overlay */
+:root {
+  --overlay-bg: rgba(241, 245, 249, 0.8); /* Claro */
+  --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+  --overlay-bg: rgba(2, 6, 23, 0.85); /* Oscuro */
+  --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.chart-modal-overlay {
+  background: var(--overlay-bg);
+}
+
+.chart-modal-content {
+  background: var(--bg-card); /* Corregido: antes decía --card-bg */
+  color: var(--text-main);    /* Forzamos el color de texto según el tema */
+  width: 95%;
+  max-width: 1200px;
+  height: 80vh;
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
   flex-direction: column;
+  border: 1px solid var(--border-color); /* Usamos tu variable de borde */
+  box-shadow: var(--modal-shadow);
+}
+
+.modal-header {
+  display: grid;
+  /* Creamos 3 columnas: 
+     1. El título (1fr)
+     2. Los botones (auto-ajustable al contenido)
+     3. El cierre (1fr) 
+  */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+
+.modal-chart-container {
+  flex-grow: 1; /* Ocupa todo el espacio restante del modal */
+  width: 100%;
+}
+
+.modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* Vital para que el truncado de texto funcione en Grid */
+}
+
+.modal-header h4 {
+  color: var(--text-main);
+  margin: 0;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.modal-product-name {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  /* Permitimos que crezca pero manteniendo el truncado */
+  max-width: 100%; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ajuste para los botones dentro del modal */
+.modal-ranges {
+  margin: 0 !important; 
+  justify-self: center;
+}
+
+.close-modal {
+  justify-self: end;
+  background: rgba(148, 163, 184, 0.1); /* Un gris muy suave y traslúcido */
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px; /* Bordes redondeados pero no circulares, más moderno */
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  background: var(--accent-blue);
-  color: white;
-  padding: 15px;
-  border-radius: 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
-  animation: fadeInDown 0.5s ease-out;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  flex-shrink: 0; /* Evita que se deforme si el título es largo */
+}
+
+.close-modal:hover {
+  background: rgba(239, 68, 68, 0.1); /* Un rojo MUY sutil de fondo */
+  color: var(--accent-red);           /* Solo el icono se vuelve rojo */
+  border-color: rgba(239, 68, 68, 0.2);
+  transform: translateY(-2px);        /* Elevación sutil en lugar de rotación */
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.close-modal:active {
+  transform: translateY(0);
+}
+  
+/* --- SUGERENCIA DE ROTACIÓN --- */
+.rotation-suggestion {
+display: none; /* Oculto por defecto en PC */
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 12px;
+background: var(--accent-blue);
+color: white;
+padding: 15px;
+border-radius: 16px;
+margin-bottom: 20px;
+box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+animation: fadeInDown 0.5s ease-out;
 }
 
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
 .skeleton {
-  background: linear-gradient(90deg, 
-    var(--input-bg) 25%, 
-    var(--bg-app) 50%, 
-    var(--input-bg) 75%);
-  background-size: 200% 100%; 
-  animation: skeleton-loading 1.5s infinite ease-in-out;
-  border-radius: 12px;
-  margin-bottom: 15px;
+background: linear-gradient(90deg, 
+  var(--input-bg) 25%, 
+  var(--bg-app) 50%, 
+  var(--input-bg) 75%);
+background-size: 200% 100%; 
+animation: skeleton-loading 1.5s infinite ease-in-out;
+border-radius: 12px;
+margin-bottom: 15px;
 }
 
 /* Reutilizamos tu animación de la Home */
 @keyframes skeleton-loading { 
-  0% { background-position: 200% 0; } 
-  100% { background-position: -200% 0; } 
+0% { background-position: 200% 0; } 
+100% { background-position: -200% 0; } 
 }
 
 /* Bloque especial para contenedores grandes (como el área del gráfico o análisis) */
 .sk-container-dark {
-  background: var(--bg-skeleton) !important;
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
+background: var(--bg-skeleton) !important;
+border-radius: 16px;
+border: 1px solid var(--border-color);
 }
 
 /* --- DIMENSIONES ESPECÍFICAS PARA EL DETALLE --- */
 .sk-back-btn { width: 150px; height: 35px; margin-bottom: 30px; }
 .sk-badge { width: 120px; height: 24px; }
 .sk-image { 
-  width: 100%; 
-  aspect-ratio: 1/1; 
-  max-width: 400px; 
-  margin: 20px auto; 
-  border-radius: 20px;
+width: 100%; 
+aspect-ratio: 1/1; 
+max-width: 400px; 
+margin: 20px auto; 
+border-radius: 20px;
 }
 .sk-title { width: 90%; height: 32px; border-radius: 6px; }
 
 /* Caja de precio y botón */
 .sk-price-box { 
-  width: 100%; 
-  height: 100px; 
-  margin: 20px 0; 
-  background: var(--bg-skeleton) !important; /* Usamos tu color grisáceo suave */
+width: 100%; 
+height: 100px; 
+margin: 20px 0; 
+background: var(--bg-skeleton) !important; /* Usamos tu color grisáceo suave */
 }
 .sk-button { width: 100%; height: 50px; border-radius: 12px; }
 
 /* Sección de Análisis (Derecha) */
 .sk-chart-title { width: 200px; height: 28px; }
 .sk-chart { 
-  width: 100%; 
-  height: 350px; 
-  margin-bottom: 25px; 
-  background: var(--bg-skeleton) !important;
+width: 100%; 
+height: 350px; 
+margin-bottom: 25px; 
+background: var(--bg-skeleton) !important;
 }
 .sk-stat-card { width: 100%; height: 80px; }
 .sk-analysis-box { 
-  width: 100%; 
-  height: 120px; 
-  margin-top: 20px; 
-  border: 2px solid var(--border-color);
+width: 100%; 
+height: 120px; 
+margin-top: 20px; 
+border: 2px solid var(--border-color);
 }
 
 /* Responsividad */
 @media (max-width: 768px) {
-  .sk-image { max-width: 250px; }
-  .sk-chart { height: 250px; }
+.sk-image { max-width: 250px; }
+.sk-chart { height: 250px; }
 }
 
 /* ====================================================================== */
@@ -610,197 +608,197 @@
 /* ====================================================================== */
 
 @media (max-width: 900px) {
-  .detail-layout {
-    grid-template-columns: 1fr; /* Apilamos las columnas en una sola */
-    gap: 20px;
-  }
+.detail-layout {
+  grid-template-columns: 1fr; /* Apilamos las columnas en una sola */
+  gap: 20px;
+}
 
-  .product-summary {
-    min-height: auto; /* Quitamos la altura fija para que se ajuste al contenido */
-    padding: 20px;
-  }
+.product-summary {
+  min-height: auto; /* Quitamos la altura fija para que se ajuste al contenido */
+  padding: 20px;
+}
 
-  .detail-img {
-    height: 250px; /* Reducimos un poco la imagen en móvil */
-  }
+.detail-img {
+  height: 250px; /* Reducimos un poco la imagen en móvil */
+}
 
-  .current-price-value {
-    font-size: 2.2rem; /* Precio un poco más pequeño para que no desborde */
-  }
+.current-price-value {
+  font-size: 2.2rem; /* Precio un poco más pequeño para que no desborde */
+}
 }
 
 /* Ajuste del modal en Landscape (Horizontal) */
 @media (max-width: 900px) and (orientation: landscape) {
-  .chart-modal-content {
-    /* Usamos dvh también aquí */
-    height: 92dvh; 
-    width: 96vw;
-    border-radius: 20px;
-    /* Añadimos padding para áreas seguras (notches/barras de gestos) */
-    padding: 10px 20px env(safe-area-inset-bottom) 20px;
-    margin: auto;
-  }
+.chart-modal-content {
+  /* En lugar de 100, usamos valores que dejen un margen visual */
+  height: 92vh; 
+  width: 95vw;
   
-  .modal-header {
-    /* En horizontal, una sola fila es vital para no robar espacio a la gráfica */
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-rows: auto; 
-    margin-bottom: 8px;
-    gap: 10px;
-  }
+  /* Recuperamos la estética de tarjeta */
+  border-radius: 20px; 
+  border: 1px solid var(--border-color);
+  
+  /* Aumentamos el padding lateral para que la gráfica no toque los bordes */
+  padding: 15px 30px; 
+  
+  /* Centrado absoluto */
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-  .modal-ranges {
-    /* Quitamos el span de 2 columnas que pusimos para el modo vertical */
-    grid-column: auto; 
-    order: 2;
-  }
+.modal-header {
+  /* En horizontal, una sola fila es vital para no robar espacio a la gráfica */
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto; 
+  margin-bottom: 10px;
+  gap: 20px;
+}
 
-  .modal-chart-container {
-    flex: 1;
-    width: 100%;
-    /* Añadimos un pequeño margen inferior para que las fechas respiren */
-    padding-bottom: 10px; 
-    min-height: 0; /* Importante para que Flexbox no desborde */
-  }
+.modal-ranges {
+  /* Quitamos el span de 2 columnas que pusimos para el modo vertical */
+  grid-column: auto; 
+  order: 2;
+}
+
+.modal-chart-container {
+  /* Forzamos a que la gráfica use todo el espacio restante con aire */
+  flex-grow: 1;
+  padding-bottom: 5px;
+}
 }
 
 @media (max-width: 600px) {
-  .detail-page {
-    padding: 0 10px 20px 10px;
-  }
+.detail-page {
+  padding: 0 10px 20px 10px;
+}
 
-  .detail-container {
-    margin-top: 10px;
-  }
+.detail-container {
+  margin-top: 10px;
+}
 
-  /* Ajustamos las mini estadísticas para que no se amontonen */
-  .stats-grid-detail {
-    grid-template-columns: 1fr 1fr; /* De 3 columnas pasamos a 2 */
-  }
+/* Ajustamos las mini estadísticas para que no se amontonen */
+.stats-grid-detail {
+  grid-template-columns: 1fr 1fr; /* De 3 columnas pasamos a 2 */
+}
 
-  .stat-card-mini.full-width-mobile {
-    grid-column: span 2; /* El análisis de mercado ocupa todo el ancho */
-    flex-direction: column; /* Texto arriba y valor abajo */
-    gap: 10px;
-    text-align: center;
-  }
+.stat-card-mini.full-width-mobile {
+  grid-column: span 2; /* El análisis de mercado ocupa todo el ancho */
+  flex-direction: column; /* Texto arriba y valor abajo */
+  gap: 10px;
+  text-align: center;
+}
 
-  /* El gráfico necesita una altura fija menor en móviles muy pequeños */
-  .chart-container-pro {
-    padding: 15px;
-  }
-  
-  .chart-container-pro div[style*="height: 350"] {
-    height: 280px !important; /* Forzamos una altura menor para el gráfico */
-  }
+/* El gráfico necesita una altura fija menor en móviles muy pequeños */
+.chart-container-pro {
+  padding: 15px;
+}
 
-  /* Ajuste de los badges de tiempo */
-  .time-info-row {
-    flex-direction: column;
-    gap: 10px;
-  }
+.chart-container-pro div[style*="height: 350"] {
+  height: 280px !important; /* Forzamos una altura menor para el gráfico */
+}
 
-  .back-btn {
-    width: 100%; /* Botón de volver a ancho completo para facilitar el clic */
-    justify-content: center;
-  }
+/* Ajuste de los badges de tiempo */
+.time-info-row {
+  flex-direction: column;
+  gap: 10px;
+}
 
-  .chart-header {
-    flex-direction: column; /* Apila título y botones */
-    align-items: center;    /* CENTRA ambos elementos horizontalmente */
-    text-align: center;     /* Centra el texto del h3 */
-    gap: 15px;              /* Espacio constante entre título y botones */
-  }
+.back-btn {
+  width: 100%; /* Botón de volver a ancho completo para facilitar el clic */
+  justify-content: center;
+}
 
-  .chart-header h3 {
-    margin: 0;              /* Quitamos márgenes extraños que muevan el título */
-  }
+.chart-header {
+  flex-direction: column; /* Apila título y botones */
+  align-items: center;    /* CENTRA ambos elementos horizontalmente */
+  text-align: center;     /* Centra el texto del h3 */
+  gap: 15px;              /* Espacio constante entre título y botones */
+}
 
-  .range-selector {
-    width: auto;            /* Permite que el selector mantenga su tamaño contenido */
-    display: flex;
-    justify-content: center;
-  }
+.chart-header h3 {
+  margin: 0;              /* Quitamos márgenes extraños que muevan el título */
+}
 
-  /* Opcional: Si los botones se ven muy pequeños para el dedo en móvil */
-  .range-btn {
-    padding: 8px 14px;
-    font-size: 0.8rem;
-  }
+.range-selector {
+  width: auto;            /* Permite que el selector mantenga su tamaño contenido */
+  display: flex;
+  justify-content: center;
+}
 
-  /* En Móvil, el modal ocupa casi todo (gráfica expandido) */
-  .chart-modal-content {
-    width: 100%;
-    /* Reducimos ligeramente de 90vh a 85dvh para asegurar que el 
-       eje X (fechas) NUNCA se corte, evitando el error de la Imagen 3 */
-    height: 85dvh; 
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    /* Evitamos que el contenido se salga de la caja */
-    overflow: hidden; 
-  }
+/* Opcional: Si los botones se ven muy pequeños para el dedo en móvil */
+.range-btn {
+  padding: 8px 14px;
+  font-size: 0.8rem;
+}
 
-  .modal-header {
-    grid-template-columns: 1fr auto; /* Título y botón cerrar arriba */
-    grid-template-rows: auto auto;    /* Dos filas */
-    gap: 15px;
-  }
+/* En Móvil, el modal ocupa casi todo (gráfica expandido) */
+.chart-modal-content {
+  width: 100%;
+  height: 90vh;
+  padding: 15px;
+}
 
-  .modal-ranges {
-    grid-column: span 2; /* Los botones ocupan todo el ancho abajo */
-    width: 100%;
-    justify-content: center;
-    order: 3; /* Se asegura de ir al final del header */
-  }
+.modal-header {
+  grid-template-columns: 1fr auto; /* Título y botón cerrar arriba */
+  grid-template-rows: auto auto;    /* Dos filas */
+  gap: 15px;
+}
 
-  .modal-product-name {
-    max-width: 100%;
-    white-space: normal;
-  }
-  
-  .modal-title-group {
-    grid-column: 1;
-  }
+.modal-ranges {
+  grid-column: span 2; /* Los botones ocupan todo el ancho abajo */
+  width: 100%;
+  justify-content: center;
+  order: 3; /* Se asegura de ir al final del header */
+}
 
-  .close-modal {
-    grid-column: 2;
-  }
+.modal-product-name {
+  max-width: 100%;
+  white-space: normal;
+}
+
+.modal-title-group {
+  grid-column: 1;
+}
+
+.close-modal {
+  grid-column: 2;
+}
 }
 
 @media (max-width: 768px) and (orientation: portrait) {
-  .rotation-suggestion {
-    display: flex; /* Solo se muestra en móviles y en vertical */
-  }
+.rotation-suggestion {
+  display: flex; /* Solo se muestra en móviles y en vertical */
+}
 }
 
 /* Animaciones para el icono */
 .phone-icon-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .phone-icon {
-  animation: rotatePhone 2s ease-in-out infinite;
+animation: rotatePhone 2s ease-in-out infinite;
 }
 
 .rotate-arrow {
-  position: absolute;
-  top: -5px;
-  right: -15px;
-  color: white;
-  opacity: 0.8;
+position: absolute;
+top: -5px;
+right: -15px;
+color: white;
+opacity: 0.8;
 }
 
 @keyframes rotatePhone {
-  0%, 10% { transform: rotate(0deg); }
-  40%, 60% { transform: rotate(-90deg); }
-  90%, 100% { transform: rotate(0deg); }
+0%, 10% { transform: rotate(0deg); }
+40%, 60% { transform: rotate(-90deg); }
+90%, 100% { transform: rotate(0deg); }
 }
 
 @keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+from { opacity: 0; transform: translateY(-20px); }
+to { opacity: 1; transform: translateY(0); }
 }
