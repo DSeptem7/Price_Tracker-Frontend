@@ -9,17 +9,13 @@
 }
 
 html {
-  /* Forzamos que el color de fondo del "sistema" sea el de tu app */
-  /* Esto elimina la franja blanca incluso antes de que cargue el contenido */
-  background-color: var(--bg-app); 
-  height: 100%;
+  scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
 }
 
 body {
   background-color: var(--bg-app);
-  min-height: 100dvh; /* Altura dinámica que se ajusta a las barras del navegador */
-  margin: 0;
-  padding: 0;
+  color: var(--text-main);
+  transition: background-color 0.3s ease;
 }
 
 /* ====================================================================== */
@@ -684,20 +680,16 @@ body {
 
   /* 1. Reparación Maestra de Scroll y Sticky */
   html, body {
-    /* ELIMINAMOS height: auto !important */
-    overflow-x: hidden !important; /* Evita que el sitio se mueva de lado */
-    min-height: 100dvh !important; 
-    height: auto; /* Permite que crezca si el contenido es largo */
+    overflow-x: visible !important;
+    overflow-y: visible !important; /* Asegura que el scroll principal mande */
+    height: auto !important;
     width: 100% !important;
     position: relative !important;
-    /* Aseguramos que el color se mantenga en el scroll elástico de iOS */
-    background-attachment: fixed; 
   }
 
   .App {
-    min-height: 100dvh !important;
-    display: flex;
-    flex-direction: column;
+    overflow: visible !important; /* Eliminamos el hidden aquí también temporalmente */
+    display: block !important;
   }
 
   /* 2. Ajuste de Grilla: 2 columnas perfectas */
