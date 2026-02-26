@@ -117,7 +117,7 @@ const renderPriceChart = () => {
   if (!product || !product.history) return null;
 
   return (
-  <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
+  <ResponsiveContainer width="100%" height="100%" debounce={50} style={{ outline: 'none' }}>
                 <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
                       <defs>
                         <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
