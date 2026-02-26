@@ -519,6 +519,21 @@
     transform: translateY(0);
   }
     
+  /* --- SUGERENCIA DE ROTACIÓN --- */
+.rotation-suggestion {
+  display: none; /* Oculto por defecto en PC */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--accent-blue);
+  color: white;
+  padding: 15px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+  animation: fadeInDown 0.5s ease-out;
+}
 
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
 .skeleton {
@@ -609,6 +624,25 @@
 
   .current-price-value {
     font-size: 2.2rem; /* Precio un poco más pequeño para que no desborde */
+  }
+}
+
+/* Ajuste del modal en Landscape (Horizontal) */
+@media (max-width: 900px) and (orientation: landscape) {
+  .chart-modal-content {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 0;
+    padding: 10px;
+  }
+  
+  .modal-header {
+    margin-bottom: 5px;
+  }
+
+  /* Ocultamos elementos secundarios para dar 100% de espacio a la gráfica en horizontal */
+  .modal-product-name {
+    display: none; 
   }
 }
 
@@ -708,4 +742,41 @@
   .close-modal {
     grid-column: 2;
   }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .rotation-suggestion {
+    display: flex; /* Solo se muestra en móviles y en vertical */
+  }
+}
+
+/* Animaciones para el icono */
+.phone-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-icon {
+  animation: rotatePhone 2s ease-in-out infinite;
+}
+
+.rotate-arrow {
+  position: absolute;
+  top: -5px;
+  right: -15px;
+  color: white;
+  opacity: 0.8;
+}
+
+@keyframes rotatePhone {
+  0%, 10% { transform: rotate(0deg); }
+  40%, 60% { transform: rotate(-90deg); }
+  90%, 100% { transform: rotate(0deg); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
