@@ -372,152 +372,153 @@
     margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
   }
   
-    /* css para gráfica expandida */
-    .title-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .expand-btn {
-      background: rgba(59, 130, 246, 0.1);
-      border: none;
-      color: #3b82f6;
-      padding: 6px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      transition: all 0.2s;
-    }
-    
-    .expand-btn:hover {
-      background: rgba(59, 130, 246, 0.2);
-      transform: scale(1.1);
-    }
-    
-    /* --- ESTILOS DEL MODAL --- */
-    .chart-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      /* El fondo del overlay ahora es dinámico */
-      background: var(--is-dark, rgba(0, 0, 0, 0.85)); 
-      backdrop-filter: blur(8px);
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    
-    /* Agregamos una pequeña lógica a tu :root para el overlay */
-    :root {
-      --overlay-bg: rgba(241, 245, 249, 0.8); /* Claro */
-      --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .dark-mode {
-      --overlay-bg: rgba(2, 6, 23, 0.85); /* Oscuro */
-      --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-    }
-    
-    .chart-modal-overlay {
-      background: var(--overlay-bg);
-    }
-    
-    .chart-modal-content {
-      background: var(--bg-card); /* Corregido: antes decía --card-bg */
-      color: var(--text-main);    /* Forzamos el color de texto según el tema */
-      width: 95%;
-      max-width: 1200px;
-      height: 80vh;
-      border-radius: 24px;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--border-color); /* Usamos tu variable de borde */
-      box-shadow: var(--modal-shadow);
-    }
-    
-    .modal-header {
-      display: grid;
-      /* Creamos 3 columnas: 
-         1. El título (1fr)
-         2. Los botones (auto-ajustable al contenido)
-         3. El cierre (1fr) 
-      */
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      margin-bottom: 25px;
-      gap: 20px;
-    }
-    
-    .modal-chart-container {
-      flex-grow: 1; /* Ocupa todo el espacio restante del modal */
-      width: 100%;
-    }
+  /* css para gráfica expandida */
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .expand-btn {
+    background: rgba(59, 130, 246, 0.1);
+    border: none;
+    color: #3b82f6;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+  }
+  
+  .expand-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: scale(1.1);
+  }
+  
+  /* --- ESTILOS DEL MODAL --- */
+  .chart-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* El fondo del overlay ahora es dinámico */
+    background: var(--is-dark, rgba(0, 0, 0, 0.85)); 
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Agregamos una pequeña lógica a tu :root para el overlay */
+  :root {
+    --overlay-bg: rgba(241, 245, 249, 0.8); /* Claro */
+    --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dark-mode {
+    --overlay-bg: rgba(2, 6, 23, 0.85); /* Oscuro */
+    --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  }
+  
+  .chart-modal-overlay {
+    background: var(--overlay-bg);
+  }
+  
+  .chart-modal-content {
+    background: var(--bg-card); /* Corregido: antes decía --card-bg */
+    color: var(--text-main);    /* Forzamos el color de texto según el tema */
+    width: 95%;
+    max-width: 1200px;
+    height: 80vh;
+    border-radius: 24px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color); /* Usamos tu variable de borde */
+    box-shadow: var(--modal-shadow);
+  }
+  
+  .modal-header {
+    display: grid;
+    /* Creamos 3 columnas: 
+       1. El título (1fr)
+       2. Los botones (auto-ajustable al contenido)
+       3. El cierre (1fr) 
+    */
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 20px;
+  }
+  
+  .modal-chart-container {
+    flex-grow: 1; /* Ocupa todo el espacio restante del modal */
+    width: 100%;
+  }
 
-    .modal-title-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0; /* Vital para que el truncado de texto funcione en Grid */
-    }
+  .modal-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0; /* Vital para que el truncado de texto funcione en Grid */
+  }
 
-    .modal-header h4 {
-      color: var(--text-main);
-      margin: 0;
-      font-size: 1.2rem;
-      white-space: nowrap;
-    }
-    
-    .modal-product-name {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      /* Permitimos que crezca pero manteniendo el truncado */
-      max-width: 100%; 
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    /* Ajuste para los botones dentro del modal */
-    .modal-ranges {
-      margin: 0 !important; 
-      justify-self: center;
-    }
+  .modal-header h4 {
+    color: var(--text-main);
+    margin: 0;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+  
+  .modal-product-name {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    /* Permitimos que crezca pero manteniendo el truncado */
+    max-width: 100%; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Ajuste para los botones dentro del modal */
+  .modal-ranges {
+    margin: 0 !important; 
+    justify-self: center;
+  }
 
-    .close-modal {
-      justify-self: end;
-      background: rgba(148, 163, 184, 0.1); /* Un gris muy suave y traslúcido */
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      width: 36px;
-      height: 36px;
-      border-radius: 10px; /* Bordes redondeados pero no circulares, más moderno */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 0;
-      flex-shrink: 0; /* Evita que se deforme si el título es largo */
-    }
+  .close-modal {
+    justify-self: end;
+    background: rgba(148, 163, 184, 0.1); /* Un gris muy suave y traslúcido */
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px; /* Bordes redondeados pero no circulares, más moderno */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+    flex-shrink: 0; /* Evita que se deforme si el título es largo */
+  }
+  
+  .close-modal:hover {
+    background: rgba(239, 68, 68, 0.1); /* Un rojo MUY sutil de fondo */
+    color: var(--accent-red);           /* Solo el icono se vuelve rojo */
+    border-color: rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);        /* Elevación sutil en lugar de rotación */
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  }
+  
+  .close-modal:active {
+    transform: translateY(0);
+  }
     
-    .close-modal:hover {
-      background: rgba(239, 68, 68, 0.1); /* Un rojo MUY sutil de fondo */
-      color: var(--accent-red);           /* Solo el icono se vuelve rojo */
-      border-color: rgba(239, 68, 68, 0.2);
-      transform: translateY(-2px);        /* Elevación sutil en lugar de rotación */
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
-    }
-    
-    .close-modal:active {
-      transform: translateY(0);
-    }
 
 /* --- BASE DEL SKELETON (SUB-LINKS) --- */
 .skeleton {
