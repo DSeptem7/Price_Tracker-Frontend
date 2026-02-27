@@ -11,34 +11,43 @@
 /* === AJUSTE DE NAVEGACIÓN (ALINEACIÓN) === */
 .detail-nav {
   display: flex;
-  justify-content: flex-start; /* Alinea el botón al inicio (izquierdo) */
-  max-width: 1200px;           /* MISMO ancho que .detail-layout */
-  margin: 0 auto 20px auto;    /* Centra el contenedor y da espacio abajo */
-  padding: 0;                  /* Elimina paddings que desalineen */
+  justify-content: flex-start;
+  max-width: 1200px;
+  margin: 0 auto 24px auto;
+  padding: 0;
 }
 
-/* === BOTÓN VOLVER (ESTILO AZUL) === */
+/* === BOTÓN VOLVER (ESTILO GHOST / PROFESIONAL) === */
 .back-btn {
-  background-color: #3b82f6;   /* El azul de 'Rastrear' */
-  border: none;                /* Quitamos el borde anterior */
-  color: white;                /* Texto siempre blanco */
-  padding: 10px 24px;
-  border-radius: 12px;
+  background-color: transparent; /* Fondo transparente por defecto */
+  border: 1px solid var(--border-color); /* Borde sutil */
+  color: var(--text-muted);      /* Color de texto discreto */
+  padding: 8px 18px;
+  border-radius: 10px;           /* Bordes ligeramente menos redondeados para verse técnico */
   cursor: pointer;
-  font-weight: 700;            /* Más grueso para que no se pierda */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+  box-shadow: none;              /* Adiós a la sombra llamativa */
 }
 
-/* === EFECTO HOVER (OSCURECIDO Y DESPLAZADO) === */
+/* === EFECTO HOVER (SUTIL Y ELEGANTE) === */
 .back-btn:hover {
-  background-color: #2563eb;   /* Azul más oscuro (Darker Blue) */
-  color: white;
-  transform: translateX(-5px); /* Mantenemos tu efecto de desplazamiento */
-  box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+  background-color: var(--bg-card); /* Se rellena con el color de la tarjeta */
+  border-color: var(--accent-blue); /* El borde se ilumina suavemente */
+  color: var(--accent-blue);        /* El texto cambia al azul de la marca */
+  transform: translateX(-4px);      /* Efecto de dirección hacia atrás */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Ajuste específico para que la flecha se mueva un poco más que el texto */
+.back-btn:hover span {
+  transform: translateX(-2px);
+  display: inline-block;
+  transition: transform 0.2s ease;
 }
 
 .detail-layout {
