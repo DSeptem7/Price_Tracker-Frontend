@@ -685,18 +685,20 @@ body {
   html, body {
     overflow-x: hidden !important;  /* Mejor hidden que visible para evitar scroll horizontal fantasma */
     overflow-y: visible !important; /* Asegura que el scroll principal mande */
-    min-height: 100dvh !important;  /* En lugar de height: auto */
-    height: auto !important;        /* Permitimos que crezca si el contenido es largo */
-    background-color: var(--bg-app) !important; /* Forzamos el color para evitar franjas blancas */
-    
-    width: 100% !important;
-    position: relative !important;
+    height: 100% !important; 
+    min-height: -webkit-fill-available; /* Truco para navegadores móviles */
+    background-color: var(--bg-app) !important;
+    margin: 0;
+    padding: 0;
   }
 
   .App {
-    overflow: visible !important; /* Eliminamos el hidden aquí también temporalmente */
-    display: block !important;
-  }
+   /* Aseguramos que el contenedor principal también llene el espacio */
+   min-height: 100dvh;
+   display: flex;
+   flex-direction: column;
+   background-color: var(--bg-app);
+ }
 
   /* 2. Ajuste de Grilla: 2 columnas perfectas */
   .product-grid {
