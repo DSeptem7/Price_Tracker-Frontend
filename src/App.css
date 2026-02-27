@@ -11,14 +11,14 @@
 html {
   scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
   background-color: var(--bg-app); /* <-- 1. AÑADIDO: Sella el fondo desde la raíz absoluta */
-  min-height: 100dvh;              /* <-- 2. AÑADIDO: Altura dinámica desde el inicio */
+  height: 100%;
 }
 
 body {
   background-color: var(--bg-app);
   color: var(--text-main);
   transition: background-color 0.3s ease;
-  min-height: 100dvh;
+  min-height: 100%;
 }
 
 /* ====================================================================== */
@@ -167,7 +167,6 @@ body {
   text-align: center;
   background-color: var(--bg-app);
   color: var(--text-main);
-  min-height: 100dvh;
 }
 
 /* ====================================================================== */
@@ -685,10 +684,9 @@ body {
   html, body {
     overflow-x: hidden !important;  /* Mejor hidden que visible para evitar scroll horizontal fantasma */
     overflow-y: visible !important; /* Asegura que el scroll principal mande */
-    min-height: 100dvh !important;  /* En lugar de height: auto */
     height: auto !important;        /* Permitimos que crezca si el contenido es largo */
     background-color: var(--bg-app) !important; /* Forzamos el color para evitar franjas blancas */
-    
+    min-height: 100svh;
     width: 100% !important;
     position: relative !important;
   }
