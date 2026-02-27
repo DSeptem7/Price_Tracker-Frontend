@@ -9,16 +9,27 @@
 }
 
 html {
-  scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
-  background-color: var(--bg-app); /* <-- 1. AÑADIDO: Sella el fondo desde la raíz absoluta */
-  min-height: 100dvh;              /* <-- 2. AÑADIDO: Altura dinámica desde el inicio */
+  scrollbar-gutter: stable;
+  background-color: var(--bg-app); 
+  /* Eliminamos el min-height aquí para no asfixiar a Chrome móvil */
 }
 
 body {
   background-color: var(--bg-app);
   color: var(--text-main);
   transition: background-color 0.3s ease;
+  /* Eliminamos min-height 100dvh del body también */
+}
+
+.App {
+  text-align: center;
+  background-color: var(--bg-app);
+  color: var(--text-main);
   min-height: 100dvh;
+  /* El bloqueo horizontal va aquí, NUNCA en html o body */
+  overflow-x: hidden; 
+  display: flex;
+  flex-direction: column;
 }
 
 /* ====================================================================== */
@@ -681,22 +692,6 @@ body {
 /* ====================================================================== */
 @media (max-width: 600px) {
 
-  /* 1. Reparación Maestra de Scroll y Sticky */
-  html, body {
-    overflow-x: hidden !important;  /* Mejor hidden que visible para evitar scroll horizontal fantasma */
-    overflow-y: visible !important; /* Asegura que el scroll principal mande */
-    min-height: 100dvh !important;  /* En lugar de height: auto */
-    height: auto !important;        /* Permitimos que crezca si el contenido es largo */
-    background-color: var(--bg-app) !important; /* Forzamos el color para evitar franjas blancas */
-    
-    width: 100% !important;
-    position: relative !important;
-  }
-
-  .App {
-    overflow: visible !important; /* Eliminamos el hidden aquí también temporalmente */
-    display: block !important;
-  }
 
   /* 2. Ajuste de Grilla: 2 columnas perfectas */
   .product-grid {
