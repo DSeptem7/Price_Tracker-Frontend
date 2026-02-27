@@ -887,7 +887,34 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 8px !important; /* Un poco más redondeado y moderno */
+
+    /* ANULACIÓN DE ANIMACIÓN EN MÓVIL */
+    transform: none !important; /* Evita que el botón brinque al tocarlo */
+    transition: none !important; /* Elimina esperas de color */
   }
+
+  /* ELIMINAR EFECTO HOVER EN MÓVIL */
+/* Forzamos que el estado hover se vea igual al estado normal */
+.pagination-number:hover:not(.active):not(:disabled), 
+.pagination-arrow:hover:not(:disabled) {
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  transform: none !important;
+}
+
+/* Opcional: Añadir un efecto de "pulsación" rápido (active) 
+   que es más natural en móviles que el hover */
+.pagination-number:active:not(.active):not(:disabled),
+.pagination-arrow:active:not(:disabled) {
+  background-color: var(--border-color) !important;
+  opacity: 0.7;
+}
+
+.pagination-number.active {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+  /* El activo sí debe mantener su color azul */
+}
 
   /* Ajuste para el botón activo en móvil para que resalte sin ser tosco */
   .pagination-number.active {
