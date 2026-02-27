@@ -1263,8 +1263,3 @@ input:checked + .slider:before { transform: translateX(22px); }
   .stat-value { font-size: 15px; }
   .stat-label { font-size: 9px; }
 }
-
-* {
-  outline: 1px solid red !important;
-  background: rgba(255, 0, 0, 0.05) !important;
-}
