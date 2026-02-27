@@ -629,43 +629,43 @@ border: 2px solid var(--border-color);
 
 /* Ajuste del modal en Landscape (Horizontal) */
 @media (max-width: 900px) and (orientation: landscape) {
-.chart-modal-content {
-  /* En lugar de 100, usamos valores que dejen un margen visual */
-  height: 92vh; 
-  width: 95vw;
+  .chart-modal-content {
+    /* En lugar de 100, usamos valores que dejen un margen visual */
+    height: 92vh; 
+    width: 95vw;
+    
+    /* Recuperamos la estética de tarjeta */
+    border-radius: 20px; 
+    border: 1px solid var(--border-color);
+    
+    /* Aumentamos el padding lateral para que la gráfica no toque los bordes */
+    padding: 15px 30px; 
+    
+    /* Centrado absoluto */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+  }
   
-  /* Recuperamos la estética de tarjeta */
-  border-radius: 20px; 
-  border: 1px solid var(--border-color);
-  
-  /* Aumentamos el padding lateral para que la gráfica no toque los bordes */
-  padding: 15px 30px; 
-  
-  /* Centrado absoluto */
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-}
+  .modal-header {
+    /* En horizontal, una sola fila es vital para no robar espacio a la gráfica */
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto; 
+    margin-bottom: 10px;
+    gap: 20px;
+  }
 
-.modal-header {
-  /* En horizontal, una sola fila es vital para no robar espacio a la gráfica */
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: auto; 
-  margin-bottom: 10px;
-  gap: 20px;
-}
+  .modal-ranges {
+    /* Quitamos el span de 2 columnas que pusimos para el modo vertical */
+    grid-column: auto; 
+    order: 2;
+  }
 
-.modal-ranges {
-  /* Quitamos el span de 2 columnas que pusimos para el modo vertical */
-  grid-column: auto; 
-  order: 2;
-}
-
-.modal-chart-container {
-  /* Forzamos a que la gráfica use todo el espacio restante con aire */
-  flex-grow: 1;
-  padding-bottom: 5px;
-}
+  .modal-chart-container {
+    /* Forzamos a que la gráfica use todo el espacio restante con aire */
+    flex-grow: 1;
+    padding-bottom: 5px;
+  }
 }
 
 @media (max-width: 600px) {
