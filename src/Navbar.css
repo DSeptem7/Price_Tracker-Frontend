@@ -426,7 +426,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 @media (max-width: 600px) {
 
   .navbar {
-    position: fixed !important; /* Cambiamos sticky por fixed en móvil para mayor estabilidad */
     top: 0;
     left: 0;
     width: 100%;
@@ -434,10 +433,6 @@ input:checked + .slider:before { transform: translateX(20px); }
     z-index: 2000;
     /* Esto evita que se vea blanco a través de la barra si el blur falla */
     background-color: var(--bg-navbar) !important; 
-  }
-
-  body {
-    padding-top: 64px !important; 
   }
 
   /* 1. Contenedor Navbar */
