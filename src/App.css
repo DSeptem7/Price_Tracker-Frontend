@@ -690,7 +690,6 @@ body {
     background-color: var(--bg-app) !important; /* Forzamos el color para evitar franjas blancas */
     
     width: 100% !important;
-    position: relative !important;
   }
 
   .App {
