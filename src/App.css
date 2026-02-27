@@ -8,13 +8,17 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-body {
-  position: relative;
-  overflow-x: clip;
+html {
+  scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
+  background-color: var(--bg-app); /* <-- 1. AÑADIDO: Sella el fondo desde la raíz absoluta */
+  min-height: 100dvh;              /* <-- 2. AÑADIDO: Altura dinámica desde el inicio */
 }
 
-#root {
-  overflow-x: clip;
+body {
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  transition: background-color 0.3s ease;
+  min-height: 100dvh;
 }
 
 /* ====================================================================== */
@@ -163,6 +167,7 @@ body {
   text-align: center;
   background-color: var(--bg-app);
   color: var(--text-main);
+  min-height: 100dvh;
 }
 
 /* ====================================================================== */
@@ -678,8 +683,14 @@ body {
 
   /* 1. Reparación Maestra de Scroll y Sticky */
   html, body {
-    max-width: 100%;
-    overflow-x: clip;
+    overflow-x: hidden !important;  /* Mejor hidden que visible para evitar scroll horizontal fantasma */
+    overflow-y: visible !important; /* Asegura que el scroll principal mande */
+    min-height: 100dvh !important;  /* En lugar de height: auto */
+    height: auto !important;        /* Permitimos que crezca si el contenido es largo */
+    background-color: var(--bg-app) !important; /* Forzamos el color para evitar franjas blancas */
+    
+    width: 100% !important;
+    position: relative !important;
   }
 
   .App {
@@ -707,8 +718,11 @@ body {
 
   /* 3. Ajuste de Tarjeta */
   .product-card {
-    padding: 0 !important;
-    overflow: hidden !important;
+    padding: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
   }
 
   .product-card h3 {
@@ -724,12 +738,10 @@ body {
 
   /* CORRECCIÓN DE ASIMETRÍA EN TARJETAS */
   .store-header {
-    margin: 0 !important;
-    width: 100% !important;
-  }
-
-  .product-card > *:not(.store-header) {
-    padding: 10px;
+    /* Ajustamos el margen negativo para que coincida con el padding de 10px */
+    margin: -10px -10px 12px -10px !important; 
+    border-radius: 20px 20px 0 0 !important; /* Asegura que las esquinas sigan la curva de la tarjeta */
+    width: calc(100% + 20px) !important; /* Fuerza el ancho total exacto */
   }
 
   /* Aseguramos que la tarjeta no corte las esquinas redondeadas del header */
