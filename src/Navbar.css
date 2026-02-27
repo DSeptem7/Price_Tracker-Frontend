@@ -424,17 +424,6 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 600px) {
-
-  .navbar {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 64px;
-    z-index: 2000;
-    /* Esto evita que se vea blanco a través de la barra si el blur falla */
-    background-color: var(--bg-navbar) !important; 
-  }
-
   /* 1. Contenedor Navbar */
   .navbar-content {
     padding: 0 15px;

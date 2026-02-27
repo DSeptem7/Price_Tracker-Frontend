@@ -683,7 +683,6 @@ body {
 
   /* 1. Reparación Maestra de Scroll y Sticky */
   html, body {
-    overflow-x: hidden !important;  /* Mejor hidden que visible para evitar scroll horizontal fantasma */
     overflow-y: visible !important; /* Asegura que el scroll principal mande */
     min-height: 100dvh !important;  /* En lugar de height: auto */
     height: auto !important;        /* Permitimos que crezca si el contenido es largo */
