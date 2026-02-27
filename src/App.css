@@ -8,17 +8,28 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* 1. Limpiamos el inicio para no romper la grilla de PC */
 html {
-  scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
-  background-color: var(--bg-app); /* <-- 1. AÑADIDO: Sella el fondo desde la raíz absoluta */
-  min-height: 100dvh;              /* <-- 2. AÑADIDO: Altura dinámica desde el inicio */
+  /* Pintamos el lienzo más profundo del navegador */
+  background-color: #f1f5f9 !important; 
+  height: 100%;
 }
 
 body {
-  background-color: var(--bg-app);
-  color: var(--text-main);
-  transition: background-color 0.3s ease;
+  background-color: #f1f5f9 !important;
+  margin: 0;
+  padding: 0;
+  /* El secreto para móviles: */
+  min-height: -webkit-fill-available; 
+}
+
+.App {
+  text-align: center;
+  background-color: #f1f5f9;
+  min-height: 100vh;
   min-height: 100dvh;
+  /* Eliminamos el display: flex que rompió la grilla */
+  display: block; 
 }
 
 /* ====================================================================== */
@@ -394,14 +405,13 @@ body {
 /* ====================================================================== */
 /* === 5. GRILLA Y TARJETAS (ESTRUCTURA PREMIUM) === */
 /* ====================================================================== */
+/* 2. Restauramos la grilla de productos en PC */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
-  grid-auto-rows: max-content; 
-  align-items: stretch; /* Estira las tarjetas para que todas midan lo mismo en la fila */
-  gap: 24px; 
-  padding: 20px 0;
-  min-height: 600px;
+  /* Bajamos el mínimo a 220px para asegurar que entren 5 en pantallas estándar */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+  gap: 24px;
+  width: 100%;
 }
 
 .product-card {
@@ -681,21 +691,10 @@ body {
 /* ====================================================================== */
 @media (max-width: 600px) {
 
-  /* 1. Reparación Maestra de Scroll y Sticky */
-  html, body {
-    overflow-x: hidden !important;  /* Mejor hidden que visible para evitar scroll horizontal fantasma */
-    overflow-y: visible !important; /* Asegura que el scroll principal mande */
-    min-height: 100dvh !important;  /* En lugar de height: auto */
-    height: auto !important;        /* Permitimos que crezca si el contenido es largo */
-    background-color: var(--bg-app) !important; /* Forzamos el color para evitar franjas blancas */
-    
-    width: 100% !important;
-    position: relative !important;
-  }
-
-  .App {
-    overflow: visible !important; /* Eliminamos el hidden aquí también temporalmente */
-    display: block !important;
+  html, body, #root, .App {
+    /* Fuerza a la app a medir lo mismo que la pantalla interna del navegador */
+    height: -webkit-fill-available;
+    overflow-x: hidden;
   }
 
   /* 2. Ajuste de Grilla: 2 columnas perfectas */
