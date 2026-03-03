@@ -12,7 +12,7 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState('all');
+  const [timeRange, setTimeRange] = useState('1m');
   const [isChanging, setIsChanging] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
