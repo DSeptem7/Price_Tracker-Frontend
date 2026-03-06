@@ -676,6 +676,63 @@ body {
   margin-top: 8px;
 }
 
+/* === BADGES DE ALERTA (NUEVO / AGOTADO) === */
+.alert-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInBadge 0.3s ease-in-out;
+}
+
+/* Badge de Nuevo: Azul vibrante */
+.new-badge {
+  background-color: var(--accent-blue);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Badge de Agotado: Gris tenue */
+.stock-badge {
+  background-color: var(--text-muted);
+  color: white;
+}
+
+/* === ESTADO DE TARJETA AGOTADA === */
+.card-disabled {
+  opacity: 0.8; /* Se ve un poco más transparente */
+  filter: grayscale(0.4); /* Apaga un poco los colores */
+}
+
+.card-disabled:hover {
+  transform: none; /* Evitamos que salte si está agotado */
+  border-color: var(--border-color); /* No se ilumina el borde */
+  box-shadow: none;
+}
+
+.card-disabled .image-container {
+  background-color: #f8fafc; /* Fondo más frío para imagen agotada */
+}
+
+/* Texto de "No disponible" */
+.text-muted {
+  color: var(--text-muted) !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Animación de entrada para las etiquetas */
+@keyframes fadeInBadge {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 /* ====================================================================== */
 /* === 7. MEDIA QUERIES (MÓVIL) === */
 /* ====================================================================== */
