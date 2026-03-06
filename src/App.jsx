@@ -586,6 +586,7 @@ useEffect(() => {
                       {products.map((p, index) => {
                         // Lógica de visualización segura
                         const isAgotado = p.status === "out_of_stock";
+                        const isNew = p.status === "new" || p.alert_type === "Producto nuevo";
 
                         return (
                           <Link key={p.id || index} to={`/producto/${p.id}`} className={`product-card ${isAgotado ? 'card-disabled' : ''}`}>
@@ -598,7 +599,9 @@ useEffect(() => {
                                
                                {/* ORDEN DE PRIORIDAD DE ETIQUETAS */}
                               {isAgotado && <div className="alert-badge stock-badge">AGOTADO</div>}
-                              
+                              {!isAgotado && isNew && (
+                                  <div className="alert-badge new-badge">NUEVO</div>
+                                )}
                             </div>
 
                             <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
@@ -612,7 +615,7 @@ useEffect(() => {
                             </div>
                     
                             {/* Etiquetas de cambio de precio */}
-                            {!isAgotado && (
+                            {!isAgotado && !isNew && (
                                 <div className="status-row">
                                 <span className={`state-badge priority-${p.state_priority}`}>
                                     {p.alert_type}
