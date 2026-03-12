@@ -597,6 +597,10 @@ body {
   padding-top: 10px;
   border-top: 1px solid var(--border-color); /* Aquí vuelve la línea */
   width: 100%;
+
+  /* --- ESTO EVITA EL SALTO --- */
+  min-height: 42px; /* 32px del badge + 10px de padding superior */
+  align-items: flex-start; /* Alinea los badges arriba para que siempre empiecen en el mismo punto */
 }
 
 /* 2. EL BADGE BASE (Actualizado para simetría perfecta) */
