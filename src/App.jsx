@@ -615,13 +615,15 @@ useEffect(() => {
                             </div>
                     
                             {/* Etiquetas de cambio de precio */}
-                            {!isAgotado && !isNew && (
-                                <div className="status-row">
-                                <span className={`state-badge priority-${p.state_priority}`}>
-                                    {p.alert_type}
-                                </span>
-                            </div>                            
-                            )}
+                            {/* EL CONTENEDOR SIEMPRE EXISTE */}
+                            <div className="status-row">
+                                {/* Solo el contenido es condicional */}
+                                {!isAgotado && !isNew && (
+                                    <span className={`state-badge priority-${p.state_priority}`}>
+                                        {p.alert_type}
+                                    </span>
+                                )}
+                            </div>
 
                             <div className="card-action-button">{isAgotado ? "Consultar" : "Ver producto"}</div>
                             <p className="timestamp">{p.timestamp ? new Date(p.timestamp).toLocaleString() : ""}</p>
