@@ -15,22 +15,21 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const [timeRange, setTimeRange] = useState('1m');
   const [isChanging, setIsChanging] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chartData, setChartData] = useState([]);
 
-  useEffect(() => {
-    const fetchFullDetail = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${API_BASE}/product/${id}`);
-        const data = await response.json();
-        setProduct(data);
-      } catch (error) {
-        console.error("Error al obtener detalle:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFullDetail();
-  }, [id, API_BASE]);
+useEffect(() => {
+  const fetchChart = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/product/${id}/chart`);
+      const data = await res.json();
+      setChartData(data.points || []);
+    } catch (err) {
+      console.error("Error chart:", err);
+    }
+  };
+
+  fetchChart();
+}, [id]);
 
   if (loading) {
     return (
@@ -118,7 +117,7 @@ const renderPriceChart = () => {
 
   return (
   <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
-                <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
+                <AreaChart data={chartData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
                       <defs>
                         <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
