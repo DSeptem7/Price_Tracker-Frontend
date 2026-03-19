@@ -18,6 +18,29 @@ const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const [chartData, setChartData] = useState([]);
 
 useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_BASE}/product/${id}`);
+      
+      if (!res.ok) {
+        console.error("Producto no encontrado");
+        return;
+      }
+
+      const data = await res.json();
+      setProduct(data);
+    } catch (err) {
+      console.error("Error producto:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProduct();
+}, [id]);
+
+useEffect(() => {
   const fetchChart = async () => {
     try {
       const res = await fetch(`${API_BASE}/product/${id}/chart`);
@@ -25,8 +48,6 @@ useEffect(() => {
       setChartData(data.points || []);
     } catch (err) {
       console.error("Error chart:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
