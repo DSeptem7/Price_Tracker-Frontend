@@ -25,6 +25,8 @@ useEffect(() => {
       setChartData(data.points || []);
     } catch (err) {
       console.error("Error chart:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
