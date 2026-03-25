@@ -192,7 +192,7 @@ useEffect(() => {
       const params = new URLSearchParams({
         page: currentPage,
         limit: itemsPerPage,
-        sort_opt: sortOption,     // CRÍTICO: El backend ordena
+        sort_by: mapSortOption(sortOption),     // CRÍTICO: El backend ordena
         filter_opt: filterOption  // CRÍTICO: El backend filtra
       });
       
@@ -250,6 +250,17 @@ useEffect(() => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  // --- MAPEO PARA FILTROS L.433 ---
+  const mapSortOption = (opt) => {
+    switch (opt) {
+      case "date_desc": return "latest";
+      case "date_asc": return "oldest";
+      case "price_desc": return "price_high";
+      case "price_asc": return "price_low";
+      default: return "latest";
+    }
+  };  
 
   // --- HANDLERS ---
   const handlePageChange = (page) => {
