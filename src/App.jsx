@@ -456,6 +456,7 @@ useEffect(() => {
                               <option value="out_of_stock">Agotados</option>
                               <option value="historical_low">Mín. Histórico</option>
                               <option value="price_drop">Ofertas activas</option>
+                              <option value="new_products">Nuevos</option>
                             </select>
                           </div>
                         </div>
