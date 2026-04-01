@@ -222,14 +222,15 @@ const filteredData = getFilteredData();
                 </div>
                 
                 <div className="status-badge-container">
-                  {product.status === "down" && (
+                  {typeof product.baseline_percentage === "number" && product.baseline_percentage < 0 && (
                     <span className="percentage-tag down">
-                      ↓ -{product.change_percentage?.toFixed(2)}%
+                      ↓ {product.baseline_percentage.toFixed(2)}%
                     </span>
                   )}
-                  {product.status === "up" && (
+
+                  {typeof product.baseline_percentage === "number" && product.baseline_percentage > 0 && (
                     <span className="percentage-tag up">
-                      ↑ +{product.change_percentage?.toFixed(2)}%
+                      ↑ +{product.baseline_percentage.toFixed(2)}%
                     </span>
                   )}
                   {product.status === "new" && <span className="status-new">Recién añadido</span>}
