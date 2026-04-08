@@ -137,7 +137,7 @@ const toggleModal = () => {
 
 // Definimos una función de renderizado en lugar de una constante
 const renderPriceChart = () => {
-  if (!product || !product.history) return null;
+  if (!chartData || chartData.length === 0 || !product) return null;
 
   return (
   <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
@@ -211,7 +211,7 @@ const filteredData = getFilteredData();
                 <span className="shop-name">{product.shop_name || 'Mercado Libre'}</span>
               </div>
 
-              <img src={product.image} alt={product.title} className="detail-img" />
+              <img src={product.image_url || product.image} alt={product.title} className="detail-img" />
               <h1>{product.title}</h1>
               
               <div className="price-focus">
@@ -220,23 +220,68 @@ const filteredData = getFilteredData();
                   <span className="label-main">Precio Actual</span>
                   <span className="current-price-value">{formatCurrency(currentPrice)}</span>
                 </div>
+
+                {product.last_event_type !== "none" && (
+                  <div className="event-badge">
+                    {product.last_event_type === "new_all_time_low" && "🔥 Mínimo histórico"}
+                    {product.last_event_type === "equal_all_time_low" && "🟢 Igualó mínimo"}
+                    {product.last_event_type === "new_all_time_high" && "🚨 Máximo histórico"}
+                    {product.last_event_type === "equal_all_time_high" && "🔴 Igualó máximo"}
+                  </div>
+                )}
                 
                 <div className="status-badge-container">
-                  {typeof product.baseline_percentage === "number" && product.baseline_percentage < 0 && (
-                    <span className="percentage-tag down">
-                      ↓ {product.baseline_percentage.toFixed(2)}%
-                    </span>
-                  )}
+                
+                  {typeof product.baseline_percentage === "number" && (
+                      <span className={`percentage-tag ${product.baseline_percentage < 0 ? 'down' : 'up'}`}>
+                        {product.baseline_percentage < 0 ? '↓' : '↑'} 
+                        {Math.abs(product.baseline_percentage).toFixed(2)}%
+                        <small> vs mercado</small>
+                      </span>
+                    )}
+                    
+                    {product.status === "up" && (
+                      <span className="status-up">
+                        ↑ Subió {product.change_percentage?.toFixed(2)}%
+                      </span>
+                    )}
 
-                  {typeof product.baseline_percentage === "number" && product.baseline_percentage > 0 && (
-                    <span className="percentage-tag up">
-                      ↑ +{product.baseline_percentage.toFixed(2)}%
-                    </span>
-                  )}
-                  {product.status === "new" && <span className="status-new">Recién añadido</span>}
-                  {product.status === "same" && <span className="status-stable">Precio estable</span>}
-                  {product.status === "out_of_stock" && <span className="status-out">Agotado</span>}
-                </div>
+                    {product.status === "down" && (
+                      <span className="status-down">
+                        ↓ Bajó {product.change_percentage?.toFixed(2)}%
+                      </span>
+                    )}
+
+                      {product.status === "same" && (
+                        <span className="status-stable">Precio estable</span>
+                      )}
+
+                      {product.status === "out_of_stock" && (
+                        <span className="status-out">Agotado</span>
+                      )}
+
+                      {product.last_event_type === "new_product" && (
+                        <span className="status-new">Nuevo</span>
+                      )}
+
+                      {product.last_event_type === "restock" && (
+                        <span className="status-restock">Reabastecido</span>
+                      )}
+
+                      </div>
+
+                      {product.price_ratio != null && (
+                        <div className="market-context">
+                          <span>
+                            {product.market_position === "very_cheap" && "🟢 Muy por debajo del mercado"}
+                            {product.market_position === "cheap" && "🟢 Por debajo del mercado"}
+                            {product.market_position === "normal" && "⚪ Precio normal"}
+                            {product.market_position === "expensive" && "🟠 Por encima del mercado"}
+                            {product.market_position === "very_expensive" && "🔴 Muy caro"}
+                          </span>
+                        </div>
+                      )}
+
               </div>
 
               <a href={product.url} target="_blank" rel="noreferrer" className="buy-btn-main">
@@ -311,7 +356,7 @@ const filteredData = getFilteredData();
               </div>
           
               <div className="time-info-row">
-                <div className="time-badge">Rastreado desde: <strong>{product.tracking_since.split(' ')[0]}</strong></div>
+                <div className="time-badge">Rastreado desde: <strong>{product.tracking_since?.split(' ')[0] || "---"}</strong></div>
                 <div className="time-badge">Última actualización: <strong>{product.last_update}</strong></div>
               </div>
             </section>
@@ -383,3 +428,4 @@ const filteredData = getFilteredData();
 };
 
 export default ProductDetail;
+
