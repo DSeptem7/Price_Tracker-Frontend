@@ -204,39 +204,11 @@ useEffect(() => {
       if (data.products && Array.isArray(data.products)) {
         setProducts(data.products);
         setTotalDocs(data.total);
-
-        // CALCULO DE ESTADÍSTICAS (Sobre los datos recibidos o globales si el backend los envía)
-        // Por ahora calculamos sobre la vista actual para mantener tu Dashboard vivo
-        const currentProducts = data.products;
-        const drops = currentProducts.filter(p => p.status === "down");
-        const ups = currentProducts.filter(p => p.status === "up");
-        
-        const totalSavings = drops.reduce((acc, p) => {
-          // CAMBIO: Ya no usamos parsePrice porque p.price ya es número
-          const curr = p.price; 
-          const prev = p.previous_price || 0; // El backend manda float o null
-          return acc + (prev > curr ? prev - curr : 0);
-      }, 0);
-      
-      let best = { title: "Ninguna", percent: 0 };
-      drops.forEach(p => {
-           // CAMBIO: Ya no hay replace de %, p.change_percentage es un float (ej: 15.5)
-           const pVal = p.change_percentage || 0; 
-           if (pVal > best.percent) best = { title: p.title, percent: pVal };
-      });
-
-        setStats({ 
-            dropCount: drops.length, 
-            upCount: ups.length, 
-            totalSavings: totalSavings, 
-            bestDiscount: best 
-        });
-
       } else {
         setProducts([]);
         setTotalDocs(0);
-        setStats({ dropCount: 0, upCount: 0, totalSavings: 0, bestDiscount: { percent: 0, title: "" } });
       }
+  
     } catch (err) {
       console.error("Error de conexión:", err);
       setProducts([]);
@@ -244,12 +216,34 @@ useEffect(() => {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [currentPage, itemsPerPage, urlQuery, sortOption, filterOption]); 
-  // Nota: Al añadir sortOption y filterOption aquí, el fetch se dispara automático al cambiar el select.
+  }, [currentPage, itemsPerPage, urlQuery, sortOption, filterOption]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+        // CALCULO DE ESTADÍSTICAS (Sobre los datos recibidos o globales si el backend los envía)
+        const fetchStats = useCallback(async () => {
+          try {
+            const res = await fetch(`${API_BASE}/stats/global`);
+            const data = await res.json();
+        
+            setStats({
+              dropCount: data.dropCount,
+              upCount: data.upCount,
+              totalSavings: data.totalSavings,
+              bestDiscount: data.bestDiscount
+            });
+        
+          } catch (err) {
+            console.error("Error stats:", err);
+          }
+        }, []);
+        
+        // 🔹 3. useEffect GLOBAL (AQUÍ VAN LOS HOOKS)
+        useEffect(() => {
+          fetchProducts();
+        }, [fetchProducts]);
+        
+        useEffect(() => {
+          fetchStats();
+        }, []);
 
   // --- MAPEO PARA FILTROS L.433 ---
   const mapSortOption = (opt) => {
