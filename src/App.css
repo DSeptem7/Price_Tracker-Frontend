@@ -1212,6 +1212,10 @@ body {
   margin-bottom: 30px;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .stat-card {
   background: var(--bg-card);
   padding: 16px; 
@@ -1232,6 +1236,10 @@ body {
   transform: translateY(-2px);
 }
 
+.stat-card.clickable:hover {
+  transform: translateY(-3px) scale(1.01);
+}
+
 /* Los indicadores (barras de color laterales) */
 .stat-indicator {
   width: 4px;
@@ -1247,6 +1255,16 @@ body {
 .stat-info {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.stat-value.small-text {
+  font-size: 14px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* 🔥 máximo 2 líneas */
+  -webkit-box-orient: vertical;
+
   overflow: hidden;
 }
 
