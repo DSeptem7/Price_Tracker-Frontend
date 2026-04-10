@@ -399,7 +399,7 @@ useEffect(() => {
                            <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
                              {loading ? "Cargando..." : (stats.bestDiscount.percent > 0 ? `${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
                            </span>
-                           <div className="stat-card clickable" onClick={() => { if (stats.bestDiscount.id) { window.location.href = `/product/${stats.bestDiscount.id}`;} }}></div>
+                           <div className="stat-card clickable" onClick={() => { if (stats.bestDiscount.id) { window.location.href = `/producto/${stats.bestDiscount.id}`;} }}></div>
                         </div>
                      </div>
                   </div>
