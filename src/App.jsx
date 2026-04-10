@@ -375,14 +375,14 @@ useEffect(() => {
                         <div className={`stat-indicator down ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
                            <span className="stat-label">Con descuento</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "Cargando..." : stats.dropCount}</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? ("Cargando...") : (`${stats.dropCount} productos`)}</span>
                         </div>
                      </div>
                      <div className="stat-card">
                         <div className={`stat-indicator up ${loading ? 'loading-pulse' : ''}`}></div>
                         <div className="stat-info">
-                           <span className="stat-label">Subieron</span>
-                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "Cargando..." : stats.upCount}</span>
+                           <span className="stat-label">Con incremento de precio</span>
+                           <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? ("Cargando...") : (`${stats.upCount} productos`)}</span>
                         </div>
                      </div>
                       <div className="stat-card">
@@ -397,7 +397,7 @@ useEffect(() => {
                         <div className="stat-info">
                            <span className="stat-label">Mejor oferta</span>
                            <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
-                             {loading ? "Cargando..." : (stats.bestDiscount.percent > 0 ? `-${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
+                             {loading ? "Cargando..." : (stats.bestDiscount.percent < 0 ? `-${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
                            </span>
                         </div>
                      </div>
