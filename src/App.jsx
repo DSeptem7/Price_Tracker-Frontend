@@ -392,16 +392,31 @@ useEffect(() => {
                            <span className={`stat-value ${loading ? 'loading-text' : ''}`}>{loading ? "Cargando..." : formatCurrency(stats.totalSavings)}</span>
                         </div>
                      </div>
-                      <div className="stat-card">
+                     <div 
+                        className="stat-card clickable"
+                        onClick={() => {
+                          if (stats.bestDiscount.id) {
+                            window.location.href = `/producto/${stats.bestDiscount.id}`;
+                          }
+                        }}
+                      >
                         <div className={`stat-indicator star ${loading ? 'loading-pulse' : ''}`}></div>
+
                         <div className="stat-info">
-                           <span className="stat-label">Mejor oferta</span>
-                           <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
-                             {loading ? "Cargando..." : (stats.bestDiscount.percent > 0 ? `${stats.bestDiscount.percent}% (${stats.bestDiscount.title.substring(0, 15)}...)` : "Sin ofertas")}
-                           </span>
-                           <div className="stat-card clickable" onClick={() => { if (stats.bestDiscount.id) { window.location.href = `/producto/${stats.bestDiscount.id}`;} }}></div>
+                          <span className="stat-label">Mejor oferta</span>
+
+                          <span className={`stat-value small-text ${loading ? 'loading-text' : ''}`}>
+                            {loading 
+                              ? "Cargando..." 
+                              : (
+                                  stats.bestDiscount.percent > 0
+                                    ? `${stats.bestDiscount.percent}% (${stats.bestDiscount.title})`
+                                    : "Sin ofertas"
+                                )
+                            }
+                          </span>
                         </div>
-                     </div>
+                      </div>
                   </div>
  
                   {/* === DASHBOARD CONTROL PANEL === */}
