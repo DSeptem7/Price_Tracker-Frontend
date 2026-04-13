@@ -313,32 +313,58 @@ useEffect(() => {
     if (!text || typeof text !== 'string') return "";
     if (!query || typeof query !== 'string') return text;
     if (query.includes("http") || query.includes(".com")) return text;
-
+  
     const normalize = (str) => {
-        try { return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch { return ""; }
+      try {
+        return str
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      } catch {
+        return "";
+      }
     };
-
+  
+    const normalizedText = normalize(text);
     const normalizedQuery = normalize(query);
+  
     if (!normalizedQuery) return text;
-
+  
     const tokens = normalizedQuery.split(/\s+/).filter(t => t.length > 0);
     if (tokens.length === 0) return text;
-
-    try {
-      const escapedTokens = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-      const pattern = new RegExp(`(${escapedTokens.join('|')})`, 'gi');
-      const parts = text.split(pattern);
-      return (
-        <>
-          {parts.map((part, i) => {
-             if (!part) return null;
-             return tokens.some(t => normalize(t) === normalize(part)) 
-                ? <mark key={i} className="highlight">{part}</mark> 
-                : part;
-          })}
-        </>
-      );
-    } catch { return text; }
+  
+    let result = [];
+    let currentIndex = 0;
+  
+    tokens.forEach(token => {
+      let index = normalizedText.indexOf(token, currentIndex);
+  
+      while (index !== -1) {
+        // texto antes del match
+        if (index > currentIndex) {
+          result.push(text.slice(currentIndex, index));
+        }
+  
+        // match (usando posiciones reales del texto original)
+        const matchText = text.slice(index, index + token.length);
+  
+        result.push(
+          <mark key={index} className="highlight">
+            {matchText}
+          </mark>
+        );
+  
+        currentIndex = index + token.length;
+        index = normalizedText.indexOf(token, currentIndex);
+      }
+    });
+  
+    // resto del texto
+    if (currentIndex < text.length) {
+      result.push(text.slice(currentIndex));
+    }
+  
+    return <>{result}</>;
   };
 
   // --- PAGINACIÓN ---
