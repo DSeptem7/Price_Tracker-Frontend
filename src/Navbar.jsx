@@ -39,6 +39,7 @@ const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCou
       try {
         setIsLoadingSuggestions(true);
   
+        console.log("API_BASE:", API_BASE);
         const res = await fetch(
           `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
         );
