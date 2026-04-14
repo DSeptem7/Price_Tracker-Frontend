@@ -4,7 +4,7 @@ import { useAuth } from './context/AuthContext';
 import './Navbar.css';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
-const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
@@ -14,13 +14,46 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
   const searchRef = useRef(null);
   const inputRef = useRef(null); 
 
+  // --- AUTOCOMPLETE ---
+  const [suggestions, setSuggestions] = useState([]);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+  const debounceRef = useRef(null);
+
   // --- NUEVA LÓGICA SIMPLIFICADA ---
   const handleInputChange = (e) => {
-    setLocalSearch(e.target.value);
-    // YA NO FILTRAMOS LOCALMENTE (products.filter)
-    // Porque 'products' solo tiene 20 items y daría falsos negativos.
+    const value = e.target.value;
+    setLocalSearch(value);
+  
+    // limpiar debounce anterior
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+  
+    // evitar llamadas innecesarias
+    if (value.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
+  
+    debounceRef.current = setTimeout(async () => {
+      try {
+        setIsLoadingSuggestions(true);
+  
+        const res = await fetch(
+          `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
+        );
+  
+        const data = await res.json();
+        setSuggestions(data);
+  
+      } catch (err) {
+        console.error("Autocomplete error:", err);
+      } finally {
+        setIsLoadingSuggestions(false);
+      }
+    }, 300); // 🔥 debounce 300ms
   };
-
+  
   // Ejecuta la búsqueda y manda a la URL
   const handleSearchSubmit = () => {
     if (localSearch.trim() === "") return; 
@@ -131,24 +164,40 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
             </button>
 
             {/* --- DROPDOWN INFORMATIVO --- */}
-            {/* En lugar de sugerencias falsas, guiamos al usuario */}
             {isSearchExpanded && localSearch.length > 0 && (
               <div className="live-search-results">
-                 <div 
+
+                {/* LOADING */}
+                {isLoadingSuggestions && (
+                  <div className="suggestion-item">Buscando...</div>
+                )}
+
+                {/* SUGERENCIAS */}
+                {!isLoadingSuggestions && suggestions.length > 0 && (
+                  suggestions.map((s, i) => (
+                    <div
+                      key={i}
+                      className="suggestion-item"
+                      onClick={() => {
+                        navigate(`/?q=${encodeURIComponent(s.title)}`);
+                        setIsSearchExpanded(false);
+                        setLocalSearch("");
+                      }}
+                    >
+                      🔍 🔍 {s.title}
+                    </div>
+                  ))
+                )}
+
+                {/* FALLBACK */}
+                {!isLoadingSuggestions && suggestions.length === 0 && (
+                  <div
                     className="view-all-results"
                     onClick={handleSearchSubmit}
-                    style={{ cursor: 'pointer', textAlign: 'left', padding: '12px' }}
                   >
-                    <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--text-color)' }}>
-                      Presiona <strong>Enter</strong> para buscar:
-                    </span>
-                    <span style={{ fontSize: '1.1rem', color: 'var(--primary-color)', fontWeight: 'bold' }}>
-                      "{localSearch}"
-                    </span>
-                    <span style={{ display: 'block', fontSize: '0.75rem', marginTop: '4px', color: '#888' }}>
-                      Buscando en servidor...
-                    </span>
-                 </div>
+                    Buscar: "{localSearch}"
+                  </div>
+                )}
               </div>
             )}
           </div>
