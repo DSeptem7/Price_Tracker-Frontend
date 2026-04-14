@@ -44,6 +44,8 @@ const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCou
         );
   
         const data = await res.json();
+            // 🔥 AQUÍ VA EL DEBUG
+        console.log("SUGGESTIONS:", data);
         setSuggestions(data);
   
       } catch (err) {
