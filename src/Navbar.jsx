@@ -4,7 +4,7 @@ import { useAuth } from './context/AuthContext';
 import './Navbar.css';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
-const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
@@ -179,12 +179,12 @@ const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCou
                       key={i}
                       className="suggestion-item"
                       onClick={() => {
-                        navigate(`/?q=${encodeURIComponent(s.title)}`);
+                        navigate(`/?q=${encodeURIComponent(s)}`);
                         setIsSearchExpanded(false);
                         setLocalSearch("");
                       }}
                     >
-                      🔍 🔍 {s.title}
+                      🔍 {s}
                     </div>
                   ))
                 )}
