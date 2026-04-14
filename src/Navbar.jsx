@@ -5,6 +5,9 @@ import './Navbar.css';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
 const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+  const data = await res.json();
+  console.log("SUGGESTIONS:", data);
+  setSuggestions(data);
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
