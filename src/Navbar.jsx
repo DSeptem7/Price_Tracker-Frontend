@@ -175,10 +175,9 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
                 {isLoadingSuggestions && (
                   <div className="search-result-item">
                     <div className="search-icon">
-                      ⏳
                     </div>
                     <div className="mini-info">
-                      <span className="mini-title">Buscando...</span>
+                      <span className="mini-title">Buscando en el servidor...</span>
                     </div>
                   </div>
                 )}
