@@ -173,7 +173,14 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
 
                 {/* LOADING */}
                 {isLoadingSuggestions && (
-                  <div className="search-result-item">Buscando...</div>
+                  <div className="search-result-item">
+                    <div className="search-icon">
+                      ⏳
+                    </div>
+                    <div className="mini-info">
+                      <span className="mini-title">Buscando...</span>
+                    </div>
+                  </div>
                 )}
 
                 {/* SUGERENCIAS (limitadas a 5) */}
@@ -189,6 +196,25 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
                           setLocalSearch("");
                         }}
                       >
+                        {/* 🔍 ICONO */}
+                        <div className="search-icon">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                          </svg>
+                        </div>
+
+                        {/* TEXTO */}
                         <div className="mini-info">
                           <span className="mini-title">{s.title}</span>
                         </div>

@@ -215,6 +215,24 @@ from { opacity: 0; transform: translateY(-10px); }
 to { opacity: 1; transform: translateY(0); }
 }
 
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  color: #94a3b8;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.search-result-item:hover .search-icon {
+  color: #007bff;
+}
+
+.dark-mode .search-result-item:hover .search-icon {
+  color: #3b82f6;
+}
+
 /* ========================================= */
 /* === ITEMS DE LA LISTA (DISEÑO UNIFICADO CON APP.CSS) === */
 /* ========================================= */
