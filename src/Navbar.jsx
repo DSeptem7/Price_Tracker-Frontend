@@ -179,12 +179,12 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
                       key={i}
                       className="suggestion-item"
                       onClick={() => {
-                        navigate(`/?q=${encodeURIComponent(s)}`);
+                        navigate(`/?q=${encodeURIComponent(s.title)}`);
                         setIsSearchExpanded(false);
                         setLocalSearch("");
                       }}
                     >
-                      🔍 {s}
+                      🔍 🔍 {s.title}
                     </div>
                   ))
                 )}
