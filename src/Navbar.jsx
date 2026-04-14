@@ -87,6 +87,10 @@ const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCou
     }
   };
 
+  const data = await res.json();
+  console.log("SUGGESTIONS:", data);
+  setSuggestions(data);
+
   // Clic fuera para cerrar
   useEffect(() => {
     function handleClickOutside(event) {
@@ -257,9 +261,5 @@ const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCou
     </nav>
   );
 };
-
-const data = await res.json();
-console.log("SUGGESTIONS:", data);
-setSuggestions(data);
 
 export default Navbar;
