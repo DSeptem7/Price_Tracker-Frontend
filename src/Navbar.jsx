@@ -173,27 +173,43 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
 
                 {/* LOADING */}
                 {isLoadingSuggestions && (
-                  <div className="suggestion-item">Buscando...</div>
+                  <div className="search-result-item">Buscando...</div>
                 )}
 
-                {/* SUGERENCIAS */}
+                {/* SUGERENCIAS (limitadas a 5) */}
                 {!isLoadingSuggestions && suggestions.length > 0 && (
-                  suggestions.map((s, i) => (
+                  <>
+                    {suggestions.slice(0, 5).map((s, i) => (
+                      <div
+                        key={i}
+                        className="search-result-item"
+                        onClick={() => {
+                          navigate(`/?q=${encodeURIComponent(s.title)}`);
+                          setIsSearchExpanded(false);
+                          setLocalSearch("");
+                        }}
+                      >
+                        <div className="mini-info">
+                          <span className="mini-title">{s.title}</span>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* 🔥 BOTÓN VER MÁS */}
                     <div
-                      key={i}
-                      className="suggestion-item"
+                      className="view-all-results"
                       onClick={() => {
-                        navigate(`/?q=${encodeURIComponent(s.title)}`);
+                        navigate(`/?q=${encodeURIComponent(localSearch)}`);
                         setIsSearchExpanded(false);
                         setLocalSearch("");
                       }}
                     >
-                      🔍 🔍 {s.title}
+                      Ver todos los resultados para "{localSearch}"
                     </div>
-                  ))
+                  </>
                 )}
 
-                {/* FALLBACK */}
+                {/* SIN RESULTADOS */}
                 {!isLoadingSuggestions && suggestions.length === 0 && (
                   <div
                     className="view-all-results"
@@ -202,6 +218,7 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
                     Buscar: "{localSearch}"
                   </div>
                 )}
+
               </div>
             )}
           </div>

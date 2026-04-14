@@ -221,6 +221,7 @@ to { opacity: 1; transform: translateY(0); }
 
 .search-result-item {
   display: flex;
+  font-size: 14px;
   text-decoration: none; /* Quita el subrayado de enlace */
   color: inherit; /* Mantiene el color de texto de tu app */
   align-items: center;
