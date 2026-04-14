@@ -766,3 +766,19 @@ body.dark-mode .live-search-results {
   background: #1e293b;
   border-color: #334155;
 }
+
+/* busqueda en vivo*/
+.suggestion-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+  background: var(--bg-hover);
+}
+
+.live-search-results {
+  max-height: 300px;
+  overflow-y: auto;
+}
