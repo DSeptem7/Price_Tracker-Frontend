@@ -4,8 +4,7 @@ import { useAuth } from './context/AuthContext';
 import './Navbar.css';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
-const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
-  const API_BASE = import.meta.env.VITE_API_URL;
+const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
