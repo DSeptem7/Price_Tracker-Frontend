@@ -4,7 +4,8 @@ import { useAuth } from './context/AuthContext';
 import './Navbar.css';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
-const Navbar = ({ API_BASE, setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+  const API_BASE = "https://price-tracker-nov-2025.onrender.com";
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
