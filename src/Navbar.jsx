@@ -91,6 +91,25 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
     }
   };
 
+  const highlightMatch = (text, query) => {
+    if (!query) return text;
+  
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+  
+    const parts = text.split(regex);
+  
+    return parts.map((part, i) =>
+      part.toLowerCase() === query.toLowerCase() ? (
+        <mark key={i} className="highlight">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
+
   // Clic fuera para cerrar
   useEffect(() => {
     function handleClickOutside(event) {
@@ -232,9 +251,9 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
                         </div>
 
                         {/* TEXTO */}
-                        <div className="mini-info">
-                          <span className="mini-title">{s.title}</span>
-                        </div>
+                        <span className="mini-title">
+                          {highlightMatch(s.title, localSearch)}
+                        </span>
                       </div>
                     ))}
 
