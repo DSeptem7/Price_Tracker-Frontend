@@ -174,11 +174,29 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
                 {/* LOADING */}
                 {isLoadingSuggestions && (
                   <div className="search-result-item">
-                    <div className="search-icon">
+                    
+                    <div className="search-icon spinner">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 50 50"
+                      >
+                        <circle
+                          cx="25"
+                          cy="25"
+                          r="20"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          strokeLinecap="round"
+                        />
+                      </svg>
                     </div>
+
                     <div className="mini-info">
                       <span className="mini-title">Buscando en el servidor...</span>
                     </div>
+
                   </div>
                 )}
 
