@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import './Navbar.css';
+import './components/navbar/Navbar.css';
 import { fetchAutocomplete } from "./services/api";
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
