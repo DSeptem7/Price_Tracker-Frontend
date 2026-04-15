@@ -6,7 +6,7 @@ import { fetchAutocomplete } from "./services/api";
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
 const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
-  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
