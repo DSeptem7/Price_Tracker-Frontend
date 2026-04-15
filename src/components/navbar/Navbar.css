@@ -324,7 +324,7 @@ to { opacity: 1; transform: translateY(0); }
   font-size: 14px;
   text-decoration: none; /* Quita el subrayado de enlace */
   color: inherit; /* Mantiene el color de texto de tu app */
-  align-items: flex-start; /* 🔥 IMPORTANTE */
+  align-items: center; /* 🔥 IMPORTANTE */
   gap: 0; /* control manual con margins */
   padding: 18px 15px;
   cursor: pointer;
@@ -394,7 +394,7 @@ to { opacity: 1; transform: translateY(0); }
 }
 
 .mini-info {
-  display: block; /* 🔥 cambio clave */
+  display: flex; /* 🔥 cambio clave */
   align-items: center; /* 🔥 centra verticalmente */
   flex: 1;
   overflow: hidden;
