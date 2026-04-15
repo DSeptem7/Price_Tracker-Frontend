@@ -6,6 +6,7 @@ import { fetchAutocomplete } from './services/api';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
 const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
+  const API_BASE = "https://price-tracker-nov-2025.onrender.com";
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
@@ -39,18 +40,20 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
     debounceRef.current = setTimeout(async () => {
       try {
         setIsLoadingSuggestions(true);
-    
-        const data = await fetchAutocomplete(value);
-    
-        console.log("SUGGESTIONS:", data);
-        setSuggestions(data);
-    
+  
+        const res = await fetch(
+          `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
+        );
+  
+        const data = await res.json();
+        setSuggestions(Array.isArray(data) ? data : data.suggestions || []);
+  
       } catch (err) {
         console.error("Autocomplete error:", err);
       } finally {
         setIsLoadingSuggestions(false);
       }
-    }, 300);
+    }, 300); // 🔥 debounce 300ms
   };
   
   // Ejecuta la búsqueda y manda a la URL
