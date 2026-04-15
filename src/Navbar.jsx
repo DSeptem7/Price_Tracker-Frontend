@@ -2,10 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import './Navbar.css';
+import { fetchAutocomplete } from "./services/api";
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
 const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
-  const API_BASE = "https://price-tracker-nov-2025.onrender.com";
+  const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   
