@@ -4,7 +4,7 @@ import { useAuth } from './context/AuthContext';
 import './Navbar.css';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
-const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
+const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   const API_BASE = "https://price-tracker-nov-2025.onrender.com";
   const { user, loginWithGoogle, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -40,15 +40,12 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
       try {
         setIsLoadingSuggestions(true);
   
-        console.log("API_BASE:", API_BASE);
         const res = await fetch(
           `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
         );
   
         const data = await res.json();
-            // 🔥 AQUÍ VA EL DEBUG
-        console.log("SUGGESTIONS:", data);
-        setSuggestions(data);
+        setSuggestions(Array.isArray(data) ? data : data.suggestions || []);
   
       } catch (err) {
         console.error("Autocomplete error:", err);
@@ -114,11 +111,19 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
   useEffect(() => {
     function handleClickOutside(event) {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setIsSearchExpanded(false); 
+        setSuggestions([]); 
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -127,7 +132,6 @@ const Navbar = ({ setSearchTerm, isDarkMode, setIsDarkMode, productCount }) => {
         <span 
           className="logo" 
           onClick={() => {
-            setSearchTerm(""); 
             setLocalSearch(""); 
             navigate('/');
           }} 
