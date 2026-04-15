@@ -216,6 +216,8 @@ to { opacity: 1; transform: translateY(0); }
 }
 
 .search-icon {
+  width: 24px;           /* 🔥 CLAVE */
+  min-width: 24px;       /* 🔥 CLAVE */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -270,7 +272,7 @@ to { opacity: 1; transform: translateY(0); }
   font-size: 14px;
   text-decoration: none; /* Quita el subrayado de enlace */
   color: inherit; /* Mantiene el color de texto de tu app */
-  align-items: center;
+  align-items: flex-start; /* 🔥 IMPORTANTE */
   gap: 0; /* control manual con margins */
   padding: 18px 15px;
   cursor: pointer;
@@ -340,25 +342,12 @@ to { opacity: 1; transform: translateY(0); }
 }
 
 .mini-info {
-  display: flex;
-  align-items: center; /* 🔥 centra verticalmente */
+  display: block; /* 🔥 cambio clave */
   flex: 1;
-  overflow: hidden;
 }
 
 .mini-title {
-  font-size: 14px;
-  color: var(--text-main);
-  font-weight: 600;
-  line-height: 1.3;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-bottom: 4px;
-  display: block; /* 🔥 evita comportamientos raros */
-  width: 100%;
+  margin: 0; /* 🔥 elimina micro-desfase */
 }
 
 .mini-price {
