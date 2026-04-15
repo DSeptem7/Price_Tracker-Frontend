@@ -224,6 +224,7 @@ to { opacity: 1; transform: translateY(0); }
   margin-right: 12px;
   color: #94a3b8;
   flex-shrink: 0;
+  transition: color 0.2s;
 }
 
 .search-result-item:hover .search-icon {
@@ -342,11 +343,24 @@ to { opacity: 1; transform: translateY(0); }
 
 .mini-info {
   display: block; /* 🔥 cambio clave */
+  align-items: center; /* 🔥 centra verticalmente */
   flex: 1;
+  overflow: hidden;
 }
 
 .mini-title {
-  margin: 0; /* 🔥 elimina micro-desfase */
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+  display: block; /* 🔥 evita comportamientos raros */
+  width: 100%;
 }
 
 .mini-price {
