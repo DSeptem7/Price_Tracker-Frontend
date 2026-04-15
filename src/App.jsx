@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
-import { Navbar } from './components/navbar/Navbar'; 
+import Navbar from './Navbar'; 
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
@@ -642,7 +642,7 @@ useEffect(() => {
                               {p.url.includes("mercadolibre") ? "Mercado Libre" : "Tienda"}
                             </div>
 
-                            <div className="image-container">
+                            <div className="image-container"highlightText>
                                <img src={p.image} alt={p.title} loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400?text=No+Img"; }} />
                                
                                {/* ORDEN DE PRIORIDAD DE ETIQUETAS */}
