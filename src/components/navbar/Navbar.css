@@ -48,38 +48,3 @@
   gap: 15px;
   overflow: visible;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/* ====================================================================== */
-/* === nueva actualización === */
-/* ====================================================================== */
-/* --- ESTILOS EXTRA NAVBAR --- */
-.badge-count {
-  background-color: var(--primary-color, #3b82f6);
-  color: white;
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-weight: bold;
-  vertical-align: middle;
-}
-
-
-
-
-
-/* En modo oscuro */
-body.dark-mode .live-search-results {
-  background: #1e293b;
-  border-color: #334155;
-}
