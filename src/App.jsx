@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
-import Navbar from './Navbar'; 
+import Navbar from './components/navbar/Navbar';
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
