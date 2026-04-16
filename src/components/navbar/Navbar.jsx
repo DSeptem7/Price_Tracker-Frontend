@@ -26,6 +26,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
   const debounceRef = useRef(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   // --- NUEVA LÓGICA SIMPLIFICADA ---
   const handleInputChange = (e) => {
@@ -41,12 +42,14 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
     if (value.trim().length < 2) {
       setSuggestions([]);
       setIsLoadingSuggestions(false);
+      setHasSearched(false);
       return;
     }
   
     debounceRef.current = setTimeout(async () => {
       try {
         setIsLoadingSuggestions(true);
+        setHasSearched(false); // 🔥 aún no hay respuesta
   
         const res = await fetch(
           `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
@@ -54,6 +57,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   
         const data = await res.json();
         setSuggestions(Array.isArray(data) ? data : data.suggestions || []);
+        setHasSearched(true);
   
       } catch (err) {
         console.error("Autocomplete error:", err);
@@ -297,7 +301,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
                 )}
 
                 {/* SIN RESULTADOS */}
-                {!isLoadingSuggestions && localSearch.length >= 2 && suggestions.length === 0 && (
+                {!isLoadingSuggestions && hasSearched && suggestions.length === 0 && (
                   <div className="no-results-live">
                     
                     <div className="no-results-icon-mini">
