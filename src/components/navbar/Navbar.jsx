@@ -7,6 +7,7 @@ import './navbar.utils.css';
 import './navbar.results.css';
 import './navbar.theme.css';
 import './navbar.responsive.css';
+import './navbar.auth.css';
 import { fetchAutocomplete } from '../../services/api';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor

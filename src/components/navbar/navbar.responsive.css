@@ -154,3 +154,26 @@
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ESPECIFICACIONES AUTH (autentificación) */
+/* Ajuste para móvil: hacerlo un poco más grande para el pulgar */
+@media (max-width: 600px) {
+    .login-btn-premium {
+      width: 45px;
+      height: 45px;
+    }
+  }
+  
+  /* --- RESPONSIVE --- */
+  @media (max-width: 600px) {
+    .auth-section {
+      border-left: none;
+      margin-left: 0;
+      padding-left: 0;
+    }
+    
+    .login-btn {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+  }
