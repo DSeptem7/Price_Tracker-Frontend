@@ -131,7 +131,7 @@
   width: 100%; /* En PC sigue el ancho del input */
   
   /* ESTILOS DE LA VENTANA */
-  background-color: var(--bg-card); /* Fondo sólido */
+  background-color: var(--bg-card) !important; /* Fondo sólido */
   border: 1px solid var(--border-color);
   border-radius: 0 0 16px 16px; /* Bordes redondos solo abajo */
   box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Sombra fuerte para resaltar */

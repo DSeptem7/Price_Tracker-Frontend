@@ -45,7 +45,7 @@
 /* Asegúrate de que tu componente Navbar o body tenga la clase .dark-mode */
 .dark-mode .search-result-item:hover {
   /* EL MISMO FONDO DE TUS TARJETAS OSCURAS (#1e293b) */
-  background-color: #1e293b !important; 
+  background-color: #1e293b; 
   
   /* EL MISMO AZUL CLARO DE MODO OSCURO (#3b82f6) */
   border-left-color: #3b82f6; 
