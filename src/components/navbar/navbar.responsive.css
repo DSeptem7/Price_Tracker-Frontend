@@ -1,0 +1,156 @@
+/* ====================================================================== */
+/* === MEDIA QUERIES (ESPECÍFICO PARA NAVBAR MÓVIL) === */
+/* ====================================================================== */
+
+@media (max-width: 900px) {
+  .search-box.expanded { width: 250px; }
+}
+
+@media (max-width: 600px) {
+  /* 1. Contenedor Navbar */
+  .navbar-content {
+    padding: 0 15px;
+    position: relative; 
+    display: flex;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    max-width: 50%;
+  }
+
+  .nav-controls {
+    gap: 10px;
+    width: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* 2. AJUSTE DE LA CAJA CERRADA (Para que coincida con la abierta) */
+  .search-box {
+    /* Forzamos que en móvil mida 40px desde el inicio para evitar el salto de altura */
+    height: 40px !important; 
+    width: 40px !important;
+  }
+
+  /* 3. BARRA EXPANDIDA (Ajustada para no pegarse al switch) */
+  .search-box.expanded {
+    position: absolute !important;
+    
+    /* CAMBIO: Aumentamos a 75px para separarlo del switch y que coincida con la posición original */
+    right: 70px; 
+    left: 15px;
+    
+    width: auto !important;
+    
+    /* Centrado Vertical (Técnica del Margen Negativo) */
+    height: 40px !important;
+    top: 50%;
+    margin-top: -20px; 
+    margin-bottom: 0;
+    
+    transform: none !important; 
+    
+    background: var(--input-bg) !important;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* 4. INPUT INTERNO */
+  .search-input {
+    padding: 0 70px 0 15px !important;
+    font-size: 16px !important; 
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  
+  /* 5. NUEVO: LUPA (SEARCH BTN) CENTRADA PERFECTAMENTE */
+  /* Esto soluciona que el icono "baile" verticalmente */
+  .search-box .search-btn {
+    top: 0 !important;
+    bottom: 0 !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    right: 2px !important; /* Pequeño ajuste fino horizontal */
+  }
+
+  .clear-search-x {
+    right: 40px; /* La movemos un poco a la izquierda para que no choque con la lupa nueva */
+  }
+  
+  /* 6. VENTANA DE RESULTADOS (INTACTA - SIGUE FUNCIONANDO BIEN) */
+  .live-search-results {
+    position: fixed;
+    top: 64px; 
+    
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    
+    width: 94%; 
+    max-width: 480px; 
+    
+    transform: none !important; 
+    
+    background: var(--bg-card);
+    box-shadow: 0 10px 100px rgba(0,0,0,0.5);
+    border: 1px solid var(--border-color);
+    z-index: 3000;
+    
+    animation: slideDownMobile 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* 7. BOTÓN DE REGRESO (BACK) */
+  .back-search-btn {
+    position: absolute;
+    left: 8px; /* Lo pegamos al inicio de la barra expandida */
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px;
+    cursor: pointer;
+    z-index: 101; /* Por encima del input */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInBack 0.2s ease;
+  }
+
+  .back-search-btn:active {
+    color: var(--accent-blue);
+    transform: translateY(-50%) scale(0.9);
+  }
+
+  /* Ajustamos el padding del input para que no pise el botón de atrás */
+  .search-box.expanded .search-input {
+    padding: 0 75px 0 45px !important; /* 45px a la izquierda para el botón back */
+  }
+
+  /* Animación sutil de entrada para la flecha */
+  @keyframes fadeInBack {
+    from { opacity: 0; transform: translateY(-50%) translateX(5px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+  }
+  
+  /* Ajuste fino para la "X" cuando hay flecha de regreso */
+  .search-box.expanded .clear-search-x {
+    right: 42px;
+  }
+}
+
+/* Ocultar el botón de regreso en PC (donde la barra no es absoluta) */
+@media (min-width: 601px) {
+  .back-search-btn {
+    display: none;
+  }
+}
+
+@keyframes slideDownMobile {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

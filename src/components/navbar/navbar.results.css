@@ -103,3 +103,56 @@
   color: #10b981; /* Verde esmeralda (Se mantiene igual, combina bien con ambos) */
   font-weight: 700;
 }
+
+/* ========================================= */
+/* === BOTÓN FINAL "VER TODOS" (CORREGIDO) === */
+/* ========================================= */
+.view-all-results {
+  /* 1. CAMBIO VITAL: Forzamos a que se comporte como un bloque */
+  display: block; 
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no "infle" el ancho */
+  
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  
+  /* 2. RESET DE ENLACE: Evitamos el azul y el subrayado de navegador */
+  text-decoration: none !important; 
+  
+  /* ESTADO BASE */
+  background: var(--bg-app); 
+  color: var(--text-muted);  
+  border-top: 1px solid var(--border-color);
+  
+  /* Preparamos el borde izquierdo */
+  border-left: 4px solid transparent; 
+  
+  transition: all 0.2s ease;
+}
+
+/* --- HOVER MODO CLARO --- */
+.view-all-results:hover {
+  background-color: #e7f1ff; 
+  color: #007bff; 
+  border-left-color: #007bff;
+  
+  /* Aseguramos que no aparezca subrayado al pasar el mouse */
+  text-decoration: none; 
+  
+  /* El desplazamiento suave */
+  transform: translateX(2px);
+}
+
+/* --- HOVER MODO OSCURO --- */
+.dark-mode .view-all-results:hover {
+  background-color: #1e293b; 
+  color: #3b82f6; 
+  border-left-color: #3b82f6;
+  border-top-color: transparent;
+  
+  /* Refuerzo para modo oscuro */
+  text-decoration: none;
+}
