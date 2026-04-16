@@ -3,103 +3,103 @@
 /* ========================================= */
 
 .search-result-item {
-    display: flex;
-    font-size: 14px;
-    text-decoration: none; /* Quita el subrayado de enlace */
-    color: inherit; /* Mantiene el color de texto de tu app */
-    align-items: flex-start; /* 🔥 IMPORTANTE */
-    gap: 0; /* control manual con margins */
-    padding: 18px 15px;
-    cursor: pointer;
-    
-    /* Borde base transparente (para que no salte al hacer hover) */
-    border-left: 4px solid transparent; 
-    border-bottom: 1px solid var(--border-color);
-    
-    background: var(--bg-card);
-    
-    /* Transición suave para todos los cambios */
-    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative; /* Necesario para el z-index */
-  }
+  display: flex;
+  font-size: 14px;
+  text-decoration: none; /* Quita el subrayado de enlace */
+  color: inherit; /* Mantiene el color de texto de tu app */
+  align-items: flex-start; /* 🔥 IMPORTANTE */
+  gap: 0; /* control manual con margins */
+  padding: 18px 15px;
+  cursor: pointer;
   
-  /* --- 1. HOVER EN MODO CLARO (Igual a .product-card:hover) --- */
-  .search-result-item:hover {
-    /* Fondo sutilmente diferente para destacar */
-    background-color: #f8fafc; /* var(--bg-app) para contraste sutil */
-    
-    /* EL MISMO AZUL DE TUS TARJETAS CLARAS (#007bff) */
-    border-left-color: #007bff; 
-    
-    /* Sombra similar a tus tarjetas */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    
-    /* Pequeño desplazamiento a la derecha en lugar de arriba (más elegante en listas) */
-    transform: translateX(4px);
-    
-    z-index: 10; /* Asegura que la sombra tape a los bordes vecinos */
-    border-bottom-color: transparent; /* Oculta la línea de abajo para que se vea limpio */
-  }
+  /* Borde base transparente (para que no salte al hacer hover) */
+  border-left: 4px solid transparent; 
+  border-bottom: 1px solid var(--border-color);
   
-  /* --- 2. HOVER EN MODO OSCURO (Igual a .dark-mode .product-card:hover) --- */
-  /* Asegúrate de que tu componente Navbar o body tenga la clase .dark-mode */
-  .dark-mode .search-result-item:hover {
-    /* EL MISMO FONDO DE TUS TARJETAS OSCURAS (#1e293b) */
-    background-color: #1e293b; 
-    
-    /* EL MISMO AZUL CLARO DE MODO OSCURO (#3b82f6) */
-    border-left-color: #3b82f6; 
-    
-    /* LA MISMA SOMBRA INTENSA DE MODO OSCURO */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-  }
+  background: var(--bg-card);
   
-  /* --- ESTILOS DE IMAGEN Y TEXTO (Se mantienen igual pero revisados) --- */
-  .mini-thumb {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-    margin-right: 15px;
-    background: #fff; /* Siempre blanco para que la foto resalte */
-    padding: 4px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    flex-shrink: 0;
-    transition: border-color 0.2s;
-  }
+  /* Transición suave para todos los cambios */
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative; /* Necesario para el z-index */
+}
+
+/* --- 1. HOVER EN MODO CLARO (Igual a .product-card:hover) --- */
+.search-result-item:hover {
+  /* Fondo sutilmente diferente para destacar */
+  background-color: #f8fafc; /* var(--bg-app) para contraste sutil */
   
-  /* Detalle extra: al hacer hover en la fila, el borde de la foto se pinta también */
-  .search-result-item:hover .mini-thumb {
-    border-color: #007bff; /* Azul claro */
-  }
-  .dark-mode .search-result-item:hover .mini-thumb {
-    border-color: #3b82f6; /* Azul oscuro */
-  }
+  /* EL MISMO AZUL DE TUS TARJETAS CLARAS (#007bff) */
+  border-left-color: #007bff; 
   
-  .mini-info {
-    display: block; /* 🔥 cambio clave */
-    align-items: center; /* 🔥 centra verticalmente */
-    flex: 1;
-    overflow: hidden;
-  }
+  /* Sombra similar a tus tarjetas */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   
-  .mini-title {
-    font-size: 14px;
-    color: var(--text-main);
-    font-weight: 600;
-    line-height: 1.3;
-    white-space: normal;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 4px;
-    display: block; /* 🔥 evita comportamientos raros */
-    width: 100%;
-  }
+  /* Pequeño desplazamiento a la derecha en lugar de arriba (más elegante en listas) */
+  transform: translateX(4px);
   
-  .mini-price {
-    font-size: 14px;
-    color: #10b981; /* Verde esmeralda (Se mantiene igual, combina bien con ambos) */
-    font-weight: 700;
-  }
+  z-index: 10; /* Asegura que la sombra tape a los bordes vecinos */
+  border-bottom-color: transparent; /* Oculta la línea de abajo para que se vea limpio */
+}
+
+/* --- 2. HOVER EN MODO OSCURO (Igual a .dark-mode .product-card:hover) --- */
+/* Asegúrate de que tu componente Navbar o body tenga la clase .dark-mode */
+.dark-mode .search-result-item:hover {
+  /* EL MISMO FONDO DE TUS TARJETAS OSCURAS (#1e293b) */
+  background-color: #1e293b !important; 
+  
+  /* EL MISMO AZUL CLARO DE MODO OSCURO (#3b82f6) */
+  border-left-color: #3b82f6; 
+  
+  /* LA MISMA SOMBRA INTENSA DE MODO OSCURO */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* --- ESTILOS DE IMAGEN Y TEXTO (Se mantienen igual pero revisados) --- */
+.mini-thumb {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin-right: 15px;
+  background: #fff; /* Siempre blanco para que la foto resalte */
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+/* Detalle extra: al hacer hover en la fila, el borde de la foto se pinta también */
+.search-result-item:hover .mini-thumb {
+  border-color: #007bff; /* Azul claro */
+}
+.dark-mode .search-result-item:hover .mini-thumb {
+  border-color: #3b82f6; /* Azul oscuro */
+}
+
+.mini-info {
+  display: block; /* 🔥 cambio clave */
+  align-items: center; /* 🔥 centra verticalmente */
+  flex: 1;
+  overflow: hidden;
+}
+
+.mini-title {
+  font-size: 14px;
+  color: var(--text-main);
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+  display: block; /* 🔥 evita comportamientos raros */
+  width: 100%;
+}
+
+.mini-price {
+  font-size: 14px;
+  color: #10b981; /* Verde esmeralda (Se mantiene igual, combina bien con ambos) */
+  font-weight: 700;
+}
