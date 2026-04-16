@@ -136,9 +136,12 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   useEffect(() => {
     function handleClickOutside(event) {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSuggestions([]); 
+        setIsSearchExpanded(false); // 🔥 CLAVE
+        setSuggestions([]);
+        setHasSearched(false); // 🔥 evita estado fantasma
       }
     }
+  
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -216,7 +219,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
             </button>
 
             {/* --- DROPDOWN INFORMATIVO --- */}
-            {isSearchExpanded && localSearch.length >= 2 && (
+            {isSearchExpanded && localSearch.trim().length >= 2 && (
               <div className="live-search-results">
 
                 {/* LOADING */}
