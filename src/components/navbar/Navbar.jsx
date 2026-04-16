@@ -40,6 +40,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
     // evitar llamadas innecesarias
     if (value.trim().length < 2) {
       setSuggestions([]);
+      setIsLoadingSuggestions(false);
       return;
     }
   
@@ -198,7 +199,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
             </button>
 
             {/* --- DROPDOWN INFORMATIVO --- */}
-            {isSearchExpanded && localSearch.length > 0 && (
+            {isSearchExpanded && localSearch.length >= 2 && (
               <div className="live-search-results">
 
                 {/* LOADING */}
@@ -283,7 +284,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
                 )}
 
                 {/* SIN RESULTADOS */}
-                {!isLoadingSuggestions && suggestions.length === 0 && (
+                {!isLoadingSuggestions && localSearch.length >= 2 && suggestions.length === 0 && (
                   <div className="no-results-live">
                     
                     <div className="no-results-icon-mini">
