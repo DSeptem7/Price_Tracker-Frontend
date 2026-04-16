@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 import './navbar.search.css';
 import './navbar.utils.css';
+import './navbar.results.css';
 import { fetchAutocomplete } from '../../services/api';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor

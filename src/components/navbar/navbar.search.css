@@ -119,3 +119,121 @@
   .search-input::-webkit-input-placeholder {
     color: var(--text-muted);
   }
+
+/* ========================================= */
+/* === VENTANA DE RESULTADOS (LIVE SEARCH) === */
+/* ========================================= */
+.live-search-results {
+  position: absolute;
+  top: 100%; /* Justo debajo del buscador */
+  left: 0;
+  right: 0;
+  width: 100%; /* En PC sigue el ancho del input */
+  
+  /* ESTILOS DE LA VENTANA */
+  background-color: var(--bg-card); /* Fondo sólido */
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 16px 16px; /* Bordes redondos solo abajo */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Sombra fuerte para resaltar */
+  
+  z-index: 3000;
+  overflow: hidden;
+  margin-top: 8px; /* Un pequeño espacio de separación */
+  
+  /* Animación de entrada */
+  animation: slideDown 0.2s ease-out;
+  }
+  
+  @keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .search-icon {
+    width: 24px;           /* 🔥 CLAVE */
+    min-width: 24px;       /* 🔥 CLAVE */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: #94a3b8;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+  
+  .search-result-item:hover .search-icon {
+    color: #007bff;
+  }
+  
+  .dark-mode .search-result-item:hover .search-icon {
+    color: #3b82f6;
+  }
+  
+  /* === SIN RESULTADOS === */
+  .no-results-live {
+    padding: 25px 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .no-results-icon-mini {
+    color: var(--text-muted);
+    opacity: 0.6;
+    animation: bounce-sad 2.5s ease-in-out infinite;
+  }
+  
+  .no-results-live p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  
+  .search-tip {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  
+  /* === spinner buscando === */
+  .spinner svg {
+    animation: rotate 1s linear infinite;
+  }
+  
+  .spinner circle {
+    stroke-dasharray: 90,150;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1,150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90,150;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 90,150;
+      stroke-dashoffset: -124;
+    }
+  }
+  
+  .search-result-item:hover .spinner {
+    color: #007bff;
+  }
+  
+  .dark-mode .search-result-item:hover .spinner {
+    color: #3b82f6;
+  }
+  
