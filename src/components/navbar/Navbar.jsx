@@ -27,6 +27,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
   const debounceRef = useRef(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const loadingTimeoutRef = useRef(null);
 
   // --- NUEVA LÓGICA SIMPLIFICADA ---
   const handleInputChange = (e) => {
@@ -48,8 +49,12 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   
     debounceRef.current = setTimeout(async () => {
       try {
-        setIsLoadingSuggestions(true);
-        setHasSearched(false); // 🔥 aún no hay respuesta
+        // 🔥 delay para mostrar loading SOLO si tarda
+        loadingTimeoutRef.current = setTimeout(() => {
+          setIsLoadingSuggestions(true);
+        }, 150);
+
+        setHasSearched(false);
   
         const res = await fetch(
           `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
@@ -62,6 +67,8 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
       } catch (err) {
         console.error("Autocomplete error:", err);
       } finally {
+        // 🔥 cancelar loading si terminó rápido
+        clearTimeout(loadingTimeoutRef.current);
         setIsLoadingSuggestions(false);
       }
     }, 300); // 🔥 debounce 300ms
