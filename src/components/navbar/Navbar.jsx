@@ -97,22 +97,35 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   };
 
   const highlightMatch = (text, query) => {
-    if (!query) return text;
+    if (!query || !text) return text;
   
-    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(${escaped})`, 'gi');
+    // 1. Convertimos el query en un array de palabras y escapamos caracteres especiales
+    const words = query.split(/\s+/).filter(Boolean);
+    if (words.length === 0) return text;
   
+    const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    
+    // 2. Creamos una sola Regex que busque CUALQUIERA de las palabras
+    // Ejemplo: /(iphone|14)/gi
+    const regex = new RegExp(`(${escapedWords.join('|')})`, 'gi');
+  
+    // 3. Dividimos el texto
     const parts = text.split(regex);
   
-    return parts.map((part, i) =>
-      part.toLowerCase() === query.toLowerCase() ? (
+    return parts.map((part, i) => {
+      // Verificamos si la parte actual coincide con alguna de las palabras buscadas
+      const isMatch = words.some(word => 
+        part.toLowerCase() === word.toLowerCase()
+      );
+  
+      return isMatch ? (
         <mark key={i} className="highlight">
           {part}
         </mark>
       ) : (
         part
-      )
-    );
+      );
+    });
   };
 
   // Clic fuera para cerrar
