@@ -141,21 +141,8 @@
   .search-box.expanded .clear-search-x {
     right: 42px;
   }
-}
 
-/* Ocultar el botón de regreso en PC (donde la barra no es absoluta) */
-@media (min-width: 601px) {
-  .back-search-btn {
-    display: none;
-  }
-}
-
-@keyframes slideDownMobile {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ESPECIFICACIONES AUTH (autentificación) */
+  /* ESPECIFICACIONES AUTH (autentificación) */
 /* Ajuste para móvil: hacerlo un poco más grande para el pulgar */
 @media (max-width: 600px) {
   .login-btn-premium {
@@ -176,4 +163,17 @@
     padding: 6px 10px;
     font-size: 0.8rem;
   }
+}
+}
+
+/* Ocultar el botón de regreso en PC (donde la barra no es absoluta) */
+@media (min-width: 601px) {
+  .back-search-btn {
+    display: none;
+  }
+}
+
+@keyframes slideDownMobile {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
