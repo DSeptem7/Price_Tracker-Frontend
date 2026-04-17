@@ -150,7 +150,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
               placeholder="Buscar productos..." 
               value={localSearch}
               onClick={() => setIsSearchExpanded(true)}
-              onChange={handleInputChange}
+              onChange={search}
               onKeyDown={handleKeyDown}
             />
             
