@@ -27,7 +27,9 @@ const SearchBox = ({
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
+      if (!searchRef.current) return;
+  
+      if (!searchRef.current.contains(e.target)) {
         setIsExpanded(false);
         autocomplete.setSuggestions([]);
         autocomplete.setHasSearched(false);
@@ -35,11 +37,14 @@ const SearchBox = ({
     };
   
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [autocomplete, setIsExpanded]);
 
   return (
-    <div className={`search-box ${isExpanded ? 'expanded' : ''}`}>
+    <div ref={searchRef} className={`search-box ${isExpanded ? 'expanded' : ''}`}>
 
       <input
         ref={inputRef}
