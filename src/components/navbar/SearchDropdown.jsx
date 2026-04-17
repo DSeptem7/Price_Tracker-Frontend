@@ -13,12 +13,7 @@ const SearchDropdown = ({
   if (!isOpen || query.trim().length < 2) return null;
 
   return (
-    <div
-      key={i}
-      className="search-result-item"
-      role="option"
-      onClick={() => onSelect(s.title)}
-    >
+    <div className="live-search-results">
 
       {/* LOADING */}
       {isLoading && (

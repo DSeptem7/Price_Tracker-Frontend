@@ -54,11 +54,6 @@ const SearchBox = ({
         onClick={() => setIsExpanded(true)}
         onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
         placeholder="Buscar productos..."
-
-        role="combobox"
-        aria-expanded={isExpanded}
-        aria-controls="search-dropdown"
-        aria-autocomplete="list"
       />
 
         {isExpanded && value && (
