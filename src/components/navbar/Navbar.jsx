@@ -36,7 +36,11 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
         >
           🛒 Price Tracker
         </span>
+        
+        <div style={{ flexGrow: 1 }}></div>
 
+        <div className="nav-controls">
+          
         <SearchBox
           value={localSearch}
           setValue={setLocalSearch}
@@ -45,11 +49,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
           autocomplete={autocomplete}
           navigate={navigate}
         />
-        
-        <div style={{ flexGrow: 1 }}></div>
 
-        <div className="nav-controls">
-          
           <div className="theme-switch-wrapper">
             <label className="theme-switch">
               <input 
