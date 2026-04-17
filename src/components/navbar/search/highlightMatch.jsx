@@ -9,6 +9,10 @@ export const highlightMatch = (text, query) => {
     const escapedWords = words.map(w =>
       w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     );
+
+    const highlighted = useMemo(() => {
+      return highlightMatch(title, query);
+    }, [title, query]);
   
     const regex = new RegExp(`(${escapedWords.join('|')})`, 'gi');
   
@@ -24,3 +28,4 @@ export const highlightMatch = (text, query) => {
       ) : part;
     });
   };
+  

@@ -7,6 +7,7 @@ export const useAutocomplete = (API_BASE) => {
 
   const debounceRef = useRef(null);
   const loadingTimeoutRef = useRef(null);
+  const abortRef = useRef(null);
 
   const search = (value) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -42,6 +43,30 @@ export const useAutocomplete = (API_BASE) => {
       }
     }, 300);
   };
+
+const search = async (query) => {
+  if (abortRef.current) {
+    abortRef.current.abort();
+  }
+
+  const controller = new AbortController();
+  abortRef.current = controller;
+
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal
+    });
+
+    const data = await res.json();
+    setSuggestions(data);
+    setHasSearched(true);
+
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.error(err);
+    }
+  }
+};
 
   return {
     suggestions,
