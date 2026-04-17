@@ -1,3 +1,5 @@
+import React from "react";
+
 export const highlightMatch = (text, query) => {
     if (!query || !text) return text;
   
