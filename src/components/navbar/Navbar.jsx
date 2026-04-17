@@ -8,7 +8,6 @@ import './navbar.results.css';
 import './navbar.theme.css';
 import './navbar.responsive.css';
 import './navbar.auth.css';
-import { useAutocomplete } from './search/useAutocomplete';
 import { fetchAutocomplete } from '../../services/api';
 
 // NOTA: Ya no necesitamos recibir 'products' aquí porque la búsqueda es en el servidor
@@ -22,7 +21,59 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
   
   const searchRef = useRef(null);
   const inputRef = useRef(null); 
-   
+
+  // --- AUTOCOMPLETE ---
+  const [suggestions, setSuggestions] = useState([]);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+  const debounceRef = useRef(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  const loadingTimeoutRef = useRef(null);
+
+  // --- NUEVA LÓGICA SIMPLIFICADA ---
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setLocalSearch(value);
+  
+    // limpiar debounce anterior
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+  
+    // evitar llamadas innecesarias
+    if (value.trim().length < 2) {
+      setSuggestions([]);
+      setIsLoadingSuggestions(false);
+      setHasSearched(false);
+      return;
+    }
+  
+    debounceRef.current = setTimeout(async () => {
+      try {
+        // 🔥 delay para mostrar loading SOLO si tarda
+        loadingTimeoutRef.current = setTimeout(() => {
+          setIsLoadingSuggestions(true);
+        }, 150);
+
+        setHasSearched(false);
+  
+        const res = await fetch(
+          `${API_BASE}/autocomplete?q=${encodeURIComponent(value)}`
+        );
+  
+        const data = await res.json();
+        setSuggestions(Array.isArray(data) ? data : data.suggestions || []);
+        setHasSearched(true);
+  
+      } catch (err) {
+        console.error("Autocomplete error:", err);
+      } finally {
+        // 🔥 cancelar loading si terminó rápido
+        clearTimeout(loadingTimeoutRef.current);
+        setIsLoadingSuggestions(false);
+      }
+    }, 300); // 🔥 debounce 300ms
+  };
+  
   // Ejecuta la búsqueda y manda a la URL
   const handleSearchSubmit = () => {
     if (localSearch.trim() === "") return; 
@@ -150,7 +201,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode, productCount }) => {
               placeholder="Buscar productos..." 
               value={localSearch}
               onClick={() => setIsSearchExpanded(true)}
-              onChange={search}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
             />
             
