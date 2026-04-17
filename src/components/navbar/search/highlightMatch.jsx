@@ -9,14 +9,14 @@ export const highlightMatch = (text, query) => {
     const escapedWords = words.map(w =>
       w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     );
-
-    const highlighted = useMemo(() => {
-      return highlightMatch(title, query);
-    }, [title, query]);
   
     const regex = new RegExp(`(${escapedWords.join('|')})`, 'gi');
   
     const parts = text.split(regex);
+
+    const highlighted = useMemo(() => {
+      return highlightMatch(title, query);
+    }, [title, query]);
   
     return parts.map((part, i) => {
       const isMatch = words.some(
