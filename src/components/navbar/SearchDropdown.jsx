@@ -1,5 +1,4 @@
 import React from 'react';
-import { highlightMatch } from './search/highlightMatch';
 import SearchItem from './SearchItem';
 
 const SearchDropdown = ({
