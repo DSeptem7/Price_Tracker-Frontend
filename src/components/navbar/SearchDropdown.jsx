@@ -14,9 +14,18 @@ const SearchDropdown = (props) => {
   } = props;
   if (!isOpen || query.trim().length < 2) return null;
   if (!Array.isArray(suggestions)) return null;
+  
+  const viewAllRef = useRef(null);
+
+  useEffect(() => {
+    if (activeIndex === visibleSuggestions.length) {
+      viewAllRef.current?.scrollIntoView({ block: "nearest" });
+    }
+  }, [activeIndex]);
 
   return (
     <div
+      ref={viewAllRef}
       id="search-dropdown"
       className="live-search-results"
       role="listbox"
@@ -48,12 +57,12 @@ const SearchDropdown = (props) => {
             />
           ))}
 
-          <div
-            className={`view-all-results ${activeIndex === suggestions.length ? 'active' : ''}`}
-            onClick={onSubmit}
-            role="option"
-            aria-selected={activeIndex === suggestions.length}
-          >
+            <div
+              className={`view-all-results ${activeIndex === visibleSuggestions.length ? 'active' : ''}`}
+              onClick={onSubmit}
+              role="option"
+              aria-selected={activeIndex === visibleSuggestions.length}
+            >
             Ver todos los resultados para "{query}"
           </div>
         </>

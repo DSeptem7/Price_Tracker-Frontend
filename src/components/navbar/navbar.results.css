@@ -148,7 +148,8 @@
 }
 
 /* --- HOVER MODO OSCURO --- */
-.dark-mode .view-all-results:hover, .search-result-item.active {
+.dark-mode .view-all-results:hover, 
+.dark-mode .search-result-item.active {
   background-color: #1e293b; 
   color: #3b82f6; 
   border-left-color: #3b82f6;
@@ -156,4 +157,17 @@
   
   /* Refuerzo para modo oscuro */
   text-decoration: none;
+}
+
+.view-all-results.active {
+  background-color: #e7f1ff;
+  color: #007bff;
+  border-left-color: #007bff;
+  transform: translateX(2px);
+}
+
+.dark-mode .view-all-results.active {
+  background-color: #1e293b;
+  color: #3b82f6;
+  border-left-color: #3b82f6;
 }
