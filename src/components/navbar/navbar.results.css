@@ -24,7 +24,7 @@
 }
 
 /* --- 1. HOVER EN MODO CLARO (Igual a .product-card:hover) --- */
-.search-result-item:hover {
+.search-result-item:hover, .search-result-item.active {
   /* Fondo sutilmente diferente para destacar */
   background-color: #f8fafc; /* var(--bg-app) para contraste sutil */
   
@@ -43,7 +43,7 @@
 
 /* --- 2. HOVER EN MODO OSCURO (Igual a .dark-mode .product-card:hover) --- */
 /* Asegúrate de que tu componente Navbar o body tenga la clase .dark-mode */
-.dark-mode .search-result-item:hover {
+.dark-mode .search-result-item:hover, .search-result-item.active {
   /* EL MISMO FONDO DE TUS TARJETAS OSCURAS (#1e293b) */
   background-color: #1e293b; 
   
@@ -69,10 +69,10 @@
 }
 
 /* Detalle extra: al hacer hover en la fila, el borde de la foto se pinta también */
-.search-result-item:hover .mini-thumb {
+.search-result-item:hover .mini-thumb, .search-result-item.active {
   border-color: #007bff; /* Azul claro */
 }
-.dark-mode .search-result-item:hover .mini-thumb {
+.dark-mode .search-result-item:hover .mini-thumb, .search-result-item.active {
   border-color: #3b82f6; /* Azul oscuro */
 }
 

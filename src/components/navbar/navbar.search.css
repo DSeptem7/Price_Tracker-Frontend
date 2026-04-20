@@ -237,13 +237,3 @@
     color: #3b82f6;
   }
   
-  /* ===ESTILO NAVEGACIÓN POR TECLADO === */
-  .search-result-item.active {
-    background: var(--accent-blue);
-    color: white;
-  }
-  
-  .dark-mode .search-result-item.active {
-    background: #3b82f6;
-    color: white;
-  }
