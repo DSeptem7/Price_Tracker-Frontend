@@ -43,7 +43,8 @@
 
 /* --- 2. HOVER EN MODO OSCURO (Igual a .dark-mode .product-card:hover) --- */
 /* Asegúrate de que tu componente Navbar o body tenga la clase .dark-mode */
-.dark-mode .search-result-item:hover, .search-result-item.active {
+.dark-mode .search-result-item:hover, 
+.dark-mode .search-result-item.active {
   /* EL MISMO FONDO DE TUS TARJETAS OSCURAS (#1e293b) */
   background-color: #1e293b; 
   

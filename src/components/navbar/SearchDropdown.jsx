@@ -49,8 +49,10 @@ const SearchDropdown = (props) => {
           ))}
 
           <div
-            className="view-all-results"
+            className={`view-all-results ${activeIndex === suggestions.length ? 'active' : ''}`}
             onClick={onSubmit}
+            role="option"
+            aria-selected={activeIndex === suggestions.length}
           >
             Ver todos los resultados para "{query}"
           </div>
@@ -75,9 +77,16 @@ const SearchDropdown = (props) => {
         </span>
 
           <div
-            className="view-all-results"
-            onClick={onSubmit}
-          >
+              className="view-all-results"
+              onClick={onSubmit}
+              role="option"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onSubmit();
+                }
+              }}
+            >
             Buscar: "{query}"
           </div>
         </div>

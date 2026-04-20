@@ -27,21 +27,28 @@ const SearchBox = ({
   };
 
   const handleKeyDown = (e) => {
-    const max = autocomplete.suggestions.length - 1;
+    const visibleSuggestions = autocomplete.suggestions.slice(0, 5);
+    const max = visibleSuggestions.length;
   
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActiveIndex(prev => (prev < max ? prev + 1 : 0));
     }
-  
+    
     if (e.key === "ArrowUp") {
       e.preventDefault();
       setActiveIndex(prev => (prev > 0 ? prev - 1 : max));
     }
   
     if (e.key === "Enter") {
+      if (activeIndex === max) {
+        // 👉 "Ver todos"
+        handleSubmit();
+        return;
+      }
+    
       if (activeIndex >= 0) {
-        const selected = autocomplete.suggestions[activeIndex];
+        const selected = visibleSuggestions[activeIndex];
         if (selected) {
           navigate(`/?q=${encodeURIComponent(selected.title)}`);
           setIsExpanded(false);
