@@ -17,6 +17,7 @@ const SearchDropdown = (props) => {
   
   const viewAllRef = useRef(null);
   const visibleSuggestions = suggestions.slice(0, 5);
+  const href = `/?q=${encodeURIComponent(query)}`;
 
   useEffect(() => {
     if (activeIndex === visibleSuggestions.length) {
@@ -56,15 +57,19 @@ const SearchDropdown = (props) => {
             />
           ))}
 
-            <div
+            <a
+              href={href}
               className={`view-all-results ${activeIndex === visibleSuggestions.length ? 'active' : ''}`}
-              onClick={onSubmit}
               role="option"
               aria-selected={activeIndex === visibleSuggestions.length}
-              ref={viewAllRef}
+              onClick={(e) => {
+                if (e.ctrlKey || e.metaKey || e.button === 1) return;
+                e.preventDefault();
+                onSubmit();
+              }}
             >
-            Ver todos los resultados para "{query}"
-          </div>
+              Ver todos los resultados para "{query}"
+            </a>
         </>
       )}
 

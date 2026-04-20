@@ -4,6 +4,7 @@ import { highlightMatch } from './search/highlightMatch';
 const SearchItem = ({ title, query, onClick, isActive }) => {
 
   const ref = useRef(null);
+  const href = `/?q=${encodeURIComponent(title)}`;
 
   const highlightedTitle = useMemo(() => {
     return highlightMatch(title, query);
@@ -20,10 +21,15 @@ const SearchItem = ({ title, query, onClick, isActive }) => {
   return (
     <a
       ref={ref}
+      href={href}
       className={`search-result-item ${isActive ? 'active' : ''}`}
       role="option"
       aria-selected={isActive}
-      onClick={onClick}
+      onClick={(e) => {
+        if (e.ctrlKey || e.metaKey || e.button === 1) return;
+        e.preventDefault();
+        onClick(); // tu navigate actual
+      }}
     >
       <div className="search-icon">
         <svg
