@@ -18,7 +18,7 @@ const SearchItem = ({ title, query, onClick, isActive }) => {
   }, [isActive]);
 
   return (
-    <div
+    <a
       ref={ref}
       className={`search-result-item ${isActive ? 'active' : ''}`}
       role="option"
@@ -43,7 +43,7 @@ const SearchItem = ({ title, query, onClick, isActive }) => {
       <span className="mini-title">
         {highlightedTitle}
       </span>
-    </div>
+    </a>
   );
 };
 

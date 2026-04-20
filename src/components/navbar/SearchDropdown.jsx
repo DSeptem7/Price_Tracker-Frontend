@@ -53,7 +53,6 @@ const SearchDropdown = (props) => {
               title={s.title}
               query={query}
               isActive={i === activeIndex}
-              onClick={() => onSelect(s.title)}
             />
           ))}
 
