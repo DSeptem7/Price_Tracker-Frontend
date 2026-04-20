@@ -13,6 +13,12 @@ const SearchItem = ({ title, query, onClick }) => {
       role="option"
       onClick={onClick}
     >
+      <div
+      className={`search-result-item ${isActive ? 'active' : ''}`}
+      role="option"
+      aria-selected={isActive}
+      onClick={onClick}
+    ></div>
       <div className="search-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"

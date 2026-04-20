@@ -11,6 +11,7 @@ const SearchBox = ({
 }) => {
   const inputRef = useRef(null);
   const searchRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const handleChange = (e) => {
     const val = e.target.value;
@@ -24,6 +25,41 @@ const SearchBox = ({
     setIsExpanded(false);
     setValue("");
   };
+
+  const handleKeyDown = (e) => {
+    const max = autocomplete.suggestions.length - 1;
+  
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex(prev => (prev < max ? prev + 1 : 0));
+    }
+  
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex(prev => (prev > 0 ? prev - 1 : max));
+    }
+  
+    if (e.key === "Enter") {
+      if (activeIndex >= 0) {
+        const selected = autocomplete.suggestions[activeIndex];
+        if (selected) {
+          navigate(`/?q=${encodeURIComponent(selected.title)}`);
+          setIsExpanded(false);
+          setValue("");
+        }
+      } else {
+        handleSubmit();
+      }
+    }
+  
+    if (e.key === "Escape") {
+      setIsExpanded(false);
+    }
+  };
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [autocomplete.suggestions]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -52,7 +88,7 @@ const SearchBox = ({
         value={value}
         onChange={handleChange}
         onClick={() => setIsExpanded(true)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+        onKeyDown={handleKeyDown}
         placeholder="Buscar productos..."
 
         role="combobox"
@@ -107,6 +143,7 @@ const SearchBox = ({
           setValue("");
         }}
         onSubmit={handleSubmit}
+        activeIndex={activeIndex}
       />
 
     </div>
