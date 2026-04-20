@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from "react";
-import SearchDropdown from "./SearchDropdown";
+import React, { useRef, useEffect } from 'react';
+import SearchDropdown from './SearchDropdown';
 import { useSearchController } from "./hooks/useSearchController";
 
 const SearchBox = ({
@@ -28,22 +28,24 @@ const SearchBox = ({
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!searchRef.current) return;
-
+  
       if (!searchRef.current.contains(e.target)) {
         setIsExpanded(false);
         autocomplete.setSuggestions([]);
         autocomplete.setHasSearched(false);
       }
     };
-
+  
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
+  
+    return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [autocomplete, setIsExpanded]);
 
   return (
-    <div ref={searchRef} className={`search-box ${isExpanded ? "expanded" : ""}`}>
-      
+    <div ref={searchRef} className={`search-box ${isExpanded ? 'expanded' : ''}`}>
+
       <input
         ref={inputRef}
         className="search-input"
@@ -61,7 +63,38 @@ const SearchBox = ({
         }
       />
 
-      <SearchDropdown
+        {isExpanded && value && (
+        <button 
+            className="clear-search-x"
+            onClick={() => {
+            setValue("");
+            autocomplete.setSuggestions([]);
+            autocomplete.setHasSearched(false);
+            inputRef.current?.focus();
+            }}
+            type="button"
+        >
+            ✕
+        </button>
+        )}
+        <button
+                className="search-btn"
+                onClick={() => {
+                  if (value.trim()) {
+                    handleSubmit();
+                  } else {
+                    setIsExpanded(prev => !prev);
+                    setTimeout(() => inputRef.current?.focus(), 100);
+                  }
+                }}
+              >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+
+            <SearchDropdown
         isOpen={isExpanded}
         query={value}
         isLoading={autocomplete.isLoading}
