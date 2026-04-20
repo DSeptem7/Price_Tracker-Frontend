@@ -134,7 +134,7 @@
 }
 
 /* --- HOVER MODO CLARO --- */
-.view-all-results:hover {
+.view-all-results:hover, .search-result-item.active {
   background-color: #e7f1ff; 
   color: #007bff; 
   border-left-color: #007bff;
@@ -147,7 +147,7 @@
 }
 
 /* --- HOVER MODO OSCURO --- */
-.dark-mode .view-all-results:hover {
+.dark-mode .view-all-results:hover, .search-result-item.active {
   background-color: #1e293b; 
   color: #3b82f6; 
   border-left-color: #3b82f6;
