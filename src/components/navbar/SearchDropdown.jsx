@@ -8,7 +8,8 @@ const SearchDropdown = ({
   suggestions,
   hasSearched,
   onSelect,
-  onSubmit
+  onSubmit,
+  activeIndex
 }) => {
   if (!isOpen || query.trim().length < 2) return null;
 
