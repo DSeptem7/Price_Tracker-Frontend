@@ -171,3 +171,7 @@
   color: #3b82f6;
   border-left-color: #3b82f6;
 }
+
+.search-result-item:focus-visible {
+  outline: none;
+}
