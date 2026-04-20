@@ -1,17 +1,19 @@
 import React from 'react';
 import SearchItem from './SearchItem';
 
-const SearchDropdown = ({
-  isOpen,
-  query,
-  isLoading,
-  suggestions,
-  hasSearched,
-  onSelect,
-  onSubmit,
-  activeIndex
-}) => {
+const SearchDropdown = (props) => {
+  const {
+    isOpen,
+    query,
+    isLoading,
+    suggestions,
+    hasSearched,
+    onSelect,
+    onSubmit,
+    activeIndex
+  } = props;
   if (!isOpen || query.trim().length < 2) return null;
+  if (!Array.isArray(suggestions)) return null;
 
   return (
     <div
