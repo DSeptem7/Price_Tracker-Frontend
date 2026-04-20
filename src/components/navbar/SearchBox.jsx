@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import SearchDropdown from './SearchDropdown';
-import { useSearchController } from "./hooks/useSearchController";
 
 const SearchBox = ({
+  value,
+  setValue,
   isExpanded,
   setIsExpanded,
   autocomplete,
@@ -10,20 +11,62 @@ const SearchBox = ({
 }) => {
   const inputRef = useRef(null);
   const searchRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
-  const {
-    value,
-    setValue,
-    activeIndex,
-    visibleSuggestions,
-    handleChange,
-    handleKeyDown,
-    handleSubmit
-  } = useSearchController({
-    autocomplete,
-    navigate,
-    setIsExpanded
-  });
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setValue(val);
+    autocomplete.search(val);
+  };
+
+  const handleSubmit = () => {
+    if (!value.trim()) return;
+    navigate(`/?q=${encodeURIComponent(value)}`);
+    setIsExpanded(false);
+    setValue("");
+  };
+
+  const handleKeyDown = (e) => {
+    const visibleSuggestions = autocomplete.suggestions.slice(0, 5);
+    const max = visibleSuggestions.length;
+  
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex(prev => (prev < max ? prev + 1 : 0));
+    }
+    
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex(prev => (prev > 0 ? prev - 1 : max));
+    }
+  
+    if (e.key === "Enter") {
+      if (activeIndex === max) {
+        // 👉 "Ver todos"
+        handleSubmit();
+        return;
+      }
+    
+      if (activeIndex >= 0) {
+        const selected = visibleSuggestions[activeIndex];
+        if (selected) {
+          navigate(`/?q=${encodeURIComponent(selected.title)}`);
+          setIsExpanded(false);
+          setValue("");
+        }
+      } else {
+        handleSubmit();
+      }
+    }
+  
+    if (e.key === "Escape") {
+      setIsExpanded(false);
+    }
+  };
+
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [autocomplete.suggestions]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -50,17 +93,15 @@ const SearchBox = ({
         ref={inputRef}
         className="search-input"
         value={value}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={handleChange}
         onClick={() => setIsExpanded(true)}
         onKeyDown={handleKeyDown}
         placeholder="Buscar productos..."
+
         role="combobox"
         aria-expanded={isExpanded}
         aria-controls="search-dropdown"
         aria-autocomplete="list"
-        aria-activedescendant={
-          activeIndex >= 0 ? `search-item-${activeIndex}` : undefined
-        }
       />
 
         {isExpanded && value && (
@@ -77,32 +118,39 @@ const SearchBox = ({
             ✕
         </button>
         )}
-        <button
-                className="search-btn"
+        <button className="search-btn"
                 onClick={() => {
-                  if (value.trim()) {
-                    handleSubmit();
-                  } else {
-                    setIsExpanded(prev => !prev);
+                    if (!isExpanded) {
+                    setIsExpanded(true);
                     setTimeout(() => inputRef.current?.focus(), 100);
-                  }
+                    } else {
+                    if (value.trim()) {
+                        handleSubmit();
+                    } else {
+                        setIsExpanded(false);
+                    }
+                    }
                 }}
-              >
+                >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
             </button>
 
-            <SearchDropdown
+      <SearchDropdown
         isOpen={isExpanded}
         query={value}
         isLoading={autocomplete.isLoading}
-        suggestions={visibleSuggestions}
-        totalSuggestions={autocomplete.suggestions.length}
+        suggestions={autocomplete.suggestions}
         hasSearched={autocomplete.hasSearched}
-        activeIndex={activeIndex}
+        onSelect={(title) => {
+          navigate(`/?q=${encodeURIComponent(title)}`);
+          setIsExpanded(false);
+          setValue("");
+        }}
         onSubmit={handleSubmit}
+        activeIndex={activeIndex}
       />
 
     </div>
