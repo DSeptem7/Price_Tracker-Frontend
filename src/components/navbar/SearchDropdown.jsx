@@ -16,6 +16,7 @@ const SearchDropdown = (props) => {
   if (!Array.isArray(suggestions)) return null;
   
   const viewAllRef = useRef(null);
+  const visibleSuggestions = suggestions.slice(0, 5);
 
   useEffect(() => {
     if (activeIndex === visibleSuggestions.length) {
@@ -25,7 +26,6 @@ const SearchDropdown = (props) => {
 
   return (
     <div
-      ref={viewAllRef}
       id="search-dropdown"
       className="live-search-results"
       role="listbox"
@@ -62,6 +62,7 @@ const SearchDropdown = (props) => {
               onClick={onSubmit}
               role="option"
               aria-selected={activeIndex === visibleSuggestions.length}
+              ref={viewAllRef}
             >
             Ver todos los resultados para "{query}"
           </div>
