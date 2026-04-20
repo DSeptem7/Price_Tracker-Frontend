@@ -1,24 +1,30 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import { highlightMatch } from './search/highlightMatch';
 
-const SearchItem = ({ title, query, onClick }) => {
+const SearchItem = ({ title, query, onClick, isActive }) => {
+
+  const ref = useRef(null);
 
   const highlightedTitle = useMemo(() => {
     return highlightMatch(title, query);
   }, [title, query]);
 
+  useEffect(() => {
+    if (isActive) {
+      ref.current?.scrollIntoView({
+        block: "nearest"
+      });
+    }
+  }, [isActive]);
+
   return (
     <div
-      className="search-result-item"
-      role="option"
-      onClick={onClick}
-    >
-      <div
+      ref={ref}
       className={`search-result-item ${isActive ? 'active' : ''}`}
       role="option"
       aria-selected={isActive}
       onClick={onClick}
-    ></div>
+    >
       <div className="search-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"

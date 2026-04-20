@@ -1,7 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import SearchDropdown from './SearchDropdown';
-
-const [activeIndex, setActiveIndex] = useState(-1);
 
 const SearchBox = ({
   value,
@@ -13,6 +11,7 @@ const SearchBox = ({
 }) => {
   const inputRef = useRef(null);
   const searchRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const handleChange = (e) => {
     const val = e.target.value;
