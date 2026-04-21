@@ -3,6 +3,7 @@ import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
 import ProductCard from "./components/product/ProductCard";
 import { useProducts } from "./hooks/useProducts";
+import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
@@ -132,17 +133,6 @@ function App() {
       return savedTheme !== null ? savedTheme === "true" : true;
     } catch { return true; }
   });
-
-  // --- MAPEO PARA FILTROS L.433 ---
-  const mapSortOption = useCallback((opt) => {
-    switch (opt) {
-      case "date_desc": return "latest";
-      case "date_asc": return "oldest";
-      case "price_desc": return "price_high";
-      case "price_asc": return "price_low";
-      default: return "latest";
-    }
-  }, []); 
 
   const {
     products,
