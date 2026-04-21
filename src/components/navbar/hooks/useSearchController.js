@@ -20,9 +20,15 @@ export const useSearchController = ({
   // 🚀 submit general
   const handleSubmit = () => {
     if (!value.trim()) return;
-
+  
     navigate(`/?q=${encodeURIComponent(value)}`);
+  
     setIsExpanded(false);
+    setValue(""); // 🔥 esto faltaba
+    setActiveIndex(-1); // opcional pero recomendado
+  
+    autocomplete.setSuggestions([]); // 🔥 limpia resultados
+    autocomplete.setHasSearched(false);
   };
 
   // ⌨️ teclado
