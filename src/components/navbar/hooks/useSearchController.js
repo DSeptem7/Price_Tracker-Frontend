@@ -59,6 +59,7 @@ export const useSearchController = ({
 
     if (e.key === "Escape") {
       setIsExpanded(false);
+      setActiveIndex(-1);
     }
   };
 

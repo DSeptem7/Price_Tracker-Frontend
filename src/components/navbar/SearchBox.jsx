@@ -31,8 +31,7 @@ const SearchBox = ({
   
       if (!searchRef.current.contains(e.target)) {
         setIsExpanded(false);
-        autocomplete.setSuggestions([]);
-        autocomplete.setHasSearched(false);
+        setActiveIndex(-1); // 🔥 importante
       }
     };
   
