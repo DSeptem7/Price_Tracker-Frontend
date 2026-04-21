@@ -78,6 +78,7 @@ export const useSearchController = ({
     value,
     setValue,
     activeIndex,
+    setActiveIndex,
     visibleSuggestions,
     handleChange,
     handleKeyDown,

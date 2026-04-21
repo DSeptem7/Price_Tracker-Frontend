@@ -15,6 +15,7 @@ const SearchBox = ({
     value,
     setValue,
     activeIndex,
+    setActiveIndex,
     visibleSuggestions,
     handleChange,
     handleKeyDown,

@@ -134,7 +134,7 @@ function App() {
   });
 
   // --- MAPEO PARA FILTROS L.433 ---
-  const mapSortOption = (opt) => {
+  const mapSortOption = useCallback((opt) => {
     switch (opt) {
       case "date_desc": return "latest";
       case "date_asc": return "oldest";
@@ -142,7 +142,7 @@ function App() {
       case "price_asc": return "price_low";
       default: return "latest";
     }
-  };  
+  }, []); 
 
   const {
     products,
