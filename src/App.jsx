@@ -133,6 +133,17 @@ function App() {
     } catch { return true; }
   });
 
+  // --- MAPEO PARA FILTROS L.433 ---
+  const mapSortOption = (opt) => {
+    switch (opt) {
+      case "date_desc": return "latest";
+      case "date_asc": return "oldest";
+      case "price_desc": return "price_high";
+      case "price_asc": return "price_low";
+      default: return "latest";
+    }
+  };  
+
   const {
     products,
     totalDocs,
@@ -221,17 +232,6 @@ useEffect(() => {
         useEffect(() => {
           fetchStats();
         }, []);
-
-  // --- MAPEO PARA FILTROS L.433 ---
-  const mapSortOption = (opt) => {
-    switch (opt) {
-      case "date_desc": return "latest";
-      case "date_asc": return "oldest";
-      case "price_desc": return "price_high";
-      case "price_asc": return "price_low";
-      default: return "latest";
-    }
-  };  
 
   // --- HANDLERS ---
   const handlePageChange = (page) => {
