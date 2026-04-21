@@ -1,5 +1,4 @@
- // --- MAPEO PARA FILTROS L.433 ---
- export const mapSortOption = useCallback((opt) => {
+export const mapSortOption = (opt) => {
     switch (opt) {
       case "date_desc": return "latest";
       case "date_asc": return "oldest";
@@ -7,4 +6,4 @@
       case "price_asc": return "price_low";
       default: return "latest";
     }
-  }, []); 
+  };
