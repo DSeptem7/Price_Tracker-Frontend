@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
 import ProductCard from "./components/product/ProductCard";
+import { useProducts } from "./hooks/useProducts";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
@@ -100,16 +101,11 @@ function PriceChartModal({ productTitle, onClose, apiBase, isDarkMode }) {
 // --- COMPONENTE PRINCIPAL APP ---
 function App() {
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
-
-  // 1. ESTADOS DE DATOS
-  const [products, setProducts] = useState([]); 
-  const [totalDocs, setTotalDocs] = useState(0);
   
   // Stats: Usamos un estado local que se calcula al recibir productos
   // Esto mantiene tu panel visualmente rico.
   const [stats, setStats] = useState({ dropCount: 0, upCount: 0, totalSavings: 0, bestDiscount: { percent: 0, title: "" } });
 
-  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   
   // Router y Navegación
@@ -135,6 +131,24 @@ function App() {
       const savedTheme = localStorage.getItem("isDarkMode");
       return savedTheme !== null ? savedTheme === "true" : true;
     } catch { return true; }
+  });
+
+  const {
+    products,
+    totalDocs,
+    loading,
+    totalPages,
+    getPaginationGroup,
+    fetchProducts
+  } = useProducts({
+    API_BASE,
+    currentPage,
+    itemsPerPage,
+    urlQuery,
+    sortOption,
+    filterOption,
+    mapSortOption,
+    setRefreshing
   });
 
   // --- EFECTOS DE INICIALIZACIÓN ---
@@ -186,40 +200,6 @@ useEffect(() => {
   return () => clearTimeout(timer);
 }, [inputValue, urlQuery, setSearchParams]);
 
-  // --- LÓGICA DE DATOS (SCALABLE & PROFESSIONAL) ---
-  // Aquí está la corrección clave: Enviamos filtros y orden al backend.
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        page: currentPage,
-        limit: itemsPerPage,
-        sort_by: mapSortOption(sortOption),     // CRÍTICO: El backend ordena
-        filter_opt: filterOption  // CRÍTICO: El backend filtra
-      });
-      
-      if (urlQuery) params.append("search", urlQuery);
-
-      const res = await fetch(`${API_BASE}/product_history?${params.toString()}`);
-      const data = await res.json();
-
-      if (data.products && Array.isArray(data.products)) {
-        setProducts(data.products);
-        setTotalDocs(data.total);
-      } else {
-        setProducts([]);
-        setTotalDocs(0);
-      }
-  
-    } catch (err) {
-      console.error("Error de conexión:", err);
-      setProducts([]);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, [currentPage, itemsPerPage, urlQuery, sortOption, filterOption]);
-
         // CALCULO DE ESTADÍSTICAS (Sobre los datos recibidos o globales si el backend los envía)
         const fetchStats = useCallback(async () => {
           try {
@@ -237,11 +217,6 @@ useEffect(() => {
             console.error("Error stats:", err);
           }
         }, []);
-        
-        // 🔹 3. useEffect GLOBAL (AQUÍ VAN LOS HOOKS)
-        useEffect(() => {
-          fetchProducts();
-        }, [fetchProducts]);
         
         useEffect(() => {
           fetchStats();
@@ -308,17 +283,6 @@ useEffect(() => {
     } finally {
       setRefreshing(false);
     }
-  };
-
-  
-
-  // --- PAGINACIÓN ---
-  const totalPages = Math.ceil(totalDocs / itemsPerPage);
-  const getPaginationGroup = () => {
-    if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
-    if (currentPage <= 4) return [1, 2, 3, 4, 5, "...", totalPages];
-    if (currentPage >= totalPages - 3) return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-    return [1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages];
   };
 
   return (
