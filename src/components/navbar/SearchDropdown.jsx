@@ -18,6 +18,7 @@ const SearchDropdown = (props) => {
   const viewAllRef = useRef(null);
   const visibleSuggestions = suggestions.slice(0, 5);
   const href = `/?q=${encodeURIComponent(query)}`;
+  const visibleSuggestions = suggestions;
 
   useEffect(() => {
     if (activeIndex === visibleSuggestions.length) {
