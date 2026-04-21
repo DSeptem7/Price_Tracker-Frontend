@@ -39,7 +39,7 @@ export const highlightText = (text, query) => {
         const matchText = text.slice(index, index + token.length);
   
         result.push(
-          <mark key={index} className="highlight">
+          <mark key={`${index}-${token}`} className="highlight">
             {matchText}
           </mark>
         );
