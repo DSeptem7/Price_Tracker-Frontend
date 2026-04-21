@@ -78,16 +78,23 @@ const SearchBox = ({
         </button>
         )}
         <button
-                className="search-btn"
-                onClick={() => {
-                  if (value.trim()) {
-                    handleSubmit();
-                  } else {
-                    setIsExpanded(prev => !prev);
-                    setTimeout(() => inputRef.current?.focus(), 100);
-                  }
-                }}
-              >
+              className="search-btn"
+              onClick={() => {
+                if (!isExpanded) {
+                  // 👉 PRIMER CLICK: abrir
+                  setIsExpanded(true);
+                  setTimeout(() => inputRef.current?.focus(), 100);
+                  return;
+                }
+
+                // 👉 SI YA ESTÁ ABIERTO
+                if (value.trim()) {
+                  handleSubmit();
+                } else {
+                  setIsExpanded(false);
+                }
+              }}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
