@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { mapSortOption } from "../utils/sort";
 
 export const useProducts = ({
   API_BASE,
@@ -7,7 +8,6 @@ export const useProducts = ({
   urlQuery,
   sortOption,
   filterOption,
-  mapSortOption,
   setRefreshing // 👈 opcional pero útil
 }) => {
 

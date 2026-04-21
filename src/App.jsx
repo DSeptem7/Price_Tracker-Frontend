@@ -148,7 +148,6 @@ function App() {
     urlQuery,
     sortOption,
     filterOption,
-    mapSortOption,
     setRefreshing
   });
 
