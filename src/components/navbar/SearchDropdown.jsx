@@ -48,9 +48,10 @@ const SearchDropdown = (props) => {
       {/* RESULTS */}
       {!isLoading && suggestions.length > 0 && (
         <>
-          {suggestions.slice(0, 5).map((s, i) => (
+          {suggestions.map((s, i) => (
             <SearchItem
               key={i}
+              id={`search-item-${i}`}
               title={s.title}
               query={query}
               isActive={i === activeIndex}
@@ -59,7 +60,7 @@ const SearchDropdown = (props) => {
 
             <a
               href={href}
-              className={`view-all-results ${activeIndex === visibleSuggestions.length ? 'active' : ''}`}
+              className={`view-all-results ${activeIndex === suggestions.length ? 'active' : ''}`}
               role="option"
               aria-selected={activeIndex === visibleSuggestions.length}
               onClick={(e) => {
