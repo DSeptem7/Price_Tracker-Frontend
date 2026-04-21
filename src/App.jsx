@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
+import ProductCard from "./components/product/ProductCard";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
-import { formatCurrency } from './utility/Utils';
+import { formatCurrency } from './utils/format';
+import { highlightText } from './utils/text';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
@@ -308,64 +310,7 @@ useEffect(() => {
     }
   };
 
-  // --- HIGHLIGHTER ROBUSTO (Evita crashes con Regex) ---
-  const highlightText = (text, query) => {
-    if (!text || typeof text !== 'string') return "";
-    if (!query || typeof query !== 'string') return text;
-    if (query.includes("http") || query.includes(".com")) return text;
   
-    const normalize = (str) => {
-      try {
-        return str
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
-      } catch {
-        return "";
-      }
-    };
-  
-    const normalizedText = normalize(text);
-    const normalizedQuery = normalize(query);
-  
-    if (!normalizedQuery) return text;
-  
-    const tokens = normalizedQuery.split(/\s+/).filter(t => t.length > 0);
-    if (tokens.length === 0) return text;
-  
-    let result = [];
-    let currentIndex = 0;
-  
-    tokens.forEach(token => {
-      let index = normalizedText.indexOf(token, currentIndex);
-  
-      while (index !== -1) {
-        // texto antes del match
-        if (index > currentIndex) {
-          result.push(text.slice(currentIndex, index));
-        }
-  
-        // match (usando posiciones reales del texto original)
-        const matchText = text.slice(index, index + token.length);
-  
-        result.push(
-          <mark key={index} className="highlight">
-            {matchText}
-          </mark>
-        );
-  
-        currentIndex = index + token.length;
-        index = normalizedText.indexOf(token, currentIndex);
-      }
-    });
-  
-    // resto del texto
-    if (currentIndex < text.length) {
-      result.push(text.slice(currentIndex));
-    }
-  
-    return <>{result}</>;
-  };
 
   // --- PAGINACIÓN ---
   const totalPages = Math.ceil(totalDocs / itemsPerPage);
@@ -631,54 +576,14 @@ useEffect(() => {
                     </div>
                   ) : (
                     <div className="product-grid">
-                      {products.map((p, index) => {
-                        // Lógica de visualización segura
-                        const isAgotado = p.status === "out_of_stock";
-                        const isNew = p.status === "new" || p.alert_type === "Producto nuevo";
-
-                        return (
-                          <Link key={p.id || index} to={`/producto/${p.id}`} className={`product-card ${isAgotado ? 'card-disabled' : ''}`}>
-                            <div className={`store-header ${p.url.includes("mercadolibre") ? "store-ml" : "store-default"}`}>
-                              {p.url.includes("mercadolibre") ? "Mercado Libre" : "Tienda"}
-                            </div>
-
-                            <div className="image-container"highlightText>
-                               <img src={p.image} alt={p.title} loading="lazy" onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x400?text=No+Img"; }} />
-                               
-                               {/* ORDEN DE PRIORIDAD DE ETIQUETAS */}
-                              {isAgotado && <div className="alert-badge stock-badge">AGOTADO</div>}
-                              {!isAgotado && isNew && (
-                                  <div className="alert-badge new-badge">NUEVO</div>
-                                )}
-                            </div>
-
-                            <h3 className="product-title">{highlightText(p.title, urlQuery)}</h3>
-                            
-                            <div className="price-section">
-                              <div className="current-price-container">
-                                <span className={`current-price ${isAgotado ? 'text-muted' : ''}`}>
-                                  {isAgotado ? "No disponible" : formatCurrency(p.price)}
-                                </span>
-                              </div>
-                            </div>
-                    
-                            {/* Etiquetas de cambio de precio */}
-                            {/* EL CONTENEDOR SIEMPRE EXISTE */}
-                            <div className="status-row">
-                                {/* Solo el contenido es condicional */}
-                                {!isAgotado && !isNew && (
-                                    <span className={`state-badge priority-${p.state_priority}`}>
-                                        {p.alert_type}
-                                    </span>
-                                )}
-                            </div>
-
-                            <div className="card-action-button">{isAgotado ? "Consultar" : "Ver producto"}</div>
-                            <p className="timestamp">{p.timestamp ? new Date(p.timestamp).toLocaleString() : ""}</p>
-                          </Link>
-                        );
-                      })}
-                    </div>
+                    {products.map((p) => (
+                      <ProductCard
+                        key={p.id}
+                        product={p}
+                        query={urlQuery}
+                      />
+                    ))}
+                  </div>
                   )}
 
                   {/* Paginación Inferior */}
