@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
 import ProductCard from "./components/product/ProductCard";
+import Pagination from "./components/pagination/Pagination";
+import { usePagination } from "./hooks/usePagination";
 import { useProducts } from "./hooks/useProducts";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
@@ -138,8 +140,6 @@ function App() {
     products,
     totalDocs,
     loading,
-    totalPages,
-    getPaginationGroup,
     fetchProducts
   } = useProducts({
     API_BASE,
@@ -149,6 +149,15 @@ function App() {
     sortOption,
     filterOption,
     setRefreshing
+  });
+
+  const {
+    totalPages,
+    paginationGroup
+  } = usePagination({
+    totalDocs,
+    itemsPerPage,
+    currentPage
   });
 
   // --- EFECTOS DE INICIALIZACIÓN ---
@@ -426,36 +435,13 @@ useEffect(() => {
                     </div>
                   
                   {/* Paginación Superior */}
-                  {totalPages >= 1 && (
-                    <div className={`pagination-container ${loading ? 'pagination-pending' : ''}`}>
-                      <button 
-                        className="pagination-arrow"
-                        onClick={() => handlePageChange(currentPage - 1)} 
-                        disabled={currentPage === 1 || loading} // Bloqueamos clics durante la carga
-                      >
-                        ‹
-                      </button>
-                      
-                      {getPaginationGroup().map((item, i) => (
-                        <button 
-                          key={i} 
-                          onClick={() => typeof item === 'number' && handlePageChange(item)} 
-                          className={`pagination-number ${currentPage === item ? 'active' : ''}`} 
-                          disabled={item === '...' || loading} // Bloqueamos clics durante la carga
-                        >
-                          {item}
-                        </button>
-                      ))}
-                      
-                      <button 
-                        className="pagination-arrow"
-                        onClick={() => handlePageChange(currentPage + 1)} 
-                        disabled={currentPage === totalPages || loading}
-                      >
-                        ›
-                      </button>
-                    </div>
-                  )}
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    paginationGroup={paginationGroup}
+                    loading={loading}
+                    onPageChange={handlePageChange}
+                  />
 
                   {/* Contador de Resultados - Ahora desaparece físicamente si no hay resultados */}
                     {(totalDocs > 0 || (loading && currentPage === 1)) && (
@@ -540,36 +526,14 @@ useEffect(() => {
                   )}
 
                   {/* Paginación Inferior */}
-                  {totalPages > 1 && (
-                    <div className={`pagination-container ${loading ? 'pagination-pending' : ''}`}>
-                      <button 
-                        className="pagination-arrow"
-                        onClick={() => handlePageChange(currentPage - 1)} 
-                        disabled={currentPage === 1 || loading} // Bloqueamos clics durante la carga
-                      >
-                        ‹
-                      </button>
-                      
-                      {getPaginationGroup().map((item, i) => (
-                        <button 
-                          key={i} 
-                          onClick={() => typeof item === 'number' && handlePageChange(item)} 
-                          className={`pagination-number ${currentPage === item ? 'active' : ''}`} 
-                          disabled={item === '...' || loading} // Bloqueamos clics durante la carga
-                        >
-                          {item}
-                        </button>
-                      ))}
-                      
-                      <button 
-                        className="pagination-arrow"
-                        onClick={() => handlePageChange(currentPage + 1)} 
-                        disabled={currentPage === totalPages || loading}
-                      >
-                        ›
-                      </button>
-                    </div>
-                  )}
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    paginationGroup={paginationGroup}
+                    loading={loading}
+                    onPageChange={handlePageChange}
+                  />
+
                 </main>
               </>
             } />
