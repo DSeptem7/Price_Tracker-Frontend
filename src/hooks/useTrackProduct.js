@@ -7,7 +7,6 @@ export const useTrackProduct = ({
   setSearchParams,
   fetchProducts
 }) => {
-
   const [refreshing, setRefreshing] = useState(false);
   const [trackingMessage, setTrackingMessage] = useState("");
   const [loadingText, setLoadingText] = useState("Iniciando rastreo...");
@@ -25,6 +24,7 @@ export const useTrackProduct = ({
   // Animación de mensajes
   useEffect(() => {
     let interval;
+
     if (refreshing) {
       let i = 0;
       setLoadingText(loadingMessages[0]);
@@ -38,10 +38,12 @@ export const useTrackProduct = ({
 
   // TRACK PRODUCT
   const handleTrackProduct = useCallback(async () => {
+
     const isUrl =
       inputValue &&
       inputValue.includes("http") &&
       inputValue.includes("mercadolibre.com");
+
     if (!isUrl) return;
 
     setRefreshing(true);
@@ -60,17 +62,15 @@ export const useTrackProduct = ({
       setTrackingMessage(result.message);
       setInputValue("");
       setSearchParams({});
-      await fetchProducts();
 
+      await fetchProducts();
       setTimeout(() => {
         setIsExiting(true);
         setTimeout(() => {
           setTrackingMessage("");
           setIsExiting(false);
         }, 600);
-
       }, 6000);
-
     } catch (err) {
       setTrackingMessage(`Error: ${err.message}`);
     } finally {

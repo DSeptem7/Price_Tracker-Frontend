@@ -16,6 +16,7 @@ export const useSearchSync = ({
   // Sync input -> URL
   useEffect(() => {
     const val = inputValue;
+
     const isUrl =
       val.includes("http") ||
       val.includes(".com");
@@ -26,20 +27,18 @@ export const useSearchSync = ({
 
     const timer = setTimeout(() => {
       setCurrentPage(1);
-
       if (val.trim() === "") {
         setSearchParams({});
       } else {
         setSearchParams({ q: val });
       }
     }, 500);
-
     return () => clearTimeout(timer);
+
   }, [
     inputValue,
     urlQuery,
     setSearchParams,
     setCurrentPage
   ]);
-
 };
