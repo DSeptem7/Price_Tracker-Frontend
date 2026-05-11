@@ -9,6 +9,7 @@ import DashboardControlPanel from "./components/dashboard/DashboardControlPanel"
 import { usePagination } from "./hooks/usePagination";
 import { useProducts } from "./hooks/useProducts";
 import { useTrackProduct } from "./hooks/useTrackProduct";
+import { useSearchSync } from "./hooks/useSearchSync";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -109,30 +110,13 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    setInputValue(urlQuery);
-  }, [urlQuery]);
-
-  // 2. La "inteligencia" se va al Debounce
-useEffect(() => {
-  const val = inputValue;
-  const isUrl = val.includes("http") || val.includes(".com");
-
-  // Si es una URL o es igual a lo que ya hay en la URL, no hacemos nada
-  if (isUrl || val === urlQuery) return;
-
-  const timer = setTimeout(() => {
-    setCurrentPage(1); // Tu lógica original: resetear página al buscar
-    
-    if (val.trim() === "") {
-      setSearchParams({}); 
-    } else {
-      setSearchParams({ q: val }); // Esto dispara fetchProducts automáticamente
-    }
-  }, 500); // 500ms de espera
-
-  return () => clearTimeout(timer);
-}, [inputValue, urlQuery, setSearchParams]);
+      useSearchSync({
+        inputValue,
+        setInputValue,
+        urlQuery,
+        setSearchParams,
+        setCurrentPage
+      });
 
         // CALCULO DE ESTADÍSTICAS (Sobre los datos recibidos o globales si el backend los envía)
         const fetchStats = useCallback(async () => {
