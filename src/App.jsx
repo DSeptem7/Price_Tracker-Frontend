@@ -8,6 +8,7 @@ import StatsPanel from "./components/dashboard/StatsPanel";
 import DashboardControlPanel from "./components/dashboard/DashboardControlPanel";
 import { usePagination } from "./hooks/usePagination";
 import { useProducts } from "./hooks/useProducts";
+import { useTrackProduct } from "./hooks/useTrackProduct";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -25,8 +26,6 @@ function App() {
   // Esto mantiene tu panel visualmente rico.
   const [stats, setStats] = useState({ dropCount: 0, upCount: 0, totalSavings: 0, bestDiscount: { percent: 0, title: "" } });
 
-  const [refreshing, setRefreshing] = useState(false);
-  
   // Router y Navegación
   const [searchParams, setSearchParams] = useSearchParams();
   const urlQuery = searchParams.get("q") || ""; 
@@ -39,10 +38,7 @@ function App() {
   const [filterOption, setFilterOption] = useState("available");
   
   // Mensajes y Alertas
-  const [trackingMessage, setTrackingMessage] = useState(""); 
   const [chartProductTitle, setChartProductTitle] = useState(null);
-  const [loadingText, setLoadingText] = useState("Iniciando rastreo...");
-  const [isExiting, setIsExiting] = useState(false);
   
   // Tema
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -64,7 +60,20 @@ function App() {
     urlQuery,
     sortOption,
     filterOption,
-    setRefreshing
+  });
+
+  const {
+    refreshing,
+    trackingMessage,
+    loadingText,
+    isExiting,
+    handleTrackProduct
+  } = useTrackProduct({
+    API_BASE,
+    inputValue,
+    setInputValue,
+    setSearchParams,
+    fetchProducts
   });
 
   const {
@@ -103,17 +112,6 @@ function App() {
   useEffect(() => {
     setInputValue(urlQuery);
   }, [urlQuery]);
-
-  // --- MENSAJES DE CARGA (Respetando tu array original) ---
-  const loadingMessages = ["Conectando...", "Extrayendo información...", "Analizando precios...", "Verificando stock...", "¡Casi listo!"];
-  useEffect(() => {
-    let interval;
-    if (refreshing) {
-      let i = 0; setLoadingText(loadingMessages[0]);
-      interval = setInterval(() => { i = (i + 1) % loadingMessages.length; setLoadingText(loadingMessages[i]); }, 3500);
-    }
-    return () => clearInterval(interval);
-  }, [refreshing]);
 
   // 2. La "inteligencia" se va al Debounce
 useEffect(() => {
@@ -175,39 +173,6 @@ useEffect(() => {
   // --- Actualización de estados ---
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-  };
-
-  // --- TRACK PRODUCT ---
-  const handleTrackProduct = async () => {
-    const isUrl = inputValue && inputValue.includes("http") && inputValue.includes("mercadolibre.com");
-    if (!isUrl) return; 
-    
-    setRefreshing(true); 
-    setTrackingMessage(""); 
-    setIsExiting(false);
-    
-    try {
-      const url = `${API_BASE}/products?url=${encodeURIComponent(inputValue)}`;
-      const res = await fetch(url);
-      const result = await res.json();
-      
-      if (!res.ok) throw new Error(result.detail || "Error desconocido.");
-      
-      setTrackingMessage(result.message); 
-      setInputValue(""); 
-      setSearchParams({}); 
-      fetchProducts(); // Recarga limpia
-      
-      setTimeout(() => {
-        setIsExiting(true);
-        setTimeout(() => { setTrackingMessage(""); setIsExiting(false); }, 600); 
-      }, 6000);
-
-    } catch (err) {
-      setTrackingMessage(`Error: ${err.message}`); 
-    } finally {
-      setRefreshing(false);
-    }
   };
 
   return (
