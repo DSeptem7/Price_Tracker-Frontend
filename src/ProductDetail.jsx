@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { formatCurrency } from './utils/format';
 import './ProductDetail.css';
+import PriceChartModal from "./components/modal/PriceChartModal";
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
   ReferenceLine, Label
