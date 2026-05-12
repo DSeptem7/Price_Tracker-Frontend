@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useSearchParams } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
-import ProductCard from "./components/product/ProductCard";
 import Pagination from "./components/pagination/Pagination";
 import ProductGrid from "./components/product/ProductGrid";
 import StatsPanel from "./components/dashboard/StatsPanel";
@@ -10,22 +9,17 @@ import { usePagination } from "./hooks/usePagination";
 import { useProducts } from "./hooks/useProducts";
 import { useTrackProduct } from "./hooks/useTrackProduct";
 import { useSearchSync } from "./hooks/useSearchSync";
+import { useStats } from "./hooks/useStats";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
-import { formatCurrency } from './utils/format';
-import { highlightText } from './utils/text';
 import "./App.css";
 
 // --- COMPONENTE PRINCIPAL APP ---
 function App() {
   const API_BASE = "https://price-tracker-nov-2025.onrender.com"; 
-  
-  // Stats: Usamos un estado local que se calcula al recibir productos
-  // Esto mantiene tu panel visualmente rico.
-  const [stats, setStats] = useState({ dropCount: 0, upCount: 0, totalSavings: 0, bestDiscount: { percent: 0, title: "" } });
 
   // Router y Navegación
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,9 +31,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available");
-  
-  // Mensajes y Alertas
-  const [chartProductTitle, setChartProductTitle] = useState(null);
   
   // Tema
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -62,6 +53,8 @@ function App() {
     sortOption,
     filterOption,
   });
+
+  const { stats } = useStats(API_BASE);
 
   const {
     refreshing,
@@ -86,17 +79,6 @@ function App() {
     currentPage
   });
 
-  {
-    chartProductTitle && (
-      <PriceChartModal
-        productTitle={chartProductTitle}
-        onClose={() => setChartProductTitle(null)}
-        apiBase={API_BASE}
-        isDarkMode={isDarkMode}
-      />
-    )
-  }
-
   // --- EFECTOS DE INICIALIZACIÓN ---
   useEffect(() => {
     localStorage.setItem("isDarkMode", isDarkMode);
@@ -117,28 +99,6 @@ function App() {
         setSearchParams,
         setCurrentPage
       });
-
-        // CALCULO DE ESTADÍSTICAS (Sobre los datos recibidos o globales si el backend los envía)
-        const fetchStats = useCallback(async () => {
-          try {
-            const res = await fetch(`${API_BASE}/stats/global`);
-            const data = await res.json();
-        
-            setStats({
-              dropCount: data.dropCount,
-              upCount: data.upCount,
-              totalSavings: data.totalSavings,
-              bestDiscount: data.bestDiscount
-            });
-        
-          } catch (err) {
-            console.error("Error stats:", err);
-          }
-        }, []);
-        
-        useEffect(() => {
-          fetchStats();
-        }, []);
 
   // --- HANDLERS ---
   const handlePageChange = (page) => {
@@ -256,7 +216,6 @@ function App() {
             <Route path="/producto/:id" element={<ProductDetail API_BASE={API_BASE} isDarkMode={isDarkMode} />} />
           </Routes>
           <Footer />
-          {chartProductTitle && <PriceChartModal productTitle={chartProductTitle} onClose={() => setChartProductTitle(null)} apiBase={API_BASE} isDarkMode={isDarkMode} />}
         </div>
       </div>
     </AuthProvider>
