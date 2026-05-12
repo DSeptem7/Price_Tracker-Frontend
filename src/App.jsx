@@ -14,6 +14,7 @@ import { useStats } from "./hooks/useStats";
 import { useTheme } from "./hooks/useTheme";
 import { useResponsiveItemsPerPage } from "./hooks/useResponsiveItemsPerPage";
 import { useFilters } from "./hooks/useFilters";
+import { usePageNavigation } from "./hooks/usePageNavigation";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -31,9 +32,6 @@ function App() {
   const [inputValue, setInputValue] = useState(urlQuery);
 
   const itemsPerPage = useResponsiveItemsPerPage();
-
-  // Configuración UX
-  const [currentPage, setCurrentPage] = useState(1);
 
   const {
     sortOption,
@@ -88,19 +86,19 @@ function App() {
     currentPage
   });
 
-      useSearchSync({
-        inputValue,
-        setInputValue,
-        urlQuery,
-        setSearchParams,
-        setCurrentPage
-      });
+    useSearchSync({
+      inputValue,
+      setInputValue,
+      urlQuery,
+      setSearchParams,
+      setCurrentPage
+    });
 
-  // --- HANDLERS ---
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 100, behavior: 'smooth' });
-  };
+    const {
+      currentPage,
+      setCurrentPage,
+      handlePageChange
+    } = usePageNavigation();
 
   // --- Actualización de estados ---
   const handleInputChange = (e) => {
