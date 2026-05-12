@@ -107,7 +107,6 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className={isDarkMode ? "dark-mode" : "light-mode"}>
         <div className="App">
           <ScrollToTop />
           <Navbar 
@@ -188,7 +187,6 @@ function App() {
           </Routes>
           <Footer />
         </div>
-      </div>
     </AuthProvider>
   );
 }
