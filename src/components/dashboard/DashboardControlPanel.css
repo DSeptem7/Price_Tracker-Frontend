@@ -6,7 +6,7 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius-xl);
     padding: 32px;
-    margin-bottom: 30px !important;
+    margin-bottom: 30px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
     position: relative;
     transition: var(--transition-fast);
@@ -205,18 +205,6 @@
     color: var(--text-muted);
     border-left: 4px solid var(--accent-blue);
   }
-  
-  .spinner-sml {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(59, 130, 246, 0.2);
-    border-top-color: var(--accent-blue);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spin { animation: spin 1s linear infinite; display: inline-block; }
   
   /* Responsive */
   @media (max-width: 768px) {

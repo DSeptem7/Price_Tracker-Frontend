@@ -1,5 +1,6 @@
 import React from "react";
 import "./DashboardControlPanel.css";
+import { useSearchSync } from "../styles/animations";
 
 function DashboardControlPanel({
   inputValue,
