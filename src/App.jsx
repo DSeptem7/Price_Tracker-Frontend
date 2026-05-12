@@ -12,6 +12,7 @@ import { useTrackProduct } from "./hooks/useTrackProduct";
 import { useSearchSync } from "./hooks/useSearchSync";
 import { useStats } from "./hooks/useStats";
 import { useTheme } from "./hooks/useTheme";
+import { useResponsiveItemsPerPage } from "./hooks/useResponsiveItemsPerPage";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -29,7 +30,6 @@ function App() {
   const [inputValue, setInputValue] = useState(urlQuery);
 
   // Configuración UX
-  const [itemsPerPage, setItemsPerPage] = useState(window.innerWidth < 600 ? 8 : 20);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available");
@@ -75,12 +75,7 @@ function App() {
     currentPage
   });
 
-  // --- EFECTOS DE INICIALIZACIÓN ---
-  useEffect(() => {
-    const handleResize = () => setItemsPerPage(window.innerWidth < 600 ? 8 : 20);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const itemsPerPage = useResponsiveItemsPerPage();
 
       useSearchSync({
         inputValue,
