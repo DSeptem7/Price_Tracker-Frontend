@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useSearchParams } from 'react-router-dom';
-import Navbar from './components/navbar/Navbar';
-import Pagination from "./components/pagination/Pagination";
-import ProductGrid from "./components/product/ProductGrid";
-import StatsPanel from "./components/dashboard/StatsPanel";
-import DashboardControlPanel from "./components/dashboard/DashboardControlPanel";
-import SearchResultsCount from "./components/ui/SearchResultsCount";
-import { usePagination } from "./hooks/usePagination";
-import { useProducts } from "./hooks/useProducts";
-import { useTrackProduct } from "./hooks/useTrackProduct";
-import { useSearchSync } from "./hooks/useSearchSync";
-import { useStats } from "./hooks/useStats";
-import { useTheme } from "./hooks/useTheme";
-import { useResponsiveItemsPerPage } from "./hooks/useResponsiveItemsPerPage";
-import { useFilters } from "./hooks/useFilters";
-import { usePageNavigation } from "./hooks/usePageNavigation";
-import { mapSortOption } from "./utils/sort";
-import ScrollToTop from "./ScrollToTop";
-import ProductDetail from './ProductDetail';
-import Footer from './Footer';
-import { AuthProvider } from './context/AuthContext';
-import "./App.css";
+import Navbar from '../components/navbar/Navbar';
+import Pagination from "../components/pagination/Pagination";
+import ProductGrid from "../components/product/ProductGrid";
+import StatsPanel from "../components/dashboard/StatsPanel";
+import DashboardControlPanel from "../components/dashboard/DashboardControlPanel";
+import SearchResultsCount from "../components/ui/SearchResultsCount";
+import { usePagination } from "../hooks/usePagination";
+import { useProducts } from "../hooks/useProducts";
+import { useTrackProduct } from "../hooks/useTrackProduct";
+import { useSearchSync } from "../hooks/useSearchSync";
+import { useStats } from "../hooks/useStats";
+import { useTheme } from "../hooks/useTheme";
+import { useResponsiveItemsPerPage } from "../hooks/useResponsiveItemsPerPage";
+import { useFilters } from "../hooks/useFilters";
+import { usePageNavigation } from "../hooks/usePageNavigation";
+import { mapSortOption } from "../utils/sort";
+import ScrollToTop from "../ScrollToTop";
+import ProductDetail from '../ProductDetail';
+import Footer from '../Footer';
+import { AuthProvider } from '../context/AuthContext';
+import "../App.css";
 
 // --- COMPONENTE PRINCIPAL APP ---
 function App() {
