@@ -61,17 +61,20 @@ body {
 }
 
 /* MICRO-INTERACCIONES */
-.product-card, .pagination-container button {
+.btn-primary, .btn-secondary, .product-card, .pagination-container button {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:active, .btn-secondary:active {
+  transform: scale(0.96);
 }
 
 /* ====================================================================== */
 /* === 2. ESTRUCTURA GLOBAL Y DASHBOARD (STATS) === */
 /* ====================================================================== */
 .main-content {
-  width: 100%;
   max-width: 1400px;
-  margin-inline: auto;
+  margin: 0 auto;
   padding: 20px;
 }
 
@@ -91,7 +94,6 @@ body {
   align-items: center;
   gap: 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  will-change: transform;
 }
 
 .stat-card:hover {
