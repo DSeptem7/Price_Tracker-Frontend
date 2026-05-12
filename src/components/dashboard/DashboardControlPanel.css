@@ -55,7 +55,7 @@
   
   .input-group-premium:focus-within {
     border-color: var(--accent-blue);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 4px var(--accent-blue-soft);
     background: var(--bg-card);
   }
   
@@ -94,7 +94,7 @@
     transform: translateY(-1px) scale(1.02);
     
     /* Creamos un brillo pero basado en el color de la marca, no en blanco */
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 4px 15px var(--accent-blue-glow);
   }
   
   .btn-track-premium:active:not(:disabled) {
@@ -103,7 +103,7 @@
   
   /* IMPORTANTE: Evitar el resalte blanco al hacer clic o foco */
   .btn-track-premium:focus {
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 0 0 3px var(--accent-blue-glow);
   }
   
   .btn-track-premium:disabled {
@@ -205,7 +205,7 @@
     color: var(--text-muted);
     border-left: 4px solid var(--accent-blue);
   }
-  
+
   /* Responsive */
   @media (max-width: 768px) {
     .dashboard-control-panel { padding: 20px; }
