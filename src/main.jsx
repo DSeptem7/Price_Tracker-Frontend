@@ -4,6 +4,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './app/App.jsx'
 
+const savedTheme = localStorage.getItem("isDarkMode");
+
+if (savedTheme === "true") {
+  document.documentElement.classList.add("dark-mode");
+} else {
+  document.documentElement.classList.remove("dark-mode");
+}
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter> {/* <--- Abre aquí */}
