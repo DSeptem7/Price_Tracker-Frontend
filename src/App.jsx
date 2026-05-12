@@ -5,6 +5,7 @@ import Pagination from "./components/pagination/Pagination";
 import ProductGrid from "./components/product/ProductGrid";
 import StatsPanel from "./components/dashboard/StatsPanel";
 import DashboardControlPanel from "./components/dashboard/DashboardControlPanel";
+import SearchResultsCount from "./components/ui/SearchResultsCount";
 import { usePagination } from "./hooks/usePagination";
 import { useProducts } from "./hooks/useProducts";
 import { useTrackProduct } from "./hooks/useTrackProduct";
@@ -160,26 +161,11 @@ function App() {
                   />
 
                   {/* Contador de Resultados - Ahora desaparece físicamente si no hay resultados */}
-                    {(totalDocs > 0 || (loading && currentPage === 1)) && (
-                      <div style={{ 
-                        marginBottom: '15px', 
-                        textAlign: 'right', 
-                        minHeight: '24px'
-                        // Eliminamos visibility: hidden porque el renderizado condicional se encarga
-                      }}>
-                        <span style={{ 
-                          color: 'var(--text-muted)', 
-                          fontWeight: '600',
-                          opacity: (loading && currentPage === 1) ? 0.6 : 1, 
-                          transition: 'opacity 0.2s ease'
-                        }}>
-                          {(loading && currentPage === 1) 
-                            ? "Buscando..." 
-                            : `${totalDocs} Productos encontrados`
-                          }
-                        </span>
-                      </div>
-                    )}
+                  <SearchResultsCount
+                    totalDocs={totalDocs}
+                    loading={loading}
+                    currentPage={currentPage}
+                  />
 
                   {/* GRID DE PRODUCTOS */}
                   <ProductGrid
