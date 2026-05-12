@@ -69,8 +69,9 @@ body {
 /* === 2. ESTRUCTURA GLOBAL Y DASHBOARD (STATS) === */
 /* ====================================================================== */
 .main-content {
+  width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin-inline: auto;
   padding: 20px;
 }
 
