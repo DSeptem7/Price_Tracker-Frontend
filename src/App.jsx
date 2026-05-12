@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Routes, Route, useSearchParams } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from "react";
+import { Routes, Route, Link, useSearchParams } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
+import ProductCard from "./components/product/ProductCard";
 import Pagination from "./components/pagination/Pagination";
 import ProductGrid from "./components/product/ProductGrid";
 import StatsPanel from "./components/dashboard/StatsPanel";
@@ -14,6 +15,8 @@ import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
 import Footer from './Footer';
 import { AuthProvider } from './context/AuthContext';
+import { formatCurrency } from './utils/format';
+import { highlightText } from './utils/text';
 import "./App.css";
 
 // --- COMPONENTE PRINCIPAL APP ---
@@ -34,6 +37,9 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available");
+  
+  // Mensajes y Alertas
+  const [chartProductTitle, setChartProductTitle] = useState(null);
   
   // Tema
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -79,6 +85,17 @@ function App() {
     itemsPerPage,
     currentPage
   });
+
+  {
+    chartProductTitle && (
+      <PriceChartModal
+        productTitle={chartProductTitle}
+        onClose={() => setChartProductTitle(null)}
+        apiBase={API_BASE}
+        isDarkMode={isDarkMode}
+      />
+    )
+  }
 
   // --- EFECTOS DE INICIALIZACIÓN ---
   useEffect(() => {
@@ -239,6 +256,7 @@ function App() {
             <Route path="/producto/:id" element={<ProductDetail API_BASE={API_BASE} isDarkMode={isDarkMode} />} />
           </Routes>
           <Footer />
+          {chartProductTitle && <PriceChartModal productTitle={chartProductTitle} onClose={() => setChartProductTitle(null)} apiBase={API_BASE} isDarkMode={isDarkMode} />}
         </div>
       </div>
     </AuthProvider>
