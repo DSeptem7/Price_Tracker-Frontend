@@ -4,6 +4,7 @@ export function useTheme() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     try {
       const savedTheme = localStorage.getItem("isDarkMode");
+
       return savedTheme !== null
         ? savedTheme === "true"
         : true;
@@ -15,8 +16,10 @@ export function useTheme() {
   useEffect(() => {
     localStorage.setItem("isDarkMode", isDarkMode);
 
-    document.body.classList.toggle("dark-mode", isDarkMode);
-    document.body.classList.toggle("light-mode", !isDarkMode);
+    const root = document.documentElement;
+
+    root.classList.toggle("dark-mode", isDarkMode);
+    root.classList.toggle("light-mode", !isDarkMode);
   }, [isDarkMode]);
 
   return {
