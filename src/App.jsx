@@ -31,6 +31,12 @@ function App() {
   const urlQuery = searchParams.get("q") || ""; 
   const [inputValue, setInputValue] = useState(urlQuery);
 
+  const {
+    currentPage,
+    setCurrentPage,
+    handlePageChange
+  } = usePageNavigation();
+
   const itemsPerPage = useResponsiveItemsPerPage();
 
   const {
@@ -93,12 +99,6 @@ function App() {
       setSearchParams,
       setCurrentPage
     });
-
-    const {
-      currentPage,
-      setCurrentPage,
-      handlePageChange
-    } = usePageNavigation();
 
   // --- Actualización de estados ---
   const handleInputChange = (e) => {
