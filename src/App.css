@@ -91,12 +91,11 @@ body {
   align-items: center;
   gap: 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  will-change: transform;
 }
 
 .stat-card:hover {
-  border-color: var(--accent-blue);
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 /* INDICADORES (Círculos de color en las Stats) */
