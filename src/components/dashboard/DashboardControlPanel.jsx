@@ -1,4 +1,5 @@
 import React from "react";
+import "./DashboardControlPanel.css";
 
 function DashboardControlPanel({
   inputValue,
