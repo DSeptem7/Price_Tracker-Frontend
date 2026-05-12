@@ -13,6 +13,7 @@ import { useSearchSync } from "./hooks/useSearchSync";
 import { useStats } from "./hooks/useStats";
 import { useTheme } from "./hooks/useTheme";
 import { useResponsiveItemsPerPage } from "./hooks/useResponsiveItemsPerPage";
+import { useFilters } from "./hooks/useFilters";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -33,8 +34,6 @@ function App() {
 
   // Configuración UX
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOption, setSortOption] = useState("date_desc");
-  const [filterOption, setFilterOption] = useState("available");
 
   const {
     products,
@@ -91,13 +90,17 @@ function App() {
     window.scrollTo({ top: 100, behavior: 'smooth' });
   };
 
-  const handleResetAll = () => {
-    setSearchParams({}); 
-    setInputValue("");   
-    setFilterOption("available");
-    setSortOption("date_desc");
-    setCurrentPage(1);
-  };
+  const {
+    sortOption,
+    setSortOption,
+    filterOption,
+    setFilterOption,
+    handleResetAll
+  } = useFilters(
+    setSearchParams,
+    setInputValue,
+    setCurrentPage
+  );
 
   // --- Actualización de estados ---
   const handleInputChange = (e) => {
