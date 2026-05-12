@@ -29,6 +29,8 @@ function App() {
   const urlQuery = searchParams.get("q") || ""; 
   const [inputValue, setInputValue] = useState(urlQuery);
 
+  const itemsPerPage = useResponsiveItemsPerPage();
+
   // Configuración UX
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("date_desc");
@@ -74,8 +76,6 @@ function App() {
     itemsPerPage,
     currentPage
   });
-
-  const itemsPerPage = useResponsiveItemsPerPage();
 
       useSearchSync({
         inputValue,
