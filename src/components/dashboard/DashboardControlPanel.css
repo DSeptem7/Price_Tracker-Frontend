@@ -80,7 +80,7 @@
     color: white;
     border: none;
     padding: 12px 28px;
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     font-weight: 700;
     cursor: pointer;
     /* Añadimos transform a la transición para que sea fluida */
@@ -159,7 +159,7 @@
     color: var(--text-muted);
     font-weight: 700;
     padding: 10px 20px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -196,7 +196,7 @@
     margin-top: 24px;
     background: var(--bg-app);
     padding: 12px 20px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     gap: 12px;
