@@ -36,6 +36,18 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const {
+    sortOption,
+    setSortOption,
+    filterOption,
+    setFilterOption,
+    handleResetAll
+  } = useFilters(
+    setSearchParams,
+    setInputValue,
+    setCurrentPage
+  );
+
+  const {
     products,
     totalDocs,
     loading,
@@ -89,18 +101,6 @@ function App() {
     setCurrentPage(page);
     window.scrollTo({ top: 100, behavior: 'smooth' });
   };
-
-  const {
-    sortOption,
-    setSortOption,
-    filterOption,
-    setFilterOption,
-    handleResetAll
-  } = useFilters(
-    setSearchParams,
-    setInputValue,
-    setCurrentPage
-  );
 
   // --- Actualización de estados ---
   const handleInputChange = (e) => {
