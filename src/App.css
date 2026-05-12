@@ -61,12 +61,8 @@ body {
 }
 
 /* MICRO-INTERACCIONES */
-.btn-primary, .btn-secondary, .product-card, .pagination-container button {
+.product-card, .pagination-container button {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-primary:active, .btn-secondary:active {
-  transform: scale(0.96);
 }
 
 /* ====================================================================== */
