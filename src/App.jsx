@@ -10,6 +10,7 @@ import { useProducts } from "./hooks/useProducts";
 import { useTrackProduct } from "./hooks/useTrackProduct";
 import { useSearchSync } from "./hooks/useSearchSync";
 import { useStats } from "./hooks/useStats";
+import { useTheme } from "./hooks/useTheme";
 import { mapSortOption } from "./utils/sort";
 import ScrollToTop from "./ScrollToTop";
 import ProductDetail from './ProductDetail';
@@ -31,14 +32,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("date_desc");
   const [filterOption, setFilterOption] = useState("available");
-  
-  // Tema
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    try {
-      const savedTheme = localStorage.getItem("isDarkMode");
-      return savedTheme !== null ? savedTheme === "true" : true;
-    } catch { return true; }
-  });
 
   const {
     products,
@@ -55,6 +48,8 @@ function App() {
   });
 
   const { stats } = useStats(API_BASE);
+
+  const { isDarkMode, setIsDarkMode } = useTheme();
 
   const {
     refreshing,
@@ -80,12 +75,6 @@ function App() {
   });
 
   // --- EFECTOS DE INICIALIZACIÓN ---
-  useEffect(() => {
-    localStorage.setItem("isDarkMode", isDarkMode);
-    document.body.classList.toggle("dark-mode", isDarkMode);
-    document.body.classList.toggle("light-mode", !isDarkMode);
-  }, [isDarkMode]);
-
   useEffect(() => {
     const handleResize = () => setItemsPerPage(window.innerWidth < 600 ? 8 : 20);
     window.addEventListener('resize', handleResize);
