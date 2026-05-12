@@ -1,17 +1,27 @@
 /* ====================================================================== */
 /* === 0. REINICIO Y ESTABILIDAD GLOBAL === */
 /* ====================================================================== */
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+  
 html {
   scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
   background-color: var(--bg-app); /* <-- 1. AÑADIDO: Sella el fondo desde la raíz absoluta */
-  min-height: 100dvh;              /* <-- 2. AÑADIDO: Altura dinámica desde el inicio */
 }
 
 body {
@@ -51,20 +61,17 @@ body {
 }
 
 /* MICRO-INTERACCIONES */
-.btn-primary, .btn-secondary, .product-card, .pagination-container button {
+.product-card, .pagination-container button {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-primary:active, .btn-secondary:active {
-  transform: scale(0.96);
 }
 
 /* ====================================================================== */
 /* === 2. ESTRUCTURA GLOBAL Y DASHBOARD (STATS) === */
 /* ====================================================================== */
 .main-content {
+  width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin-inline: auto;
   padding: 20px;
 }
 
@@ -84,6 +91,7 @@ body {
   align-items: center;
   gap: 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  will-change: transform;
 }
 
 .stat-card:hover {
@@ -167,7 +175,6 @@ body {
   text-align: center;
   background-color: var(--bg-app);
   color: var(--text-main);
-  min-height: 100dvh;
 }
 
 /* ====================================================================== */
