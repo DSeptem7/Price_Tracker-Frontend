@@ -67,6 +67,8 @@ body {
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
   --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
 
+  --shadow-hover-card: 0 12px 24px -8px rgba(0, 0, 0, 0.15)
+
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -195,8 +197,6 @@ body {
   color: var(--text-main);
 }
 
-
-
 /* ====================================================================== */
 /* === 5. GRILLA Y TARJETAS (ESTRUCTURA PREMIUM) === */
 /* ====================================================================== */
@@ -205,20 +205,24 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
   grid-auto-rows: max-content; 
   align-items: stretch; /* Estira las tarjetas para que todas midan lo mismo en la fila */
-  gap: 24px; 
-  padding: 20px 0;
+  gap: var(--spacing-lg); 
+  padding: var(--spacing-md) 0;
   min-height: 600px;
 }
 
 .product-card {
   background: var(--bg-card); 
   border: 1px solid var(--border-color);
-  border-radius: 20px; 
-  padding: 16px; 
+  border-radius: var(--radius-lg); 
+  padding: var(--spacing-md); 
   display: flex;
   flex-direction: column;
   position: relative; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+  border-color var(--transition-fast),
+  box-shadow var(--transition-fast),
+  background-color var(--transition-fast),
+  transform var(--transition-fast);
   text-decoration: none; /* Quita subrayado del Link */
   height: 100%;
 }
@@ -226,11 +230,11 @@ body {
 .product-card:hover {
   transform: translateY(-8px);
   border-color: var(--accent-blue);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-hover-card);
 }
 
 .dark-mode .product-card:hover {
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-hover-card);
   background: #1e293b;
 }
 
@@ -256,11 +260,11 @@ body {
   width: 100%;
   height: 180px; 
   background-color: #fff; 
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px;
+  padding: var(--spacing-sm);
   margin-bottom: 12px;
 }
 
@@ -279,7 +283,7 @@ body {
   padding: 80px 20px;
   text-align: center;
   background: var(--bg-card);
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
   border: 1px solid var(--border-color);
   margin: 0 0 30px 0;
   margin-top: 0;
@@ -327,10 +331,14 @@ body {
   color: white;
   border: none;
   padding: 12px 32px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease,
+      transform 0.2s ease;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
@@ -352,6 +360,8 @@ body {
   }
   .no-results-container h2 { font-size: 1.25rem; }
 }
+
+
 
 /* ====================================================================== */
 /* === 6. PRECIOS Y ESTADOS (SISTEMA VERTICAL) === */
