@@ -1,0 +1,8 @@
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    grid-auto-rows: max-content; 
+    align-items: stretch; /* Estira las tarjetas para que todas midan lo mismo en la fila */
+    gap: var(--spacing-lg); 
+    padding: var(--spacing-md) 0;
+  }
