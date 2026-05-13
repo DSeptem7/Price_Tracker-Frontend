@@ -207,7 +207,6 @@ body {
   align-items: stretch; /* Estira las tarjetas para que todas midan lo mismo en la fila */
   gap: var(--spacing-lg); 
   padding: var(--spacing-md) 0;
-  min-height: 600px;
 }
 
 .product-card {
@@ -233,7 +232,7 @@ body {
   box-shadow: var(--shadow-hover-card);
 }
 
-.dark-mode .product-card:hover {
+:root.dark-mode .product-card:hover {
   box-shadow: var(--shadow-hover-card);
   background: #1e293b;
 }
@@ -268,7 +267,7 @@ body {
   margin-bottom: 12px;
 }
 
-.product-card img { 
+.product-image { 
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
