@@ -207,6 +207,7 @@ body {
   align-items: stretch; /* Estira las tarjetas para que todas midan lo mismo en la fila */
   gap: var(--spacing-lg); 
   padding: var(--spacing-md) 0;
+  min-height: 600px;
 }
 
 .product-card {
