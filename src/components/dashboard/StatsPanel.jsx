@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../../styles/dashboard/stats-panel.css";
 import { formatCurrency } from "../../utils/format";
 
 const StatsPanel = ({
