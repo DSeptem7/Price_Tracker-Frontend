@@ -62,21 +62,6 @@
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
   }
 
-  /* Animación de Rebote Orgánico */
-  @keyframes bounce-sad {
-    0%, 100% {
-      transform: translateY(0) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(-5deg); /* Sube y se inclina un poco */
-    }
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   /* Ajuste para móvil */
   @media (max-width: 600px) {
     .no-results-container {
