@@ -37,6 +37,7 @@ const ProductCard = ({ product, query }) => {
       {/* IMAGEN */}
       <div className="image-container">
         <img
+          className="product-image"
           src={product.image}
           alt={product.title}
           loading="lazy"
