@@ -1,0 +1,72 @@
+.status-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color); /* Aquí vuelve la línea */
+    width: 100%;
+  
+    /* --- ESTO EVITA EL SALTO --- */
+    min-height: 42px; /* 32px del badge + 10px de padding superior */
+    align-items: flex-start; /* Alinea los badges arriba para que siempre empiecen en el mismo punto */
+  }
+  
+  /* 2. EL BADGE BASE (Actualizado para simetría perfecta) */
+  .state-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;       /* Un poco más de padding lateral para que respire */
+    border-radius: 8px;     
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    /* --- MAGIA DE SIMETRÍA --- */
+    display: inline-flex;    /* Usamos flexbox internamente */
+    align-items: center;     /* Centra el texto verticalmente si es de 1 línea */
+    justify-content: center; /* Centra el texto horizontalmente */
+    text-align: center;
+    min-height: 32px;        /* ¡El secreto! Reserva espacio exacto para 2 líneas */
+    line-height: 1.1;        /* Interlineado ajustado para que 2 líneas quepan bien */
+    max-width: 100%;         /* Evita que desborde el contenedor */
+  }
+  
+  /* 3. COLORES POR PRIORIDAD (Usando tus variables :root) */
+  
+  /* PRIORIDAD 1-4: VERDE (Mínimo histórico / Bajada) */
+  .priority-1, .priority-2, .priority-3, .priority-4 {
+    background: #dcfce7;    /* El verde clarito que te gustaba */
+    color: #15803d;         /* El texto verde oscuro */
+  }
+  
+  /* PRIORIDAD 5: CIAN (Restock / Nuevo) */
+  .priority-5 {
+    background: #e0f2fe;    /* Azul muy suave */
+    color: #0369a1;
+  }
+  
+  /* PRIORIDAD 6: NEUTRAL (Sin cambios / Estable) */
+  .priority-6 {
+    background: var(--bg-app);
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  
+  /* PRIORIDAD 7-9: NARANJA (Precio elevado / Subida) */
+  .priority-7, .priority-8, .priority-9 {
+    background: #ffedd5;    /* Naranja suave */
+    color: #9a3412;
+  }
+  
+  /* PRIORIDAD 10: ROJO (Máximo histórico) */
+  .priority-10 {
+    background: #fee2e2;    /* El rojo clarito de tu código anterior */
+    color: #b91c1c;
+  }
+  
+  /* AJUSTE PARA MODO OSCURO AUTOMÁTICO */
+  .dark-mode .state-badge {
+    opacity: 0.9;
+    /* En modo oscuro, los fondos muy claros pueden brillar mucho, 
+       puedes ajustarlos aquí si lo deseas */
+  }

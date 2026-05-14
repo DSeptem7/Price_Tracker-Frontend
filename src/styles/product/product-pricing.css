@@ -1,0 +1,36 @@
+.price-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* CENTRADO de precios */
+    gap: 0px;
+    margin-bottom: 12px;
+  }
+  
+  /* Contenedor "Antes" */
+  
+  .strike-through {
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+  
+  .current-price { 
+    font-size: 24px; /* Un poco más grande para destacar */
+    font-weight: 800; 
+    color: var(--text-main);
+    text-align: center;
+    display: block;
+    line-height: 1; /* Asegura que no haya espacio extra arriba/abajo del texto */
+  } 
+  
+  /* Texto de "No disponible" */
+  .text-muted {
+    color: var(--text-muted) !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  
+  
+  
+
+  
