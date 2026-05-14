@@ -4,14 +4,15 @@ const ProductSkeleton = () => {
   return (
     <div className="product-card skeleton-card">
 
-      <div className="skeleton-header"></div>
+      <div className="skeleton-header skeleton-shimmer"></div>
 
-      <div className="skeleton-img"></div>
+      <div className="skeleton-img skeleton-shimmer"></div>
 
       <div className="skeleton-title-container">
-        <div className="skeleton-title"></div>
+        <div className="skeleton-title skeleton-shimmer"></div>
+
         <div
-          className="skeleton-title"
+          className="skeleton-title skeleton-shimmer"
           style={{ width: "95%" }}
         ></div>
       </div>
@@ -20,16 +21,16 @@ const ProductSkeleton = () => {
         className="price-section"
         style={{ minHeight: "auto" }}
       >
-        <div className="skeleton-price"></div>
+        <div className="skeleton-price skeleton-shimmer"></div>
       </div>
 
       <div className="status-row">
-        <div className="skeleton-badge"></div>
+        <div className="skeleton-badge skeleton-shimmer"></div>
       </div>
 
-      <div className="skeleton-button"></div>
+      <div className="skeleton-button skeleton-shimmer"></div>
 
-      <div className="skeleton-timestamp"></div>
+      <div className="skeleton-timestamp skeleton-shimmer"></div>
 
     </div>
   );

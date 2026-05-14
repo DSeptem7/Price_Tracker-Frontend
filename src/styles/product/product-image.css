@@ -2,7 +2,7 @@
 .image-container {
     position: relative; 
     width: 100%;
-    height: 180px; 
+    height: var(--product-image-height);
     background-color: #fff; 
     border-radius: var(--radius-md);
     display: flex;
