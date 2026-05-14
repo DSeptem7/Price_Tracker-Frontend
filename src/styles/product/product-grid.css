@@ -18,10 +18,10 @@
     }
 
     .product-grid:has(.skeleton-card) {
-      grid-template-columns: repeat(2, 1fr) !important;
+      grid-template-columns: repeat(2, 1fr);
     }
     
     .skeleton-card {
-      height: 280px !important; /* Altura fija para que no salten los elementos al cargar */
+      height: 280px; /* Altura fija para que no salten los elementos al cargar */
     }
   }

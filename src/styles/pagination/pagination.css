@@ -85,55 +85,55 @@
   @media (max-width: 600px) {
     /* 6. Paginación Compacta */
   .pagination-container {
-    gap: 4px !important;
-    padding: 20px 5px !important;
-    justify-content: center !important;
+    gap: 4px;
+    padding: 20px 5px;
+    justify-content: center;
   }
 
   .pagination-number, .pagination-arrow {
-    padding: 0 !important; /* Quitamos padding lateral para control total con min-width */
-    font-size: 13px !important;
-    min-width: 32px !important; /* Tamaño táctil mínimo recomendado */
-    height: 32px !important;
+    padding: 0; /* Quitamos padding lateral para control total con min-width */
+    font-size: 13px;
+    min-width: 32px; /* Tamaño táctil mínimo recomendado */
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px !important; /* Un poco más redondeado y moderno */
+    border-radius: 8px; /* Un poco más redondeado y moderno */
 
     /* ANULACIÓN DE ANIMACIÓN EN MÓVIL */
-    transform: none !important; /* Evita que el botón brinque al tocarlo */
-    transition: none !important; /* Elimina esperas de color */
+    transform: none; /* Evita que el botón brinque al tocarlo */
+    transition: none; /* Elimina esperas de color */
   }
 
   /* ELIMINAR EFECTO HOVER EN MÓVIL */
 /* Forzamos que el estado hover se vea igual al estado normal */
 .pagination-number:hover:not(.active):not(:disabled), 
 .pagination-arrow:hover:not(:disabled) {
-  border-color: var(--border-color) !important;
-  background-color: var(--bg-card) !important;
-  color: var(--text-main) !important;
-  transform: none !important;
+  border-color: var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  transform: none;
 }
 
 /* Opcional: Añadir un efecto de "pulsación" rápido (active) 
    que es más natural en móviles que el hover */
 .pagination-number:active:not(.active):not(:disabled),
 .pagination-arrow:active:not(:disabled) {
-  background-color: var(--border-color) !important;
+  background-color: var(--border-color);
   opacity: 0.7;
 }
 
 .pagination-number.active {
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   /* El activo sí debe mantener su color azul */
 }
 
   /* Ajuste para el botón activo en móvil para que resalte sin ser tosco */
   .pagination-number.active {
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   }
 
   .price-before, .update-date {
-    font-size: 10px !important;
+    font-size: 10px;
   }
 } 

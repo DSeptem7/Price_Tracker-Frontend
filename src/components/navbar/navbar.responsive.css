@@ -26,8 +26,8 @@
 
   /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
   .control-row { 
-    flex-direction: column !important; 
-    gap: 10px !important;
+    flex-direction: column; 
+    gap: 10px;
   }
 
   .nav-controls {
@@ -41,49 +41,49 @@
   /* 2. AJUSTE DE LA CAJA CERRADA (Para que coincida con la abierta) */
   .search-box {
     /* Forzamos que en móvil mida 40px desde el inicio para evitar el salto de altura */
-    height: 40px !important; 
-    width: 40px !important;
+    height: 40px; 
+    width: 40px;
   }
 
   /* 3. BARRA EXPANDIDA (Ajustada para no pegarse al switch) */
   .search-box.expanded {
-    position: absolute !important;
+    position: absolute;
     
     /* CAMBIO: Aumentamos a 75px para separarlo del switch y que coincida con la posición original */
     right: 70px; 
     left: 15px;
     
-    width: auto !important;
+    width: auto;
     
     /* Centrado Vertical (Técnica del Margen Negativo) */
-    height: 40px !important;
+    height: 40px;
     top: 50%;
     margin-top: -20px; 
     margin-bottom: 0;
     
-    transform: none !important; 
+    transform: none; 
     
-    background: var(--input-bg) !important;
+    background: var(--input-bg);
     z-index: 100;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
   /* 4. INPUT INTERNO */
   .search-input {
-    padding: 0 70px 0 15px !important;
-    font-size: 16px !important; 
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    padding: 0 70px 0 15px;
+    font-size: 16px; 
+    opacity: 1;
+    pointer-events: auto;
   }
   
   /* 5. NUEVO: LUPA (SEARCH BTN) CENTRADA PERFECTAMENTE */
   /* Esto soluciona que el icono "baile" verticalmente */
   .search-box .search-btn {
-    top: 0 !important;
-    bottom: 0 !important;
-    margin-top: auto !important;
-    margin-bottom: auto !important;
-    right: 2px !important; /* Pequeño ajuste fino horizontal */
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    right: 2px; /* Pequeño ajuste fino horizontal */
   }
 
   .clear-search-x {
@@ -103,7 +103,7 @@
     width: 94%; 
     max-width: 480px; 
     
-    transform: none !important; 
+    transform: none; 
     
     background: var(--bg-card);
     box-shadow: 0 10px 100px rgba(0,0,0,0.5);
@@ -138,7 +138,7 @@
 
   /* Ajustamos el padding del input para que no pise el botón de atrás */
   .search-box.expanded .search-input {
-    padding: 0 75px 0 45px !important; /* 45px a la izquierda para el botón back */
+    padding: 0 75px 0 45px; /* 45px a la izquierda para el botón back */
   }
 
   /* Animación sutil de entrada para la flecha */
