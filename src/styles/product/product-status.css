@@ -1,7 +1,7 @@
 .status-row {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-xs);
     margin-top: auto;
     padding-top: 10px;
     border-top: 1px solid var(--border-color); /* Aquí vuelve la línea */
@@ -17,7 +17,7 @@
     font-size: 10px;
     font-weight: 700;
     padding: 4px 12px;       /* Un poco más de padding lateral para que respire */
-    border-radius: 8px;     
+    border-radius: var(--radius-sm);     
     text-transform: uppercase;
     letter-spacing: 0.5px;
     
@@ -65,7 +65,7 @@
   }
   
   /* AJUSTE PARA MODO OSCURO AUTOMÁTICO */
-  .dark-mode .state-badge {
+  :root.dark-mode .state-badge {
     opacity: 0.9;
     /* En modo oscuro, los fondos muy claros pueden brillar mucho, 
        puedes ajustarlos aquí si lo deseas */

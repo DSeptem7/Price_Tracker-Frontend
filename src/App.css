@@ -83,6 +83,9 @@ body {
   --shadow-hover-card: 0 12px 24px -8px rgba(0, 0, 0, 0.15)
 
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --product-title-height: 38px;
+  --price-font-size: 24px;
 }
 
 :root.dark-mode {

@@ -14,7 +14,7 @@
   }
   
   .current-price { 
-    font-size: 24px; /* Un poco más grande para destacar */
+    font-size: var(--price-font-size);
     font-weight: 800; 
     color: var(--text-main);
     text-align: center;
