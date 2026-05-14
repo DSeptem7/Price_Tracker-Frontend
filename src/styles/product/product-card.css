@@ -28,7 +28,7 @@
 
   @media (max-width: 600px) {
     .product-card {
-      padding: 10px;
+      padding: var(--spacing-sx);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -39,7 +39,7 @@
     .product-card h3 {
       font-size: 13px;
       line-height: 1.2;
-      margin: 8px 0;
+      margin: var(--spacing-sx) 0;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;

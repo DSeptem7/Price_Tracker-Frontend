@@ -13,7 +13,7 @@
       /* El secreto está aquí: minmax evita que crezcan infinitamente */
       grid-template-columns: repeat(2, minmax(0, 1fr)); 
       gap: var(--spacing-sm); 
-      padding: 15px 10px;
+      padding: var(--spacing-md) 10px;
       align-items: stretch;
     }
 
