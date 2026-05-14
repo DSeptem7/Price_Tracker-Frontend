@@ -219,7 +219,7 @@
     .dashboard-control-panel {
       padding: 20px 16px; /* Reducimos padding lateral */
       margin-bottom: 25px;
-      border-radius: 20px; /* Bordes ligeramente más suaves */
+      border-radius: var(--radius-lg); /* Bordes ligeramente más suaves */
     }
   
     .panel-header {
@@ -239,8 +239,8 @@
   
     .input-group-premium {
       flex-direction: column; /* Apilamos input y botón */
-      gap: 12px;
-      padding: 10px;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-xs);
       background: var(--bg-card); /* Fondo sólido para resaltar */
     }
   
@@ -251,23 +251,23 @@
     .input-group-premium input {
       width: 100%;
       text-align: left;
-      padding: 12px 15px;
+      padding: var(--spacing-sm) 15px;
       font-size: 0.95rem;
       background: var(--bg-app); /* Un fondo sutil para diferenciarlo del contenedor */
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       color: var(--text-main);
     }
   
     .btn-track-premium {
       width: 100%; /* Botón a todo lo ancho */
-      padding: 14px; /* Más alto para facilitar el toque con el dedo */
+      padding: var(--spacing-md); /* Más alto para facilitar el toque con el dedo */
       font-size: 1rem;
     }
   
     /* Filtros y Herramientas en Móvil */
     .filters-and-tools {
       flex-direction: column;
-      gap: 15px;
+      gap: var(--spacing-md);
       border-top: 1px solid var(--border-color);
       padding-top: 20px;
     }
@@ -275,7 +275,7 @@
     .filter-group {
       display: flex;
       flex-direction: row; /* Selects uno al lado del otro */
-      gap: 10px;
+      gap: var(--spacing-xs);
       width: 100%;
     }
   
@@ -301,7 +301,7 @@
       justify-content: center;
       order: 3; /* Siempre al final */
       background-color: var(--bg-app);
-      padding: 12px;
+      padding: var(--spacing-sm);
     }
   
     /* Barra de estado premium en móvil */

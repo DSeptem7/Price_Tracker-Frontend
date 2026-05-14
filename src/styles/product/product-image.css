@@ -22,7 +22,7 @@
     /* 4. Contenedor de Imagen */
     .image-container {
       height: 120px;
-      padding: 8px;
+      padding: var(--spacing-xs);
       margin-bottom: 5px;
     }
 

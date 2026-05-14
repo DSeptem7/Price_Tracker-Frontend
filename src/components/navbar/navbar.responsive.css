@@ -9,7 +9,7 @@
 @media (max-width: 600px) {
   /* 1. Contenedor Navbar */
   .navbar-content {
-    padding: 0 15px;
+    padding: 0 var(--spacing-md);
     position: relative; 
     display: flex;
     align-items: center;
@@ -27,11 +27,11 @@
   /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
   .control-row { 
     flex-direction: column; 
-    gap: 10px;
+    gap: var(--spacing-sm);
   }
 
   .nav-controls {
-    gap: 10px;
+    gap: var(--spacing-sm);
     width: auto;
     flex-shrink: 0;
     display: flex;
@@ -122,7 +122,7 @@
     background: transparent;
     border: none;
     color: var(--text-muted);
-    padding: 8px;
+    padding: var(--spacing-xs);
     cursor: pointer;
     z-index: 101; /* Por encima del input */
     display: flex;
@@ -170,7 +170,7 @@
   }
   
   .login-btn {
-    padding: 6px 10px;
+    padding: 6px var(--spacing-sm);
     font-size: 0.8rem;
   }
 }

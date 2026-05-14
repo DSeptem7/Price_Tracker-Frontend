@@ -3,8 +3,8 @@
     display: flex; 
     justify-content: center; 
     align-items: center; 
-    gap: 8px; 
-    margin: 30px 0;
+    gap: var(--spacing-xs); 
+    margin: var(--spacing-xl) 0;
   }
   
   /* Aplicamos la base y la transición a AMBOS (Números y Flechas) */
@@ -14,7 +14,7 @@
     color: var(--text-main);
     border: 1px solid var(--border-color);
     padding: 10px 18px; 
-    border-radius: 12px; 
+    border-radius: var(--radius-md); 
     font-weight: 700; 
     cursor: pointer;
     transition:
@@ -98,7 +98,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px; /* Un poco más redondeado y moderno */
+    border-radius: var(--radius-sm); /* Un poco más redondeado y moderno */
 
     /* ANULACIÓN DE ANIMACIÓN EN MÓVIL */
     transform: none; /* Evita que el botón brinque al tocarlo */
