@@ -21,13 +21,13 @@
   @media (max-width: 600px) {
     /* 4. Contenedor de Imagen */
     .image-container {
-      height: 120px;
-      padding: var(--spacing-xs);
-      margin-bottom: 5px;
+      height: 120px !important;
+      padding: 8px !important;
+      margin-bottom: 5px !important;
     }
 
-    .product-image {
-      object-fit: contain;
-      height: 100%;
+    .product-card img {
+      object-fit: contain !important;
+      height: 100% !important;
     }
   }
