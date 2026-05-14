@@ -20,6 +20,16 @@
     max-width: 50%;
   }
 
+  .navbar-spacer {
+    flex-grow: 1;
+  }
+
+  /* La fila del buscador sí la dejamos vertical para que sea cómodo escribir */
+  .control-row { 
+    flex-direction: column !important; 
+    gap: 10px !important;
+  }
+
   .nav-controls {
     gap: 10px;
     width: auto;

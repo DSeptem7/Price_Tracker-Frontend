@@ -1,0 +1,19 @@
+@media (max-width: 600px) {
+
+    /* 1. Reparación Maestra de Scroll y Sticky */
+    html, body {
+      overflow-x: clip;
+      overflow-y: visible; /* Asegura que el scroll principal mande */
+      min-height: 100dvh;  /* En lugar de height: auto */
+      height: auto;        /* Permitimos que crezca si el contenido es largo */
+      background-color: var(--bg-app); /* Forzamos el color para evitar franjas blancas */
+      
+      width: 100%;
+      position: relative;
+    }
+  
+    .App {
+      overflow: visible; /* Eliminamos el hidden aquí también temporalmente */
+      display: block;
+    }
+}

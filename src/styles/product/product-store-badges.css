@@ -13,3 +13,13 @@
   .store-ml { background-color: #ffe600; color: #333; }
   .store-amazon { background-color: #232f3e; color: white; }
   .store-default { background-color: var(--border-color); color: var(--text-muted); }
+
+  @media (max-width: 600px) {
+      /* CORRECCIÓN DE ASIMETRÍA EN TARJETAS */
+    .store-header {
+      /* Ajustamos el margen negativo para que coincida con el padding de 10px */
+      margin: -10px -10px 12px -10px !important; 
+      border-radius: 20px 20px 0 0 !important; /* Asegura que las esquinas sigan la curva de la tarjeta */
+      width: calc(100% + 20px) !important; /* Fuerza el ancho total exacto */
+    }
+  }

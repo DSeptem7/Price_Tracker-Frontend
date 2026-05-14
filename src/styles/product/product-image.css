@@ -17,3 +17,17 @@
     max-height: 100%;
     object-fit: contain;
   }
+
+  @media (max-width: 600px) {
+    /* 4. Contenedor de Imagen */
+    .image-container {
+      height: 120px !important;
+      padding: 8px !important;
+      margin-bottom: 5px !important;
+    }
+
+    .product-image {
+      object-fit: contain !important;
+      height: 100% !important;
+    }
+  }

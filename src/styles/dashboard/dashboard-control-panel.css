@@ -214,3 +214,101 @@
     .filters-and-tools { flex-direction: column; gap: var(--spacing-md); align-items: stretch; }
     .filter-group { flex-direction: column; }
   }
+
+  @media (max-width: 600px) {
+    .dashboard-control-panel {
+      padding: 20px 16px !important; /* Reducimos padding lateral */
+      margin-bottom: 25px !important;
+      border-radius: 20px !important; /* Bordes ligeramente más suaves */
+    }
+  
+    .panel-header {
+      margin-bottom: 20px !important;
+    }
+  
+    .panel-header h3 {
+      font-size: 1.4rem !important; /* Bajamos un poco de 1.65 para evitar cortes */
+      line-height: 1.1;
+    }
+  
+    /* Buscador Principal en Móvil */
+    .search-main-container {
+      margin-bottom: 16px !important; /* Espacio más ajustado en móvil */
+      width: 100%;
+    }
+  
+    .input-group-premium {
+      flex-direction: column !important; /* Apilamos input y botón */
+      gap: 12px !important;
+      padding: 10px !important;
+      background: var(--bg-card) !important; /* Fondo sólido para resaltar */
+    }
+  
+    .search-icon-wrapper {
+      display: none; /* Quitamos la lupa en móvil para ganar espacio horizontal */
+    }
+  
+    .input-group-premium input {
+      width: 100% !important;
+      text-align: left;
+      padding: 12px 15px !important;
+      font-size: 0.95rem !important;
+      background: var(--bg-app); /* Un fondo sutil para diferenciarlo del contenedor */
+      border-radius: 10px;
+      color: var(--text-main);
+    }
+  
+    .btn-track-premium {
+      width: 100% !important; /* Botón a todo lo ancho */
+      padding: 14px !important; /* Más alto para facilitar el toque con el dedo */
+      font-size: 1rem !important;
+    }
+  
+    /* Filtros y Herramientas en Móvil */
+    .filters-and-tools {
+      flex-direction: column !important;
+      gap: 15px !important;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px !important;
+    }
+  
+    .filter-group {
+      display: flex !important;
+      flex-direction: row !important; /* Selects uno al lado del otro */
+      gap: 10px !important;
+      width: 100% !important;
+    }
+  
+    .custom-select-container {
+      flex: 1 !important; /* 50% cada uno */
+      min-width: 0 !important;
+    }
+  
+    .custom-select-container label {
+      font-size: 9px !important; /* Etiquetas mini para no robar espacio */
+      text-align: center;
+    }
+  
+    .custom-select-container select {
+      font-size: 12px !important;
+      padding: 10px 5px !important;
+      text-align: center;
+    }
+  
+    /* Botón Limpiar (Basura) en Móvil */
+    .btn-clear-premium {
+      width: 100% !important;
+      justify-content: center !important;
+      order: 3; /* Siempre al final */
+      background-color: var(--bg-app) !important;
+      padding: 12px !important;
+    }
+  
+    /* Barra de estado premium en móvil */
+    .status-bar-premium {
+      margin-top: 15px !important;
+      justify-content: center !important;
+      font-size: 0.8rem !important;
+      text-align: center;
+    }
+  }  

@@ -1,0 +1,139 @@
+/* PAGINACIÓN UNIFICADA */
+.pagination-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 8px; 
+    margin: 30px 0;
+  }
+  
+  /* Aplicamos la base y la transición a AMBOS (Números y Flechas) */
+  .pagination-number, 
+  .pagination-arrow {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 10px 18px; 
+    border-radius: 12px; 
+    font-weight: 700; 
+    cursor: pointer;
+    transition:
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        color var(--transition-fast),
+        transform var(--transition-fast),
+        opacity var(--transition-fast);    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Efecto Hover Unificado (Excepto para el activo o deshabilitado) */
+  .pagination-number:hover:not(.active):not(:disabled), 
+  .pagination-arrow:hover:not(:disabled) {
+    border-color: var(--accent-blue);
+    background-color: var(--bg-app);
+    transform: translateY(-2px); /* Pequeño salto sutil igual que los números */
+    color: var(--accent-blue);
+  }
+  
+  .pagination-number.active { 
+    background-color: var(--accent-blue); 
+    color: white; 
+    border-color: var(--accent-blue); 
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); 
+  }
+  
+  /* Estilo para flechas o números deshabilitados */
+  .pagination-number:disabled, 
+  .pagination-arrow:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none; /* Evita que salten si están bloqueados */
+    border-color: var(--border-color);
+  }
+  
+  /* Estado de espera para la paginación */
+  .pagination-pending {
+    opacity: 0.6;
+    pointer-events: none; /* Evita que el usuario haga múltiples clics accidentales */
+    filter: grayscale(0.5);
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Opcional: un efecto suave de transición para los números */
+  .pagination-number {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Mejora para el estado deshabilitado en paginación única */
+  .pagination-arrow:disabled, 
+  .pagination-number:disabled {
+    opacity: 0.3; /* Un poco más tenue que antes */
+    cursor: not-allowed;
+    filter: grayscale(1); /* Las flechas pierden fuerza visual cuando no sirven */
+    border-color: var(--border-color);
+    background-color: var(--bg-app); /* Fondo más discreto */
+  }
+  
+  /* Evitamos que el botón activo "tiemble" o cambie si es el único que hay */
+  .pagination-number.active:disabled {
+    opacity: 1; /* El número activo debe verse claro aunque esté "disabled" por carga */
+    filter: none;
+  }
+
+  @media (max-width: 600px) {
+    /* 6. Paginación Compacta */
+  .pagination-container {
+    gap: 4px !important;
+    padding: 20px 5px !important;
+    justify-content: center !important;
+  }
+
+  .pagination-number, .pagination-arrow {
+    padding: 0 !important; /* Quitamos padding lateral para control total con min-width */
+    font-size: 13px !important;
+    min-width: 32px !important; /* Tamaño táctil mínimo recomendado */
+    height: 32px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px !important; /* Un poco más redondeado y moderno */
+
+    /* ANULACIÓN DE ANIMACIÓN EN MÓVIL */
+    transform: none !important; /* Evita que el botón brinque al tocarlo */
+    transition: none !important; /* Elimina esperas de color */
+  }
+
+  /* ELIMINAR EFECTO HOVER EN MÓVIL */
+/* Forzamos que el estado hover se vea igual al estado normal */
+.pagination-number:hover:not(.active):not(:disabled), 
+.pagination-arrow:hover:not(:disabled) {
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  transform: none !important;
+}
+
+/* Opcional: Añadir un efecto de "pulsación" rápido (active) 
+   que es más natural en móviles que el hover */
+.pagination-number:active:not(.active):not(:disabled),
+.pagination-arrow:active:not(:disabled) {
+  background-color: var(--border-color) !important;
+  opacity: 0.7;
+}
+
+.pagination-number.active {
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+  /* El activo sí debe mantener su color azul */
+}
+
+  /* Ajuste para el botón activo en móvil para que resalte sin ser tosco */
+  .pagination-number.active {
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+  }
+
+  .price-before, .update-date {
+    font-size: 10px !important;
+  }
+} 

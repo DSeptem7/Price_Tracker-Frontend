@@ -6,3 +6,22 @@
     gap: var(--spacing-lg); 
     padding: var(--spacing-md) 0;
   }
+
+  @media (max-width: 600px) {
+    .product-grid {
+      display: grid;
+      /* El secreto está aquí: minmax evita que crezcan infinitamente */
+      grid-template-columns: repeat(2, minmax(0, 1fr)); 
+      gap: var(--spacing-sm); 
+      padding: 15px 10px;
+      align-items: stretch;
+    }
+
+    .product-grid:has(.skeleton-card) {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .skeleton-card {
+      height: 280px !important; /* Altura fija para que no salten los elementos al cargar */
+    }
+  }

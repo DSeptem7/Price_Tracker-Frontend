@@ -37,7 +37,7 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
           🛒 Price Tracker
         </span>
         
-        <div style={{ flexGrow: 1 }}></div>
+        <div className="navbar-spacer" />
 
         <div className="nav-controls">
           
