@@ -13,15 +13,15 @@
       /* El secreto está aquí: minmax evita que crezcan infinitamente */
       grid-template-columns: repeat(2, minmax(0, 1fr)); 
       gap: var(--spacing-sm); 
-      padding: 15px 10px;
+      padding: var(--spacing-md) 10px;
       align-items: stretch;
     }
 
     .product-grid:has(.skeleton-card) {
-      grid-template-columns: repeat(2, 1fr) !important;
+      grid-template-columns: repeat(2, 1fr);
     }
     
     .skeleton-card {
-      height: 280px !important; /* Altura fija para que no salten los elementos al cargar */
+      height: 280px; /* Altura fija para que no salten los elementos al cargar */
     }
   }
