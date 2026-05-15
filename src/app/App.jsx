@@ -20,7 +20,6 @@ import ScrollToTop from "../ScrollToTop";
 import ProductDetail from '../ProductDetail';
 import Footer from '../Footer';
 import { AuthProvider } from '../context/AuthContext';
-import "../App.css";
 
 // --- COMPONENTE PRINCIPAL APP ---
 function App() {
