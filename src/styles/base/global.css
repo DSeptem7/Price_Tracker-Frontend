@@ -1,0 +1,25 @@
+html {
+    scrollbar-gutter: stable; /* Evita saltos de layout al aparecer el scroll */
+    background-color: var(--bg-app); /* <-- 1. AÑADIDO: Sella el fondo desde la raíz absoluta */
+  }
+  
+  body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    transition: background-color 0.3s ease;
+    min-height: 100dvh;
+  }
+  
+  .main-content {
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto;
+    padding: 20px;
+  }
+  
+  .App {
+    text-align: center;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+  }
+  
