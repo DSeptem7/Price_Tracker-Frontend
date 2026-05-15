@@ -38,6 +38,22 @@
     --product-title-height: 38px;
     --price-font-size: 24px;
     --product-image-height: 180px;
+
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    /* Forzamos un esquema claro para evitar que el navegador decida por nosotros */
+    color-scheme: light;
+    /* Color de texto principal */
+    color: #213547;
+    /* El fondo de toda la página ahora será un gris muy claro o blanco */
+    background-color: #f4f7f6;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   :root.dark-mode {
