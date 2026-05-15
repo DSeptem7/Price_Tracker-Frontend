@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import SearchDropdown from './SearchDropdown';
-import { useSearchController } from "'../../hooks/useSearchController";
+import { useSearchController } from "./hooks/useSearchController";
 
 const SearchBox = ({
   isExpanded,
