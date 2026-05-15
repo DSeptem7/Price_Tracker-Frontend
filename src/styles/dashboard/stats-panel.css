@@ -46,24 +46,23 @@
 /* ====================================================================== */
   /* INDICADORES (Círculos de color en las Stats) */
   .stat-indicator {
-    width: 4px;
-    height: 32px;
-    border-radius: var(--radius-xs);
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
   
-  .stat-indicator.down { background-color: var(--accent-green); }
-  .stat-indicator.up { background-color: var(--accent-red); }
-  .stat-indicator.savings { background-color: var(--accent-blue); }
-  .stat-indicator.star { background-color: var(--accent-orange); }
+  .stat-indicator.down { background: #dcfce7; color: #15803d; }
+  .stat-indicator.up { background: #fee2e2; color: #b91c1c; }
+  .stat-indicator.savings { background: #e0f2fe; color: #0369a1; }
+  .stat-indicator.star { background: #fef3c7; color: #92400e; }
   
   .stat-info {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
   }
   
   .stat-value {
@@ -109,6 +108,6 @@
       gap: 12px;
     }
     .stat-card { padding: 12px; gap: 10px; }
-    .stat-indicator { width: 4px; height: 32px; }
+    .stat-indicator { width: 36px; height: 36px; }
     .stat-value { font-size: 16px; }
   }
