@@ -99,7 +99,7 @@ const StatsPanel = ({
 
       {/* MEJOR OFERTA */}
       <div
-        className="stat-card stat-card-clickable"
+        className="stat-card clickable"
         onClick={() => {
           if (stats.bestDiscount?.id) {
             window.location.href = `/producto/${stats.bestDiscount.id}`;

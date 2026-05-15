@@ -1,156 +1,89 @@
-/* ====================================================================== */
-/* === STATS PANEL === */
-/* ====================================================================== */
-
 .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.stat-card {
-  background: var(--bg-card);
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-color);
-
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  box-shadow: var(--shadow-sm);
-
-  position: relative;
-  overflow: hidden;
-
-  transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
-}
-
-/* Hover base */
-.stat-card:hover {
-  transform: translateY(-2px);
-}
-
-/* Hover especial para cards clickeables */
-.stat-card-clickable {
-  cursor: pointer;
-}
-
-.stat-card-clickable:hover {
-  transform: translateY(-3px) scale(1.01);
-}
-
-/* ====================================================================== */
-/* === INDICADORES === */
-/* ====================================================================== */
-
-.stat-indicator {
-  width: 48px;
-  height: 48px;
-
-  border-radius: var(--radius-md);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-}
-
-.stat-indicator.down {
-  background: #dcfce7;
-  color: #15803d;
-}
-
-.stat-indicator.up {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.stat-indicator.savings {
-  background: #e0f2fe;
-  color: #0369a1;
-}
-
-.stat-indicator.star {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-/* ====================================================================== */
-/* === INFO === */
-/* ====================================================================== */
-
-.stat-info {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-}
-
-.stat-value {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-main);
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  /* Solución anti-brinco */
-  height: 24px;
-
-  display: flex;
-  align-items: center;
-
-  line-height: 1;
-}
-
-/* Loading state */
-.stat-value.loading-text {
-  font-size: 14px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* Texto pequeño */
-.stat-value.small-text {
-  font-size: 14px;
-  height: 24px;
-}
-
-/* ====================================================================== */
-/* === RESPONSIVE === */
-/* ====================================================================== */
-
-@media (max-width: 600px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
   }
-
+  
   .stat-card {
-    padding: 12px;
-    gap: 10px;
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-sm);
   }
-
+  
+  .stat-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* INDICADORES (Círculos de color en las Stats) */
   .stat-indicator {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
-
+  
+  .stat-indicator.down { background: #dcfce7; color: #15803d; }
+  .stat-indicator.up { background: #fee2e2; color: #b91c1c; }
+  .stat-indicator.savings { background: #e0f2fe; color: #0369a1; }
+  .stat-indicator.star { background: #fef3c7; color: #92400e; }
+  
+  .stat-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
   .stat-value {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    /* --- SOLUCIÓN AL BRINCO --- */
+    height: 24px;       /* Forzamos una altura fija suficiente para los 18px */
+    display: flex;      /* Usamos flex para alinear el contenido internamente */
+    align-items: center; /* Centramos verticalmente los "..." o los números */
+    line-height: 1;     /* Evitamos espacios extra por interlineado */
   }
-}
+  
+  /* Ajuste para el estado de carga */
+  .stat-value.loading-text {
+    font-size: 14px; /* Mantienes tu tamaño pequeño */
+    color: var(--text-muted);
+    font-weight: 500;
+    /* La altura seguirá siendo 24px gracias a la regla anterior */
+  }
+  
+  /* Ajuste para la tarjeta de 'Mejor Oferta' que es más pequeña */
+  .stat-value.small-text {
+    font-size: 14px;
+    height: 24px; /* Mantenemos la misma altura para que la tarjeta no sea distinta */
+  }
+  
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+  
+  @media (max-width: 600px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .stat-card { padding: 12px; gap: 10px; }
+    .stat-indicator { width: 36px; height: 36px; }
+    .stat-value { font-size: 16px; }
+  }
