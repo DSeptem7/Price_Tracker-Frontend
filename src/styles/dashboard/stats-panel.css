@@ -49,9 +49,6 @@
     width: 4px;
     height: 32px;
     border-radius: var(--radius-xs);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
   }
   
