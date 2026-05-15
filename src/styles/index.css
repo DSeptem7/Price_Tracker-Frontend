@@ -1,4 +1,4 @@
-@import "./styles/base/responsive.css";
+@import "./base/responsive.css";
 @import "./base/reset.css";
 @import "./base/variables.css";
 @import "./base/global.css";
@@ -8,20 +8,20 @@
 @import "./dashboard/stats-panel.css";
 @import "./dashboard/theme-switch.css";
 
-@import "./styles/product/product-grid.css";
-@import "./styles/product/product-card.css";
-@import "./styles/product/product-image.css";
-@import "./styles/product/product-store-badges.css";
-@import "./styles/product/empty-state.css";
+@import "./product/product-grid.css";
+@import "./product/product-card.css";
+@import "./product/product-image.css";
+@import "./product/product-store-badges.css";
+@import "./product/empty-state.css";
 
-@import "./styles/product/product-card-content.css";
-@import "./styles/product/product-pricing.css";
-@import "./styles/product/product-status.css";
-@import "./styles/product/product-badges.css";
-@import "./styles/product/product-disabled.css";
+@import "./product/product-card-content.css";
+@import "./product/product-pricing.css";
+@import "./product/product-status.css";
+@import "./product/product-badges.css";
+@import "./product/product-disabled.css";
 
 
-@import "./styles/pagination/pagination.css";
+@import "./pagination/pagination.css";
 
 
 @import "./loading/skeleton.css";
