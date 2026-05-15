@@ -122,6 +122,6 @@
     }
     .stat-card { padding: var(--spacing-sm); gap: var(--spacing-xs); }
     .stat-indicator { width: 4px; height: 24px; }
-    .stat-value { font-size: 16px; }
+    .stat-value { font-size: 15px; }
     .stat-label { font-size: 9px; }
   }
