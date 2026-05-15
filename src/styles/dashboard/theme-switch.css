@@ -40,7 +40,7 @@
     transition: .4s;
     width: 20px;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: var(--shadow-sm);
   }
   
   /* Estado Activo (Modo Oscuro) */
