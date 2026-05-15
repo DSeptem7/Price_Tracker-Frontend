@@ -138,25 +138,9 @@ body {
 
 
 
-.stat-card {
-  background: var(--bg-card);
-  padding: 16px; 
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
 
-/* Hover sutil para todas las tarjetas */
-.stat-card:hover {
-  border-color: var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-}
+
+
 
 
 

@@ -17,9 +17,18 @@
     align-items: center;
     gap: 16px;
     box-shadow: var(--shadow-sm);
+
+    position: relative;
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+    overflow: hidden;
   }
   
   .stat-card:hover {
+    border-color: var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
   }
 
@@ -32,6 +41,9 @@
     transform: translateY(-3px) scale(1.01);
   }
   
+/* ====================================================================== */
+/* === INDICADORES === */
+/* ====================================================================== */
   /* INDICADORES (Círculos de color en las Stats) */
   .stat-indicator {
     width: 48px;
