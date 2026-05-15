@@ -7,7 +7,7 @@ import '../../styles/navbar/navbar-utils.css';
 import '../../styles/navbar/navbar-results.css';
 import '../../styles/navbar/navbar-theme.css';
 import '../../styles/navbar/navbar-responsive.css';
-import '../../styles/navbar/navbar.auth.css';
+import '../../styles/navbar/navbar-auth.css';
 import { useAutocomplete } from './search/useAutocomplete';
 import SearchBox from './SearchBox';
 import { fetchAutocomplete } from '../../services/api';
