@@ -10,12 +10,12 @@
   
   .stat-card {
     background: var(--bg-card);
-    padding: 20px;
+    padding: 16px;
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     box-shadow: var(--shadow-sm);
 
     position: relative;
