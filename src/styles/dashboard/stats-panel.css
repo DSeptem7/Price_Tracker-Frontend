@@ -60,9 +60,22 @@
   .stat-indicator.savings { background-color: var(--accent-blue); }
   .stat-indicator.star { background-color: var(--accent-orange); }
   
+/* ====================================================================== */
+/* === INFO === */
+/* ====================================================================== */
   .stat-info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   
   .stat-value {
@@ -91,17 +104,17 @@
   /* Ajuste para la tarjeta de 'Mejor Oferta' que es más pequeña */
   .stat-value.small-text {
     font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;   /* 🔥 máximo 2 líneas */
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
     height: 24px; /* Mantenemos la misma altura para que la tarjeta no sea distinta */
   }
   
-  .stat-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-  }
-  
+/* ====================================================================== */
+/* === RESPONSIVE === */
+/* ====================================================================== */
   @media (max-width: 600px) {
     .stats-grid {
       grid-template-columns: repeat(2, 1fr);
