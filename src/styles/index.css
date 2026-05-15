@@ -1,5 +1,9 @@
 @import "./loading/skeleton.css";
 
+/* Dashboard */
+@import "./dashboard/stats-panel.css";
+@import "./dashboard/theme-switch.css";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

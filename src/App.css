@@ -215,50 +215,6 @@ body {
   text-overflow: ellipsis;
 }
 
-/* SWITCH DE MODO OSCURO (Toggle) */
-.theme-switch-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.theme-switch {
-  display: inline-block;
-  height: 26px;
-  position: relative;
-  width: 48px;
-}
-
-.theme-switch input { display: none; }
-
-.slider {
-  background-color: #cbd5e1; /* Gris suave apagado */
-  bottom: 0;
-  cursor: pointer;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  background-color: white;
-  bottom: 3px;
-  content: "";
-  height: 20px;
-  left: 3px;
-  position: absolute;
-  transition: .4s;
-  width: 20px;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Estado Activo (Modo Oscuro) */
-input:checked + .slider { background-color: var(--accent-blue); }
-input:checked + .slider:before { transform: translateX(22px); }
-
 /* ====================================================================== */
 /* === 11. ANIMACIONES DE CARGA Y RESPONSIVE FINAL === */
 /* ====================================================================== */
