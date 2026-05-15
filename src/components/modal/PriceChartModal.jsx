@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-
+import { formatCurrency } from "../../utils/format";
+import "../../styles/modal/price-chart-modal.css";
 import {
   LineChart,
   Line,
@@ -10,10 +11,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-import { formatCurrency } from "../../utils/format";
-
-import "./PriceChartModal.css";
 
 const PriceChartModal = ({
   productTitle,
