@@ -5,7 +5,7 @@ import { formatCurrency } from '../../utils/format';
 import { useProductDetail } from './hooks/useProductDetail';
 import PriceChartModal from "../../components/modal/PriceChartModal";
 import { getFilteredChartData } from './utils/chartFilters';
-import ProductSummary from './product-detail/components/ProductSummary';
+import ProductSummary from './components/ProductSummary';
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
   ReferenceLine, Label
