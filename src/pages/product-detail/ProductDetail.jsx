@@ -7,6 +7,7 @@ import PriceChartModal from "../../components/modal/PriceChartModal";
 import { getFilteredChartData } from './utils/chartFilters';
 import ProductSummary from './components/ProductSummary';
 import PriceHistoryChart from './components/PriceHistoryChart';
+import RangeSelector from './components/RangeSelector';
 
 const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const { id } = useParams();
@@ -117,18 +118,10 @@ const toggleModal = () => {
                   </button>
                 </div>
                   
-                  {/* Botones de temporalidad */}
-                  <div className="range-selector">
-                    {['1m', '3m', '6m', '1y', 'all'].map((range) => (
-                      <button
-                        key={range}
-                        onClick={() => handleRangeChange(range)}
-                        className={`range-btn ${timeRange === range ? 'active' : ''}`}
-                      >
-                        {range === 'all' ? 'Todo' : range.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
+                <RangeSelector
+                  timeRange={timeRange}
+                  handleRangeChange={handleRangeChange}
+                />                
                 </div>
 
                 <div className="chart-relative-wrapper" style={{ width: '100%', height: 350, position: 'relative' }}>
@@ -203,18 +196,11 @@ const toggleModal = () => {
                   <span className="modal-product-name">{product.title}</span>
                 </div>
                 
-                {/* Agregamos los botones aquí también */}
-                <div className="range-selector modal-ranges">
-                  {['1m', '3m', '6m', '1y', 'all'].map((range) => (
-                    <button
-                      key={range}
-                      onClick={() => handleRangeChange(range)}
-                      className={`range-btn ${timeRange === range ? 'active' : ''}`}
-                    >
-                      {range === 'all' ? 'Todo' : range.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
+                <RangeSelector
+                  timeRange={timeRange}
+                  handleRangeChange={handleRangeChange}
+                  className="modal-ranges"
+                />
                   
                 <button className="close-modal" onClick={toggleModal} title="Cerrar">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
