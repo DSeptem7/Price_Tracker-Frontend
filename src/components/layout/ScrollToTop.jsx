@@ -6,7 +6,12 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     // Forzamos el scroll al inicio (coordenadas 0,0)
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+    
   }, [pathname]); // Se dispara cada vez que la ruta (URL) cambia
 
   return null; // Este componente no renderiza nada visualmente

@@ -16,7 +16,7 @@ import { useResponsiveItemsPerPage } from "../hooks/useResponsiveItemsPerPage";
 import { useFilters } from "../hooks/useFilters";
 import { usePageNavigation } from "../hooks/usePageNavigation";
 import { mapSortOption } from "../utils/sort";
-import ScrollToTop from "../ScrollToTop";
+import ScrollToTop from '../components/layout/ScrollToTop';
 import ProductDetail from '../ProductDetail';
 import Footer from '../components/footer/Footer';
 import { AuthProvider } from '../context/AuthContext';
