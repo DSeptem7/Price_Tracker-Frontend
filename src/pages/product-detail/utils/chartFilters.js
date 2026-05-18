@@ -10,7 +10,7 @@ export const getFilteredChartData = (chartData, timeRange) => {
       '6m': 180,
       '1y': 365
     };
-  
+
     const daysLimit = ranges[timeRange];
     const cutoffDate = new Date();
     cutoffDate.setDate(now.getDate() - daysLimit);
