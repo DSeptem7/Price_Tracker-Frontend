@@ -6,10 +6,7 @@ import { useProductDetail } from './hooks/useProductDetail';
 import PriceChartModal from "../../components/modal/PriceChartModal";
 import { getFilteredChartData } from './utils/chartFilters';
 import ProductSummary from './components/ProductSummary';
-import {
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
-  ReferenceLine, Label
-} from 'recharts';
+import PriceHistoryChart from './components/PriceHistoryChart';
 
 const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const { id } = useParams();
@@ -87,63 +84,7 @@ const toggleModal = () => {
   }
 };
 
-// Definimos una función de renderizado en lugar de una constante
-const renderPriceChart = () => {
-  if (!product || !product.history) return null;
 
-  return (
-  <ResponsiveContainer width="100%" height="100%" style={{ outline: 'none' }}>
-                <AreaChart data={filteredData} margin={{ top: 10, right: 30, left: 20, bottom: 20 }}>
-                      <defs>
-                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <YAxis 
-                        domain={['auto', 'auto']} 
-                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
-                        tickFormatter={(v) => formatCurrency(v)} 
-                        fontSize={12} tickLine={false} axisLine={false} 
-                      />
-                      <XAxis 
-                        dataKey="timestamp" 
-                        stroke={isDarkMode ? "#94a3b8" : "#64748b"} 
-                        fontSize={10} 
-                        tickFormatter={(str) => str?.split(' ')[0]} 
-                        tickLine={false} axisLine={false} minTickGap={30} 
-                      />
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
-                      
-                      {/* --- LÍNEA DE REFERENCIA: BASELINE (ANCLA) --- */}
-                      {!product.is_new &&
-                        typeof product.baseline_price === "number" &&
-                        product.baseline_price > 0 && (
-                        <ReferenceLine 
-                          y={product.baseline_price} 
-                          stroke="#94a3b8" 
-                          strokeDasharray="5 5"
-                          strokeWidth={2}
-                        >
-                          <Label 
-                            value="Precio Mercado (30d)"
-                            position="insideBottomRight" 
-                            fill="#94a3b8" 
-                            fontSize={10}
-                            dy={-5}
-                          />
-                        </ReferenceLine>
-                      )}
-
-                      <Tooltip 
-                        contentStyle={{ backgroundColor: isDarkMode ? 'rgba(30, 41, 59, 0.8)' : 'rgba(255, 255, 255, 0.8)', border: 'none', borderRadius: '8px'}} 
-                        formatter={(v) => [formatCurrency(v), 'Precio']} 
-                      />
-                      <Area type="monotone" dataKey="price" stroke="#3b82f6" fillOpacity={isChanging ? 0.1 : 1} fill="url(#colorPrice)" strokeWidth={3} animationDuration={500} />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                  );
-                };
 
 
   return (
@@ -192,7 +133,12 @@ const renderPriceChart = () => {
 
                 <div className="chart-relative-wrapper" style={{ width: '100%', height: 350, position: 'relative' }}>
                 {isChanging && <div className="chart-spinner-overlay"><div className="chart-spinner"></div></div>}
-                {renderPriceChart()} {/* Llamamos a la gráfica aquí */}
+                <PriceHistoryChart
+                  filteredData={filteredData}
+                  product={product}
+                  isDarkMode={isDarkMode}
+                  isChanging={isChanging}
+                />
               </div>
             </div>
 
@@ -285,7 +231,12 @@ const renderPriceChart = () => {
                       <div className="chart-spinner"></div>
                     </div>
                   )}
-                {renderPriceChart()} {/* Reutilizamos la misma gráfica aquí */}
+                <PriceHistoryChart
+                  filteredData={filteredData}
+                  product={product}
+                  isDarkMode={isDarkMode}
+                  isChanging={isChanging}
+                />
                 </div>
               </div>
             </div>
