@@ -18,7 +18,7 @@ import { usePageNavigation } from "../hooks/usePageNavigation";
 import { mapSortOption } from "../utils/sort";
 import ScrollToTop from "../ScrollToTop";
 import ProductDetail from '../ProductDetail';
-import Footer from '../Footer';
+import Footer from '../components/footer/Footer';
 import { AuthProvider } from '../context/AuthContext';
 
 // --- COMPONENTE PRINCIPAL APP ---

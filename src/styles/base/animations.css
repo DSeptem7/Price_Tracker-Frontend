@@ -42,3 +42,10 @@
 .loading-pulse {
   animation: pulse-dot 1.2s infinite ease-in-out;
 }
+
+/* pulso verde del footer */
+@keyframes pulse-green {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
