@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { formatCurrency } from './utils/format';
+
 import './ProductDetail.css';
+import { formatCurrency } from './utils/format';
+import { useProductDetail } from './hooks/useProductDetail';
+import { getFilteredChartData } from './utils/chartFilters';
+
 import PriceChartModal from "./components/modal/PriceChartModal";
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
@@ -11,49 +15,15 @@ import {
 const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('3m');
   const [isChanging, setIsChanging] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [chartData, setChartData] = useState([]);
 
-useEffect(() => {
-  const fetchProduct = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`${API_BASE}/product/${id}`);
-      
-      if (!res.ok) {
-        console.error("Producto no encontrado");
-        return;
-      }
-
-      const data = await res.json();
-      setProduct(data);
-    } catch (err) {
-      console.error("Error producto:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchProduct();
-}, [id]);
-
-useEffect(() => {
-  const fetchChart = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/product/${id}/chart`);
-      const data = await res.json();
-      setChartData(data.points || []);
-    } catch (err) {
-      console.error("Error chart:", err);
-    }
-  };
-
-  fetchChart();
-}, [id]);
+  const {
+    product,
+    chartData,
+    loading
+  } = useProductDetail(API_BASE, id);
 
   if (loading) {
     return (
@@ -93,6 +63,8 @@ useEffect(() => {
   // Usamos product.recommendation y product.rec_color directamente del Backend.
   const currentPrice = product.current_price || 0;
 
+  const filteredData = getFilteredChartData(chartData, timeRange);
+
   // 1. Función para manejar el cambio de rango con un pequeño delay para el spinner
 const handleRangeChange = (range) => {
   setIsChanging(true);
@@ -105,25 +77,8 @@ const handleRangeChange = (range) => {
   }, 300);
 };
 
-  // 2. Función para filtrar los datos
-  const getFilteredData = () => {
-    if (!chartData || chartData.length === 0) return [];
+
   
-    if (timeRange === 'all') return chartData;
-  
-    const now = new Date();
-    const ranges = { '1m': 30, '3m': 90, '6m': 180, '1y': 365 };
-  
-    const daysLimit = ranges[timeRange];
-    const cutoffDate = new Date();
-    cutoffDate.setDate(now.getDate() - daysLimit);
-    cutoffDate.setHours(0, 0, 0, 0);
-  
-    return chartData.filter(item => {
-      const itemDate = new Date(item.timestamp);
-      return itemDate >= cutoffDate;
-    });
-  };
 
 // Función para alternar el modal
 const toggleModal = () => {
@@ -194,7 +149,6 @@ const renderPriceChart = () => {
                   );
                 };
 
-const filteredData = getFilteredData();
 
   return (
     <div className="product-detail-wrapper">
