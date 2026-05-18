@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { formatCurrency } from '../../utils/format';
 import './ProductDetail.css';
+import { formatCurrency } from '../../utils/format';
+import { useProductDetail } from './hooks/useProductDetail';
 import PriceChartModal from "../../components/modal/PriceChartModal";
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
@@ -11,49 +12,15 @@ import {
 const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState('3m');
   const [isChanging, setIsChanging] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [chartData, setChartData] = useState([]);
 
-useEffect(() => {
-  const fetchProduct = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`${API_BASE}/product/${id}`);
-      
-      if (!res.ok) {
-        console.error("Producto no encontrado");
-        return;
-      }
-
-      const data = await res.json();
-      setProduct(data);
-    } catch (err) {
-      console.error("Error producto:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchProduct();
-}, [id]);
-
-useEffect(() => {
-  const fetchChart = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/product/${id}/chart`);
-      const data = await res.json();
-      setChartData(data.points || []);
-    } catch (err) {
-      console.error("Error chart:", err);
-    }
-  };
-
-  fetchChart();
-}, [id]);
+const {
+  product,
+  chartData,
+  loading
+} = useProductDetail(API_BASE, id);
 
   if (loading) {
     return (
