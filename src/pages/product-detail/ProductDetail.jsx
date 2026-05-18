@@ -4,6 +4,7 @@ import './ProductDetail.css';
 import { formatCurrency } from '../../utils/format';
 import { useProductDetail } from './hooks/useProductDetail';
 import PriceChartModal from "../../components/modal/PriceChartModal";
+import { getFilteredChartData } from './utils/chartFilters';
 import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area,
   ReferenceLine, Label
@@ -71,26 +72,6 @@ const handleRangeChange = (range) => {
     setIsChanging(false);
   }, 300);
 };
-
-  // 2. Función para filtrar los datos
-  const getFilteredData = () => {
-    if (!chartData || chartData.length === 0) return [];
-  
-    if (timeRange === 'all') return chartData;
-  
-    const now = new Date();
-    const ranges = { '1m': 30, '3m': 90, '6m': 180, '1y': 365 };
-  
-    const daysLimit = ranges[timeRange];
-    const cutoffDate = new Date();
-    cutoffDate.setDate(now.getDate() - daysLimit);
-    cutoffDate.setHours(0, 0, 0, 0);
-  
-    return chartData.filter(item => {
-      const itemDate = new Date(item.timestamp);
-      return itemDate >= cutoffDate;
-    });
-  };
 
 // Función para alternar el modal
 const toggleModal = () => {
@@ -161,7 +142,7 @@ const renderPriceChart = () => {
                   );
                 };
 
-const filteredData = getFilteredData();
+const filteredData = getFilteredChartData(chartData, timeRange);
 
   return (
     <div className="product-detail-wrapper">
