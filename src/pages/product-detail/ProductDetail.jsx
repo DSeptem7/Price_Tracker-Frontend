@@ -10,13 +10,11 @@ import PriceHistoryChart from './components/PriceHistoryChart';
 import RangeSelector from './components/RangeSelector';
 import AnalysisSection from './components/AnalysisSection';
 import ProductDetailSkeleton from './components/ProductDetailSkeleton';
+import { useProductDetailUI } from './hooks/useProductDetailUI';
 
 const ProductDetail = ({ API_BASE, isDarkMode }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [timeRange, setTimeRange] = useState('3m');
-  const [isChanging, setIsChanging] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
 const {
   product,
@@ -39,31 +37,13 @@ if (!product) return <div>Producto no encontrado.</div>;
 
   const filteredData = getFilteredChartData(chartData, timeRange);
 
-  // 1. Función para manejar el cambio de rango con un pequeño delay para el spinner
-const handleRangeChange = (range) => {
-  setIsChanging(true);
-  setTimeRange(range);
-  
-  // Simulamos un breve procesamiento (300ms) para que el spinner sea visible 
-  // y la transición no sea brusca
-  setTimeout(() => {
-    setIsChanging(false);
-  }, 300);
-};
-
-// Función para alternar el modal
-const toggleModal = () => {
-  setIsModalOpen(!isModalOpen);
-  // Tip profesional: Bloqueamos el scroll del cuerpo cuando el modal está abierto
-  if (!isModalOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'unset';
-  }
-};
-
-
-
+  const {
+    timeRange,
+    isChanging,
+    isModalOpen,
+    handleRangeChange,
+    toggleModal
+  } = useProductDetailUI();
 
   return (
     <div className="product-detail-wrapper">
