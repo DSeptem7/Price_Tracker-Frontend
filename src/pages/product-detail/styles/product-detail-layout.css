@@ -24,6 +24,14 @@
     margin: 0 auto;
   }
   
+  /* Aseguramos que el contenedor del detalle baje lo suficiente */
+.detail-container {
+  padding-top: var(--spacing-md); /* Ajusta este valor según la altura de tu Navbar */
+  max-width: 1300px;
+  margin: 0 auto;
+  margin-top: var(--spacing-md); /* Añadimos margen para que no choque con el Navbar sticky */
+}
+
   /* ====================================================================== */
   /* === BACK BUTTON === */
   /* ====================================================================== */

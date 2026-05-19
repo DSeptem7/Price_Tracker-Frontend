@@ -6,41 +6,10 @@
 @import './styles/stats-section.css';
 @import './styles/time-badges.css';
 @import './styles/status-badges.css';
+@import './styles/chart-actions.css';
 
 
 
-
-/* Aseguramos que el contenedor del detalle baje lo suficiente */
-.detail-container {
-  padding-top: 20px; /* Ajusta este valor según la altura de tu Navbar */
-  max-width: 1300px;
-  margin: 0 auto;
-  margin-top: 20px; /* Añadimos margen para que no choque con el Navbar sticky */
-}
-
-/* css para gráfica expandida */
-.title-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.expand-btn {
-  background: rgba(59, 130, 246, 0.1);
-  border: none;
-  color: #3b82f6;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s;
-}
-
-.expand-btn:hover {
-  background: rgba(59, 130, 246, 0.2);
-  transform: scale(1.1);
-}
 
 /* --- ESTILOS DEL MODAL --- */
 .chart-modal-overlay {
