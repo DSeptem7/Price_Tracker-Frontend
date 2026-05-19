@@ -12,7 +12,7 @@ const ProductDetailSkeleton = ({ isDarkMode }) => {
               <div className="skeleton sk-badge"></div>
               <div className="skeleton sk-image"></div>
               <div className="skeleton sk-title"></div>
-              <div className="skeleton sk-container-dark sk-price-box"></div>
+              <div className="skeleton sk-surface sk-price-box"></div>
               <div className="skeleton sk-button"></div>
             </section>
 

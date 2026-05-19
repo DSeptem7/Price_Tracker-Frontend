@@ -7,8 +7,8 @@
 @import './styles/time-badges.css';
 @import './styles/status-badges.css';
 @import './styles/chart-actions.css';
-
-
+@import './styles/skeleton.css';
+@import './styles/animations.css';
 
 
 /* --- ESTILOS DEL MODAL --- */
@@ -136,7 +136,7 @@
   transform: translateY(0);
 }
   
-/* --- SUGERENCIA DE ROTACIÓN --- */
+/* --- SUGERENCIA DE ROTACIÓN  --- */
 .rotation-suggestion {
 display: none; /* Oculto por defecto en PC */
 flex-direction: column;
@@ -152,73 +152,11 @@ box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
 animation: fadeInDown 0.5s ease-out;
 }
 
-/* --- BASE DEL SKELETON (SUB-LINKS) --- */
-.skeleton {
-background: linear-gradient(90deg, 
-  var(--input-bg) 25%, 
-  var(--bg-app) 50%, 
-  var(--input-bg) 75%);
-background-size: 200% 100%; 
-animation: skeleton-loading 1.5s infinite ease-in-out;
-border-radius: 12px;
-margin-bottom: 15px;
-}
 
-/* Reutilizamos tu animación de la Home */
-@keyframes skeleton-loading { 
-0% { background-position: 200% 0; } 
-100% { background-position: -200% 0; } 
-}
 
-/* Bloque especial para contenedores grandes (como el área del gráfico o análisis) */
-.sk-container-dark {
-background: var(--bg-skeleton) !important;
-border-radius: 16px;
-border: 1px solid var(--border-color);
-}
 
-/* --- DIMENSIONES ESPECÍFICAS PARA EL DETALLE --- */
-.sk-back-btn { width: 150px; height: 35px; margin-bottom: 30px; }
-.sk-badge { width: 120px; height: 24px; }
-.sk-image { 
-width: 100%; 
-aspect-ratio: 1/1; 
-max-width: 400px; 
-margin: 20px auto; 
-border-radius: 20px;
-}
-.sk-title { width: 90%; height: 32px; border-radius: 6px; }
 
-/* Caja de precio y botón */
-.sk-price-box { 
-width: 100%; 
-height: 100px; 
-margin: 20px 0; 
-background: var(--bg-skeleton) !important; /* Usamos tu color grisáceo suave */
-}
-.sk-button { width: 100%; height: 50px; border-radius: 12px; }
 
-/* Sección de Análisis (Derecha) */
-.sk-chart-title { width: 200px; height: 28px; }
-.sk-chart { 
-width: 100%; 
-height: 350px; 
-margin-bottom: 25px; 
-background: var(--bg-skeleton) !important;
-}
-.sk-stat-card { width: 100%; height: 80px; }
-.sk-analysis-box { 
-width: 100%; 
-height: 120px; 
-margin-top: 20px; 
-border: 2px solid var(--border-color);
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-.sk-image { max-width: 250px; }
-.sk-chart { height: 250px; }
-}
 
 /* ====================================================================== */
 /* === AJUSTES RESPONSIVOS PARA MÓVIL === */
