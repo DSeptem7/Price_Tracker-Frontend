@@ -161,12 +161,12 @@
   
   .percentage-tag.down {
     background: #dcfce7;
-    color: var(--accent-green);
+    color: #15803d;
   }
   
   .percentage-tag.up {
     background: #fee2e2;
-    color: var(--accent-red);
+    color: #b91c1c;
   }
   
   .percentage-tag.same {
