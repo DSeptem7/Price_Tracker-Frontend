@@ -4,47 +4,11 @@
 @import './styles/price-chart.css';
 @import './styles/detail-animations.css';
 @import './styles/stats-section.css';
+@import './styles/time-badges.css';
+@import './styles/status-badges.css';
 
 
 
-
-
-
-
-/* Tiempos de rastreo */
-.time-info-row {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 15px;
-}
-
-.time-badge {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  flex: 1;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  text-align: center;
-}
-
-.time-badge strong {
-  color: var(--text-main);
-  margin-left: 5px;
-}
-
-/* Etiqueta Recién Añadido */
-.status-new {
-  background: rgba(148, 163, 184, 0.1);
-  color: #94a3b8;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
 
 /* Aseguramos que el contenedor del detalle baje lo suficiente */
 .detail-container {
