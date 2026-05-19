@@ -35,8 +35,6 @@ if (!product) return <div>Producto no encontrado.</div>;
   // Usamos product.recommendation y product.rec_color directamente del Backend.
   const currentPrice = product.current_price || 0;
 
-  const filteredData = getFilteredChartData(chartData, timeRange);
-
   const {
     timeRange,
     isChanging,
@@ -44,6 +42,8 @@ if (!product) return <div>Producto no encontrado.</div>;
     handleRangeChange,
     toggleModal
   } = useProductDetailUI();
+
+  const filteredData = getFilteredChartData(chartData, timeRange);
 
   return (
     <div className="product-detail-wrapper">
