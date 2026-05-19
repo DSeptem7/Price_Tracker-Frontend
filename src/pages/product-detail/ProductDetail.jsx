@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
 import { formatCurrency } from '../../utils/format';
@@ -42,9 +42,7 @@ if (!product) return <div>Producto no encontrado.</div>;
 
   const currentPrice = product.current_price || 0;
 
-  const filteredData = useMemo(() => {
-    return getFilteredChartData(chartData, timeRange);
-  }, [chartData, timeRange]);
+  const filteredData = getFilteredChartData(chartData, timeRange);
 
   return (
     <div className="product-detail-wrapper">
