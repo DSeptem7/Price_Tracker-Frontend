@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 export const useProductDetailUI = () => {
-
   const [timeRange, setTimeRange] = useState('3m');
   const [isChanging, setIsChanging] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
