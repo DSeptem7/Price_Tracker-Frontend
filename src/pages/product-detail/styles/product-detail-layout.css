@@ -13,7 +13,7 @@
     display: flex;
     justify-content: flex-start;
     max-width: 1200px;
-    margin: 0 auto 24px;
+    margin: 0 auto var(--spacing-lg);
   }
   
   .detail-layout {
@@ -31,31 +31,27 @@
   .back-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-  
+    gap: var(--spacing-xs);
     padding: 8px 18px;
-  
     background-color: transparent;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
-  
+    border-radius: var(--radius-sm);
     color: var(--text-muted);
-  
     font-size: 0.9rem;
     font-weight: 600;
-  
     cursor: pointer;
-  
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
   }
   
   .back-btn:hover {
     background-color: var(--bg-card);
     border-color: var(--accent-blue);
     color: var(--accent-blue);
-  
     transform: translateX(-4px);
-  
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
   
