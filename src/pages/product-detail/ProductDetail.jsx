@@ -22,6 +22,14 @@ const {
   loading
 } = useProductDetail(API_BASE, id);
 
+const {
+  timeRange,
+  isChanging,
+  isModalOpen,
+  handleRangeChange,
+  toggleModal
+} = useProductDetailUI();
+
 if (loading) {
   return (
     <ProductDetailSkeleton
@@ -29,19 +37,10 @@ if (loading) {
     />
   );
 }
+
 if (!product) return <div>Producto no encontrado.</div>;
 
- // Ya no necesitamos calcular nada aquí. 
-  // Usamos product.recommendation y product.rec_color directamente del Backend.
   const currentPrice = product.current_price || 0;
-
-  const {
-    timeRange,
-    isChanging,
-    isModalOpen,
-    handleRangeChange,
-    toggleModal
-  } = useProductDetailUI();
 
   const filteredData = getFilteredChartData(chartData, timeRange);
 
