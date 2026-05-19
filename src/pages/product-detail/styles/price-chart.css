@@ -1,0 +1,53 @@
+/* ====================================================================== */
+/* === RANGE SELECTOR === */
+/* ====================================================================== */
+
+.range-selector {
+    display: flex;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+  }
+  
+  .range-btn {
+    padding: 6px 12px;
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+  
+  .range-btn:hover {
+    color: var(--text-main);
+  }
+  
+  .range-btn.active {
+    background: var(--accent-blue);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  }
+  
+  /* ====================================================================== */
+  /* === CHART WRAPPER === */
+  /* ====================================================================== */
+  
+  .chart-relative-wrapper {
+    position: relative;
+    transition: opacity var(--transition-fast);
+  }
+  
+  /* Recharts container */
+  
+  .recharts-responsive-container {
+    transition:
+      filter var(--transition-fast),
+      opacity var(--transition-fast);
+  }
