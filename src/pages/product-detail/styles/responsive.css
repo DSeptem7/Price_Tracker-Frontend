@@ -109,7 +109,7 @@
       padding: var(--spacing-md);
     }
   
-    .chart-relative-wrapper {
+    .chart-container-pro div[style*="height: 350"] {
       height: var(--chart-mobile-height);
     }
   
