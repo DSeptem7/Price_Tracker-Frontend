@@ -54,15 +54,6 @@
     --product-title-height: 38px;
     --price-font-size: 24px;
     --product-image-height: 180px;
-
-    --breakpoint-tablet: 900px;
-    --breakpoint-mobile: 768px;
-    --breakpoint-small-mobile: 600px;
-
-    --modal-mobile-height: 85dvh;
-    --modal-landscape-height: 92dvh;
-
-    --chart-mobile-height: 280px;
   }
   
   :root.dark-mode {
