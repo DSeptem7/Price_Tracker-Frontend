@@ -23,7 +23,7 @@
     }
   }
 
-  /* ====================================================================== */
+/* ====================================================================== */
 /* === LANDSCAPE MODAL OPTIMIZATION === */
 /* ====================================================================== */
 
@@ -107,9 +107,11 @@
   
     .chart-container-pro {
       padding: var(--spacing-md);
-      height: var(--chart-mobile-height);
     }
   
+    .chart-relative-wrapper {
+      height: var(--chart-mobile-height);
+    }
   
     .time-info-row {
       flex-direction: column;
