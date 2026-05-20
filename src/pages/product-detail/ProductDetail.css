@@ -163,7 +163,6 @@ animation: fadeInDown 0.5s ease-out;
 
 
 
-
 @media (max-width: 768px) and (orientation: portrait) {
 .rotation-suggestion {
   display: flex; /* Solo se muestra en móviles y en vertical */

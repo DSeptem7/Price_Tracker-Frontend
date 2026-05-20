@@ -83,13 +83,13 @@
     .detail-page {
       padding:
         0
-        var(--spacing-sm)
-        var(--spacing-lg)
-        var(--spacing-sm);
+        var(--spacing-xs)
+        var(--spacing-md)
+        var(--spacing-xs);
     }
   
     .detail-container {
-      margin-top: var(--spacing-sm);
+      margin-top: var(--spacing-xs);
     }
   
     .stats-grid-detail {
@@ -100,7 +100,7 @@
       grid-column: span 2;
   
       flex-direction: column;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-xs);
   
       text-align: center;
     }
@@ -115,7 +115,7 @@
   
     .time-info-row {
       flex-direction: column;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-xs);
     }
   
     .back-btn {
@@ -126,9 +126,7 @@
     .chart-header {
       flex-direction: column;
       align-items: center;
-  
       text-align: center;
-  
       gap: var(--spacing-md);
     }
   
@@ -138,6 +136,8 @@
   
     .range-selector {
       justify-content: center;
+      width: auto;           
+      display: flex;
     }
   
     .range-btn {
@@ -162,7 +162,7 @@
   
       width: 100%;
   
-      padding-bottom: var(--spacing-sm);
+      padding-bottom: var(--spacing-xs);
   
       min-height: 0;
     }
