@@ -9,7 +9,7 @@
 @import './styles/chart-actions.css';
 @import './styles/skeleton.css';
 @import './styles/animations.css';
-@import './styles/responsive.css';
+
 
 /* --- ESTILOS DEL MODAL --- */
 .chart-modal-overlay {
@@ -158,10 +158,67 @@ animation: fadeInDown 0.5s ease-out;
 
 
 
+/* ====================================================================== */
+/* === AJUSTES RESPONSIVOS PARA MÓVIL === */
+/* ====================================================================== */
 
+@media (max-width: 900px) {
+.detail-layout {
+  grid-template-columns: 1fr; /* Apilamos las columnas en una sola */
+  gap: 20px;
+}
 
+.product-summary {
+  min-height: auto; /* Quitamos la altura fija para que se ajuste al contenido */
+  padding: 20px;
+}
 
+.detail-img {
+  height: 250px; /* Reducimos un poco la imagen en móvil */
+}
 
+.current-price-value {
+  font-size: 2.2rem; /* Precio un poco más pequeño para que no desborde */
+}
+}
+
+/* Ajuste del modal en Landscape (Horizontal) */
+/* Ajuste mejorado del modal en Landscape (Horizontal) */
+@media (max-width: 900px) and (orientation: landscape) {
+  .chart-modal-content {
+    /* Usamos dvh también aquí */
+    height: 92dvh; 
+    width: 96vw;
+    border-radius: 20px;
+    /* Añadimos padding para áreas seguras (notches/barras de gestos) */
+    padding: 10px 20px env(safe-area-inset-bottom) 20px;
+    margin: auto;
+  }
+
+  .modal-header {
+    /* Compactamos el header en horizontal para dar más sitio a la gráfica */
+    margin-bottom: 8px;
+    gap: 10px;
+  }
+
+  .modal-ranges {
+    /* Quitamos el span de 2 columnas que pusimos para el modo vertical */
+    grid-column: auto; 
+    order: 2;
+  }
+
+  .modal-chart-container {
+    /* Forzamos a que la gráfica use todo el espacio restante con aire */
+    flex-grow: 1;
+    padding-bottom: 5px;
+  }
+
+  /* Ocultamos el nombre del producto solo si la pantalla es muy pequeña verticalmente */
+  @media (max-height: 400px) {
+    .modal-product-name { display: none; }
+    .modal-header h4 { font-size: 1rem; }
+  }
+}
 
 @media (max-width: 600px) {
 .detail-page {
