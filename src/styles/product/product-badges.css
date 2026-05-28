@@ -31,6 +31,12 @@
     background-color: #b45309;
     color: white;
   }
+
+  /* Badge producto eliminado */
+  .deleted-badge {
+    background-color: #7f1d1d;
+    color: white;
+  }
   
   /* Animación de entrada para las etiquetas */
   @keyframes fadeInBadge {

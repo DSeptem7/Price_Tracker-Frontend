@@ -76,6 +76,12 @@ const ProductSummary = ({ product, currentPrice }) => {
             </span>
           )}
 
+          {product.status === "deleted" && (
+            <span className="status-deleted">
+              Publicación eliminada
+            </span>
+          )}
+
         </div>
       </div>
 
