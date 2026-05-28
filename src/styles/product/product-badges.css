@@ -24,7 +24,13 @@
   .stock-badge {
     background-color: var(--text-muted);
     color: white;
-  } 
+  }
+
+  /* Badge publicación pausada */
+  .paused-badge {
+    background-color: #b45309;
+    color: white;
+  }
   
   /* Animación de entrada para las etiquetas */
   @keyframes fadeInBadge {

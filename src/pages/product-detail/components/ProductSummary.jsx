@@ -70,6 +70,12 @@ const ProductSummary = ({ product, currentPrice }) => {
             </span>
           )}
 
+          {product.status === "paused" && (
+            <span className="status-paused">
+              Publicación pausada
+            </span>
+          )}
+
         </div>
       </div>
 

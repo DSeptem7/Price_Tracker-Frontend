@@ -7,6 +7,7 @@ import { highlightText } from "../../utils/text";
 
 const ProductCard = ({ product, query }) => {
   const isOut = product.status === "out_of_stock";
+  const isPaused = product.status === "paused";
   const isNew =
     product.status === "new" ||
     product.alert_type === "Producto nuevo";
@@ -19,7 +20,7 @@ const ProductCard = ({ product, query }) => {
   return (
     <Link
       to={`/producto/${product.id}`}
-      className={`product-card ${isOut ? "card-disabled" : ""}`}
+      className={`product-card ${isOut || isPaused ? "card-disabled" : ""}`}
     >
       {/* HEADER */}
       <div
@@ -47,7 +48,17 @@ const ProductCard = ({ product, query }) => {
           }}
         />
 
-        {isOut && <div className="alert-badge stock-badge">AGOTADO</div>}
+        {isOut && (
+          <div className="alert-badge stock-badge">
+            AGOTADO
+          </div>
+        )}
+
+        {isPaused && (
+          <div className="alert-badge paused-badge">
+            PAUSADO
+          </div>
+        )}
         {!isOut && isNew && (
           <div className="alert-badge new-badge">NUEVO</div>
         )}
@@ -60,14 +71,18 @@ const ProductCard = ({ product, query }) => {
       <div className="price-section">
         <div className="current-price-container">
           <span className={`current-price ${isOut ? "text-muted" : ""}`}>
-            {isOut ? "No disponible" : formatCurrency(product.price)}
+            {isPaused
+                ? "Publicación pausada"
+                : isOut
+                  ? "No disponible"
+                  : formatCurrency(product.price)}
           </span>
         </div>
       </div>
 
       {/* STATUS */}
       <div className="status-row">
-        {!isOut && !isNew && (
+      {!isOut && !isPaused && !isNew && (
           <span className={`state-badge priority-${product.state_priority}`}>
             {product.alert_type}
           </span>
@@ -76,7 +91,7 @@ const ProductCard = ({ product, query }) => {
 
       {/* CTA */}
       <div className="card-action-button">
-        {isOut ? "Consultar" : "Ver producto"}
+        {isPaused || isOut ? "Consultar" : "Ver producto"}
       </div>
 
       {/* TIMESTAMP */}
