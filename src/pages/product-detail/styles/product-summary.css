@@ -114,9 +114,20 @@
     margin-bottom: 25px;
   }
   
+  .status-out {
+    background-color: var(--text-muted);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+
   .status-deleted {
     background: #7f1d1d;
     color: white;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 700;
   }
 
   .status-paused {
