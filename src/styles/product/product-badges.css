@@ -37,6 +37,12 @@
     background-color: #7f1d1d;
     color: white;
   }
+
+  /* Badge reabastecido */
+  .restock-badge {
+    background-color: #059669;
+    color: white;
+  }
   
   /* Animación de entrada para las etiquetas */
   @keyframes fadeInBadge {

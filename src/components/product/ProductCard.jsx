@@ -9,6 +9,9 @@ const ProductCard = ({ product, query }) => {
   const isOut = product.status === "out_of_stock";
   const isPaused = product.status === "paused";
   const isDeleted = product.status === "deleted";
+  const isRestock =
+    product.last_event_type === "restock" ||
+    product.alert_type === "Producto reabastecido";
   const isNew =
     product.status === "new" ||
     product.alert_type === "Producto nuevo";
@@ -61,13 +64,19 @@ const ProductCard = ({ product, query }) => {
           </div>
         )}
 
+        {isRestock && (
+          <div className="alert-badge restock-badge">
+            REABASTECIDO
+          </div>
+        )}
+
         {isDeleted && (
           <div className="alert-badge deleted-badge">
             ELIMINADO
           </div>
         )}
 
-        {!isOut && isNew && (
+        {!isOut && !isPaused && !isRestock && isNew && (
           <div className="alert-badge new-badge">NUEVO</div>
         )}
       </div>
@@ -92,7 +101,7 @@ const ProductCard = ({ product, query }) => {
 
       {/* STATUS */}
       <div className="status-row">
-      {!isOut && !isPaused && !isDeleted && !isNew && (
+      {!isOut && !isPaused && !isDeleted &&  !isRestock && !isNew && (
           <span className={`state-badge priority-${product.state_priority}`}>
             {product.alert_type}
           </span>
